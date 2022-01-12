@@ -1,0 +1,55 @@
+.tab-chat-item {
+    width: 100%;
+    height: 5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 .5rem;
+    position: relative;
+    cursor: pointer;
+    .tab-chat-avatar {
+        width: 3.5rem;
+        height: 3.5rem;
+        border-radius: 50%;
+    }
+    .tab-chat-info {
+        width: 80%;
+        height: 3.5rem;
+        padding-left: .5rem;
+        position: relative;
+        z-index: -1;
+        .tab-chat-name {
+            width: 100%;
+            height: 2rem;
+            line-height: 2rem;
+            padding:0 .5rem;
+            font-size: 1.25rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .tab-chat-content {
+            width: 100%;
+            height: 1.5rem;
+            line-height: 1.5rem;
+            padding: 0 .5rem;
+            font-size: 1rem;
+            color: #919191;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}
+
+.tab-chat-item:hover::after {
+    content: '';
+    position: absolute;
+    z-index: -2;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #f1f1f1;
+}

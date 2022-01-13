@@ -1,0 +1,47 @@
+.start-component {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    .col-start-input {
+        width: 33%;
+        float: left;
+        height: 100vh;
+        overflow-y: scroll;
+    }
+
+    .col-start-picture {
+        width: 67%;
+        height: 100vh;
+        float: left;
+    }
+
+    .col-start-input::-webkit-scrollbar{
+        display: none;
+    }
+
+    @media only screen and (max-width: 1000px) {
+        .col-start-picture {
+            display: none;
+        }
+    
+        .col-start-input {
+            width: 100%;
+        }
+    }
+}
+
+@media only screen and (max-height: 590px) {
+    .start-component {
+        display: flex;
+        flex-direction: row;
+
+        .col-start-picture {
+            height: auto;
+        }
+    
+        .col-start-input {
+            height: 100%;
+        }
+    }
+}

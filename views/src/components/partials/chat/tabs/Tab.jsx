@@ -1,7 +1,6 @@
 import React from 'react'
 import './tab.scss'
 import { useSelector } from 'react-redux'
-import { useEffect } from 'react'
 import ChatTab from './chats/Chats'
 import FriendsTab from '../tabs/friends/friends'
 import GroupsTab from '../tabs/groups/groups'
@@ -15,10 +14,12 @@ function Tab(props) {
         <div className='tab-wrapper'>
             <Search></Search>
             <div className="tab-main">
-                {state === 0 ? <ChatTab></ChatTab>: state === 1 ? <FriendsTab></FriendsTab> : <GroupsTab></GroupsTab>}
+                {state === 0 ? <ChatTab></ChatTab>: 
+                 state === 1 ? <FriendsTab></FriendsTab> : 
+                               <GroupsTab></GroupsTab>}
             </div>
         </div>
     );
 }
 
-export default Tab;
+export default React.memo(Tab)

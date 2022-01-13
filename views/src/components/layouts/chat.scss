@@ -3,3 +3,12 @@
     justify-content: center;
     overflow: hidden;
 }
+
+.chat-wrapper[data-theme='dark-theme'] {
+    background-color: #36393f;
+    position: relative;
+    z-index: 0;
+    * {
+        color: white;
+    }
+}

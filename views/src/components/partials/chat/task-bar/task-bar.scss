@@ -7,7 +7,6 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-
     .taskbar-top {
         height: 40%;
         .my-avatar {
@@ -36,14 +35,16 @@
                 font-size: 1.75rem;
                 text-align: center;
                 line-height: 4rem;
-                margin: .5rem 0;
                 cursor: pointer;
+                transition: .5s;
+            }
+            .task-item:hover {
+                background-color: #414ab15e !important;
             }
         }
     }
     
     .taskbar-bottom {
-        height: 20%;
         width: 100%;
         display: flex;
         justify-content: flex-start;
@@ -58,6 +59,9 @@
             line-height: 4rem;
             margin-top: .5rem;
             cursor: pointer;
+        }
+        .fa-sign-out-alt {
+            color: rgb(255, 230, 0);
         }
     }
 }

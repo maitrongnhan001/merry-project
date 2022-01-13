@@ -1,9 +1,16 @@
 .tab-wrapper {
-    width: 20rem;
+    width: 22rem;
     height: 100vh;
     border-right: 1px solid #e1e1e1;
     .tab-main{
         width: 100%;
         border-top: 1px solid #e1e1e1;
+    }
+}
+
+.chat-wrapper[data-theme='dark-theme'] .tab-wrapper {
+    border-right: 1px solid #41454d;
+    .tab-main{
+        border-top: 1px solid #41454d;
     }
 }

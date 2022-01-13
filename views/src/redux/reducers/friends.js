@@ -2,16 +2,19 @@
 const initial = {
     chatsList: [
         {
+            id: 1,
             firstName: 'Phuc Khang',
             lastName: 'Dinh',
             image:'/img/me.jpg'
         },
         {
+            id: 2,
             firstName: 'Phuc Khang',
             lastName: 'Dinh',
             image:'/img/me.jpg'
         },
         {
+            id: 3,
             firstName: 'Phuc Khang',
             lastName: 'Dinh',
             image:'/img/me.jpg'
@@ -19,16 +22,19 @@ const initial = {
     ], 
     friendsList: [
         {
+            id: 1,
             firstName: 'Phuc Khang',
             lastName: 'Dinh',
             image:'/img/me.jpg'
         },
         {
+            id: 2,
             firstName: 'Phuc Khang',
             lastName: 'Dinh',
             image:'/img/me.jpg'
         },
         {
+            id: 3,
             firstName: 'Phuc Khang',
             lastName: 'Dinh',
             image:'/img/me.jpg'

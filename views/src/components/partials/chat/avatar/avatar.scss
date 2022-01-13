@@ -19,12 +19,23 @@
         transform: translate(-50%, -50%);
     }
     .no-group-avatar-1 {
-        border: 1px solid white;
+        border: 2px solid rgba(#ffffff, 0);
         z-index: 1;
-        transform: translate(-80%, -25%);
+        transform: translate(-70%, -25%);
     }
     .no-group-avatar-2 {
-        border: 1px solid white;
-        transform: translate(-25%, -80%);
+        border: 2px solid rgba(#ffffff, 0);
+        transform: translate(-25%, -70%);
+    }
+    .friend-group-avatar-active {
+        position: absolute;
+        right: 0rem;
+        bottom: 0rem;
+        width: .75rem;
+        height: .75rem;
+        border-radius: 50%;
+        background-color: rgb(0, 255, 0);
+        border: 2px solid #f1f1f1;
+        z-index: 1;
     }
 }

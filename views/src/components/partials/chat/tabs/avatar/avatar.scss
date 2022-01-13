@@ -1,0 +1,30 @@
+.friend-group-avatar-wrapper {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    .avatar {
+        width: 100%;
+        height: 100%;
+        transform: scale(1.1);
+        border-radius: 50%;
+    }
+
+    .no-group-avatar {
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 50%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+    .no-group-avatar-1 {
+        border: 1px solid white;
+        z-index: 1;
+        transform: translate(-80%, -25%);
+    }
+    .no-group-avatar-2 {
+        border: 1px solid white;
+        transform: translate(-25%, -80%);
+    }
+}

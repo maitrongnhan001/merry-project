@@ -32,12 +32,13 @@
         width: 20%;
         height: 2rem;
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
         i {
             width: 40%;
             display: block;
             height: 100%;
             line-height: 2rem;
+            text-align: end;
             color: #5865F2;
             cursor: pointer;
         }

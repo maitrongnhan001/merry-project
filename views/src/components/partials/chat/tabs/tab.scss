@@ -4,7 +4,21 @@
     border-right: 1px solid #e1e1e1;
     .tab-main{
         width: 100%;
+        height: calc(100vh - 5rem);
         border-top: 1px solid #e1e1e1;
+        overflow-y: scroll;
+    }
+    .tab-main::-webkit-scrollbar {
+        width: .4rem;
+    }
+    
+    .tab-main::-webkit-scrollbar-track {
+        background: white;
+    }
+    
+    .tab-main::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 1rem;
     }
 }
 
@@ -12,5 +26,8 @@
     border-right: 1px solid #41454d;
     .tab-main{
         border-top: 1px solid #41454d;
+    }
+    .tab-main::-webkit-scrollbar-track {
+        background: #36393f;
     }
 }

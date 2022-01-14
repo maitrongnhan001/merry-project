@@ -18,7 +18,55 @@ const initial = {
             firstName: 'Phuc Khang',
             lastName: 'Dinh',
             image:'/img/me.jpg'
-        }
+        },
+        {
+            id: 4,
+            firstName: 'Phuc Khang',
+            lastName: 'Dinh',
+            image:'/img/me.jpg'
+        },
+        {
+            id: 5,
+            firstName: 'Phuc Khang',
+            lastName: 'Dinh',
+            image:'/img/me.jpg'
+        },
+        {
+            id: 6,
+            firstName: 'Phuc Khang',
+            lastName: 'Dinh',
+            image:'/img/me.jpg'
+        },
+        {
+            id: 7,
+            firstName: 'Phuc Khang',
+            lastName: 'Dinh',
+            image:'/img/me.jpg'
+        },
+        {
+            id: 8,
+            firstName: 'Phuc Khang',
+            lastName: 'Dinh',
+            image:'/img/me.jpg'
+        },
+        {
+            id: 9,
+            firstName: 'Phuc Khang',
+            lastName: 'Dinh',
+            image:'/img/me.jpg'
+        },
+        {
+            id: 10,
+            firstName: 'Phuc Khang',
+            lastName: 'Dinh',
+            image:'/img/me.jpg'
+        },
+        {
+            id: 11,
+            firstName: 'Phuc Khang',
+            lastName: 'Dinh',
+            image:'/img/me.jpg'
+        },
     ], 
     friendsList: [
         {
@@ -35,6 +83,54 @@ const initial = {
         },
         {
             id: 3,
+            firstName: 'Phuc Khang',
+            lastName: 'Dinh',
+            image:'/img/me.jpg'
+        },
+        {
+            id: 4,
+            firstName: 'Phuc Khang',
+            lastName: 'Dinh',
+            image:'/img/me.jpg'
+        },
+        {
+            id: 5,
+            firstName: 'Phuc Khang',
+            lastName: 'Dinh',
+            image:'/img/me.jpg'
+        },
+        {
+            id: 6,
+            firstName: 'Phuc Khang',
+            lastName: 'Dinh',
+            image:'/img/me.jpg'
+        },
+        {
+            id: 7,
+            firstName: 'Phuc Khang',
+            lastName: 'Dinh',
+            image:'/img/me.jpg'
+        },
+        {
+            id: 8,
+            firstName: 'Phuc Khang',
+            lastName: 'Dinh',
+            image:'/img/me.jpg'
+        },
+        {
+            id: 9,
+            firstName: 'Phuc Khang',
+            lastName: 'Dinh',
+            image:'/img/me.jpg'
+        },
+        {
+            id: 10,
+            firstName: 'Phuc Khang',
+            lastName: 'Dinh',
+            image:'/img/me.jpg'
+        },
+        {
+            id: 11,
             firstName: 'Phuc Khang',
             lastName: 'Dinh',
             image:'/img/me.jpg'

@@ -70,7 +70,7 @@ function TaskBar(props) {
     }
 
     useEffect(()=>{
-        const themeLocal = localStorage.getItem('theme')
+        const themeLocal = localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light-theme'
         if(themeLocal === 'light-theme') {
             $('.taskbar-wrapper .taskbar-bottom .fa-moon').css('color', 'white')
         }else {

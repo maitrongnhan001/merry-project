@@ -12,7 +12,7 @@ function Groups(props) {
                                                 ${value.members[1].lastName} ${value.members[1].firstName}, 
                                                 ... `
         return (
-             <Item key={idx} image={value.image} name={name}></Item>
+             <Item key={idx} id={value.id} image={value.image} name={name}></Item>
         )
     })
 

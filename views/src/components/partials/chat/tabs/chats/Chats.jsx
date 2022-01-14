@@ -10,7 +10,7 @@ function Chats(props) {
 
     const items = chatsList.map((value, idx)=>{
         return (
-            <Item key={idx} image={value.image} firstName={value.firstName} lastName={value.lastName}></Item>
+            <Item key={idx} id={value.id} image={value.image} firstName={value.firstName} lastName={value.lastName}></Item>
         )
     })
 

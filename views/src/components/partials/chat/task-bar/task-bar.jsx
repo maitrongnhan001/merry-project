@@ -1,13 +1,31 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './task-bar.scss'
-import {useDispatch} from 'react-redux'
-import { saveTab } from '../../../../redux/actions/taskbar'
+import {useDispatch, useSelector} from 'react-redux'
+import { saveTab, setTheme } from '../../../../redux/actions/taskbar'
+import $ from 'jquery'
 
 function TaskBar(props) {
 
     //redux
+    const focusTab = useSelector(state => state.taskbar.data)
     const dispatch = useDispatch() 
 
+    //hooks
+    useEffect(()=>{
+        if(focusTab === 0) {
+            $('.taskbar-wrapper .fa-comments').css('background', '#414ab1')
+            $('.taskbar-wrapper .fa-address-book').css('background', 'none')
+            $('.taskbar-wrapper .fa-users').css('background', 'none')
+        }else if(focusTab === 1) {
+            $('.taskbar-wrapper .fa-address-book').css('background', '#414ab1')
+            $('.taskbar-wrapper .fa-users').css('background', 'none')
+            $('.taskbar-wrapper .fa-comments').css('background', 'none')
+        }else {
+            $('.taskbar-wrapper .fa-users').css('background', '#414ab1')
+            $('.taskbar-wrapper .fa-address-book').css('background', 'none')
+            $('.taskbar-wrapper .fa-comments').css('background', 'none')
+        }
+    }, [focusTab])
 
     //handle avatar item
     const handleClickAvatar = (e)=>{
@@ -34,13 +52,31 @@ function TaskBar(props) {
 
     //handle dark mode item
     const handleClickDarkMode = (e)=> {
-
+        const themeLocal = localStorage.getItem('theme')
+        const isDark = themeLocal && themeLocal === 'dark-theme'  ? 'light-theme' : 'dark-theme' 
+        localStorage.setItem('theme', isDark)
+        const theme = setTheme(isDark)
+        dispatch(theme)
+        if(isDark === 'light-theme') {
+            e.target.style.color = 'white'
+        }else {
+            e.target.style.color = '#36393f'
+        }
     }
 
     //handle sign out item
     const handleClickSignOut = (e)=> {
 
     }
+
+    useEffect(()=>{
+        const themeLocal = localStorage.getItem('theme')
+        if(themeLocal === 'light-theme') {
+            $('.taskbar-wrapper .taskbar-bottom .fa-moon').css('color', 'white')
+        }else {
+            $('.taskbar-wrapper .taskbar-bottom .fa-moon').css('color', '#36393f')
+        }
+    }, [])
 
     return (
         <div className="taskbar-wrapper">
@@ -62,4 +98,4 @@ function TaskBar(props) {
     );
 }
 
-export default TaskBar;
+export default React.memo(TaskBar)

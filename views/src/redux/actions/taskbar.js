@@ -5,6 +5,14 @@ const saveTab = (payload)=> {
     }
 }
 
+const setTheme = (payload)=> {
+    return {
+        type: 'SET_THEME',
+        data: payload
+    }
+}
+
 export {
     saveTab,
+    setTheme
 }

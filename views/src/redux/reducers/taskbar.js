@@ -1,6 +1,7 @@
 
 const initial = {
-    data: 0
+    data: 0,
+    theme: 'light-theme'
 }
 
 const taskbarReducer = (state = initial, action)=> {
@@ -9,6 +10,12 @@ const taskbarReducer = (state = initial, action)=> {
             return {
                 ...state,
                 data: action.data
+            }
+        }
+        case 'SET_THEME': {
+            return {
+                ...state,
+                theme: action.data
             }
         }
         default: {

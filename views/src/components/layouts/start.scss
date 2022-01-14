@@ -16,7 +16,7 @@
         float: left;
     }
 
-    .col-start-input::-webkit-scrollbar{
+    .col-start-input::-webkit-scrollbar {
         display: none;
     }
 
@@ -24,9 +24,21 @@
         .col-start-picture {
             display: none;
         }
-    
+
         .col-start-input {
             width: 100%;
+            height: 100%;
+        }
+
+        .logo-merry-chat {
+            width: 60%;
+            margin-top: 4rem;
+        }
+    }
+
+    @media only screen and (max-width: 600px) {
+        .logo-merry-chat {
+            margin-top: 8rem;
         }
     }
 }
@@ -39,7 +51,7 @@
         .col-start-picture {
             height: auto;
         }
-    
+
         .col-start-input {
             height: 100%;
         }

@@ -3,10 +3,7 @@ import  { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-
 import Chat from './components/layouts/chat';
 import Start from './components/layouts/start';
 
-function App() {
-
 //set main routes
-import Chat from './components/layouts/chat'
 
 function App() {
 

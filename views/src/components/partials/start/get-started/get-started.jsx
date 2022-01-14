@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './get-started.scss';
-require('typeface-roboto');
 
 const GetStarted = () => {
     return (
@@ -47,8 +46,8 @@ const GetStarted = () => {
 
             <div className='center'>
                 <Link 
-                    className='start-link-primary' 
-                    to="/register"
+                    className='text-primary' 
+                    to="/login"
                 >
                     Đăng nhập
                 </Link>

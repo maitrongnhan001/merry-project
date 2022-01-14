@@ -1,15 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import StartLogo from '../start-logo/start-logo';
 import './get-started.scss';
 
 const GetStarted = () => {
     return (
-        <div className='get-start-component'>
-            <img 
-                src="/img/Logos/logo-merry-chat.png" 
-                alt="logo-merry-chat" 
-                className='logo-merry-chat' 
-            />
+        <div className='start-component'>
+            <StartLogo></StartLogo>
 
             <div className='get-start-title'>
 
@@ -30,7 +27,7 @@ const GetStarted = () => {
                 Hãy để Merry kết nối chúng ta lại gần nhau hơn.
             </p>
             <input 
-                type="text" 
+                type="mail" 
                 name='email' 
                 className='input-start' 
                 placeholder='Nhập email của bạn'

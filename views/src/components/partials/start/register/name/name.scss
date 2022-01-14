@@ -1,0 +1,24 @@
+.start-input-component {
+
+    .two-input {
+        width: 85%;
+        margin: 0 auto;
+
+        .block-input {
+            width: 49%;
+            float: left;
+
+            .input-start {
+                width: 100%;
+            }
+        }
+
+        .block-input:last-child {
+            margin-left: 2%;
+        }
+
+        .text-error {
+            width: 100%;
+        }
+    }
+}

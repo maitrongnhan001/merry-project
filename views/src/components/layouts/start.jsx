@@ -12,7 +12,7 @@ const Start = () => {
             <div className='col-start-input'>
                 <Routes>
                     <Route path='/' element={<GetStarted />} ></Route>
-                    <Route path='/register' element={<Register />} ></Route>
+                    <Route path='/register/*' element={<Register />} ></Route>
                     <Route path='/login' element={<Login />}></Route>
                 </Routes>
             </div>

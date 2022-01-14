@@ -4,7 +4,7 @@ import './login.scss';
 
 const Login = () => {
     return (
-        <div className='get-login-component'>
+        <div className='start-input-component'>
             <img
                 src="/img/Logos/logo-merry-chat.png"
                 alt="logo-merry-chat"
@@ -14,7 +14,7 @@ const Login = () => {
             <br /><br /><br /><br />
 
             <input
-                type="text"
+                type="mail"
                 name='email'
                 className='input-start'
                 placeholder='Nhập email của bạn'
@@ -25,10 +25,10 @@ const Login = () => {
             <br /><br />
 
             <input
-                type="text"
-                name='email'
+                type="password"
+                name='password'
                 className='input-start'
-                placeholder='Nhập email của bạn'
+                placeholder='Nhập mật khẩu của bạn'
             />
 
             <span className='text-error'></span>
@@ -53,12 +53,12 @@ const Login = () => {
 
             <br /><br /><br />
 
-            <div className="text-order-feature">
-                <button className='custom-btn left start-btn-white'>
+            <div className="two-button">
+                <button className='custom-btn start-btn-white'>
                     Trở về
                 </button>
 
-                <button className='start-btn right start-btn-primary'>
+                <button className='start-btn start-btn-primary'>
                     Đăng nhập
                 </button>
             </div>

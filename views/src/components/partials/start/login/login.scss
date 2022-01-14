@@ -1,6 +1,8 @@
-.get-login-component {
+.start-input-component {
     width: 100%;
-
+    padding: 0;
+    margin: 0;
+    
     .logo-merry-chat {
         width: 80%;
         margin: 8rem auto 0 auto;
@@ -33,7 +35,6 @@
         font-size: 20px;
         padding: 0 2rem 0 2rem;
         border-radius: 5px;
-        margin: 0 auto;
         display: block;
     }
 }
@@ -45,8 +46,18 @@
     border: 2px solid #3c4cf5;
 }
 
-.start-btn-white:hover{
+.start-btn-white:hover {
     cursor: pointer;
     background-color: #efefef;
 }
 
+.two-button {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    button {
+        margin: 10px;
+    }
+}

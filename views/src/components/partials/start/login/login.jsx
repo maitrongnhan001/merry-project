@@ -4,65 +4,63 @@ import './login.scss';
 
 const Login = () => {
     return (
-        <div>
-            <div className='get-login-component'>
-                <img
-                    src="/img/Logos/logo-merry-chat.png"
-                    alt="logo-merry-chat"
-                    className='logo-merry-chat'
-                />
+        <div className='get-login-component'>
+            <img
+                src="/img/Logos/logo-merry-chat.png"
+                alt="logo-merry-chat"
+                className='logo-merry-chat'
+            />
 
-                <br /><br /><br /><br />
+            <br /><br /><br /><br />
 
-                <input
-                    type="text"
-                    name='email'
-                    className='input-start'
-                    placeholder='Nhập email của bạn'
-                />
+            <input
+                type="text"
+                name='email'
+                className='input-start'
+                placeholder='Nhập email của bạn'
+            />
 
-                <span className='text-error'></span>
+            <span className='text-error'></span>
 
-                <br /><br />
+            <br /><br />
 
-                <input
-                    type="text"
-                    name='email'
-                    className='input-start'
-                    placeholder='Nhập email của bạn'
-                />
+            <input
+                type="text"
+                name='email'
+                className='input-start'
+                placeholder='Nhập email của bạn'
+            />
 
-                <span className='text-error'></span>
+            <span className='text-error'></span>
 
-                <br />
+            <br />
 
-                <div className='text-order-feature'>
-                    <Link
-                        className='left text-primary'
-                        to="#"
-                    >
-                        Quên mật khẩu?
-                    </Link>
+            <div className='text-order-feature'>
+                <Link
+                    className='left text-primary'
+                    to="#"
+                >
+                    Quên mật khẩu?
+                </Link>
 
-                    <Link
-                        className='right text-primary'
-                        to="/"
-                    >
-                        Đăng ký
-                    </Link>
-                </div>
+                <Link
+                    className='right text-primary'
+                    to="/"
+                >
+                    Đăng ký
+                </Link>
+            </div>
 
-                <br /><br /><br />
+            <br /><br /><br />
 
-                <div className="text-order-feature">
-                    <button className='custom-btn left start-btn-white'>
-                        Trở về
-                    </button>
+            <div className="text-order-feature">
+                <button className='custom-btn left start-btn-white'>
+                    Trở về
+                </button>
 
-                    <button className='start-btn right start-btn-primary'>
-                        Đăng nhập
-                    </button>
-                </div>
+                <button className='start-btn right start-btn-primary'>
+                    Đăng nhập
+                </button>
             </div>
 
             <br /><br /><br /><br />

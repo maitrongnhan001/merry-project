@@ -1,4 +1,9 @@
 .main-chat-wrapper {
-    width: calc(100% - 20% - 24rem);
+    width: calc(100% - 48rem);
     height: 100vh;
+    border-right: 1px solid #e1e1e1;
+}
+
+.chat-wrapper[data-theme='dark-theme'] .main-chat-wrapper {
+    border-right: 1px solid #4e535c;
 }

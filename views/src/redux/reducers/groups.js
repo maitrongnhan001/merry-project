@@ -1,6 +1,7 @@
 const initial = {
     groupsList: [
         {
+            id: 1,
             name: 'Group 1',
             image: {
                 isGroup: 1,
@@ -21,6 +22,7 @@ const initial = {
             ]
         },
         {
+            id: 2,
             name: undefined,
             image: '/img/me.jpg',
             members: [

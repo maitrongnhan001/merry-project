@@ -1,0 +1,20 @@
+.main-chat-toolbar {
+    width: 100%;
+    height: 3rem;
+    border-bottom: 1px solid #e1e1e1;
+    i {
+        width: 4rem;
+        height: 3rem;
+        display: block;
+        float: left;
+        text-align: center;
+        line-height: 3rem;
+        font-size: 1.25rem;
+        cursor: pointer;
+        color: #5865F2 !important;
+    }
+}
+
+.chat-wrapper[data-theme='dark-theme'] .main-chat-toolbar {
+    border-bottom: 1px solid #4e535c;
+}

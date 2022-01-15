@@ -34,6 +34,21 @@
             width: 60%;
             margin-top: 4rem;
         }
+
+        .review-avatar {
+            height: 60vw;
+        
+            img {
+                width: 50vw;
+                height: 50vw;
+            }
+    
+            .label-input-avatar {
+                top: -50vw;
+                width: 50vw;
+                height: 50vw;
+            }
+        }
     }
 
     @media only screen and (max-width: 600px) {

@@ -14,17 +14,18 @@
         height: 2.5rem;
         border-radius: 50%;
         position: absolute;
+        padding: 0;
         left: 50%;
         top: 50%;
         transform: translate(-50%, -50%);
     }
     .no-group-avatar-1 {
-        border: 2px solid rgba(#ffffff, 0);
+        border: 2px solid white;
         z-index: 1;
         transform: translate(-70%, -25%);
     }
     .no-group-avatar-2 {
-        border: 2px solid rgba(#ffffff, 0);
+        border: 2px solid white;
         transform: translate(-25%, -70%);
     }
     .friend-group-avatar-active {
@@ -37,5 +38,15 @@
         background-color: rgb(0, 255, 0);
         border: 2px solid #f1f1f1;
         z-index: 1;
+    }
+}
+
+.chat-wrapper[data-theme='dark-theme'] {
+    .no-group-avatar-1, .no-group-avatar-2 {
+        border-color: #36393f;
+    }
+
+    .friend-group-avatar-active {
+        border-color: #36393f;
     }
 }

@@ -27,6 +27,16 @@
         background: #888;
         border-radius: 1rem;
       }
+
+      .main-chat-chat-area-wrapper::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 1rem;
+        visibility: hidden;
+      }
+
+      .main-chat-chat-area-wrapper:hover::-webkit-scrollbar-thumb {
+        visibility: visible;
+      }
 }
 
 .chat-wrapper[data-theme='dark-theme'] {

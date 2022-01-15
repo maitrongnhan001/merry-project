@@ -1,11 +1,16 @@
 .main-chat-header-wrapper {
     width: 100%;
     height: 5rem;
-    display: flex;
+    position: relative; 
     border-bottom: 1px solid #e1e1e1;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 1rem;
+    .main-chat-header-box {
+        width: 100%;
+        height: 100%;
+        padding: 0 1rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
     .main-chat-header-receiver-info {
         width: 50%;
         height: 100%;
@@ -41,13 +46,16 @@
         align-items: center;
         .fas {
             display: block;
-            width: 2.5rem;
-            height: 3rem;
-            line-height: 3rem;
             font-size: 1.25rem;
-            text-align: end;
+            width: 1.75rem;
+            height: 1.75rem;
+            margin: 0 .5rem;
+            text-align: center;
+            line-height: 1.75rem;
             color: #5865F2;
+            border-radius: .25rem;
             cursor: pointer;
+            transition: .5s;
         }
     }
 }

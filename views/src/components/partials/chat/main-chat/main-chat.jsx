@@ -2,6 +2,7 @@ import React, { useEffect } from 'react'
 import Header from './header/header'
 import ChatArea from './main/main' 
 import ToolbarChat from './toolbar-chat/toolbar-chat'
+import InputChat from './input-chat/input-chat'
 import './main-chat.scss'
 import {useSelector} from 'react-redux'
 import $ from 'jquery'
@@ -24,6 +25,7 @@ function MainChat(props) {
             <Header></Header>
             <ChatArea></ChatArea>
             <ToolbarChat></ToolbarChat>
+            <InputChat></InputChat>
         </div>
     );
 }

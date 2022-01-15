@@ -20,10 +20,13 @@ function Main(props) {
                 <Message next={0}>dam cai chet a</Message>
                 <Message next={0}>alo</Message>
                 <Message next={0}>alo</Message>
-                <Message next={1}>ek</Message>
+                <Message next={0}>ek</Message>
+                <Message next={1}><img src="/img/me.jpg" alt="" /></Message>
+                <Message sender={0}><img src="/img/me.jpg" alt="" /></Message>
+                <Message sender={0}><a href="https://www.messenger.com/t/4315663628493165" rel="noreferrer" target='_blank'>https://www.messenger.com/t/4315663628493165</a></Message>
             </div>
         </div>
     );
 }
 
-export default Main;
+export default React.memo(Main);

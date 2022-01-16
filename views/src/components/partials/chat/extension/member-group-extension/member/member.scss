@@ -1,0 +1,50 @@
+.member-group {
+    width: 100%;
+    height: 4rem;
+
+    .member-image {
+        width: 3rem;
+        height: 3rem;
+        float: left;
+        margin-left: 2rem;
+        margin-top: 0.5rem;
+    }
+
+    .member-fullname {
+        font-size: 18px;
+        float: left;
+        margin-left: 1rem;
+        line-height: 4rem;
+    }
+
+    .other-feature {
+        width: 30px;
+        height: 30px;
+        border-radius: 20px;
+        display: none;
+        border: 0;
+        float: right;
+        margin-right: 2rem;
+        margin-top: 1rem;
+
+        svg {
+            margin-top: 5px;
+        }
+    }
+}
+
+.member-group:hover {
+    background-color: #efefef;
+    cursor: pointer;
+
+    .other-feature {
+        display: block;
+        background-color: #efefef;
+        cursor: pointer;
+    }
+
+    .other-feature:hover {
+        display: block;
+        background-color: #e1e1e1;
+    }
+}

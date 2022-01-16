@@ -25,11 +25,11 @@ const MemberGroup = () => {
         //animation show member group
         $('.list-member-group').animate({
             height: 'toggle'
-        })
+        });
     }
 
     return (
-        <div className='member-group-extension'>
+        <div className='element-extension'>
             <div
                 className="show-feature-extension-button"
                 id='show-member-group'

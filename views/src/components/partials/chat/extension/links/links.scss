@@ -1,0 +1,21 @@
+.element-extension {
+
+    .list-links {
+        width: 100%;
+        max-height: 20rem;
+        overflow-y: hidden;
+    }
+
+    .list-links::-webkit-scrollbar{
+        width: 0.4rem;
+    }
+
+    .list-links::-webkit-scrollbar-thumb{
+        background-color: #888;
+        border-radius: 1rem;
+    }
+
+    .list-links:hover{
+        overflow-y: scroll;
+    }
+}

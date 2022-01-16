@@ -6,10 +6,12 @@
     margin-bottom: 0.5rem;
     float: left;
 
-    img {
+    .media-element {
         object-fit: cover;
         width: 9rem;
         height: 9rem;
         border-radius: 10px;
     }
+
+    
 }

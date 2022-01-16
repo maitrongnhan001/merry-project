@@ -8,6 +8,7 @@ const Medias = () => {
     const [is_active, setIsActive] = useState(false);
 
     const list_medias = [
+        '/videos/video-1.mp4',
         '/img/sample-image/1.jpeg',
         '/img/sample-image/2.jpeg',
         '/img/sample-image/1.jpeg',
@@ -20,7 +21,7 @@ const Medias = () => {
 
     const list_media_tags = list_medias.map((element, index) => {
         return (
-            <MeidaItem link_image={element} key={index} ></MeidaItem>
+            <MeidaItem link_media={element} key={index} ></MeidaItem>
         );
     });
 

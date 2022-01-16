@@ -7,3 +7,13 @@
 .extension-wrapper::-webkit-scrollbar{
     display: none;
 }
+
+.chat-wrapper[data-theme='dark-theme'] {
+    .extension-header {
+        border-bottom: 1px solid #41454d !important;
+    }
+
+    .element-extension {
+        border-bottom: 1px solid #41454d !important;
+    }
+}

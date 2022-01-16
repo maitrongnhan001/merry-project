@@ -1,4 +1,18 @@
 .extension-wrapper {
     width: 22rem;
     height: 100vh;
+    overflow-y: hidden;
+}
+
+.extension-wrapper::-webkit-scrollbar{
+    width: 0.4rem;
+}
+
+.extension-wrapper::-webkit-scrollbar-thumb{
+    background-color: #888;
+    border-radius: 1rem;
+}
+
+.extension-wrapper:hover{
+    overflow-y: scroll;
 }

@@ -22,7 +22,7 @@ const Medias = () => {
         return (
             <MeidaItem link_image={element} key={index} ></MeidaItem>
         );
-    })
+    });
 
     const onActive = () => {
         setIsActive(!is_active);

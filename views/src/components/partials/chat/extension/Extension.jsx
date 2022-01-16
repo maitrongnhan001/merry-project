@@ -3,9 +3,10 @@ import './extension.scss'
 import {useSelector} from 'react-redux'
 import HeaderExtension from './header-extension/header-extension'
 import MemberGroup from './member-group-extension/member-group'
-import Links from './links/links'
+import Links from './links-extension/links'
 import $ from 'jquery'
 import Medias from './medias-extension/medias'
+import Documents from './documents-extension/documents'
 
 function Extension(props) {
 
@@ -28,6 +29,7 @@ function Extension(props) {
             <MemberGroup></MemberGroup>
             <Links></Links>
             <Medias></Medias>
+            <Documents></Documents>
         </div>
     );
 }

@@ -7,6 +7,7 @@
         height: 100%;
         transform: scale(1.1);
         border-radius: 50%;
+        object-fit: cover;
     }
 
     .no-group-avatar {
@@ -23,10 +24,12 @@
         border: 2px solid white;
         z-index: 1;
         transform: translate(-70%, -25%);
+        object-fit: cover;
     }
     .no-group-avatar-2 {
         border: 2px solid white;
         transform: translate(-25%, -70%);
+        object-fit: cover;
     }
     .friend-group-avatar-active {
         position: absolute;

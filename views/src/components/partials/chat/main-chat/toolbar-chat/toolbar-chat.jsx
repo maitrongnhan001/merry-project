@@ -31,7 +31,7 @@ function ToolbarChat(props) {
         setEmoji(emoji ? 0 : 1)
     }
 
-    //hooks
+    //lifecycle
 
     useEffect(()=>{
         showEmoji(emoji)
@@ -55,4 +55,4 @@ function ToolbarChat(props) {
     );
 }
 
-export default ToolbarChat
+export default React.memo(ToolbarChat)

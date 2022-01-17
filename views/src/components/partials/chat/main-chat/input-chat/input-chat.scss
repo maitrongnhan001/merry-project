@@ -9,7 +9,7 @@
         align-items: center;
         padding: 0 1rem;
         .input-chat-content {
-            width: 88%;
+            width: 92%;
             height: 2.5rem;
             border: none;
             outline: none;
@@ -19,7 +19,7 @@
         }
 
         .input-chat-submit {
-            width: 10%;
+            min-width: 7rem;
             height: 2.5rem;
             font-size: 1.1rem;
             border: none;

@@ -3,6 +3,7 @@ import MainChat from '../partials/chat/main-chat/main-chat'
 import TaskBar from '../partials/chat/task-bar/task-bar'
 import Tab from '../partials/chat/tabs/Tab'
 import Extension from '../partials/chat/extension/Extension'
+import AddedFriendDialog  from '../partials/chat/add-friends/add-friends'
 import './chat.scss'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -25,6 +26,7 @@ function Chat(props) {
 
     return (
         <div className="chat-wrapper">
+            <AddedFriendDialog></AddedFriendDialog>
             <TaskBar></TaskBar>
             <Tab></Tab>
             <MainChat></MainChat>

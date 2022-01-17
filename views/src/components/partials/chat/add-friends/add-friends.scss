@@ -1,0 +1,128 @@
+.add-friend-dialog-wrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background-color: rgba(#4b4949, .5);
+    display: none;
+    form {
+        width: 100%;
+        height: 100%;
+    }
+    .add-friend-dialog {
+        width: 30rem;
+        height: 40rem;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        max-height: 95%;
+        background-color: #f0f0f0;
+        border-radius: .5rem;
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-rows: 3rem 5rem calc(100% - 3rem - 5rem - 4rem) 4rem;
+        .add-friend-dialog-title {
+            width: 100%;
+            height: 100%;
+            font-size: 1.5rem;
+            color: #5865F2;
+            line-height: 3rem;
+            padding-left: 1.75rem;
+            border-bottom: 1px solid #cecece;
+        }
+        
+        .add-friend-dialog-input {
+            width: 90%;
+            height: 3rem;
+            margin: 1rem auto;
+            display: flex;
+            border-radius: 5rem;
+            justify-content: center;
+            align-items: center;
+            background-color: #e6e6e6;
+            input {
+                height: 2rem;
+                width:90%;
+                background: none;
+                outline: none;
+                border: none;
+                padding: 0 .5rem;
+            }
+            i {
+                display: inline-block;
+                height: 2rem;
+                width: 5%;
+                line-height: 2rem;
+                font-size: 1.25rem;
+                color: #5865F2;
+            }
+        }
+    
+        .add-friend-dialog-suggestion {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            border-top: 1px solid #cecece;
+            border-bottom: 1px solid #cecece;
+            padding: .5rem 0;
+        }
+
+         
+        .add-friend-dialog-suggestion::-webkit-scrollbar {
+            width: .4rem;
+        }
+        
+        /* Track */
+        .add-friend-dialog-suggestion::-webkit-scrollbar-track {
+            background: #f0f0f0;
+        }
+        
+        /* Handle */
+        .add-friend-dialog-suggestion::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 1rem;
+        }
+
+        .add-friend-dialog-suggestion::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 1rem;
+            visibility: hidden;
+        }
+
+        .add-friend-dialog-suggestion:hover::-webkit-scrollbar-thumb {
+            visibility: visible;
+          }
+
+        .add-friend-dialog-submit {
+            width: 100%;
+            height: 100%;  
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            .add-friend-btn{
+                margin-right: 2rem;
+                width: 6rem;
+                height: 2.25rem;
+                border-radius: .25rem;
+                outline: none;
+                border: none;
+                cursor: pointer;
+
+            }
+            .add-friend-btn-cancel {
+                color: #5865F2;
+                border-color: #5865F2;
+                border: 1px solid;
+                margin-right: .5rem;
+            }
+
+            .add-friend-btn-submit {
+                color: #ffffff;
+                background-color: #5865F2;
+            }
+        }
+    }
+}

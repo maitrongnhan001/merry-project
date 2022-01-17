@@ -1,4 +1,7 @@
-.start-component {
+.get-start-component {
+    width: 100%;
+    margin: 0;
+    padding: 0;
 
     .get-start-title {
         width: 17rem;
@@ -65,4 +68,12 @@
 
 .clearfix {
     clear: both;
+}
+
+@media only screen and (max-height: 700px) {
+    .get-start-component {
+        .end-space {
+            height: 3rem;
+        }
+    }
 }

@@ -2,17 +2,15 @@
     .review-avatar {
         width: 85%;
         height: 25rem;
-        margin: 8rem auto 0 auto;
-        position: relative;
+        margin: 15vh auto 5vh auto;
         background-color: #fff;
-        z-index: 2;
     
         img {
             margin: 0 auto;
             object-fit: cover;
             border-radius: 50%;
-            width: 23vw;
-            height: 23vw;
+            width: 23rem;
+            height: 23rem;
             display: block;
             position: relative;
             z-index: 1;
@@ -22,10 +20,10 @@
             display: block;
             border: 2px solid rgba(55, 90, 245, 1);
             position: relative;
-            top: -23vw;
+            top: -23rem;
             z-index: 3;
-            width: 23vw;
-            height: 23vw;
+            width: 23rem;
+            height: 23rem;
             border-radius: 80%;
             margin: 0 auto;
         }

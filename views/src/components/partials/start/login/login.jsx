@@ -5,6 +5,8 @@ import './login.scss';
 const Login = () => {
     return (
         <div className='start-input-component'>
+            <div className="start-space"></div>
+            
             <img
                 src="/img/Logos/logo-merry-chat.png"
                 alt="logo-merry-chat"
@@ -62,9 +64,7 @@ const Login = () => {
                     Đăng nhập
                 </button>
             </div>
-
-            <br /><br /><br /><br />
-
+            <div className="end-space"></div>
         </div>
     );
 }

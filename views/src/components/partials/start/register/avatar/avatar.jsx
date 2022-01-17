@@ -26,8 +26,8 @@ const Avatar = () => {
 
     return (
         <div className='start-input-component'>
-            <br /><br /><br /><br />
-
+            <div className="start-space"></div>
+            
             <div className="review-avatar">
                 {img_tag}
                 <label className='label-input-avatar' htmlFor='input-avatar'></label>
@@ -51,9 +51,7 @@ const Avatar = () => {
                     Tiếp tục
                 </button>
             </div>
-
-            <br /><br /><br /><br />
-
+            <div className="end-space"></div>
         </div>
     );
 }

@@ -10,6 +10,7 @@ const StartPicture = () => {
                 <div className="picture-tablet"></div>
                 <div className="picture-phone"></div>
             </div>
+            <div className="end-space"></div>
         </div>
     );
 }

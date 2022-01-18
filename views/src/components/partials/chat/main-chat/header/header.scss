@@ -12,7 +12,7 @@
         align-items: center;
     }
     .main-chat-header-receiver-info {
-        width: 50%;
+        width: 70%;
         height: 100%;
         display: flex;
         justify-content: flex-start;
@@ -22,12 +22,18 @@
             height: 3rem;
         }
         .main-chat-header-receiver-text {
+            width: 15rem;
             height: 3rem;
-            margin-left: 1rem;
+            padding-left: 1rem;
             .main-chat-header-username {
+                width:80%;
                 height: 2rem;
                 line-height: 2rem;
                 font-size: 1.2rem;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                white-space: nowrap;
+
             }
 
             .main-chat-header-active {

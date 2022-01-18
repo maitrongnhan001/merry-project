@@ -6,23 +6,24 @@ function Main(props) {
     return (
         <div className="main-chat-chat-area">
             <div className="main-chat-chat-area-wrapper">
-                <Message sender={0}>Ngu</Message>
-                <Message sender={0}>Ngu</Message>                
-                <Message sender={0}>Ngu</Message>
-                <Message sender={0}>Ngu</Message>
-                <Message next={0}>Hie</Message>
-                <Message next={0}>alo</Message>
-                <Message next={0}>co do hong</Message>
-                <Message next={1}>ui</Message>
-                <Message sender={0}>dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r </Message>
-                <Message next={0}>doi hoi lau nha</Message>
-                <Message next={0}>gion mat ha</Message>
-                <Message next={0}>dam cai chet a</Message>
-                <Message next={0}>alo</Message>
-                <Message next={0}>alo</Message>
-                <Message next={0}>ek</Message>
+                <Message sender={0}><p>Ngu</p></Message>
+                <Message sender={0}><p>Ngu</p></Message>                
+                <Message sender={0}><p>Ngu</p></Message>
+                <Message sender={0}><p>Ngu</p></Message>
+                <Message next={0}><p>Hie</p></Message>
+                <Message next={0}><p>alo</p></Message>
+                <Message next={0}><p>co do hong</p></Message>
+                <Message next={1}><p>ui</p></Message>
+                <Message sender={0}><p>dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r dau r </p></Message>
+                <Message next={0}><p>doi hoi lau nha</p></Message>
+                <Message next={0}><p>gion mat ha</p></Message>
+                <Message next={0}><p>dam cai chet a</p></Message>
+                <Message next={0}><p>alo</p></Message>
+                <Message next={0}><p>alo</p></Message>
+                <Message next={0}><p>ek</p></Message>
                 <Message next={1}><img src="/img/me.jpg" alt="" /></Message>
                 <Message sender={0}><img src="/img/me.jpg" alt="" /></Message>
+                <Message sender={0}><img src="/img/Logos/logo-merry-chat.png" alt="" /></Message>
                 <Message sender={0}><a href="https://www.messenger.com/t/4315663628493165" rel="noreferrer" target='_blank'>https://www.messenger.com/t/4315663628493165</a></Message>
             </div>
         </div>

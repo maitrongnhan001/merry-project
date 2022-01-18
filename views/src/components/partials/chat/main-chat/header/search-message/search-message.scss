@@ -9,11 +9,12 @@
     justify-content: center;    
     border-radius: 0 0 .25rem .25rem;
     z-index: 1;
+    padding: 0 1rem;
     i {
         display: inline-block;
         width: 2rem;
-        height: 2rem;
-        line-height: 2rem;
+        height: 3rem;
+        line-height: 3rem;
         font-size: 1.25rem;
         text-align: end;
         padding-right: 2rem;
@@ -21,25 +22,26 @@
     }
     i.fa-times-circle {
         visibility: hidden;
+        cursor: pointer;
     }
 
     input {
-        width: 78%;
+        width: calc(100% - 10rem);
         margin-right: .5rem;
         height: 2rem;
         background-color: white;
         border: none;
         outline: none;
-        border-radius: .5rem;
+        border-radius: .25rem;
         padding: 0 1rem;
     }
-    
+
     button {
         width: 5rem;
         height: 2rem;
         border: 1px solid #5865F2;
         color: #5865F2 !important;
-        border-radius: .5rem;
+        border-radius: .25rem;
         background:  none;
         cursor: pointer;
     }

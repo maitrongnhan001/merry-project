@@ -1,7 +1,8 @@
 
 const initial = {
     data: 0,
-    theme: 'light-theme'
+    theme: 'light-theme',
+    addedForm: 0
 }
 
 const taskbarReducer = (state = initial, action)=> {
@@ -16,6 +17,12 @@ const taskbarReducer = (state = initial, action)=> {
             return {
                 ...state,
                 theme: action.data
+            }
+        }
+        case 'SHOW_ADDED_FRIEND': {
+            return {
+                ...state,
+                addedForm : action.data
             }
         }
         default: {

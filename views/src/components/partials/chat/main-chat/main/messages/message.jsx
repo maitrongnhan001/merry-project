@@ -6,14 +6,14 @@ function Message(props) {
     const [sender ] = useState(props.sender)
     const [next] = useState(props.next)
 
-
     const styleContent = {
         backgroundColor: props.children.type === 'img' ? 'none' : sender === 0 ? '#5865F2' : '',
         color: sender === 0 ? 'white' : '',
         padding: props.children.type !== 'img' ? '.5rem 1.25rem' : '0',
-        translate : props.children.type !== 'img' ? '0, 0' : sender === 0 ? '.5rem, -3.5rem' : '-.5rem, -3.5rem',
-        float: sender === 0 ? 'left' : 'right'
-
+        float: sender === 0 ? 'left' : 'right',
+        position: props.children.type !== 'img'? '': 'absolute',
+        left: sender === 0 ? '7%' : '65%',
+        leftTime: sender === 0 ? '-35%' : '105%'
     }
 
     return (
@@ -26,8 +26,8 @@ function Message(props) {
             
             <div className="message-content" style={{background: styleContent.backgroundColor, color: styleContent.color, padding: styleContent.padding}}>
                 {props.children}
-                <p className="message-content-time">7.30pm</p>
-                <p className='message-content-emotion' style={{transform: `translate(${styleContent.translate})`, float: styleContent.float}}>o 10</p>
+                <p className="message-content-time" style={{position: styleContent.position, left: styleContent.leftTime}}>7.30pm</p>
+                <p className='message-content-emotion' style={{position: styleContent.position, left: styleContent.left, float: styleContent.float}}><i className="fas fa-heart"></i> 10</p>
             </div>
         </div>
     );

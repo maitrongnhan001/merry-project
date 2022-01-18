@@ -6,7 +6,7 @@
         width: 100%;
         height: calc(100vh - 5rem);
         border-top: 1px solid #e1e1e1;
-        overflow-y: scroll;
+        overflow-y: auto;
     }
     .tab-main::-webkit-scrollbar {
         width: .4rem;

@@ -9,16 +9,12 @@ const router = express.Router()
 router.get('/', userController.viewUser);
 
 //post template
-// router.post('/template', userController.template);
-
+router.put('/template/:id', userController.template);
 
 //search user
-router.get('/username/:search', userController.findUserName);//search
-
-router.get('/user_id/:search', userController.findUserID);//search
+router.get('/search-user/:email', userController.searchUser);//search
 
 // put user 
-
 router.put('/:id', userController.update);
 
 module.exports = router

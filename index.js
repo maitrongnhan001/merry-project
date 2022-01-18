@@ -13,9 +13,16 @@ connect();
 const app = express();
 
 //------------------ config socket------------------//
-//const router_connect = require('./socket/handle_test');
+const homeSocket = require('./sockets/home.socket');
+const groupSocket = require('./sockets/group.socket');
+const friendSocket = require('./sockets/friend.socket');
+const chatSocket = require('./sockets/chat.socket');
+
 const onConnection = (socket) => {
-    
+    homeSocket.home(io, socket);
+    groupSocket.group(io, socket);
+    friendSocket.friend(io,socket);
+    chatSocket.chat(io, socket);
 }
 
 const io = require("socket.io")(server, {

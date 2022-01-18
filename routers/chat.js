@@ -5,11 +5,12 @@ const chatController = require('../controllers/chat.controller')
 const router = express.Router()
 
 //get list chat 
-router.get('/listChat', chatController.listChat)
+router.get('/list-chat', chatController.listChat)
 
 //get content chat
-router.get('/contentChat', chatController.contentChat)
+router.get('/content-chat', chatController.contentChat)
 
-//co hay khong viec nen them xoa chat
+//search message
+router.get('/search-message/:content', chatController.search)
 
 module.exports = router

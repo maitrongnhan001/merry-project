@@ -1,0 +1,142 @@
+.start-component {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+
+    .col-start-input {
+        width: 32rem;
+        float: left;
+        height: 100vh;
+        overflow-y: scroll;
+    }
+
+    .col-start-picture {
+        width: calc(100% - 32rem);
+        height: 100vh;
+        float: left;
+    }
+
+    .col-start-input::-webkit-scrollbar {
+        display: none;
+    }
+
+    @media only screen and (max-height: 800px) {
+        .logo-merry-chat {
+            margin-top: 1vh;
+        }
+    }
+
+    @media only screen and (max-width: 1200px) {
+        .col-start-picture {
+            display: none;
+        }
+
+        .col-start-input {
+            margin-left: auto;
+            width: 100%;
+            height: 100%;
+        }
+
+        .logo-merry-chat {
+            width: 30%;
+        }
+
+        .input-start {
+            width: 50%;
+        }
+
+        .two-input {
+            width: 50%;
+        }
+
+        .text-order-feature {
+            width: 50%;
+        }
+
+        .review-avatar {
+            
+            margin-bottom: 1vh;
+        
+            img {
+                width: 25rem;
+                height: 25rem;
+            }
+    
+            .label-input-avatar {
+                top: -25rem;
+                width: 25rem;
+                height: 25rem;
+            }
+        }
+    }
+
+    @media only screen and (max-width: 900px) {
+        .col-start-input {
+            width: 100%;
+        }
+
+        .logo-merry-chat {
+            width: 40%;
+        }
+
+        .input-start {
+            width: 60%;
+        }
+
+        .two-input {
+            width: 60%;
+        }
+
+        .text-order-feature {
+            width: 60%;
+        }
+    }
+
+    @media only screen and (max-width: 690px) {
+        .logo-merry-chat {
+            width: 60%;
+        }
+
+        .input-start {
+            width: 85%;
+        }
+
+        .two-input {
+            width: 85%;
+        }
+
+        .text-order-feature {
+            width: 85%;
+        }
+    }
+}
+
+.start-space {
+    width: 100%;
+    height: 4vh;
+}
+
+.end-space {
+    width: 100%;
+    height: 0rem;
+}
+
+@media only screen and (max-height: 590px) {
+    .start-component {
+        display: flex;
+        height: 100%;
+
+        .col-start-input {
+            height: 100%;
+        }
+
+        .col-start-picture {
+            height: auto;
+        }
+    }
+
+    .end-space {
+        height: 3rem;
+    }
+}

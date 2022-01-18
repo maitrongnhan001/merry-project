@@ -8,8 +8,12 @@ function Message(props) {
 
 
     const styleContent = {
-        backgroundColor: sender === 0 ? '#5865F2' : '',
+        backgroundColor: props.children.type === 'img' ? 'none' : sender === 0 ? '#5865F2' : '',
         color: sender === 0 ? 'white' : '',
+        padding: props.children.type !== 'img' ? '.5rem 1.25rem' : '0',
+        translate : props.children.type !== 'img' ? '0, 0' : sender === 0 ? '.5rem, -3.5rem' : '-.5rem, -3.5rem',
+        float: sender === 0 ? 'left' : 'right'
+
     }
 
     return (
@@ -20,13 +24,13 @@ function Message(props) {
                 </div>
             }
             
-            <div className="message-content" style={{backgroundColor: styleContent.backgroundColor}}>
-                <p className="massage-text" style={{color: styleContent.color}}>{props.children}
-                </p>
-                <p className='message-emotion'></p>
+            <div className="message-content" style={{background: styleContent.backgroundColor, color: styleContent.color, padding: styleContent.padding}}>
+                {props.children}
+                <p className="message-content-time">7.30pm</p>
+                <p className='message-content-emotion' style={{transform: `translate(${styleContent.translate})`, float: styleContent.float}}>o 10</p>
             </div>
         </div>
     );
 }
 
-export default Message;
+export default React.memo(Message)

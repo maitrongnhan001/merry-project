@@ -1,0 +1,17 @@
+.media-item {
+    width: 9rem;
+    height: 9rem;
+    margin-left: 1.2rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    float: left;
+
+    .media-element {
+        object-fit: cover;
+        width: 9rem;
+        height: 9rem;
+        border-radius: 10px;
+    }
+
+    
+}

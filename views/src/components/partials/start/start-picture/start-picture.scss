@@ -1,0 +1,45 @@
+.start-picture-component {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        269.94deg,
+        #9099f8 0.05%,
+        rgba(219, 222, 252, 0.534055) 42.33%,
+        rgba(255, 255, 255, 0) 83.33%
+    );
+
+    .group-picture {
+        margin: 20vh auto 0 auto;
+        width: 661px;
+        height: 455px;
+
+        .picture-desktop {
+            width: 660px;
+            height: 380px;
+            border-radius: 10px;
+            background-color: #fb7777;
+        }
+
+        .picture-tablet {
+            position: relative;
+            width: 230px;
+            height: 300px;
+            left: 18rem;
+            bottom: 15rem;
+
+            background: #ffdd63;
+            border-radius: 10px;
+        }
+
+        .picture-phone {
+            position: relative;
+            width: 110px;
+            height: 190px;
+            bottom: 27.68rem;
+            left: 13rem;
+            
+            background: #6AF378;
+            border-radius: 10px;
+        }
+    }
+}

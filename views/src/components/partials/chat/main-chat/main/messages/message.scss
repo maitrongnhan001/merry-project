@@ -15,14 +15,49 @@
     }
     .message-content {
         max-width: 35rem;
+        min-width: 7rem;
         background-color: #EFEFEF;  
         text-align: justify;
-        padding: .5rem 1.5rem;
+       // padding: .5rem 1.25rem;
         margin-left: 1rem;
-        border-radius: 2rem;
+        border-radius: .5rem;
+        position: relative;
+        img {
+            max-width: 12rem;
+            border-radius: 1rem;
+        }
+
+        a {
+            color: black;
+            font-style: italic;
+        }
+        .message-content-time {
+            margin-top: .75rem;
+            font-size: 1rem;
+            color: #afbace;
+        }
+        .message-content-emotion {
+            height: 1.5rem;
+            line-height: 1.5rem;
+            max-width: fit-content;
+            min-width: 1.5rem;
+            text-align: center;
+            margin-top: .5rem;
+            padding: 0 .5rem;
+            background-color: #e0e0e0;
+            border-radius: .75rem;
+            float: right;
+            font-size: 1rem;
+            margin-bottom: .25rem;
+            color: #5865F2;
+        }
     }
 }
 
 .chat-wrapper[data-theme='dark-theme'] .message-block .message-content {
     background-color: #525863;
+    .message-content-emotion {
+        background-color: #797a8d;
+        color: white;
+    }
 }

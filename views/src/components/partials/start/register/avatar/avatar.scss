@@ -1,0 +1,35 @@
+.start-input-component {
+    .review-avatar {
+        width: 85%;
+        height: 25rem;
+        margin: 15vh auto 5vh auto;
+        background-color: #fff;
+    
+        img {
+            margin: 0 auto;
+            object-fit: cover;
+            border-radius: 50%;
+            width: 23rem;
+            height: 23rem;
+            display: block;
+            position: relative;
+            z-index: 1;
+        }
+
+        .label-input-avatar {
+            display: block;
+            border: 2px solid rgba(55, 90, 245, 1);
+            position: relative;
+            top: -23rem;
+            z-index: 3;
+            width: 23rem;
+            height: 23rem;
+            border-radius: 80%;
+            margin: 0 auto;
+        }
+    }
+
+    .input-avatar {
+        display: none;
+    }
+}

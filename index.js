@@ -28,15 +28,9 @@ app.use(express.json());
 
 //-------------------use router---------------------//
 
-const testRouter = require('./routers/test')
 
-app.get('/', (req, res) => {
-    res.json({
-        hello: "hello"
-    })
-})
 //----------------end use router--------------------//
-app.use('/', testRouter)
+
 
 //--------------------build server------------------//
 const PORT = process.env.APP_PORT || 8000;

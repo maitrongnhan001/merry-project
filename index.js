@@ -34,14 +34,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
+
 //---------------end use extension------------------//
 
 //-------------------use router---------------------//
 
 
-
-
 //----------------end use router--------------------//
+
 
 //--------------------build server------------------//
 const SOCKET_PORT = process.env.SOCKET_PORT || 8000;

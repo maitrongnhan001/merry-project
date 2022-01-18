@@ -1,0 +1,56 @@
+.chat-emoji {
+    display: block;
+    max-width: 17rem;
+      aside {
+            width: 100%;
+            .emoji-scroll-wrapper::-webkit-scrollbar {
+                width: .4rem;
+            }
+            /* Track */
+            .emoji-scroll-wrapper::-webkit-scrollbar-track {
+            background: white;
+            }
+            
+            /* Handle */
+            .emoji-scroll-wrapper::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 1rem;
+            }
+      }
+  }
+  
+  
+
+.chat-wrapper[data-theme='dark-theme'] .chat-emoji {
+  //  display: none;
+    aside {
+        background-color: #454850;
+        box-shadow: none;
+        border-color: #41454d;
+        .emoji-categories button {
+            color: white;
+        }
+        input.emoji-search {
+            background-color: #525863;
+            border: none;
+            outline: none;
+        }
+        .emoji-group:before {
+            background-color: #454850;
+        }
+        .emoji-scroll-wrapper::-webkit-scrollbar {
+            width: .4rem;
+        }
+        /* Track */
+        .emoji-scroll-wrapper::-webkit-scrollbar-track {
+        background: #454850;
+        }
+        
+        /* Handle */
+        .emoji-scroll-wrapper::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 1rem;
+        }
+    }
+}
+

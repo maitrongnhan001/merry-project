@@ -5,7 +5,7 @@ import './get-started.scss';
 
 const GetStarted = () => {
     return (
-        <div className='start-component'>
+        <div className='get-start-component'>
             <StartLogo></StartLogo>
 
             <div className='get-start-title'>
@@ -50,8 +50,7 @@ const GetStarted = () => {
                 </Link>
 
             </div>
-            
-            <br /><br />
+            <div className="end-space"></div>
         </div> 
     );
 }

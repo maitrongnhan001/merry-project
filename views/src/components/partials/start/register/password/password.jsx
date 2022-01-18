@@ -4,6 +4,9 @@ import StartLogo from '../../start-logo/start-logo';
 const Password = () => {
     return (
         <div className='start-input-component'>
+            <div className="start-space"></div>
+            <div className="start-space"></div>
+
             <StartLogo></StartLogo>
 
             <br /><br /><br /><br />
@@ -28,9 +31,7 @@ const Password = () => {
                     Tiếp tục
                 </button>
             </div>
-
-            <br /><br /><br /><br />
-
+            <div className="end-space"></div>
         </div>
     );
 }

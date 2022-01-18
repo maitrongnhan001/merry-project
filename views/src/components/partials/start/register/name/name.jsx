@@ -5,6 +5,8 @@ import './name.scss';
 const Name = () => {
     return (
         <div className='start-input-component'>
+            <div className="start-space"></div>
+            
             <StartLogo></StartLogo>
 
             <br /><br /><br /><br />
@@ -58,9 +60,7 @@ const Name = () => {
                     Tiếp tục
                 </button>
             </div>
-
-            <br /><br /><br /><br />
-
+            <div className="end-space"></div>
         </div>
     );
 }

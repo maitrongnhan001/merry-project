@@ -1,4 +1,4 @@
-.add-friend-dialog-wrapper {
+.create-group-form-wrapper {
     width: 100%;
     height: 100%;
     position: absolute;
@@ -10,7 +10,7 @@
         width: 100%;
         height: 100%;
     }
-    .add-friend-dialog {
+    .create-group-form {
         width: 27rem;
         height: 35rem;
         position: absolute;
@@ -22,8 +22,8 @@
         border-radius: .5rem;
         display: grid;
         grid-template-columns: 100%;
-        grid-template-rows: 3rem 4.5rem calc(100% - 3rem - 4.5rem - 4rem) 4rem;
-        .add-friend-dialog-title {
+        grid-template-rows: 3rem 5rem calc(100% - 3rem - 5rem - 4rem) 4rem;
+        .create-group-form-title {
             width: 100%;
             height: 100%;
             font-size: 1.5rem;
@@ -32,35 +32,47 @@
             line-height: 3rem;
             border-bottom: 1px solid #cecece;
         }
-        
-        .add-friend-dialog-input {
-            width: 90%;
-            height: 2.5rem;
-            margin: 1rem auto;
+
+        .create-group-form-group-info {
             display: flex;
-            border-radius: 5rem;
             justify-content: center;
             align-items: center;
+            .create-group-change-group-avatar {
+                display: block;
+                width: 3.5rem;
+                height: 3.5rem;
+                margin-left: 1.5rem;
+                border-radius: 50%;
+                border: 1px solid #cecece;
+                i {
+                    display: inline-block;
+                    width: 100%;
+                    height: 100%;
+                    text-align: center;
+                    line-height: 3.5rem;
+                    font-size: 1.25rem;
+                }
+            }
+        }
+        
+        .create-group-form-name-group {
+            width: 70%;
+            height: 2.5rem;
+            margin: 0 auto;
+            border-radius: .25rem;
+            line-height: 2.5rem;
             background-color: #e6e6e6;
             input {
-                height: 2rem;
-                width:90%;
+                height: 100%;
+                width:100%;
                 background: none;
                 outline: none;
                 border: none;
-                padding: 0 .5rem;
-            }
-            i {
-                display: inline-block;
-                height: 2rem;
-                width: 7%;
-                line-height: 2rem;
-                font-size: 1.25rem;
-                color: #5865F2;
+                padding: 0 1.5rem;
             }
         }
     
-        .add-friend-dialog-suggestion {
+        .create-group-form-friends-list {
             width: 100%;
             height: 100%;
             overflow-y: auto;
@@ -70,38 +82,38 @@
         }
 
          
-        .add-friend-dialog-suggestion::-webkit-scrollbar {
+        .create-group-form-friends-list::-webkit-scrollbar {
             width: .4rem;
         }
         
         /* Track */
-        .add-friend-dialog-suggestion::-webkit-scrollbar-track {
+        .create-group-form-friends-list::-webkit-scrollbar-track {
             background: #f0f0f0;
         }
         
         /* Handle */
-        .add-friend-dialog-suggestion::-webkit-scrollbar-thumb {
+        .create-group-form-friends-list::-webkit-scrollbar-thumb {
             background: #888;
             border-radius: 1rem;
         }
 
-        .add-friend-dialog-suggestion::-webkit-scrollbar-thumb {
+        .create-group-form-friends-list::-webkit-scrollbar-thumb {
             background: #888;
             border-radius: 1rem;
             visibility: hidden;
         }
 
-        .add-friend-dialog-suggestion:hover::-webkit-scrollbar-thumb {
+        .create-group-form-friends-list:hover::-webkit-scrollbar-thumb {
             visibility: visible;
           }
 
-        .add-friend-dialog-submit {
+        .create-group-form-submit {
             width: 100%;
             height: 100%;  
             display: flex;
             justify-content: center;
             align-items: center;
-            .add-friend-btn{
+            .create-group-form-submit-btn{
                 margin: 0 1rem;
                 width: 8rem;
                 height: 2.25rem;
@@ -111,14 +123,14 @@
                 cursor: pointer;
 
             }
-            .add-friend-btn-cancel {
+            .create-group-form-submit-btn-1 {
                 color: #5865F2;
                 border-color: #5865F2;
                 border: 1px solid;
                 background: none;
             }
 
-            .add-friend-btn-submit {
+            .create-group-form-submit-btn-2 {
                 color: #ffffff;
                 background-color: #5865F2;
             }
@@ -126,23 +138,27 @@
     }
 }
 
-.chat-wrapper[data-theme='dark-theme'] .add-friend-dialog-wrapper {
-    .add-friend-dialog {
+.chat-wrapper[data-theme='dark-theme'] .create-group-form-wrapper {
+    .create-group-form {
         background-color: #36393f;
-        .add-friend-dialog-suggestion::-webkit-scrollbar-track {
+        .create-group-form-friends-list::-webkit-scrollbar-track {
             background: #36393f;
         }
 
-        .add-friend-dialog-input {
+        .create-group-form-name-group {
             background-color: #525863;
         }
 
-        .add-friend-dialog-suggestion {
+        .create-group-change-group-avatar {
+            border-color: #515661;
+        }
+
+        .create-group-form-friends-list {
             border-top: 1px solid #41454d;
             border-bottom: 1px solid #41454d;
         }
 
-        .add-friend-dialog-title {
+        .create-group-form-title {
             border-bottom: 1px solid #41454d;;
         }
         .add-friend-btn-cancel {

@@ -1,21 +1,30 @@
 import React from 'react'
 import FriendItem from '../tabs/friend-group-items/item'
 import './add-friends.scss'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+import {showAddedFriend}  from '../../../../redux/actions/taskbar'
 
 function AddFriends(props) {
 
     //redux
     const friendsList = useSelector(state => state.friends.friendsList)
+    const dispatch = useDispatch()
 
     const items = friendsList.map((value, idx)=>{
 
         const name = value.firstName && value.lastName ? `${value.lastName} ${value.firstName}` : ''
 
         return (
-            <FriendItem key={idx} id={value.id} name={name} image={value.image}></FriendItem>
+            <FriendItem key={idx} id={value.id} name={name} image={value.image} addFriend={1}></FriendItem>
         )
     })
+
+    //handles
+
+    const handleClickToHideAddedFriend = () => {
+        const isDisplay = showAddedFriend(0)
+        dispatch(isDisplay)
+    }
 
     return (
         <div className="add-friend-dialog-wrapper">
@@ -34,7 +43,7 @@ function AddFriends(props) {
                         }
                     </div>
                     <div className="add-friend-dialog-submit">
-                        <input type="button" className="add-friend-btn add-friend-btn-cancel" value="Hủy bỏ"/>
+                        <input type="button" className="add-friend-btn add-friend-btn-cancel" value="Hủy bỏ" onClick={handleClickToHideAddedFriend}/>
                         <input type="submit" className="add-friend-btn add-friend-btn-submit" value="Tìm kiếm"/>
                     </div>
                 </div>  

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import './task-bar.scss'
 import {useDispatch, useSelector} from 'react-redux'
-import { saveTab, setTheme } from '../../../../redux/actions/taskbar'
+import { saveTab, setTheme, showDialog } from '../../../../redux/actions/taskbar'
 import $ from 'jquery'
 
 function TaskBar(props) {
@@ -29,7 +29,8 @@ function TaskBar(props) {
 
     //handle avatar item
     const handleClickAvatar = (e)=>{
-
+        const display = showDialog(3)
+        dispatch(display)
     }
 
     //handle message item

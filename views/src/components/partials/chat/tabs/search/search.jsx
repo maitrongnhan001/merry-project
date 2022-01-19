@@ -1,7 +1,7 @@
 import React from 'react'
 import './search.scss'
 import { useDispatch } from 'react-redux'
-import { showAddedFriend } from '../../../../../redux/actions/taskbar'
+import { showDialog } from '../../../../../redux/actions/taskbar'
 
 function Search(props) {
 
@@ -10,12 +10,12 @@ function Search(props) {
 
     //handle
     const handleClickToShowAddedFriend = ()=> {
-        const isDisplay = showAddedFriend(1)
+        const isDisplay = showDialog(1)
         dispatch(isDisplay) 
     }
 
     const handleClickToShowCreateGroup = ()=> {
-        const isDisplay = showAddedFriend(2)
+        const isDisplay = showDialog(2)
         dispatch(isDisplay) 
     }
 

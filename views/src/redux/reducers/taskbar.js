@@ -19,7 +19,7 @@ const taskbarReducer = (state = initial, action)=> {
                 theme: action.data
             }
         }
-        case 'SHOW_ADDED_FRIEND': {
+        case 'SHOW_DIALOG': {
             return {
                 ...state,
                 addedForm : action.data

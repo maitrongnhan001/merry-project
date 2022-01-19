@@ -12,9 +12,9 @@ const setTheme = (payload)=> {
     }
 }
 
-const showAddedFriend = (payload)=> {
+const showDialog = (payload)=> {
     return {
-        type: 'SHOW_ADDED_FRIEND',
+        type: 'SHOW_DIALOG',
         data: payload
     }
 }
@@ -22,5 +22,5 @@ const showAddedFriend = (payload)=> {
 export {
     saveTab,
     setTheme,
-    showAddedFriend
+    showDialog
 }

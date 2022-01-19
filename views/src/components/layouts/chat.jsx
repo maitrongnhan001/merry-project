@@ -5,6 +5,7 @@ import Tab from '../partials/chat/tabs/Tab'
 import Extension from '../partials/chat/extension/Extension'
 import AddedFriendDialog  from '../partials/chat/add-friends/add-friends'
 import CreateGroup from '../partials/chat/create-group/create-group'
+import Profile from '../partials/chat/profile/profile'
 import './chat.scss'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -35,8 +36,18 @@ function Chat(props) {
 
     return (
         <div ref={REF} className="chat-wrapper">
+            
             {
-                display === 1 ? <AddedFriendDialog></AddedFriendDialog> : display === 2 ?<CreateGroup></CreateGroup> : ''
+                display === 1 ? 
+                <AddedFriendDialog></AddedFriendDialog> 
+                : 
+                display === 2 ?
+                <CreateGroup></CreateGroup> 
+                : 
+                display === 3 ? 
+                <Profile></Profile>
+                :
+                ''
             }
             <TaskBar></TaskBar>
             <Tab></Tab>

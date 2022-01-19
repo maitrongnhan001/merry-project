@@ -18,8 +18,8 @@
         justify-content: flex-start;
         align-items: center;
         .main-chat-header-receiver-avatar {
-            width: 3rem;
-            height: 3rem;
+            min-width: 3.2rem;
+            height: 3.2rem;
         }
         .main-chat-header-receiver-text {
             width: 15rem;

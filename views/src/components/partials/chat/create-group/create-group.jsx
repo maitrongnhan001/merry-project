@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import './create-group.scss'
 import FriendItem from '../tabs/friend-group-items/item'
 import { useSelector, useDispatch } from 'react-redux'
-import { showAddedFriend } from '../../../../redux/actions/taskbar'
+import { showDialog } from '../../../../redux/actions/taskbar'
 import { useState } from 'react'
 
 function CreateGroup(props) {
@@ -21,7 +21,7 @@ function CreateGroup(props) {
     
     //handles
     const handleClickToHideCreateGroup = () =>{
-        const isDisplay = showAddedFriend(0)
+        const isDisplay = showDialog(0)
         dispatch(isDisplay)
     }
 
@@ -42,7 +42,7 @@ function CreateGroup(props) {
             <form action="">
                 <div className="create-group-form">
                     <p className="create-group-form-title">
-                        TẠO NHÓM
+                        Tạo nhóm
                     </p>
                     <div className="create-group-form-group-info">
                         <label htmlFor="choose-group-avatar" className="create-group-change-group-avatar"><i class="fas fa-camera"></i></label>

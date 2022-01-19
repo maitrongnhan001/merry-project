@@ -2,7 +2,7 @@ import React from 'react'
 import FriendItem from '../tabs/friend-group-items/item'
 import './add-friends.scss'
 import { useSelector, useDispatch } from 'react-redux'
-import {showAddedFriend}  from '../../../../redux/actions/taskbar'
+import {showDialog}  from '../../../../redux/actions/taskbar'
 
 function AddFriends(props) {
 
@@ -22,7 +22,7 @@ function AddFriends(props) {
     //handles
 
     const handleClickToHideAddedFriend = () => {
-        const isDisplay = showAddedFriend(0)
+        const isDisplay = showDialog(0)
         dispatch(isDisplay)
     }
 
@@ -31,7 +31,7 @@ function AddFriends(props) {
             <form action="">
                 <div className="add-friend-dialog">
                     <p className="add-friend-dialog-title">
-                        THÊM BẠN
+                        Thêm bạn
                     </p>
                     <div className="add-friend-dialog-input">
                         <input type="text" placeholder="Nhập email bạn muốn thêm."/>

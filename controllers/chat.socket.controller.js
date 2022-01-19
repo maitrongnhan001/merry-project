@@ -7,7 +7,7 @@ module.exports.sendMediaMessage = (data, socket) => {
 }
 
 module.exports.sendDocumentMessage = (data, socket) => {
-    //gui tin nhan document toi client
+    //gui tin nhan document toi client 
 }
 
 module.exports.emotion = (data, socket) => {

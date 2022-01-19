@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 17, 2022 at 03:28 PM
+-- Generation Time: Jan 19, 2022 at 05:06 AM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 8.0.8
 
@@ -20,8 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `merry_project`
 --
-CREATE DATABASE IF NOT EXISTS `merry_project` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `merry_project`;
+CREATE DATABASE IF NOT EXISTS `merrychat` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `merrychat`;
 
 -- --------------------------------------------------------
 
@@ -187,19 +187,20 @@ CREATE TABLE `user` (
   `firstName` varchar(16) COLLATE utf8mb4_vietnamese_ci NOT NULL,
   `lastName` varchar(16) COLLATE utf8mb4_vietnamese_ci NOT NULL,
   `sex` tinyint(4) NOT NULL,
-  `image` varchar(255) COLLATE utf8mb4_vietnamese_ci NOT NULL
+  `image` varchar(255) COLLATE utf8mb4_vietnamese_ci NOT NULL,
+  `template` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `password`, `DOB`, `firstName`, `lastName`, `sex`, `image`) VALUES
-(1, 'nguyenvanan@gmail.com', 'an@12345', '2000-02-12', 'An', 'Nguyển Văn', 0, 'avatar-1.jpeg'),
-(2, 'phanvantung@gmail.com', 'tung@12345', '1999-03-11', 'Tùng', 'Phan Văn', 0, 'avatar-2.jpeg'),
-(3, 'lethuyduong@gmail.com', 'duong@12345', '2000-05-09', 'Dương', 'Lê Thuỳ', 1, 'avatar-3.jpeg'),
-(4, 'nguyenleanhtu@gmail.com', 'tu@12345', '2000-11-20', 'Tú', 'Nguyễn Lê Anh', 0, 'avatar-4.jpeg'),
-(5, 'tranhuyentrang@gmail.com', 'trang@12345', '2001-10-20', 'Trang', 'Trần Huyền', 0, 'avatar-5.jpeg');
+INSERT INTO `user` (`id`, `email`, `password`, `DOB`, `firstName`, `lastName`, `sex`, `image`, `template`) VALUES
+(1, 'nguyenvanan@gmail.com', 'an@12345', '2000-02-12', 'An', 'Nguyển Văn', 0, 'avatar-1.jpeg', 0),
+(2, 'phanvantung@gmail.com', 'tung@12345', '1999-03-11', 'Tùng', 'Phan Văn', 0, 'avatar-2.jpeg', 0),
+(3, 'lethuyduong@gmail.com', 'duong@12345', '2000-05-09', 'Dương', 'Lê Thuỳ', 1, 'avatar-3.jpeg', 0),
+(4, 'nguyenleanhtu@gmail.com', 'tu@12345', '2000-11-20', 'Tú', 'Nguyễn Lê Anh', 0, 'avatar-4.jpeg', 0),
+(5, 'tranhuyentrang@gmail.com', 'trang@12345', '2001-10-20', 'Trang', 'Trần Huyền', 0, 'avatar-5.jpeg', 0);
 
 -- --------------------------------------------------------
 

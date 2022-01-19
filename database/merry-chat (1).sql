@@ -20,8 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `merry_project`
 --
-CREATE DATABASE IF NOT EXISTS `merry_project` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `merry_project`;
+CREATE DATABASE IF NOT EXISTS `merrychat` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `merrychat`;
 
 -- --------------------------------------------------------
 

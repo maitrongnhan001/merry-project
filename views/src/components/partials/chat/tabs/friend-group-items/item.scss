@@ -6,6 +6,8 @@
     align-items: center;
     padding: 0 .5rem;
     position: relative;
+    z-index: 2;
+    overflow: hidden;
     cursor: pointer;
     .friend-group-avatar {
         width: 3.5rem;
@@ -13,25 +15,71 @@
         border-radius: 50%;
     }
     .friend-group-info {
-        width: 80%;
+        width: 70%;
         height: 3.5rem;
         padding-left: .5rem;
         position: relative;
-        z-index: -1;
+        z-index: 0;
         .friend-group-name {
             width: 100%;
+            position: relative;
             height: 3.5rem;
             line-height: 3.5rem;
             padding:0 .5rem;
-            font-size: 1.25rem;
+            font-size: 1.10rem;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
     }
+    .other-feature {
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 1.25rem;
+        visibility: hidden;
+        border: 0;
+        svg {  
+            margin-top: .25rem auto 0 auto;
+            width: 1.5rem;
+            height: 100%;
+        }
+    }
+    .friend-add-friend-btn {
+        width: 5rem;
+        height: 2rem;
+        transform: translateX(-.5rem);
+        color: #5865F2;
+        border: 1px solid #5865F2;
+        font-size: .9rem;
+        border-radius: .2rem;
+        background: none;
+        cursor: pointer;
+        transition: .25s;
+    }
+    
+    .friend-add-friend-btn:hover {
+        background-color: #5865F2;
+        color: #fff;
+    }
+
+    .friend-add-friend-checkbox {
+        width: 1rem;
+        height: 1rem;
+        cursor: pointer;
+    }
 }
 
-.friend-group-item:hover::after {
+.friend-group-item:hover {
+    .other-feature {
+        visibility: visible;
+        cursor: pointer;
+    }
+    .other-feature:hover{
+        background-color: #e1e1e1;
+    }
+}
+
+.friend-group-item::after {
     content: '';
     position: absolute;
     z-index: -2;
@@ -39,9 +87,26 @@
     left: 0;
     width: 100%;
     height: 100%;
+}
+
+.friend-group-item:hover::after {
     background-color: #f1f1f1;
 }
 
-.chat-wrapper[data-theme='dark-theme'] .friend-group-item:hover::after {
-    background-color: #4e535c;
+.chat-wrapper[data-theme='dark-theme'] {
+
+    .friend-group-item:hover {
+        .other-feature {
+            visibility: visible;
+            cursor: pointer;
+            background-color: #4e535c;
+        }
+        .other-feature:hover{
+            background-color: #41454d;
+        }
+    }
+
+    .friend-group-item:hover::after {
+        background-color: #4e535c;
+    }
 }

@@ -13,9 +13,16 @@ connect();
 const app = express();
 
 //------------------ config socket------------------//
-//const router_connect = require('./socket/handle_test');
+const homeSocket = require('./sockets/home.socket');
+const groupSocket = require('./sockets/group.socket');
+const friendSocket = require('./sockets/friend.socket');
+const chatSocket = require('./sockets/chat.socket');
+
 const onConnection = (socket) => {
-    
+    homeSocket.home(io, socket);
+    groupSocket.group(io, socket);
+    friendSocket.friend(io,socket);
+    chatSocket.chat(io, socket);
 }
 
 const io = require("socket.io")(server, {
@@ -34,14 +41,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
+
 //---------------end use extension------------------//
 
 //-------------------use router---------------------//
 
 
-
-
 //----------------end use router--------------------//
+
 
 //--------------------build server------------------//
 const SOCKET_PORT = process.env.SOCKET_PORT || 8000;

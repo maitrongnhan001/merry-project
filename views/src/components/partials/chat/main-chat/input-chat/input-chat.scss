@@ -1,0 +1,38 @@
+.main-chat-input-chat-wrapper {
+    width: 100%;
+    height: 4rem;
+    form {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0 1rem;
+        .input-chat-content {
+            width: 92%;
+            height: 2.5rem;
+            border: none;
+            outline: none;
+            font-size: 1.1rem;
+            border-radius: .5rem;
+            padding: 0 .5rem;
+        }
+
+        .input-chat-submit {
+            min-width: 7rem;
+            height: 2.5rem;
+            font-size: 1.1rem;
+            border: none;
+            color: white;
+            background-color: #5865F2;
+            border-radius: .25rem;
+            cursor: pointer;
+        }
+    }
+}
+
+.chat-wrapper[data-theme='dark-theme'] {
+    form .input-chat-content {
+        background-color: #36393f;
+    }
+}

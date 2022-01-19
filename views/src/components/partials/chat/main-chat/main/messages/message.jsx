@@ -6,10 +6,14 @@ function Message(props) {
     const [sender ] = useState(props.sender)
     const [next] = useState(props.next)
 
-
     const styleContent = {
-        backgroundColor: sender === 0 ? '#5865F2' : '',
+        backgroundColor: props.children.type === 'img' ? 'none' : sender === 0 ? '#5865F2' : '',
         color: sender === 0 ? 'white' : '',
+        padding: props.children.type !== 'img' ? '.5rem 1.25rem' : '0',
+        float: sender === 0 ? 'left' : 'right',
+        position: props.children.type !== 'img'? '': 'absolute',
+        left: sender === 0 ? '7%' : '65%',
+        leftTime: sender === 0 ? '-35%' : '105%'
     }
 
     return (
@@ -20,13 +24,13 @@ function Message(props) {
                 </div>
             }
             
-            <div className="message-content" style={{backgroundColor: styleContent.backgroundColor}}>
-                <p className="massage-text" style={{color: styleContent.color}}>{props.children}
-                </p>
-                <p className='message-emotion'></p>
+            <div className="message-content" style={{background: styleContent.backgroundColor, color: styleContent.color, padding: styleContent.padding}}>
+                {props.children}
+                <p className="message-content-time" style={{position: styleContent.position, left: styleContent.leftTime}}>7.30pm</p>
+                <p className='message-content-emotion' style={{position: styleContent.position, left: styleContent.left, float: styleContent.float}}><i className="fas fa-heart"></i> 10</p>
             </div>
         </div>
     );
 }
 
-export default Message;
+export default React.memo(Message)

@@ -17,7 +17,6 @@
         left: 0;
         .select-tag-title {
             margin-left: 10px;
-            color: #838383;
         }
         .select-tag-icon {
             display: block;
@@ -79,4 +78,42 @@
         border-radius: 10px;
         background-color: #e4e4e4;
       }
+}
+
+.chat-wrapper[data-theme='dark-theme'] {
+    .select-tag {
+
+        .select-items {
+            border: 1px solid #626874;
+            
+            .select-tag-title {
+                color: #ffffff;
+            }
+            .select-tag-icon {
+                color: #ffffff;
+            }
+        }
+
+        .select-option {
+            border: 1px solid #626874;
+            background-color: #4d515a;
+            .select-option-item {
+                color: #ffffff;
+            }
+            .select-option-item:hover {
+                background-color: #85858594;
+            }
+        }
+        .select-option::-webkit-scrollbar {
+            width: 5px;
+        }
+        .select-option::-webkit-scrollbar-thumb {
+            background-color: #969696;
+            border-radius: 2px;
+        }
+        .select-option::-webkit-scrollbar-track {
+            border-radius: 10px;
+            background: none;
+          }
+    }
 }

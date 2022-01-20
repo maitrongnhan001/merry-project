@@ -14,9 +14,9 @@ function MainChat(props) {
 
     useEffect(()=>{
         if(isShowExtension) {
-            $('.main-chat-wrapper').css('width', 'calc(100% - 48rem)')
+            $('.main-chat-wrapper').css('width', 'calc(100% - 22rem)')
         }else {
-            $('.main-chat-wrapper').css('width', 'calc(100% - 48rem  + 22rem)')
+            $('.main-chat-wrapper').css('width', 'calc(100%)')
         }
     }, [isShowExtension])
 

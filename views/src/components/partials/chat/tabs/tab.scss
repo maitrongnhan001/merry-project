@@ -13,7 +13,7 @@
     }
     
     .tab-main::-webkit-scrollbar-track {
-        background: white;
+        background: none;
     }
     
     .tab-main::-webkit-scrollbar-thumb {
@@ -30,8 +30,5 @@
     border-right: 1px solid #41454d;
     .tab-main{
         border-top: 1px solid #41454d;
-    }
-    .tab-main::-webkit-scrollbar-track {
-        background: #36393f;
     }
 }

@@ -8,7 +8,7 @@ import Extension from '../extension/Extension'
 function Center(props) {
 
     //states 
-    const [center, setCenter] = useState(2)
+    const [center, setCenter] = useState(0)
 
     return (
         <div className="main-chat-center">

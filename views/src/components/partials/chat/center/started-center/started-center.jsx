@@ -6,7 +6,7 @@ function StartedCenter(props) {
         <div className="started-center-wrapper">
             <div className="started-center">
                 <div className="started-center-start">
-                    <p>Hãy bắt đầu cuộc trò chuyện ngay thôi nào!</p>
+                    <p>Bắt đầu cuộc trò chuyện ngay thôi nào!</p>
                 </div>
                 <div className="started-center-logo">
                     <img src="/img/Logos/logo-merry-chat.png" alt="" />

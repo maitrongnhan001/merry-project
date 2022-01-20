@@ -1,7 +1,14 @@
 //file nay luu thong tin dang nhap cua cac user
 //{userId, userSocketId}
 
-let initialData = [];
+let initialData = [
+    {userId: 1, userSocketId:1},
+    {userId: 2, userSocketId:1},
+    {userId: 3, userSocketId:1},
+    {userId: 4, userSocketId:1},
+    {userId: 5, userSocketId:1},
+    {userId: 6, userSocketId:1}
+];
 
 module.exports.store = (userId, userSocketId) => {
     return new Promise((resolve, reject) => {
@@ -37,5 +44,12 @@ module.exports.checkUser = (userId) => {
 }
 
 module.exports.remove = (userId) => {
-    //xoa user trong mang theo id
+    return new Promise ((resolve, reject) => {
+        //xoa user trong mang theo id user
+        const index = initialData.findIndex((Element) => {return userId === Element.userId});
+
+        initialData.splice(index, 1);
+
+        resolve(index);
+    });
 }

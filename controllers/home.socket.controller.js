@@ -14,7 +14,15 @@ module.exports.login = async (data, socket) => {
     socket.emit('userlogin', {userId: userId});
 }
 
-module.exports.logout = (data, socket) => {
+module.exports.logout = async (data, socket) => {
     //xoa thong tin vua dang nhap vao arr
+    const userId = data.userId;
+    const result = await userIsLogin.remove(userId);
+
+    if (!result) {
+        const userSocketId = socket.id;
+        socket.to(userSocketId).emit('logout', {message: 'error'})
+    }
     //thong bao den tat ca nguoi dung minh vua dang xuat
+    socket.emit('logout', {userId: userId});
 }

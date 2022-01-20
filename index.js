@@ -27,7 +27,7 @@ const onConnection = (socket) => {
 
 const io = require("socket.io")(server, {
     cors: {
-        origin: "http://127.0.0.1:5500"
+        origin: "*"
         //test socket
         //origin: "http://127.0.0.1:5500"
         //real socket

@@ -1,28 +1,73 @@
 const userIsLogin = require('../stores/UserLoginStore');
+const friend = require('../models/friend.model');
 
-module.exports.login = async (data, socket) => {
-    //luu thong tin vua dang nhap vao arr
-    const userId = data.userId;
-    const userSocketId = socket.id;
-    const result = await userIsLogin.store(userId, userSocketId);
+module.exports.login = async (data, socket, io) => {
+    try {
+        //luu thong tin vua dang nhap vao arr
+        const userId = data.userId;
+        const userSocketId = socket.id;
+        const result = await userIsLogin.store(userId, userSocketId);
 
-    if (!result) {
-        //neu that bai thong bao cho nguoi dung that bai
-        socket.to(userSocketId).emit('userlogin', {message: 'error'})
+        if (!result) {
+            //neu that bai thong bao cho nguoi dung that bai
+            socket.emit('error', { message: 'login error' })
+        }
+
+        //lay danh sach ban be
+        const listFriend = await friend.listFriend(userId, 10000, 0);
+
+        //thong bao den tat ca nguoi dung trong danh sach ban minh vua dang nhap
+        listFriend.forEach(async (Element) => {
+            let receiveId;
+            //tim ban
+            receiveId = (Element.sendId == userId) ? Element.receiveId : Element.sendId;
+
+            //kiem tra co online khong
+            const userSocketId = await userIsLogin.getUserSocketId(receiveId);
+
+            if (!userSocketId) {
+                return;
+            }
+
+            //gui thong bao
+            io.to(`${userSocketId}`).emit('user-login', {userId: userId});
+        });
+    } catch (err) {
+        console.error(err);
     }
-    //thong bao den tat ca nguoi dung trong danh sach ban minh vua dang nhap
-    socket.emit('userlogin', {userId: userId});
 }
 
-module.exports.logout = async (data, socket) => {
-    //xoa thong tin vua dang nhap vao arr
-    const userId = data.userId;
-    const result = await userIsLogin.remove(userId);
+module.exports.logout = async (data, socket, io) => {
+    try {
+        //xoa thong tin vua dang nhap vao arr
+        const userId = data.userId;
+        const result = await userIsLogin.remove(userId);
 
-    if (!result) {
-        const userSocketId = socket.id;
-        socket.to(userSocketId).emit('logout', {message: 'error'})
+        if (!result) {
+            //neu that bai thong bao cho nguoi dung that bai
+            socket.emit('error', { message: 'logout error' })
+        }
+
+        //lay danh sach ban be
+        const listFriend = await friend.listFriend(userId, 10000, 0);
+
+        //thong bao den tat ca nguoi dung trong danh sach ban minh vua dang xuat
+        listFriend.forEach(async (Element) => {
+            let receiveId;
+            //tim ban
+            receiveId = (Element.sendId == userId) ? Element.receiveId : Element.sendId;
+
+            //kiem tra co online khong
+            const userSocketId = await userIsLogin.getUserSocketId(receiveId);
+
+            if (!userSocketId) {
+                return;
+            }
+
+            //thong bao den tat ca nguoi dung minh vua dang xuat
+            io.to(`${userSocketId}`).emit('logout', {userId: userId});
+        });
+    } catch (err) {
+        console.error(err);
     }
-    //thong bao den tat ca nguoi dung minh vua dang xuat
-    socket.emit('logout', {userId: userId});
 }

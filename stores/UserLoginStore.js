@@ -1,14 +1,7 @@
 //file nay luu thong tin dang nhap cua cac user
 //{userId, userSocketId}
 
-let initialData = [
-    {userId: 1, userSocketId:1},
-    {userId: 2, userSocketId:1},
-    {userId: 3, userSocketId:1},
-    {userId: 4, userSocketId:1},
-    {userId: 5, userSocketId:1},
-    {userId: 6, userSocketId:1}
-];
+let initialData = [];
 
 module.exports.store = (userId, userSocketId) => {
     return new Promise((resolve, reject) => {
@@ -20,15 +13,37 @@ module.exports.store = (userId, userSocketId) => {
 
         userElement.userId = userId;
         userElement.userSocketId = userSocketId;
+        initialData = [...initialData, userElement];
 
-        resolve(initialData.push(userElement)); s
+        resolve(1);
     });
 }
 
-module.exports.get = () => {
+module.exports.getAll = () => {
     return new Promise((resolve, reject) => {
         //lay tat ca user dang online trong mang
+        console.log(initialData);
         resolve(initialData);
+    });
+}
+
+module.exports.getUserSocketId = (userId) => {
+    return new Promise((resolve, reject) => {
+        //lay id socket theo id user
+
+        //lay vi tri cua user theo id user
+        const index = [...initialData].findIndex((Element) => {
+            return Element.userId == userId;
+        });
+
+        //kiem tra vi tri
+        if (index === -1) {
+            resolve(null);
+        }
+
+        //tra ve user socket id
+        const userSocketId = initialData[index].userSocketId;
+        resolve(userSocketId);
     });
 }
 
@@ -39,7 +54,7 @@ module.exports.checkUser = (userId) => {
             resolve(true);
         }
 
-        reject(false);
+        resolve(false);
     });
 }
 
@@ -48,8 +63,12 @@ module.exports.remove = (userId) => {
         //xoa user trong mang theo id user
         const index = initialData.findIndex((Element) => {return userId === Element.userId});
 
+        //kiem tra vi tri
+        if (index === -1) {
+            resolve(false);
+        }
         initialData.splice(index, 1);
 
-        resolve(index);
+        resolve(true);
     });
 }

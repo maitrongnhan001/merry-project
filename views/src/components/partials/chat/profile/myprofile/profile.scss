@@ -85,6 +85,7 @@
                         font-size: 1.4rem;
                         line-height: 3rem;
                         font-weight: bold;
+                        color: #333;
                     }
     
                     .my-profile-email {
@@ -140,7 +141,6 @@
                         display: block;
                         width: 1.5rem;
                         height: 1.5rem;
-
                     }
                 }
             }
@@ -204,29 +204,24 @@
     }
 }
 
-.chat-wrapper[data-theme='dark-theme'] .add-friend-dialog-wrapper {
-    .add-friend-dialog {
+.chat-wrapper[data-theme='dark-theme'] .main-chat-my-profile-wrapper {
+    .my-profile {
         background-color: #36393f;
-        .add-friend-dialog-suggestion::-webkit-scrollbar-track {
+        .my-profile-scroll::-webkit-scrollbar-track {
             background: #36393f;
         }
 
-        .add-friend-dialog-input {
-            background-color: #525863;
+        label {
+            color: white;
         }
 
-        .add-friend-dialog-suggestion {
-            border-top: 1px solid #41454d;
-            border-bottom: 1px solid #41454d;
+        .update-name {
+            background: none;
+            border: 1px solid #626874;
         }
 
-        .add-friend-dialog-title {
-            border-bottom: 1px solid #41454d;;
-        }
-        .add-friend-btn-cancel {
-            color: #5865F2;
-            border-color: #5865F2;
-            background-color: #36393f;
+        .my-profile-submit {
+            border-top: 1px solid #41454d;;
         }
     }
 }

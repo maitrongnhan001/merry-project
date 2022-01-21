@@ -168,7 +168,7 @@ function FriendCenter(props) {
     return (
         <div className="friend-center-wrapper">
             <p className="friend-center-title">
-            <i class="fas fa-user-check"></i> Lời mời kết bạn
+            <i className="fas fa-user-check"></i> Lời mời kết bạn
             </p>
             <div className="friend-center">
                 {

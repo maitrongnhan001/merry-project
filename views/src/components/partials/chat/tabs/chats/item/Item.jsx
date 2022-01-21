@@ -1,10 +1,22 @@
 import React from 'react'
 import './item.scss'
 import Image from '../../../avatar/avatar'
+import { useDispatch } from 'react-redux';
+import { showCenter } from '../../../../../../redux/actions/taskbar';
 
 function Item(props) {
+
+    //redux
+    const dispatch = useDispatch()
+
+    //handles  
+    const handleClickToShowChat = ()=> {
+        const display = showCenter(1)
+        dispatch(display)
+    }
+
     return (
-        <div className="tab-chat-item" data-id={props.id}>
+        <div className="tab-chat-item" data-id={props.id} onClick={handleClickToShowChat}>
             <div className="tab-chat-avatar">
                 <Image image={props.image}></Image>
             </div>

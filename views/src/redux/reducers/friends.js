@@ -1,5 +1,6 @@
 
 const initial = {
+    friendProfile: 0,
     chatsList: [
         {
             id: 1,
@@ -154,6 +155,12 @@ const friendsReducer = (state = initial, action) => {
             return {
                 ...state,
                 friendsList
+            }
+        }
+        case 'SHOW_FRIEND_PROFILE' : {
+            return {
+                ...state,
+                friendProfile: action.data
             }
         }
         default: {

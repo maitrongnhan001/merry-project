@@ -5,6 +5,7 @@ function Message(props) {
 
     const [sender ] = useState(props.sender)
     const [next] = useState(props.next)
+    const [emotion, setEmotion] = useState(0)
 
     const styleContent = {
         backgroundColor: props.children.type === 'img' ? 'none' : sender === 0 ? '#5865F2' : '',
@@ -14,6 +15,10 @@ function Message(props) {
         position: props.children.type !== 'img'? '': 'absolute',
         left: sender === 0 ? '7%' : '65%',
         leftTime: sender === 0 ? '-35%' : '105%'
+    }
+
+    const handleExpressEmotion = (e) => {
+        setEmotion(emotion ? 0 : 1)
     }
 
     return (
@@ -27,7 +32,7 @@ function Message(props) {
             <div className="message-content" style={{background: styleContent.backgroundColor, color: styleContent.color, padding: styleContent.padding}}>
                 {props.children}
                 <p className="message-content-time" style={{position: styleContent.position, left: styleContent.leftTime}}>7.30pm</p>
-                <p className='message-content-emotion' style={{position: styleContent.position, left: styleContent.left, float: styleContent.float}}><i className="fas fa-heart"></i> 10</p>
+                <p className='message-content-emotion' onClick={handleExpressEmotion} style={{position: styleContent.position, left: styleContent.left, float: styleContent.float, color: emotion ? 'red ': ''}}><i className="fas fa-heart" style={{color: emotion ? 'red ': ''}}></i> 10</p>
             </div>
         </div>
     );

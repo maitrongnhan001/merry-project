@@ -2,4 +2,6 @@
     width: calc(100% - 22rem - 4rem);
     height: 100vh;
     display: flex;
+    position: relative;
+    z-index: -1;
 }

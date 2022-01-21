@@ -12,7 +12,15 @@ const saveFriendsList = (payload) =>{
     }
 }
 
+const showFriendProfile = (payload) => {
+    return {
+        type: 'SHOW_FRIEND_PROFILE',
+        data: payload
+    }
+}
+
 export { 
     saveChatList,
-    saveFriendsList 
+    saveFriendsList,
+    showFriendProfile
 }

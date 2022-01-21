@@ -1,0 +1,40 @@
+.tab-item-feature {
+    width: 10rem;
+    height: 5rem;
+    box-shadow: 0 0 .5rem #cecece;
+    background-color: #fff;
+    position: absolute;
+    z-index: 4;
+    border-radius: .25rem;
+    display: none;
+    .tab-item-feature-elm {
+        width: 90%;
+        height: 2.5rem;
+        margin: 0 auto;
+        padding: 0 .25rem;
+        line-height: 2.5rem;
+        cursor: pointer;
+
+    }
+
+    .tab-item-feature-elm-1 {
+        border-bottom: 1px solid #e1e1e1;
+       
+    }
+
+    .tab-item-feature-elm-2 {
+        color: red !important;
+    }
+}
+
+.chat-wrapper[data-theme='dark-theme'] {
+    .tab-item-feature {
+        box-shadow: 0 0 .25rem #8b8b8b;
+        background-color: #36393f;
+    }
+
+    .tab-item-feature-elm-1 {
+        border-bottom: 1px solid #41454d;
+       
+    }
+}

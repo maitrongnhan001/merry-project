@@ -2,7 +2,7 @@ const chatSocket = require('../controllers/chat.socket.controller');
 
 module.exports.chat = (io, socket) => {
     socket.on('send-text-message', (data) => {
-        chatSocket.sendTextMessage(data, socket);
+        chatSocket.sendTextMessage(data, socket, io);
     });
 
     socket.on('send-media-message', (data) => {
@@ -17,7 +17,7 @@ module.exports.chat = (io, socket) => {
         chatSocket.emotion(data, socket);
     });
 
-    socket.on('create-room', (data, io) => {
-        chatSocket.createRoom(data, socket);
+    socket.on('create-room', (data) => {
+        chatSocket.createRoom(data, socket, io);
     })
 }

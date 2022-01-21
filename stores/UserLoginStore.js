@@ -3,16 +3,16 @@
 
 let initialData = [];
 
-module.exports.store = (userId, userSocketId) => {
+module.exports.store = (userId, userSocket) => {
     return new Promise((resolve, reject) => {
         //kiem tra loi
-        if (!(userId && userSocketId)) reject('data is invaild');
+        if (!(userId && userSocket)) resolve('data is invaild');
 
         //luu thong tin user
         userElement = new Object();
 
         userElement.userId = userId;
-        userElement.userSocketId = userSocketId;
+        userElement.userSocket = userSocket;
         initialData = [...initialData, userElement];
 
         resolve(1);
@@ -26,7 +26,7 @@ module.exports.getAll = () => {
     });
 }
 
-module.exports.getUserSocketId = (userId) => {
+module.exports.getUserSocket = (userId) => {
     return new Promise((resolve, reject) => {
         //lay id socket theo id user
 
@@ -41,8 +41,8 @@ module.exports.getUserSocketId = (userId) => {
         }
 
         //tra ve user socket id
-        const userSocketId = initialData[index].userSocketId;
-        resolve(userSocketId);
+        const userSocket = initialData[index].userSocket;
+        resolve(userSocket);
     });
 }
 

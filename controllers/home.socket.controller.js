@@ -5,8 +5,7 @@ module.exports.login = async (data, socket, io) => {
     try {
         //luu thong tin vua dang nhap vao arr
         const userId = data.userId;
-        const userSocketId = socket.id;
-        const result = await userIsLogin.store(userId, userSocketId);
+        const result = await userIsLogin.store(userId, socket);
 
         if (!result) {
             //neu that bai thong bao cho nguoi dung that bai
@@ -23,14 +22,14 @@ module.exports.login = async (data, socket, io) => {
             receiveId = (Element.sendId == userId) ? Element.receiveId : Element.sendId;
 
             //kiem tra co online khong
-            const userSocketId = await userIsLogin.getUserSocketId(receiveId);
+            const userSocket = (await userIsLogin.getUserSocket(receiveId));
 
-            if (!userSocketId) {
+            if (!userSocket) {
                 return;
             }
 
             //gui thong bao
-            io.to(`${userSocketId}`).emit('user-login', {userId: userId});
+            io.to(`${userSocket.id}`).emit('user-login', {userId: userId});
         });
     } catch (err) {
         console.error(err);
@@ -58,14 +57,14 @@ module.exports.logout = async (data, socket, io) => {
             receiveId = (Element.sendId == userId) ? Element.receiveId : Element.sendId;
 
             //kiem tra co online khong
-            const userSocketId = await userIsLogin.getUserSocketId(receiveId);
+            const userSocket = (await userIsLogin.getUserSocket(receiveId));
 
-            if (!userSocketId) {
+            if (!userSocket) {
                 return;
             }
 
             //thong bao den tat ca nguoi dung minh vua dang xuat
-            io.to(`${userSocketId}`).emit('logout', {userId: userId});
+            io.to(`${userSocket.id}`).emit('logout', {userId: userId});
         });
     } catch (err) {
         console.error(err);

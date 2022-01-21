@@ -16,4 +16,12 @@ module.exports.emotion = (data, socket) => {
 
 module.exports.createRoom = (data, socket) => {
     //tao room cho tat ca nguoi dungn trong list chat
+
+    //lay id user va id receive
+    
+    //kiem tra room co ton tai
+    //neu ton tai thi join room
+    //neu khong ton tai thi create room
+    //lay tat ca user trong room
+    //gui thong tin toi tat ca user trong room
 }

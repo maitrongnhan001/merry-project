@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import './task-bar.scss'
 import {useDispatch, useSelector} from 'react-redux'
-import { saveTab, setTheme, showDialog } from '../../../../redux/actions/taskbar'
+import { saveTab, setTheme, showCenter, showDialog } from '../../../../redux/actions/taskbar'
 import $ from 'jquery'
 
 function TaskBar(props) {
@@ -37,18 +37,24 @@ function TaskBar(props) {
     const handleClickMessage = (e)=> {
         const tab = saveTab(0)
         dispatch(tab)
+        const center = showCenter(1)
+        dispatch(center)
     }
 
     //handle friends list item
     const handleClickFriendsList = (e)=> {
         const tab = saveTab(1)
         dispatch(tab)
+        const center = showCenter(2)
+        dispatch(center)
     }
 
     //handle groups list item
     const handleClickGroupsList = (e)=> {
         const tab = saveTab(2)
         dispatch(tab)
+        const center = showCenter(0)
+        dispatch(center)
     }
 
     //handle dark mode item

@@ -15,9 +15,13 @@ function Extension(props) {
 
     useEffect(()=>{
         if(isShow) {
-            $('.extension-wrapper').css('display', 'block')
+            setTimeout(()=>{
+                $('.extension-wrapper').css('display', 'block')
+            }, 100)
         }else {
-            $('.extension-wrapper').css('display', 'none')
+            setTimeout(()=>{
+                $('.extension-wrapper').css('display', 'none')
+            }, 50)
         }
     }, [isShow]);
 
@@ -34,4 +38,4 @@ function Extension(props) {
     );
 }
 
-export default Extension;
+export default React.memo(Extension)

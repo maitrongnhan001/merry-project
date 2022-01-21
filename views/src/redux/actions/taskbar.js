@@ -19,8 +19,24 @@ const showDialog = (payload)=> {
     }
 }
 
+const showFeature = (payload)=> {
+    return {
+        type: 'SHOW_FEATURE',
+        data: payload
+    }
+}
+
+const showCenter = (payload)=> {
+    return {
+        type: 'SHOW_CENTER',
+        data: payload
+    }
+}
+
 export {
     saveTab,
     setTheme,
-    showDialog
+    showDialog,
+    showFeature,
+    showCenter
 }

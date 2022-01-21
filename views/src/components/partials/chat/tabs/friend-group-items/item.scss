@@ -7,7 +7,6 @@
     padding: 0 .5rem;
     position: relative;
     z-index: 0;
-    overflow: hidden;
     cursor: pointer;
     .friend-group-avatar {
         width: 3.5rem;
@@ -18,8 +17,6 @@
         width: 70%;
         height: 3.5rem;
         padding-left: .5rem;
-        position: relative;
-        z-index: 0;
         .friend-group-name {
             width: 100%;
             position: relative;
@@ -36,8 +33,10 @@
         width: 1.5rem;
         height: 1.5rem;
         border-radius: 1.25rem;
-        visibility: hidden;
+        opacity: 0;
         border: 0;
+        transition: opacity  .25s;
+        transition: background-color .25s;
         svg {  
             margin-top: .25rem auto 0 auto;
             width: 1.5rem;
@@ -71,7 +70,7 @@
 
 .friend-group-item:hover {
     .other-feature {
-        visibility: visible;
+        opacity: 1;
         cursor: pointer;
     }
     .other-feature:hover{
@@ -87,6 +86,7 @@
     left: 0;
     width: 100%;
     height: 100%;
+    transition: background-color .25s;
 }
 
 .friend-group-item:hover::after {
@@ -100,6 +100,7 @@
             visibility: visible;
             cursor: pointer;
             background-color: #4e535c;
+
         }
         .other-feature:hover{
             background-color: #41454d;

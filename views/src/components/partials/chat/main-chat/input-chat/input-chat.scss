@@ -18,6 +18,10 @@
             padding: 0 .5rem;
         }
 
+        .input-chat-content::placeholder {
+            font-size: .9rem;
+        }
+
         .input-chat-submit {
             min-width: 7rem;
             height: 2.5rem;

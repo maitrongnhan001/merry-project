@@ -1,7 +1,7 @@
 .main-chat-wrapper {
-    width: calc(100% - 22rem);
     height: 100vh;
     border-right: 1px solid #e1e1e1;
+    transition: width .25s;
 }
 
 .chat-wrapper[data-theme='dark-theme'] .main-chat-wrapper {

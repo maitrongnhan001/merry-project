@@ -2,6 +2,7 @@ import React from 'react';
 import './avatar.scss'
 
 function Avatar(props) {
+
     return (
         <div className="friend-group-avatar-wrapper">
             {

@@ -20,6 +20,7 @@
         .main-chat-header-receiver-avatar {
             min-width: 3.2rem;
             height: 3.2rem;
+            cursor: pointer;
         }
         .main-chat-header-receiver-text {
             width: 15rem;
@@ -30,10 +31,10 @@
                 height: 2rem;
                 line-height: 2rem;
                 font-size: 1.2rem;
-                text-overflow: ellipsis;
+                text-overflow: ellipsis ;
                 overflow: hidden;
                 white-space: nowrap;
-
+                user-select: none;
             }
 
             .main-chat-header-active {

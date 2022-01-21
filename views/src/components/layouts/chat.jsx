@@ -1,21 +1,29 @@
 import React from 'react'
-import MainChat from '../partials/chat/main-chat/main-chat'
 import TaskBar from '../partials/chat/task-bar/task-bar'
 import Tab from '../partials/chat/tabs/Tab'
-import Extension from '../partials/chat/extension/Extension'
 import AddedFriendDialog  from '../partials/chat/add-friends/add-friends'
+import Feature from '../partials/chat/tools/feature/feature'
 import CreateGroup from '../partials/chat/create-group/create-group'
 import Profile from '../partials/chat/profile/profile'
 import Center from '../partials/chat/center/center'
 import './chat.scss'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setTheme } from '../../redux/actions/taskbar'
+import { setTheme, showFeature } from '../../redux/actions/taskbar'
 
 function Chat(props) {
     const theme = useSelector(state => state.taskbar.theme)
     const display = useSelector(state => state.taskbar.addedForm)
+    const feature = useSelector(state => state.taskbar.feature)
     const dispatch = useDispatch()
+
+    //handles
+    const handleClick = (e)=> {
+        if(!e.target.classList.value.match(/tab-friend-feature-item-show/) ) {
+            const display = showFeature({...feature, isShow: 0})
+            dispatch(display)
+        }
+    }
 
     useEffect(()=>{
         let themeLocal = localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light-theme'
@@ -29,7 +37,7 @@ function Chat(props) {
     }, [theme])
 
     return (
-        <div className="chat-wrapper">
+        <div className="chat-wrapper" onClick={handleClick}>
             {
                 display === 1 ? 
                 <AddedFriendDialog></AddedFriendDialog> 
@@ -45,6 +53,10 @@ function Chat(props) {
             <TaskBar></TaskBar>
             <Tab></Tab>
             <Center></Center>
+            {
+                feature.isShow ? <Feature offset={feature.offset}>Xóa bạn</Feature> : ''
+            }
+            
         </div>
     );
 }

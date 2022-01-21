@@ -4,6 +4,7 @@ import { useState } from 'react'
 import Select from '../../tools/select/SelectTag'
 import { showDialog } from '../../../../../redux/actions/taskbar'
 import { useDispatch } from 'react-redux'
+import $ from 'jquery'
 
 function Profile(props) {
 
@@ -37,23 +38,23 @@ function Profile(props) {
     }
 
     const handleClickToHideMyProfile = (e)=> {
-        const classes = e.target.classList.value
-        if(classes.match(/main-chat-my-profile-form/) || classes.match(/my-profile-btn-1/)) {
-            let display = showDialog(0)
+        let display = showDialog(0)
             dispatch(display)
-        }
     }
 
     useEffect(()=> {
-        console.log(DOB)
-    }, [DOB])
+        $('.main-chat-my-profile-form').fadeTo('.5s', 1)
+    })
+
+
 
     return (
         <div className="main-chat-my-profile-wrapper" onClick={handleClickToHideMyProfile}>
-            <form className="main-chat-my-profile-form">
+            <form className="main-chat-my-profile-form" onClick={(e)=>e.stopPropagation()}>
                 <div className="my-profile">
                     <p className="my-profile-title">
                         Cập nhật thông tin
+                        <i className="fas fa-times" onClick={handleClickToHideMyProfile}></i>
                     </p>
                     <div className="my-profile-scroll">
                         <div className="my-profile-avatar-wrapper">

@@ -28,6 +28,12 @@ const onConnection = (socket) => {
 const io = require("socket.io")(server, {
     cors: {
         origin: "*"
+<<<<<<< HEAD
+=======
+        //test socket
+        //origin: "http://127.0.0.1:5500"
+        //real socket
+>>>>>>> 7b324928938683725e30dade0c345b90722f0f13
         //origin: "http://localhost:3000"
     }
 });

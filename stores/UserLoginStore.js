@@ -22,7 +22,6 @@ module.exports.store = (userId, userSocketId) => {
 module.exports.getAll = () => {
     return new Promise((resolve, reject) => {
         //lay tat ca user dang online trong mang
-        console.log(initialData);
         resolve(initialData);
     });
 }

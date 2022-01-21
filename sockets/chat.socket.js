@@ -17,7 +17,7 @@ module.exports.chat = (io, socket) => {
         chatSocket.emotion(data, socket);
     });
 
-    socket.on('create-room', (data) => {
+    socket.on('create-room', (data, io) => {
         chatSocket.createRoom(data, socket);
     })
 }

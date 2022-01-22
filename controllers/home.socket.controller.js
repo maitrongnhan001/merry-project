@@ -1,5 +1,6 @@
 const userIsLogin = require('../stores/UserLoginStore');
 const friend = require('../models/friend.model');
+const chat = require('../models/chat.model');
 
 module.exports.login = async (data, socket, io) => {
     try {
@@ -12,25 +13,28 @@ module.exports.login = async (data, socket, io) => {
             socket.emit('error', { message: 'login error' })
         }
 
+        //chuyen tat ca tin nhan thanh da nhan
+        
+
         //lay danh sach ban be
         const listFriend = await friend.listFriend(userId, 10000, 0);
 
-        //thong bao den tat ca nguoi dung trong danh sach ban minh vua dang nhap
-        listFriend.forEach(async (Element) => {
-            let receiveId;
-            //tim ban
-            receiveId = (Element.sendId == userId) ? Element.receiveId : Element.sendId;
+        if (listFriend) {
+            //thong bao den tat ca nguoi dung trong danh sach ban minh vua dang nhap
+            listFriend.forEach(async (Element) => {
+                let receiveId;
+                //tim ban
+                receiveId = (Element.sendId == userId) ? Element.receiveId : Element.sendId;
 
-            //kiem tra co online khong
-            const userSocket = (await userIsLogin.getUserSocket(receiveId));
+                //kiem tra co online khong
+                const userSocket = (await userIsLogin.getUserSocket(receiveId));
 
-            if (!userSocket) {
-                return;
-            }
-
-            //gui thong bao
-            io.to(`${userSocket.id}`).emit('user-login', {userId: userId});
-        });
+                if (userSocket) {
+                    //gui thong bao
+                    io.to(`${userSocket.id}`).emit('user-login', { userId: userId });
+                }
+            });
+        }
     } catch (err) {
         console.error(err);
     }
@@ -50,22 +54,22 @@ module.exports.logout = async (data, socket, io) => {
         //lay danh sach ban be
         const listFriend = await friend.listFriend(userId, 10000, 0);
 
-        //thong bao den tat ca nguoi dung trong danh sach ban minh vua dang xuat
-        listFriend.forEach(async (Element) => {
-            let receiveId;
-            //tim ban
-            receiveId = (Element.sendId == userId) ? Element.receiveId : Element.sendId;
+        if (listFriend) {
+            //thong bao den tat ca nguoi dung trong danh sach ban minh vua dang xuat
+            listFriend.forEach(async (Element) => {
+                let receiveId;
+                //tim ban
+                receiveId = (Element.sendId == userId) ? Element.receiveId : Element.sendId;
 
-            //kiem tra co online khong
-            const userSocket = (await userIsLogin.getUserSocket(receiveId));
+                //kiem tra co online khong
+                const userSocket = (await userIsLogin.getUserSocket(receiveId));
 
-            if (!userSocket) {
-                return;
-            }
-
-            //thong bao den tat ca nguoi dung minh vua dang xuat
-            io.to(`${userSocket.id}`).emit('logout', {userId: userId});
-        });
+                if (userSocket) {
+                    //thong bao den tat ca nguoi dung minh vua dang xuat
+                    io.to(`${userSocket.id}`).emit('logout', { userId: userId });
+                }
+            });
+        }
     } catch (err) {
         console.error(err);
     }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 19, 2022 at 05:06 AM
+-- Generation Time: Jan 21, 2022 at 12:55 PM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 8.0.8
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `merry_project`
+-- Database: `merrychat`
 --
 CREATE DATABASE IF NOT EXISTS `merrychat` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `merrychat`;
@@ -124,7 +124,7 @@ INSERT INTO `mediamessage` (`id`, `path`, `messageId`) VALUES
 
 CREATE TABLE `message` (
   `id` int(11) NOT NULL,
-  `time` time NOT NULL DEFAULT current_timestamp(),
+  `time` datetime NOT NULL DEFAULT current_timestamp(),
   `emotion` varchar(128) COLLATE utf8mb4_vietnamese_ci NOT NULL,
   `sendId` int(11) NOT NULL,
   `receiveId` varchar(128) COLLATE utf8mb4_vietnamese_ci NOT NULL,
@@ -136,16 +136,16 @@ CREATE TABLE `message` (
 --
 
 INSERT INTO `message` (`id`, `time`, `emotion`, `sendId`, `receiveId`, `status`) VALUES
-(1, '19:30:10', '', 1, 'U0001', 'Đã xem'),
-(2, '19:31:10', '', 2, 'U0001', 'Đã xem'),
-(3, '19:32:10', '', 1, 'U0001', 'Đã xem'),
-(4, '19:32:10', '', 1, 'U0001', 'Đã xem'),
-(5, '19:33:10', '', 2, 'U0001', 'Đã nhận'),
-(6, '19:31:10', '', 1, 'G0005', 'Đã xem'),
-(7, '19:31:10', '', 2, 'G0005', 'Đã xem'),
-(8, '19:32:10', '', 3, 'G0005', 'Đã xem'),
-(9, '19:32:10', '', 4, 'G0005', 'Đã xem'),
-(10, '19:33:10', '', 5, 'G0005', 'Đã nhận');
+(1, '2022-01-21 19:30:10', '', 1, 'U0001', 'Đã xem'),
+(2, '2022-01-21 19:30:11', '', 2, 'U0001', 'Đã xem'),
+(3, '2022-01-21 19:30:12', '', 1, 'U0001', 'Đã xem'),
+(4, '2022-01-21 19:30:13', '', 1, 'U0001', 'Đã xem'),
+(5, '2022-01-21 19:30:14', '', 2, 'U0001', 'Đã nhận'),
+(6, '2022-01-21 19:30:15', '', 1, 'G0005', 'Đã xem'),
+(7, '2022-01-21 19:30:16', '', 2, 'G0005', 'Đã xem'),
+(8, '2022-01-21 19:30:17', '', 3, 'G0005', 'Đã xem'),
+(9, '2022-01-21 19:30:18', '', 4, 'G0005', 'Đã xem'),
+(10, '2022-01-21 19:30:19', '', 5, 'G0005', 'Đã nhận');
 
 -- --------------------------------------------------------
 

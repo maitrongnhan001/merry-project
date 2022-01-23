@@ -33,3 +33,14 @@
         border-top: 1px solid #41454d;
     }
 }
+
+@media  screen and (max-width: 800px) {
+    .tab-wrapper{
+        width: calc(100% - 4rem);
+        display: block;
+    }
+
+    .hide-tab-in-phones-screen {
+        display: none;
+    }
+}

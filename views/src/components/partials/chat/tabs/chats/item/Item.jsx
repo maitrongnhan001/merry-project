@@ -3,6 +3,7 @@ import './item.scss'
 import Image from '../../../avatar/avatar'
 import { useDispatch } from 'react-redux';
 import { showCenter } from '../../../../../../redux/actions/taskbar';
+import $ from 'jquery'
 
 function Item(props) {
 
@@ -13,6 +14,8 @@ function Item(props) {
     const handleClickToShowChat = ()=> {
         const display = showCenter(1)
         dispatch(display)
+        $('#tab-wrapper').toggleClass('hide-tab-in-phones-screen')
+        $('.main-chat-center').toggleClass('show-main-chat-phone-screen')
     }
 
     return (

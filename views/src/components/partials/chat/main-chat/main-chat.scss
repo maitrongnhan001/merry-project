@@ -7,3 +7,9 @@
 .chat-wrapper[data-theme='dark-theme'] .main-chat-wrapper {
     border-right: 1px solid #4e535c;
 }
+
+@media screen and (max-width: 1200px) {
+    .main-chat-wrapper {
+        width: 100% !important;
+    }
+}

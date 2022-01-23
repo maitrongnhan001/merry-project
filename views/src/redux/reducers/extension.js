@@ -1,6 +1,7 @@
+import $ from 'jquery'
 
 const initial = {
-    isShow: 1
+    isShow: $(window).width() <= 1200 ? 0 : 1
 }
 
 const extensionReducer = (state = initial, action)=> {

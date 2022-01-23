@@ -39,6 +39,8 @@ function TaskBar(props) {
         dispatch(tab)
         const center = showCenter(1)
         dispatch(center)
+        $('#tab-wrapper').removeClass('hide-tab-in-phones-screen')
+        $('.main-chat-center').removeClass('show-main-chat-phone-screen')
     }
 
     //handle friends list item
@@ -47,6 +49,8 @@ function TaskBar(props) {
         dispatch(tab)
         const center = showCenter(2)
         dispatch(center)
+        $('#tab-wrapper').removeClass('hide-tab-in-phones-screen')
+        $('.main-chat-center').removeClass('show-main-chat-phone-screen')
     }
 
     //handle groups list item
@@ -55,6 +59,8 @@ function TaskBar(props) {
         dispatch(tab)
         const center = showCenter(0)
         dispatch(center)
+        $('#tab-wrapper').removeClass('hide-tab-in-phones-screen')
+        $('.main-chat-center').removeClass('show-main-chat-phone-screen')
     }
 
     //handle dark mode item

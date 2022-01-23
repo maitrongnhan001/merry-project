@@ -5,3 +5,14 @@
     position: relative;
     z-index: -1;
 }
+
+@media screen and (max-width: 800px) {
+    .main-chat-center{
+        width: calc(100% - 4rem);
+        display: none;
+    }
+
+    .show-main-chat-phone-screen {
+        display: block;
+    }
+}

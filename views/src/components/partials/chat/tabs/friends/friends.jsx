@@ -1,6 +1,7 @@
 import React from 'react'
 import Item from '../friend-group-items/item'
 import './friend.scss'
+import $ from 'jquery'
 import  {useDispatch, useSelector} from 'react-redux'
 import { showCenter } from '../../../../../redux/actions/taskbar'
 

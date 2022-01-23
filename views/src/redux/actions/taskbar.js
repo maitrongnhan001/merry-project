@@ -33,10 +33,25 @@ const showCenter = (payload)=> {
     }
 }
 
+const showTab = (payload)=> {
+    return {
+        type: 'SHOW_TAB',
+        data: payload
+    }
+}
+
+const setDisplayCenter = (payload)=> {
+    return {
+        type: 'SET_DISPLAY_CENTER',
+        data: payload
+    }
+}
+
 export {
     saveTab,
     setTheme,
     showDialog,
     showFeature,
-    showCenter
-}
+    showCenter,
+    showTab,
+    setDisplayCenter}

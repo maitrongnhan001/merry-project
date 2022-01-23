@@ -1,6 +1,5 @@
 .tab-item-feature {
     width: 10rem;
-    height: 5rem;
     box-shadow: 0 0 .5rem #cecece;
     background-color: #fff;
     position: absolute;
@@ -8,13 +7,17 @@
     border-radius: .25rem;
     display: none;
     .tab-item-feature-elm {
-        width: 90%;
+        width: 100%;
         height: 2.5rem;
-        margin: 0 auto;
-        padding: 0 .25rem;
+        padding: 0 1rem;
         line-height: 2.5rem;
         cursor: pointer;
+        transition: background-color .5s;
 
+    }
+
+    .tab-item-feature-elm:hover{
+        background-color: #f1f1f1;
     }
 
     .tab-item-feature-elm-1 {
@@ -36,5 +39,8 @@
     .tab-item-feature-elm-1 {
         border-bottom: 1px solid #41454d;
        
+    }
+    .tab-item-feature-elm:hover{
+        background-color: #4e535c;
     }
 }

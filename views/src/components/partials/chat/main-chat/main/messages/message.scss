@@ -4,12 +4,13 @@
     justify-content: flex-start;
     margin: .15rem 0;
     .avatar {
-        width: 2rem;
+        min-width: 2rem;
         height: 2rem;
         border-radius: 50%;
         overflow: hidden;
         img {
             width: 100%;
+            display: block;
             height: 100%;
             object-fit: cover;
         }
@@ -17,12 +18,13 @@
     .message-block-distance {
         min-width: 5rem;
     }
+
     .message-content {
+        width: auto;
         max-width: 30rem;
         min-width: 5rem;
         background-color: #EFEFEF;  
         text-align: justify;
-       // padding: .5rem 1.25rem;
         margin-left: 1rem;
         border-radius: .5rem;
         position: relative;
@@ -35,11 +37,17 @@
             color: black;
             font-style: italic;
             user-select: text;
+            word-break: break-word;
+            white-space: pre-line;
+            overflow-wrap: break-word;
         }
 
         p {
             width: fit-content;
             user-select: text;
+            word-break: break-word;
+            white-space: pre-line;
+            overflow-wrap: break-word;
         }
 
         .message-content-time {

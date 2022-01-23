@@ -20,6 +20,8 @@ function Friends(props) {
 
     //handles 
     const handleClickToShowFriendRequest = ()=> {
+        $('#tab-wrapper').toggleClass('hide-tab-in-phones-screen')
+        $('.main-chat-center').toggleClass('show-main-chat-phone-screen')
         const display = showCenter(3)
         dispatch(display)
     }

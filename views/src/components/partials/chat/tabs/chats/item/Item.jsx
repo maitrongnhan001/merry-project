@@ -11,9 +11,16 @@ function Item(props) {
     const dispatch = useDispatch()
 
     //handles  
-    const handleClickToShowChat = ()=> {
+    const handleClickToShowChat = (e)=> {
         const display = showCenter(1)
         dispatch(display)
+        $(e.currentTarget).addClass('active-friend-group-item')
+        for(let val of $('.tab-chat-item')) {
+            if(val !== e.currentTarget) {
+                console.log(val);
+                $(val).removeClass('active-friend-group-item')
+            }
+        }
         $('#tab-wrapper').toggleClass('hide-tab-in-phones-screen')
         $('.main-chat-center').toggleClass('show-main-chat-phone-screen')
     }

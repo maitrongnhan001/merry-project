@@ -13,17 +13,11 @@ function TaskBar(props) {
     //hooks
     useEffect(()=>{
         if(focusTab === 0) {
-            $('.taskbar-wrapper .fa-comments').css('background', '#414ab1')
-            $('.taskbar-wrapper .fa-address-book').css('background', 'none')
-            $('.taskbar-wrapper .fa-users').css('background', 'none')
+            $('.taskbar-wrapper .task-item-focus span').animate({top: '.5rem'}, 250)
         }else if(focusTab === 1) {
-            $('.taskbar-wrapper .fa-address-book').css('background', '#414ab1')
-            $('.taskbar-wrapper .fa-users').css('background', 'none')
-            $('.taskbar-wrapper .fa-comments').css('background', 'none')
+            $('.taskbar-wrapper .task-item-focus span').animate({top: "5.5rem"}, 250)
         }else {
-            $('.taskbar-wrapper .fa-users').css('background', '#414ab1')
-            $('.taskbar-wrapper .fa-address-book').css('background', 'none')
-            $('.taskbar-wrapper .fa-comments').css('background', 'none')
+            $('.taskbar-wrapper .task-item-focus span').animate({top: "10.5rem"}, 250)
         }
     }, [focusTab])
 
@@ -98,9 +92,14 @@ function TaskBar(props) {
                     <img src="/img/me.jpg" alt="avt" />
                 </div>
                 <div className="task-items">
-                    <i className="task-item fas fa-comments" onClick={handleClickMessage}></i>
-                    <i className="task-item fas fa-address-book" onClick={handleClickFriendsList}></i>
-                    <i className="task-item fas fa-users" onClick={handleClickGroupsList}></i>
+                    <div className="task-item-focus">
+                        <span></span>
+                    </div>
+                    <div className="task-items-box">
+                        <i className="task-item fas fa-comments" onClick={handleClickMessage}></i>
+                        <i className="task-item fas fa-address-book" onClick={handleClickFriendsList}></i>
+                        <i className="task-item fas fa-users" onClick={handleClickGroupsList}></i>
+                    </div> 
                 </div>
             </div>
             <div className="taskbar-bottom function-items">

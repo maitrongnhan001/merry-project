@@ -46,8 +46,6 @@ function Profile(props) {
         $('.main-chat-my-profile-form').fadeTo('.5s', 1)
     })
 
-
-
     return (
         <div className="main-chat-my-profile-wrapper" onClick={handleClickToHideMyProfile}>
             <form className="main-chat-my-profile-form" onClick={(e)=>e.stopPropagation()}>

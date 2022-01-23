@@ -23,9 +23,11 @@ function MainChat(props) {
     return (
         <div className="main-chat-wrapper">
             <Header></Header>
-            <ChatArea></ChatArea>
-            <ToolbarChat></ToolbarChat>
-            <InputChat></InputChat>
+            <div className="main-chat-chat-group-wrapper-box">
+                <ChatArea></ChatArea>
+                <ToolbarChat></ToolbarChat>
+                <InputChat></InputChat>
+            </div>
         </div>
     );
 }

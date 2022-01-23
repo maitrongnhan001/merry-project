@@ -18,7 +18,7 @@ function Main(props) {
                 <Message next={0}><p>doi hoi lau nha</p></Message>
                 <Message next={0}><p>gion mat ha</p></Message>
                 <Message next={0}><p>dam cai chet a</p></Message>
-                <Message next={0}><p>alo</p></Message>
+                <Message next={0}><p>aloooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo</p></Message>
                 <Message next={0}><p>alo</p></Message>
                 <Message next={0}><p>ek</p></Message>
                 <Message next={1}><img src="/img/me.jpg" alt="" /></Message>

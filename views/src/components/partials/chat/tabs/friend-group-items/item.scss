@@ -1,13 +1,15 @@
 .friend-group-item {
-    width: 100%;
+    width: 95%;
     height: 5rem;
+    margin: .75rem auto;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     padding: 0 .5rem;
     position: relative;
-    z-index: 0;
     cursor: pointer;
+    box-shadow: 0 0 .2rem #dedede;
+    border-radius: .25rem;
     .friend-group-avatar {
         width: 3.5rem;
         height: 3.5rem;
@@ -70,6 +72,10 @@
     }
 }
 
+.active-friend-group-item {
+    background-color: #f1f1f1;
+}
+
 .friend-group-item:hover {
     .other-feature {
         opacity: 1;
@@ -86,13 +92,15 @@
     z-index: -2;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 0%;
     height: 100%;
-    transition: background-color .25s;
+    transition: .25s;
+    border-radius: .25rem;
 }
 
 .friend-group-item:hover::after {
     background-color: #f1f1f1;
+    width: 100%;
 }
 
 .chat-wrapper[data-theme='dark-theme'] {
@@ -111,5 +119,8 @@
 
     .friend-group-item:hover::after {
         background-color: #4e535c;
+    }
+    .friend-group-item {
+        box-shadow: 0 0 .25rem #41454d;
     }
 }

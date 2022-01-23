@@ -12,6 +12,16 @@ function InputChat(props) {
         e.preventDefault()
     }
 
+    const handleChange = (e)=> {
+        console.log($(e.target).html());
+        if($(e.target).find('.placeholder'))
+            $(e.target).find('.placeholder').css('display', 'none')
+        if($(e.target).html() === '') {
+            console.log('ui');
+            $(e.target).find('.placeholder').css('display', 'block')
+        }
+    }
+
     //lifecycle
     useEffect(()=>{
         $('.main-chat-input-chat-wrapper .input-chat-content').focus()
@@ -20,7 +30,7 @@ function InputChat(props) {
     return (
         <div className="main-chat-input-chat-wrapper">
             <form onSubmit={handleSubmit}>
-                <input type="text" className="input-chat-content" name="" placeholder="Tin nhắn đến Dinh Phuc Khang!" />
+                <div contentEditable id="input-chat-content"  className="input-chat-content" data-placeholder="Gửi tin nhắn đến Đinh Phúc Khang." onKeyUp={handleChange}></div>
                 <input type="submit" className="input-chat-submit" value="Gửi" />
             </form>
         </div>

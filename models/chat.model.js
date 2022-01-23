@@ -48,3 +48,17 @@ module.exports.update = (status) => {
         });
     })
 }
+
+//cap nhat trang thai cam xuc cua tin nhan
+module.exports.updateEmotion = (emotion, id) => {
+    return new Promise((resolve, reject) => {
+        let sql = "UPDATE message SET ? where id = ?";
+        connection.query(sql, [emotion, id], (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(status);
+            }
+        });
+    })
+}

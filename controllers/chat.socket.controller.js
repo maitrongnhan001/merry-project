@@ -1,11 +1,20 @@
 const groupDetail = require('../models/detailGroup.model');
 const chat = require('../models/chat.model');
-const textMessage = require('../models/textMessage.modal');
+const textMessage = require('../models/textMessage.model');
+const mediaMessage = require('../models/mediaMessage.model');
 const userIsOnline = require('../stores/UserLoginStore');
+const path = require('path');
+const fs = require('fs');
 
 module.exports.sendTextMessage = async (data, socket, io) => {
     //gui tin nhan van ban toi client
     try {
+        //kiem tra du lieu co ton tai
+        if (!(data.senderId && data.receiverId && data.message.content)) {
+            socket.emit('send-text-message-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
+            return;
+        }
+
         //lay du lieu
         const senderId = data.senderId;
         const receiverId = data.receiverId;
@@ -42,7 +51,7 @@ module.exports.sendTextMessage = async (data, socket, io) => {
             }
         }
 
-        io.to(`${receiverId}`).emit('send-text-message', returnData);
+        io.to(`${dataMessage.receiverId}`).emit('send-text-message', returnData);
     } catch (err) {
         socket.emit('send-text-message-error', { msg: 'Lỗi, không gửi tin nhắn được' });
         console.error(err);
@@ -52,15 +61,20 @@ module.exports.sendTextMessage = async (data, socket, io) => {
 module.exports.sendMediaMessage = async (data, socket, io) => {
     //gui tin nhan meida toi client
     try {
+        //kiem tra du lieu co ton tai
+        if (!(data.senderId && data.receiverId && data.message.fileName && data.message.content)) {
+            socket.emit('send-media-message-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
+            return;
+        }
+
         //lay du lieu
         const senderId = data.senderId;
         const receiverId = data.receiverId;
-        const content = data.message.content;
-        const time = data.message.time;
+        const fileName = data.message.fileName;
+        const content = data.message.content;//file
 
         //luu message vao trong database message
         const message = {
-            time: time,
             emotion: null,
             sendId: senderId,
             receiveId: receiverId,
@@ -69,27 +83,152 @@ module.exports.sendMediaMessage = async (data, socket, io) => {
         const dataMessage = await chat.create(message);
 
         //luu media vao trong thu muc public
+        const time = (new Date()).getTime();
+        const fileNameArr = fileName.split('.');
+        const extension = fileNameArr.pop();
+        const fileNameStore = `${fileNameArr.toString()}-${time}.${extension}`;
+        fs.writeFile(path.resolve(__dirname, '../public/Medias/', fileNameStore), content, async (err) => {
+            if (!err) {
+                //luu message vao trong database media message
+                const contentMessage = {
+                    path: fileNameStore,
+                    messageId: dataMessage.id
+                }
 
-        //luu message vao trong database media message
+                //tra thong tin ve cho client
+                const dataContent = await mediaMessage.create(contentMessage);
 
-        //tra thong tin ve cho client
-        
+                //tra thong tin ve cho client
+                const time = await chat.getTime(dataMessage.id);
+
+                const returnData = {
+                    messageId: dataMessage.id,
+                    senderId: dataMessage.sendId,
+                    receiverId: dataMessage.receiveId,
+                    message: {
+                        type: 'media',
+                        fileName: dataContent.path,
+                        time: time,
+                        status: dataMessage.status
+                    }
+                }
+
+                io.to(`${dataMessage.receiveId}`).emit('send-media-message', returnData);
+            }
+        });
     } catch (err) {
+        socket.emit('send-media-message-error', { msg: 'Lỗi, không gửi tin nhắn được' });
         console.error(err);
     }
 }
 
-module.exports.sendDocumentMessage = (data, socket) => {
+module.exports.sendDocumentMessage = async (data, socket, io) => {
     //gui tin nhan document toi client 
+    try {
+        //kiem tra du lieu co ton tai
+        if (!(data.senderId && data.receiverId && data.message.fileName && data.message.content)) {
+            socket.emit('send-document-message-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
+            return;
+        }
+
+        //lay du lieu
+        const senderId = data.senderId;
+        const receiverId = data.receiverId;
+        const fileName = data.message.fileName;
+        const content = data.message.content;//file
+
+        //luu message vao trong database message
+        const message = {
+            emotion: null,
+            sendId: senderId,
+            receiveId: receiverId,
+            status: 'Đã gửi'
+        }
+        const dataMessage = await chat.create(message);
+
+        //luu document vao trong thu muc public
+        const time = (new Date()).getTime();
+        const fileNameArr = fileName.split('.');
+        const extension = fileNameArr.pop();
+        const fileNameStore = `${fileNameArr.toString()}-${time}.${extension}`;
+        fs.writeFile(path.resolve(__dirname, '../public/documents/', fileNameStore), content, async (err) => {
+            if (!err) {
+                //luu message vao trong database media message
+                const contentMessage = {
+                    path: fileNameStore,
+                    messageId: dataMessage.id
+                }
+
+                //tra thong tin ve cho client
+                const dataContent = await mediaMessage.create(contentMessage);
+
+                //tra thong tin ve cho client
+                const time = await chat.getTime(dataMessage.id);
+
+                const returnData = {
+                    messageId: dataMessage.id,
+                    senderId: dataMessage.sendId,
+                    receiverId: dataMessage.receiveId,
+                    message: {
+                        type: 'document',
+                        fileName: dataContent.path,
+                        time: time,
+                        status: dataMessage.status
+                    }
+                }
+
+                io.to(`${dataMessage.receiveId}`).emit('send-document-message', returnData);
+            }
+        });
+    } catch (err) {
+        socket.emit('send-document-message-error', { msg: 'Lỗi, không gửi tin nhắn được' });
+        console.error(err);
+    }
 }
 
-module.exports.emotion = (data, socket) => {
+module.exports.emotion = (data, socket, io) => {
     //thona bao toi client
+    try {
+        //kiem tra du lieu co ton tai
+        if (!(data.senderId && data.receiverId && data.message.content)) {
+            socket.emit('emotion-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
+            return;
+        }
+
+        //lay du lieu
+        const senderId = data.senderId;
+        const receiverId = data.receiverId;
+        const messageId = data.message.messageId;
+        const emotion = data.message.emotion;
+
+        //luu message vao trong database message
+        const dataEmotion = await chat.updateEmotion(emotion, messageId);
+
+        //tra du lieu ve clinet
+        const returnData = {
+            senderId: senderId,
+            receiverId: receiverId,
+            message: {
+                messageId: messageId,
+                emotion: dataEmotion.emotion
+            }
+        }
+        io.to(`${dataMessage.receiverId}`).emit('emotion', returnData);
+    } catch (err) {
+        socket.emit('emotion-error', { msg: 'Lỗi, không gửi tin nhắn được' });
+        console.error(err);
+    }
 }
 
 module.exports.createRoom = async (data, socket, io) => {
     //tao room cho tat ca nguoi dungn trong list chat
     try {
+        //kiem tra du lieu co ton tai
+        if (!(data.senderId && data.receiverId)) {
+            socket.emit('create-room-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
+            return;
+        }
+
         //lay id user va id receive
         const receiverId = data.receiverId;
 

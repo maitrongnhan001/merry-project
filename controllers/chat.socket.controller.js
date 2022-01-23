@@ -186,7 +186,7 @@ module.exports.sendDocumentMessage = async (data, socket, io) => {
     }
 }
 
-module.exports.emotion = (data, socket, io) => {
+module.exports.emotion = async (data, socket, io) => {
     //thona bao toi client
     try {
         //kiem tra du lieu co ton tai

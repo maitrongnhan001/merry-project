@@ -1,10 +1,14 @@
+import $ from 'jquery'
 
 const initial = {
     data: 0,
     theme: 'light-theme',
     addedForm: 0,
     center: 0,
+    showTab: $(window).width() <= 800 ? 1 : 0,
+    displayCenter: $(window).width() <= 800 ? 0 : 1,
     feature : {
+        group: 0,
         isShow: 0,
         id: 0,
         offset: {
@@ -38,6 +42,7 @@ const taskbarReducer = (state = initial, action)=> {
             return {
                 ...state,
                 feature : {
+                    group: action.data.group,
                     isShow: action.data.isShow,
                     id: action.data.id,
                     offset: {
@@ -51,6 +56,18 @@ const taskbarReducer = (state = initial, action)=> {
             return {
                 ...state,
                 center: action.data
+            }
+        }
+        case 'SHOW_TAB' : {
+            return {
+                ...state,
+                showTab: action.data
+            }
+        }
+        case 'SET_DISPLAY_CENTER' : {
+            return {
+                ...state,
+                displayCenter: action.data
             }
         }
         default: {

@@ -54,7 +54,7 @@ function Chat(props) {
             <Tab></Tab>
             <Center></Center>
             {
-                feature.isShow ? <Feature offset={feature.offset}>Xóa bạn</Feature> : ''
+                feature.isShow ? <Feature offset={feature.offset} group={feature.group}>Xóa bạn</Feature> : ''
             }
             
         </div>

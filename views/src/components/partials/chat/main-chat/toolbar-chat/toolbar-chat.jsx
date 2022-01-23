@@ -42,7 +42,6 @@ function ToolbarChat(props) {
         $(window).resize(()=>{
             setEmoji(0)
         })
-        
     }, [])
 
     useEffect(()=>{

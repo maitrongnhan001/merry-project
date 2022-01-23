@@ -15,8 +15,9 @@
             display: flex;
             justify-content: flex-start;
             align-items: center;
+            position: relative;
             .friend-request-title {
-                width: 82%;
+                width: 13rem;
                 height: 3rem;
                 font-size: 1.25rem;
                 i {
@@ -38,6 +39,8 @@
                 line-height: 3rem;
                 text-align: center;
                 font-weight: bold;
+            //    position: absolute;
+
             }
         }
 

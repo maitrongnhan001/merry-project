@@ -29,7 +29,8 @@ function Header(props) {
 
     //handles
 
-    const handleClickShowExtension = ()=>{
+    const handleClickShowExtension = (e)=>{
+        e.stopPropagation();
         const isShow = showExtension(isShowExtension === 0 ? 1 : 0)
         dispatch(isShow)
     }

@@ -24,7 +24,7 @@ function Tab(props) {
     }, [state])
 
     return (
-        <div className='tab-wrapper'>
+        <div className='tab-wrapper' id="tab-wrapper">
             <Search></Search>
             <div className="tab-main">
                 {state === 0 ? <ChatTab></ChatTab>: 

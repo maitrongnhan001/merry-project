@@ -24,15 +24,14 @@ function Message(props) {
     return (
         <div className="message-block" style={{justifyContent: sender === 0 ? 'flex-end' : 'flex-start'}}>
             {
-                sender === 0 ? '':   <div className="avatar">
+                sender === 0 ? <div  className="message-block-distance"></div> : <div className="avatar">
                     {next === 0 ? '' : <img src="/img/me.jpg" alt="" />}
                 </div>
             }
-            
             <div className="message-content" style={{background: styleContent.backgroundColor, color: styleContent.color, padding: styleContent.padding}}>
                 {props.children}
                 <p className="message-content-time" style={{position: styleContent.position, left: styleContent.leftTime}}>7.30pm</p>
-                <p className='message-content-emotion' onClick={handleExpressEmotion} style={{position: styleContent.position, left: styleContent.left, float: styleContent.float, color: emotion ? 'red ': ''}}><i className="fas fa-heart" style={{color: emotion ? 'red ': ''}}></i> 10</p>
+                <p className='message-content-emotion' onClick={handleExpressEmotion} style={{position: styleContent.position, left: styleContent.left, float: styleContent.float, color: emotion ? 'red ': ''}}><i className="fas fa-heart" style={{color: emotion ? 'red ': ''}}></i> 0</p>
             </div>
         </div>
     );

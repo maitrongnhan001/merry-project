@@ -3,6 +3,7 @@ const chat = require('../models/chat.model');
 const textMessage = require('../models/textMessage.model');
 const mediaMessage = require('../models/mediaMessage.model');
 const userIsOnline = require('../stores/UserLoginStore');
+const emotionMessage = require('../models/emotion.model');
 const path = require('path');
 const fs = require('fs');
 
@@ -22,7 +23,6 @@ module.exports.sendTextMessage = async (data, socket, io) => {
 
         //luu message vao trong database message
         const message = {
-            emotion: null,
             sendId: senderId,
             receiveId: receiverId,
             status: 'Đã gửi'
@@ -51,7 +51,7 @@ module.exports.sendTextMessage = async (data, socket, io) => {
             }
         }
 
-        io.to(`${dataMessage.receiverId}`).emit('send-text-message', returnData);
+        io.to(`${dataMessage.receiveId}`).emit('send-text-message', returnData);
     } catch (err) {
         socket.emit('send-text-message-error', { msg: 'Lỗi, không gửi tin nhắn được' });
         console.error(err);
@@ -75,7 +75,6 @@ module.exports.sendMediaMessage = async (data, socket, io) => {
 
         //luu message vao trong database message
         const message = {
-            emotion: null,
             sendId: senderId,
             receiveId: receiverId,
             status: 'Đã gửi'
@@ -139,7 +138,6 @@ module.exports.sendDocumentMessage = async (data, socket, io) => {
 
         //luu message vao trong database message
         const message = {
-            emotion: null,
             sendId: senderId,
             receiveId: receiverId,
             status: 'Đã gửi'
@@ -202,7 +200,12 @@ module.exports.emotion = async (data, socket, io) => {
         const emotion = data.message.emotion;
 
         //luu message vao trong database message
-        const dataEmotion = await chat.updateEmotion(emotion, messageId);
+        const emotionObj = {
+            sendId: senderId,
+            messageId: messageId,
+            emotion: emotion
+        }
+        const dataEmotion = await emotionMessage.create(emotionObj);
 
         //tra du lieu ve clinet
         const returnData = {
@@ -233,6 +236,8 @@ module.exports.createRoom = async (data, socket, io) => {
         const receiverId = data.receiverId;
 
         //chuyen tat ca trang thai tin nhan thanh da xem
+        const status = 'Đã xem';
+        await chat.updateStatus(status, [receiverId]);
 
         //lay tat ca user trong room
         const listMembers = await groupDetail.getMembers(receiverId, 10000, 0);

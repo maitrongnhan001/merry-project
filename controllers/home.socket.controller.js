@@ -1,6 +1,7 @@
 const userIsLogin = require('../stores/UserLoginStore');
 const friend = require('../models/friend.model');
 const chat = require('../models/chat.model');
+const detailGroup = require('../models/detailGroup.model');
 
 module.exports.login = async (data, socket, io) => {
     try {
@@ -13,8 +14,14 @@ module.exports.login = async (data, socket, io) => {
             socket.emit('error', { message: 'login error' })
         }
 
-        //chuyen tat ca tin nhan thanh da nhan
-        
+        //chuyen tat ca trang thai tin nhan thanh da nhan
+        const listGroupChat = await detailGroup.getGroups(userId, 10000, 0);
+        let groupChatArr = [];
+        for (let i = 0; i < listGroupChat.length; i++) {
+            groupChatArr.push(listGroupChat[i].groupId);
+        }
+        const status = 'Đã nhận';
+        await chat.updateStatus(status, groupChatArr);
 
         //lay danh sach ban be
         const listFriend = await friend.listFriend(userId, 10000, 0);

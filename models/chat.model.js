@@ -34,12 +34,15 @@ module.exports.getTime = (messageId) => {
     });
 }
 
-//cap nhat trang thai tin nhan
-module.exports.update = (status) => {
+//cap nhat trang thai tin nhan theo mang groupid
+//tai sao dung mang group id??
+//vi de tranh mat thoi gian update for each item, khi dung mang, chi can update 1 lan duy nhat
+//mang groupid co dang [id1, id2, id3]. eg: [1, 2, 3]
+module.exports.updateStatus = (status, listGroup) => {
     return new Promise((resolve, reject) => {
         const currentStatus = (status === 'Đã nhận') ? 'Đã gửi' : 'Đã nhận';
-        let sql = "UPDATE message SET ? where status = ?";
-        connection.query(sql, [status, currentStatus], (error, result) => {
+        let sql = "UPDATE message SET status = ? where status = ? AND receiveId IN (?)";
+        connection.query(sql, [status, currentStatus, listGroup], (error, result) => {
             if (error) {
                 reject(error);
             } else {
@@ -49,7 +52,7 @@ module.exports.update = (status) => {
     })
 }
 
-//cap nhat trang thai cam xuc cua tin nhan
+//cap nhat trang thai cam xuc cua tin nhan 
 module.exports.updateEmotion = (emotion, id) => {
     return new Promise((resolve, reject) => {
         let sql = "UPDATE message SET ? where id = ?";

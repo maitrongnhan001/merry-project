@@ -188,7 +188,7 @@ module.exports.emotion = async (data, socket, io) => {
     //thona bao toi client
     try {
         //kiem tra du lieu co ton tai
-        if (!(data.senderId && data.receiverId && data.message.content)) {
+        if (!(data.senderId && data.receiverId && data.message.messageId && (data.message.emotion || data.message.emotion === 0))) {
             socket.emit('emotion-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
             return;
         }
@@ -200,12 +200,17 @@ module.exports.emotion = async (data, socket, io) => {
         const emotion = data.message.emotion;
 
         //luu message vao trong database message
-        const emotionObj = {
-            sendId: senderId,
-            messageId: messageId,
-            emotion: emotion
+        if (emotion !== 0) {
+            const emotionObj = {
+                sendId: senderId,
+                messageId: messageId,
+                emotion: emotion
+            }
+
+            await emotionMessage.create(emotionObj);
+        } else {
+            await emotionMessage.delete(senderId, messageId);
         }
-        const dataEmotion = await emotionMessage.create(emotionObj);
 
         //tra du lieu ve clinet
         const returnData = {
@@ -213,10 +218,10 @@ module.exports.emotion = async (data, socket, io) => {
             receiverId: receiverId,
             message: {
                 messageId: messageId,
-                emotion: dataEmotion.emotion
+                emotion: emotion
             }
         }
-        io.to(`${dataMessage.receiverId}`).emit('emotion', returnData);
+        io.to(`${receiverId}`).emit('emotion', returnData);
     } catch (err) {
         socket.emit('emotion-error', { msg: 'Lỗi, không gửi tin nhắn được' });
         console.error(err);

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 16, 2022 at 10:57 AM
+-- Generation Time: Jan 24, 2022 at 03:23 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.12
 
@@ -37,13 +37,31 @@ CREATE TABLE `detailgroup` (
 --
 
 INSERT INTO `detailgroup` (`groupId`, `userId`) VALUES
-('G1', 1),
-('G1', 2),
-('G1', 3),
-('G2', 1),
-('G2', 2),
-('G3', 1),
-('G3', 3);
+('G0005', 1),
+('G0005', 2),
+('G0005', 3),
+('G0005', 4),
+('G0005', 5),
+('U0001', 1),
+('U0001', 2),
+('U0002', 1),
+('U0002', 3),
+('U0003', 1),
+('U0003', 4),
+('U0004', 1),
+('U0004', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `emotion`
+--
+
+CREATE TABLE `emotion` (
+  `sendId` int(11) NOT NULL,
+  `messageId` int(11) NOT NULL,
+  `emotion` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
 
 -- --------------------------------------------------------
 
@@ -61,9 +79,9 @@ CREATE TABLE `friend` (
 --
 
 INSERT INTO `friend` (`sendId`, `receiveId`) VALUES
-(1, 2),
 (1, 3),
-(3, 2);
+(4, 5),
+(5, 1);
 
 -- --------------------------------------------------------
 
@@ -83,9 +101,11 @@ CREATE TABLE `groupuser` (
 --
 
 INSERT INTO `groupuser` (`id`, `groupName`, `AdminId`, `image`) VALUES
-('G1', 'Niên luận ngành kỹ thuật phần mềm', 1, 'image.png'),
-('G2', 'Nhóm học code ReactJS', 2, 'image1.png'),
-('G3', 'Nhóm học NodeJS', 3, 'image3.png');
+('G0005', 'Tối nay ăn gì??', 1, 'avatar-group-1'),
+('U0001', '', NULL, NULL),
+('U0002', '', NULL, NULL),
+('U0003', '', NULL, NULL),
+('U0004', '', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -104,9 +124,8 @@ CREATE TABLE `mediamessage` (
 --
 
 INSERT INTO `mediamessage` (`id`, `path`, `messageId`) VALUES
-(1, 'image.png', 1),
-(2, 'image1.png', 2),
-(3, 'image3.png', 3);
+(1, 'message-image-1.jpeg', 9),
+(2, 'message-document-1.doc', 10);
 
 -- --------------------------------------------------------
 
@@ -117,7 +136,6 @@ INSERT INTO `mediamessage` (`id`, `path`, `messageId`) VALUES
 CREATE TABLE `message` (
   `id` int(11) NOT NULL,
   `time` time NOT NULL DEFAULT current_timestamp(),
-  `emotion` varchar(128) COLLATE utf8mb4_vietnamese_ci NOT NULL,
   `sendId` int(11) NOT NULL,
   `receiveId` varchar(128) COLLATE utf8mb4_vietnamese_ci NOT NULL,
   `status` varchar(64) COLLATE utf8mb4_vietnamese_ci NOT NULL
@@ -127,10 +145,17 @@ CREATE TABLE `message` (
 -- Dumping data for table `message`
 --
 
-INSERT INTO `message` (`id`, `time`, `emotion`, `sendId`, `receiveId`, `status`) VALUES
-(1, '03:23:22', ':V', 1, 'G1', 'send'),
-(2, '07:40:32', ':)', 2, 'G2', 'send'),
-(3, '20:30:15', ':(', 3, 'G3', 'send');
+INSERT INTO `message` (`id`, `time`, `sendId`, `receiveId`, `status`) VALUES
+(1, '19:30:10', 1, 'U0001', 'Đã xem'),
+(2, '19:31:10', 2, 'U0001', 'Đã xem'),
+(3, '19:32:10', 1, 'U0001', 'Đã xem'),
+(4, '19:32:10', 1, 'U0001', 'Đã xem'),
+(5, '19:33:10', 2, 'U0001', 'Đã nhận'),
+(6, '19:31:10', 1, 'G0005', 'Đã xem'),
+(7, '19:31:10', 2, 'G0005', 'Đã xem'),
+(8, '19:32:10', 3, 'G0005', 'Đã xem'),
+(9, '19:32:10', 4, 'G0005', 'Đã xem'),
+(10, '19:33:10', 5, 'G0005', 'Đã nhận');
 
 -- --------------------------------------------------------
 
@@ -149,9 +174,14 @@ CREATE TABLE `textmessage` (
 --
 
 INSERT INTO `textmessage` (`id`, `content`, `messageId`) VALUES
-(1, 'Chào mọi người', 1),
-(2, 'Tới giờ học rồi', 2),
-(3, 'Lên học nodejs nè', 3);
+(1, 'Hello, đi câu cá không, ra chỗ tao nè, bao êm luôn', 1),
+(2, 'Oke, tao cũng đang chán, mà đi mấy giờ m, qua chở tao được không, làm biếng chạy xe quá', 2),
+(3, 'OK, 12h tao chạy qua', 3),
+(4, '12h đêm', 4),
+(5, 'đù, tới công chuyện', 5),
+(6, 'Hello', 6),
+(7, 'lô lô gì, quen biết gì không mà lô', 7),
+(8, 'what, đây là đâu?? tao là ai????', 8);
 
 -- --------------------------------------------------------
 
@@ -167,17 +197,20 @@ CREATE TABLE `user` (
   `firstName` varchar(16) COLLATE utf8mb4_vietnamese_ci NOT NULL,
   `lastName` varchar(16) COLLATE utf8mb4_vietnamese_ci NOT NULL,
   `sex` tinyint(4) NOT NULL,
-  `image` varchar(255) COLLATE utf8mb4_vietnamese_ci NOT NULL
+  `image` varchar(255) COLLATE utf8mb4_vietnamese_ci NOT NULL,
+  `template` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `password`, `DOB`, `firstName`, `lastName`, `sex`, `image`) VALUES
-(1, 'viettrung0601@gmail.com', '$2b$10$/sK2u1.MdoAQjO9VUGkvI.Jbjckdji8psMspu4KYXq6lkGKVxsMOW', '2000-01-06', 'Trung', 'Trần Việt', 0, 'image.png'),
-(2, 'khangb1805870@student.ctu.edu.vn', '$2b$10$/sK2u1.MdoAQjO9VUGkvI.Jbjckdji8psMspu4KYXq6lkGKVxsMOW', '2000-06-08', 'Khang', 'Đinh Phúc', 0, 'image1.png'),
-(3, 'nhanb1805899@student.ctu.edu.vn', '$2b$10$/sK2u1.MdoAQjO9VUGkvI.Jbjckdji8psMspu4KYXq6lkGKVxsMOW', '2022-01-01', 'Nhân', 'Mai Trọng', 0, 'image2.png');
+INSERT INTO `user` (`id`, `email`, `password`, `DOB`, `firstName`, `lastName`, `sex`, `image`, `template`) VALUES
+(1, 'nguyenvanan@gmail.com', 'an@12345', '2000-02-12', 'An', 'Nguyển Văn', 0, 'avatar-1.jpeg', 0),
+(2, 'phanvantung@gmail.com', 'tung@12345', '1999-03-11', 'Tùng', 'Phan Văn', 0, 'avatar-2.jpeg', 0),
+(3, 'lethuyduong@gmail.com', 'duong@12345', '2000-05-09', 'Dương', 'Lê Thuỳ', 1, 'avatar-3.jpeg', 0),
+(4, 'nguyenleanhtu@gmail.com', 'tu@12345', '2000-11-20', 'Tú', 'Nguyễn Lê Anh', 0, 'avatar-4.jpeg', 0),
+(5, 'tranhuyentrang@gmail.com', 'trang@12345', '2001-10-20', 'Trang', 'Trần Huyền', 0, 'avatar-5.jpeg', 0);
 
 -- --------------------------------------------------------
 
@@ -196,7 +229,7 @@ CREATE TABLE `waitingresquest` (
 
 INSERT INTO `waitingresquest` (`sendId`, `receiveId`) VALUES
 (1, 2),
-(1, 3);
+(2, 4);
 
 --
 -- Indexes for dumped tables
@@ -208,6 +241,13 @@ INSERT INTO `waitingresquest` (`sendId`, `receiveId`) VALUES
 ALTER TABLE `detailgroup`
   ADD PRIMARY KEY (`groupId`,`userId`),
   ADD KEY `fk_user_detailGroup` (`userId`);
+
+--
+-- Indexes for table `emotion`
+--
+ALTER TABLE `emotion`
+  ADD KEY `sendId` (`sendId`),
+  ADD KEY `messageId` (`messageId`);
 
 --
 -- Indexes for table `friend`
@@ -265,25 +305,19 @@ ALTER TABLE `waitingresquest`
 -- AUTO_INCREMENT for table `mediamessage`
 --
 ALTER TABLE `mediamessage`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `message`
 --
 ALTER TABLE `message`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `textmessage`
 --
 ALTER TABLE `textmessage`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `user`
---
-ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Constraints for dumped tables
@@ -295,6 +329,13 @@ ALTER TABLE `user`
 ALTER TABLE `detailgroup`
   ADD CONSTRAINT `fk_group_detailGroup` FOREIGN KEY (`groupId`) REFERENCES `groupuser` (`id`),
   ADD CONSTRAINT `fk_user_detailGroup` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
+
+--
+-- Constraints for table `emotion`
+--
+ALTER TABLE `emotion`
+  ADD CONSTRAINT `emotion_ibfk_1` FOREIGN KEY (`sendId`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `emotion_ibfk_2` FOREIGN KEY (`messageId`) REFERENCES `message` (`id`);
 
 --
 -- Constraints for table `friend`

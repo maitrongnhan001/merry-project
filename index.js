@@ -49,6 +49,10 @@ app.use(express.json());
 //---------------end use extension------------------//
 
 //-------------------use router---------------------//
+const friendRouter = require('./routers/friend')
+
+app.use('/api/friends', friendRouter)
+
 
 
 //----------------end use router--------------------//

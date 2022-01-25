@@ -18,6 +18,21 @@ module.exports.create = (friendObj) => {
     });
 }
 
+//xoa thong tin ban
+module.exports.delete = (sendId, receiveId) => {
+    return new Promise((resolve, reject) => {
+        const sql = `DELETE FROM friend WHERE (sendId=${sendId} AND receiveId=${receiveId})
+        OR (sendId=${receiveId} AND receiveId=${sendId})`;
+        connection.query(sql, (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+}
+
 //lay danh sach ban be cua 1 user
 module.exports.listFriend = (userId ,limit, offset) => {
     return new Promise((resolve, reject) => {

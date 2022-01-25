@@ -3,7 +3,7 @@ const friend = require('../models/friend.model');
 const userIsOnline = require('../stores/UserLoginStore');
 
 module.exports.addFriend = async (data, socket) => {
-    //thong bao ket ban
+    //gui loi moi ket ban
     try {
         //kiem tra du lieu
         if ( !(data.senderId && data.receiverId) ) {
@@ -48,7 +48,7 @@ module.exports.addFriend = async (data, socket) => {
 }
 
 module.exports.acceptFriend = async (data, socket) => {
-    //thong bao dong y ket ban
+    //dong y ket ban
     try {
         //kiem tra du lieu
         if ( !(data.senderId  &&  data.receiverId) ) {
@@ -90,7 +90,7 @@ module.exports.acceptFriend = async (data, socket) => {
 }
 
 module.exports.dismissFriend = async (data, socket) => {
-    //thong bao khong dong y ket ban
+    //khong dong y ket ban
     try {
         //kiem tra du lieu
         if ( !(data.senderId  &&  data.receiverId) ) {
@@ -124,6 +124,37 @@ module.exports.dismissFriend = async (data, socket) => {
     }
 }
 
-module.exports.deleteFriend = (data, socket) => {
-    //thong bao dong y ket ban
+module.exports.deleteFriend = async (data, socket) => {
+    //xoa ket ban
+    try {
+        //kiem tra du lieu
+        if ( !(data.senderId  &&  data.receiverId) ) {
+            socket.emit('delete-friend-error', {msg: 'Lỗi, không đính kèm dữ liệu'})
+            return;
+        }
+
+        //lay du lieu
+        const sendId = data.senderId;
+        const receiveId = data.receiverId
+
+         //kiem tra du lieu trong bang friend
+         const checkWaiting = await friend.getFriend(sendId, receiveId);
+         if ( !checkWaiting ) {
+             socket.emit('delete-friend-error', {msg: 'Lỗi, người này chưa phải bạn bè'});
+             return;
+         }
+
+        //xoa du lieu trong ban waiting
+        await friend.delete(sendId, receiveId);
+
+        //tra thong tin ve cho client
+        const receiveUserSocket = await userIsOnline.getUserSocket(receiveId);
+        if (receiveUserSocket) {
+            receiveUserSocket.emit('delete-friend', {senderId: sendId, receiverId: receiveId});
+        }
+        socket.emit('delete-friend', {senderId: sendId, receiverId: receiveId});
+    } catch (err) {
+        socket.emit('delete-friend-error', {msg: 'Lỗi, xử lý dữ liệu không thành công'});
+        console.error(err);
+    }
 }

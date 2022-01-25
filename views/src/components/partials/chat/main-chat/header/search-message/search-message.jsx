@@ -8,6 +8,7 @@ function SearchMessage(props) {
 
     //handles
     const handleClickButton = () =>{
+        $('.search-message-wrapper').slideToggle('.25s')
         props.onShowSearchMessageBox(0)
     }
 
@@ -36,10 +37,12 @@ function SearchMessage(props) {
 
     return (
         <div className="search-message-wrapper">
-             <i className="fas fa-search"></i>
-            <input type="text" className="search-message-input" name='search' placeholder="Nhập nội dung tin nhắn cần tìm." onChange={handleChange}/>
-            <i className="fas fa-times-circle" onClick={handleClickClearData}></i>
-            <button onClick = {handleClickButton}>Đóng</button>
+            <div className="search-message">
+                <i className="fas fa-search"></i>
+                <input type="text" className="search-message-input" name='search' placeholder="Nhập nội dung tin nhắn cần tìm." onChange={handleChange}/>
+                <i className="fas fa-times-circle" onClick={handleClickClearData}></i>
+                <button onClick = {handleClickButton}>Đóng</button>
+            </div>
         </div>
     );
 }

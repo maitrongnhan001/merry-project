@@ -28,6 +28,7 @@ function ToolbarChat(props) {
     //handles
 
     const handleClickEmoji = (e)=>{
+        e.stopPropagation()
         setEmoji(emoji ? 0 : 1)
     }
 
@@ -41,13 +42,18 @@ function ToolbarChat(props) {
         $(window).resize(()=>{
             setEmoji(0)
         })
+    }, [])
 
+    useEffect(()=>{
+        $(window).click(()=> {
+            setEmoji(0)
+        })
     }, [])
 
     return (
         <div className="main-chat-toolbar">
             {emoji ?
-            <div className="main-chat-emoji">
+            <div className="main-chat-emoji" onClick={(e)=>e.stopPropagation()}>
                <Emoji></Emoji>
             </div> : ''
             }

@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import './task-bar.scss'
 import {useDispatch, useSelector} from 'react-redux'
-import { saveTab, setTheme, showDialog } from '../../../../redux/actions/taskbar'
+import { saveTab, setTheme, showCenter, showDialog } from '../../../../redux/actions/taskbar'
 import $ from 'jquery'
 
 function TaskBar(props) {
@@ -13,17 +13,11 @@ function TaskBar(props) {
     //hooks
     useEffect(()=>{
         if(focusTab === 0) {
-            $('.taskbar-wrapper .fa-comments').css('background', '#414ab1')
-            $('.taskbar-wrapper .fa-address-book').css('background', 'none')
-            $('.taskbar-wrapper .fa-users').css('background', 'none')
+            $('.taskbar-wrapper .task-item-focus span').animate({top: '.5rem'}, 250)
         }else if(focusTab === 1) {
-            $('.taskbar-wrapper .fa-address-book').css('background', '#414ab1')
-            $('.taskbar-wrapper .fa-users').css('background', 'none')
-            $('.taskbar-wrapper .fa-comments').css('background', 'none')
+            $('.taskbar-wrapper .task-item-focus span').animate({top: "5.5rem"}, 250)
         }else {
-            $('.taskbar-wrapper .fa-users').css('background', '#414ab1')
-            $('.taskbar-wrapper .fa-address-book').css('background', 'none')
-            $('.taskbar-wrapper .fa-comments').css('background', 'none')
+            $('.taskbar-wrapper .task-item-focus span').animate({top: "10.5rem"}, 250)
         }
     }, [focusTab])
 
@@ -37,18 +31,30 @@ function TaskBar(props) {
     const handleClickMessage = (e)=> {
         const tab = saveTab(0)
         dispatch(tab)
+        const center = showCenter(1)
+        dispatch(center)
+        $('#tab-wrapper').removeClass('hide-tab-in-phones-screen')
+        $('.main-chat-center').removeClass('show-main-chat-phone-screen')
     }
 
     //handle friends list item
     const handleClickFriendsList = (e)=> {
         const tab = saveTab(1)
         dispatch(tab)
+        const center = showCenter(2)
+        dispatch(center)
+        $('#tab-wrapper').removeClass('hide-tab-in-phones-screen')
+        $('.main-chat-center').removeClass('show-main-chat-phone-screen')
     }
 
     //handle groups list item
     const handleClickGroupsList = (e)=> {
         const tab = saveTab(2)
         dispatch(tab)
+        const center = showCenter(0)
+        dispatch(center)
+        $('#tab-wrapper').removeClass('hide-tab-in-phones-screen')
+        $('.main-chat-center').removeClass('show-main-chat-phone-screen')
     }
 
     //handle dark mode item
@@ -86,9 +92,14 @@ function TaskBar(props) {
                     <img src="/img/me.jpg" alt="avt" />
                 </div>
                 <div className="task-items">
-                    <i className="task-item fas fa-comments" onClick={handleClickMessage}></i>
-                    <i className="task-item fas fa-address-book" onClick={handleClickFriendsList}></i>
-                    <i className="task-item fas fa-users" onClick={handleClickGroupsList}></i>
+                    <div className="task-item-focus">
+                        <span></span>
+                    </div>
+                    <div className="task-items-box">
+                        <i className="task-item fas fa-comments" onClick={handleClickMessage}></i>
+                        <i className="task-item fas fa-address-book" onClick={handleClickFriendsList}></i>
+                        <i className="task-item fas fa-users" onClick={handleClickGroupsList}></i>
+                    </div> 
                 </div>
             </div>
             <div className="taskbar-bottom function-items">

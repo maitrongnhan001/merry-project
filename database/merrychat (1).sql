@@ -3,7 +3,11 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
+<<<<<<< HEAD:database/merrychat (1).sql
 -- Generation Time: Jan 21, 2022 at 12:55 PM
+=======
+-- Generation Time: Jan 24, 2022 at 10:00 AM
+>>>>>>> 00d7f3870cfd52e592b31fa832de9f82eb516e95:database/merry-chat (1).sql
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 8.0.8
 
@@ -56,6 +60,18 @@ INSERT INTO `detailgroup` (`groupId`, `userId`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `emotion`
+--
+
+CREATE TABLE `emotion` (
+  `sendId` int(11) NOT NULL,
+  `messageId` int(11) NOT NULL,
+  `emotion` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `friend`
 --
 
@@ -70,7 +86,8 @@ CREATE TABLE `friend` (
 
 INSERT INTO `friend` (`sendId`, `receiveId`) VALUES
 (1, 3),
-(4, 5);
+(4, 5),
+(5, 1);
 
 -- --------------------------------------------------------
 
@@ -124,8 +141,12 @@ INSERT INTO `mediamessage` (`id`, `path`, `messageId`) VALUES
 
 CREATE TABLE `message` (
   `id` int(11) NOT NULL,
+<<<<<<< HEAD:database/merrychat (1).sql
   `time` datetime NOT NULL DEFAULT current_timestamp(),
   `emotion` varchar(128) COLLATE utf8mb4_vietnamese_ci NOT NULL,
+=======
+  `time` time NOT NULL DEFAULT current_timestamp(),
+>>>>>>> 00d7f3870cfd52e592b31fa832de9f82eb516e95:database/merry-chat (1).sql
   `sendId` int(11) NOT NULL,
   `receiveId` varchar(128) COLLATE utf8mb4_vietnamese_ci NOT NULL,
   `status` varchar(64) COLLATE utf8mb4_vietnamese_ci NOT NULL
@@ -135,6 +156,7 @@ CREATE TABLE `message` (
 -- Dumping data for table `message`
 --
 
+<<<<<<< HEAD:database/merrychat (1).sql
 INSERT INTO `message` (`id`, `time`, `emotion`, `sendId`, `receiveId`, `status`) VALUES
 (1, '2022-01-21 19:30:10', '', 1, 'U0001', 'Đã xem'),
 (2, '2022-01-21 19:30:11', '', 2, 'U0001', 'Đã xem'),
@@ -146,6 +168,19 @@ INSERT INTO `message` (`id`, `time`, `emotion`, `sendId`, `receiveId`, `status`)
 (8, '2022-01-21 19:30:17', '', 3, 'G0005', 'Đã xem'),
 (9, '2022-01-21 19:30:18', '', 4, 'G0005', 'Đã xem'),
 (10, '2022-01-21 19:30:19', '', 5, 'G0005', 'Đã nhận');
+=======
+INSERT INTO `message` (`id`, `time`, `sendId`, `receiveId`, `status`) VALUES
+(1, '19:30:10', 1, 'U0001', 'Đã xem'),
+(2, '19:31:10', 2, 'U0001', 'Đã xem'),
+(3, '19:32:10', 1, 'U0001', 'Đã xem'),
+(4, '19:32:10', 1, 'U0001', 'Đã xem'),
+(5, '19:33:10', 2, 'U0001', 'Đã nhận'),
+(6, '19:31:10', 1, 'G0005', 'Đã xem'),
+(7, '19:31:10', 2, 'G0005', 'Đã xem'),
+(8, '19:32:10', 3, 'G0005', 'Đã xem'),
+(9, '19:32:10', 4, 'G0005', 'Đã xem'),
+(10, '19:33:10', 5, 'G0005', 'Đã nhận');
+>>>>>>> 00d7f3870cfd52e592b31fa832de9f82eb516e95:database/merry-chat (1).sql
 
 -- --------------------------------------------------------
 
@@ -233,6 +268,13 @@ ALTER TABLE `detailgroup`
   ADD KEY `fk_user_detailGroup` (`userId`);
 
 --
+-- Indexes for table `emotion`
+--
+ALTER TABLE `emotion`
+  ADD KEY `sendId` (`sendId`),
+  ADD KEY `messageId` (`messageId`);
+
+--
 -- Indexes for table `friend`
 --
 ALTER TABLE `friend`
@@ -312,6 +354,13 @@ ALTER TABLE `textmessage`
 ALTER TABLE `detailgroup`
   ADD CONSTRAINT `fk_group_detailGroup` FOREIGN KEY (`groupId`) REFERENCES `groupuser` (`id`),
   ADD CONSTRAINT `fk_user_detailGroup` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
+
+--
+-- Constraints for table `emotion`
+--
+ALTER TABLE `emotion`
+  ADD CONSTRAINT `emotion_ibfk_1` FOREIGN KEY (`sendId`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `emotion_ibfk_2` FOREIGN KEY (`messageId`) REFERENCES `message` (`id`);
 
 --
 -- Constraints for table `friend`

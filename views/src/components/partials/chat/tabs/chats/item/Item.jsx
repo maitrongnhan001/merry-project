@@ -1,10 +1,32 @@
 import React from 'react'
 import './item.scss'
 import Image from '../../../avatar/avatar'
+import { useDispatch } from 'react-redux';
+import { showCenter } from '../../../../../../redux/actions/taskbar';
+import $ from 'jquery'
 
 function Item(props) {
+
+    //redux
+    const dispatch = useDispatch()
+
+    //handles  
+    const handleClickToShowChat = (e)=> {
+        const display = showCenter(1)
+        dispatch(display)
+        $(e.currentTarget).addClass('active-friend-group-item')
+        for(let val of $('.tab-chat-item')) {
+            if(val !== e.currentTarget) {
+                console.log(val);
+                $(val).removeClass('active-friend-group-item')
+            }
+        }
+        $('#tab-wrapper').toggleClass('hide-tab-in-phones-screen')
+        $('.main-chat-center').toggleClass('show-main-chat-phone-screen')
+    }
+
     return (
-        <div className="tab-chat-item" data-id={props.id}>
+        <div className="tab-chat-item" data-id={props.id} onClick={handleClickToShowChat}>
             <div className="tab-chat-avatar">
                 <Image image={props.image}></Image>
             </div>

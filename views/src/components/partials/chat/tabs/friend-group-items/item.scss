@@ -1,14 +1,15 @@
 .friend-group-item {
-    width: 100%;
+    width: 95%;
     height: 5rem;
+    margin: .75rem auto;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     padding: 0 .5rem;
     position: relative;
-    z-index: 0;
-    overflow: hidden;
     cursor: pointer;
+    box-shadow: 0 0 .2rem #dedede;
+    border-radius: .25rem;
     .friend-group-avatar {
         width: 3.5rem;
         height: 3.5rem;
@@ -18,8 +19,6 @@
         width: 70%;
         height: 3.5rem;
         padding-left: .5rem;
-        position: relative;
-        z-index: 0;
         .friend-group-name {
             width: 100%;
             position: relative;
@@ -36,8 +35,12 @@
         width: 1.5rem;
         height: 1.5rem;
         border-radius: 1.25rem;
-        visibility: hidden;
+        opacity: 0;
         border: 0;
+        position: absolute;
+        right: 1rem;
+        transition: opacity  .25s;
+        transition: background-color .25s;
         svg {  
             margin-top: .25rem auto 0 auto;
             width: 1.5rem;
@@ -69,9 +72,13 @@
     }
 }
 
+.active-friend-group-item {
+    background-color: #f1f1f1;
+}
+
 .friend-group-item:hover {
     .other-feature {
-        visibility: visible;
+        opacity: 1;
         cursor: pointer;
     }
     .other-feature:hover{
@@ -85,12 +92,15 @@
     z-index: -2;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 0%;
     height: 100%;
+    transition: .25s;
+    border-radius: .25rem;
 }
 
 .friend-group-item:hover::after {
     background-color: #f1f1f1;
+    width: 100%;
 }
 
 .chat-wrapper[data-theme='dark-theme'] {
@@ -100,6 +110,7 @@
             visibility: visible;
             cursor: pointer;
             background-color: #4e535c;
+
         }
         .other-feature:hover{
             background-color: #41454d;
@@ -108,5 +119,8 @@
 
     .friend-group-item:hover::after {
         background-color: #4e535c;
+    }
+    .friend-group-item {
+        box-shadow: 0 0 .25rem #41454d;
     }
 }

@@ -2,18 +2,37 @@
     width: 22rem;
     height: 100vh;
     overflow-y: scroll;
+    display: none;
+    background-color: #ffffff;
+    border-left: 1px solid #e1e1e1;
 }
 
 .extension-wrapper::-webkit-scrollbar{
     display: none;
 }
 
-.chat-wrapper[data-theme='dark-theme'] {
+.chat-wrapper[data-theme='dark-theme'] { 
+
+    .extension-wrapper {
+        background-color: #36393f;
+        border-left: 1px solid #41454d;
+    }
+
     .extension-header {
         border-bottom: 1px solid #41454d !important;
     }
 
     .element-extension {
         border-bottom: 1px solid #41454d !important;
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .extension-wrapper {
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        right: -25rem;
+        transition: right .25s;
     }
 }

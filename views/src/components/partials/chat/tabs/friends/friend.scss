@@ -15,9 +15,10 @@
             display: flex;
             justify-content: flex-start;
             align-items: center;
+            position: relative;
             .friend-request-title {
-                width: 82%;
-                
+                width: 13rem;
+                height: 3rem;
                 font-size: 1.25rem;
                 i {
                     font-size: 1.5rem;
@@ -38,9 +39,16 @@
                 line-height: 3rem;
                 text-align: center;
                 font-weight: bold;
+            //    position: absolute;
+
             }
         }
 
+        .col-right {
+            height: 100%;
+            height: 3rem;
+            line-height: 3rem;
+        }
         
     }
 }

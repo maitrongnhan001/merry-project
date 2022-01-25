@@ -1,30 +1,71 @@
 import React, { useEffect } from 'react'
 import './extension.scss'
-import {useSelector} from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import HeaderExtension from './header-extension/header-extension'
 import MemberGroup from './member-group-extension/member-group'
 import Links from './links-extension/links'
 import $ from 'jquery'
 import Medias from './medias-extension/medias'
 import Documents from './documents-extension/documents'
+import { showExtension } from '../../../../redux/actions/extension'
 
 function Extension(props) {
 
     //redux
-    const isShow = useSelector(state => state.extension.isShow);
+    const isShowExtension = useSelector(state => state.extension.isShow);
+    const dispatch = useDispatch()
 
-    useEffect(()=>{
-        if(isShow) {
-            $('.extension-wrapper').css('display', 'block')
-        }else {
-            $('.extension-wrapper').css('display', 'none')
+    console.log(isShowExtension)
+
+    useEffect(() => {
+        if (isShowExtension === 1) {
+            if ($(window).width() <= 1200) {
+                $('.extension-wrapper').css('display', 'block')
+                setTimeout(() => {
+                    $('.extension-wrapper').css('right', '0')
+                }, 100)
+            } else {
+                setTimeout(() => {
+                    $('.extension-wrapper').css('display', 'block')
+                }, 100)
+            }
+        } else {
+            setTimeout(() => {
+                $('.extension-wrapper').css('display', 'none')
+                $('.extension-wrapper').css('right', '')
+            }, 50)
+            if ($(window).width() <= 1200) {
+                $('.extension-wrapper').css('right', '-25rem')
+            }
         }
-    }, [isShow]);
 
-    
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isShowExtension]);
+
+    useEffect(() => {
+        $(window).click(() => {
+            if ($(window).width() <= 1200) {
+                const display = showExtension(0)
+                dispatch(display)
+            }
+        })
+
+        $(window).resize(() => {
+            if ($(window).width() <= 1200) {
+                const display = showExtension(0)
+                dispatch(display)
+            }
+        })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+
+
+
+
 
     return (
-        <div className="extension-wrapper">
+        <div className="extension-wrapper" onClick={(e) => e.stopPropagation()}>
             <HeaderExtension></HeaderExtension>
             <MemberGroup></MemberGroup>
             <Links></Links>
@@ -34,4 +75,4 @@ function Extension(props) {
     );
 }
 
-export default Extension;
+export default React.memo(Extension)

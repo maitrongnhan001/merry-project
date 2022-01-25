@@ -1,0 +1,208 @@
+.friend-profile-dialog-wrapper {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    background-color: rgba(#818181, .5);
+    form {
+        width: 27rem;
+        height: 25rem;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        max-height: 95%;
+        opacity: 0;
+    }
+    .friend-profile-dialog {
+        width: 100%;
+        height: 100%;
+        background-color: #ffffff;
+        border-radius: .5rem;
+        display: grid;
+        grid-template-columns: 100%;
+        grid-template-rows: 3rem calc(100% - 3rem - 3.5rem) 3.5rem;
+        .friend-profile-dialog-title {
+            width: 100%;
+            height: 3rem;
+            font-size: 1.2rem;
+            text-align: center;
+            color: #5865F2;
+            font-weight: bold;
+            line-height: 3rem;
+            border-bottom: 1px solid #cecece;
+            position: relative;
+            i {
+                position: absolute;
+                height: 100%;
+                display: block;
+                font-size: 1.5rem;
+                right: 4%;
+                top: 25%;
+                cursor: pointer;
+            }
+        }
+        
+        .friend-profile-scroll {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            .friend-profile-avatar-wrapper {
+                width: 100%;
+                height: 11rem;
+                position: relative;
+                .friend-profile-cover-background {
+                    width: 100%;
+                    height: 11rem;
+                    object-fit: cover;
+                }
+                .friend-profile-avatar {
+                    width: 100%;
+                    height: 10rem;
+                    text-align: center;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 1.5rem;
+                    position: absolute;
+                    top: 4.5rem;
+                }
+                .friend-profile-update-avatar {
+                    width: 9rem;
+                    height: 70%;
+                    img {
+                        width: 6.25rem;
+                        height: 6.25rem;
+                        object-fit: cover;
+                        border-radius: 50%;
+                        padding: .25rem;
+                        border: 2px solid #cecece;
+                        cursor: pointer;
+                    }
+                }
+                
+                .friend-profile-update-static {
+                    width: calc(100% - 8rem);
+                    height: 80%;
+                    text-align: start;
+                    padding-top: 1rem;
+                    .friend-profile-name {
+                        height: 40%;
+                        font-size: 1.4rem;
+                        line-height: 3rem;
+                        font-weight: bold;
+                        color: #333;
+                    }
+    
+                    .friend-profile-email {
+                        height: 35%;
+                        font-size: 1rem;
+                        color: #595e69;
+                    }
+                }
+
+                .friend-profile-action-btn {
+                    width: 100%;
+                    height: 7rem;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    .btn {
+                        width: 8rem;
+                        height: 2rem;
+                        background: none;
+                        font-size: .9rem;
+                        margin: 0 1rem;
+                        border: none;
+                        outline: none;
+                        cursor: pointer;
+                        border-radius: .25rem;
+                        transition: box-shadow 0.25s;
+                    }
+
+                    .btn:hover {
+                        box-shadow: 0 0 5px #5865F2;
+                    }
+
+                    .friend-profile-action-btn-1 {
+                        color: #5865F2;
+                        border: 1px solid #5865F2;
+                    }
+
+                    .friend-profile-action-btn-2 {
+                        background-color: #5865F2;
+                        color: #ffffff;
+                    }
+                }
+            }
+        }
+
+        .friend-profile-scroll::-webkit-scrollbar {
+            width: .4rem;
+        }
+        
+        /* Track */
+        .friend-profile-scroll::-webkit-scrollbar-track {
+            background: none;
+        }
+        
+        /* Handle */
+        .friend-profile-scroll::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 1rem;
+        }
+
+        .friend-profile-scroll::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 1rem;
+            visibility: hidden;
+        }
+
+        .friend-profile-scroll:hover::-webkit-scrollbar-thumb {
+            visibility: visible;
+        }
+
+        .friend-profile-bottom-btn {
+            width: 100%;
+            height:100%;
+            border-top: 1px solid #e1e1e1;
+            display: flex;
+            justify-content: center;
+            cursor: pointer;
+            button {
+                display: block;
+                outline: none;
+                border: none;
+                background: none;
+                color: red;
+                cursor: pointer;
+            }
+        }
+    }
+}
+
+.chat-wrapper[data-theme='dark-theme'] .friend-profile-dialog-wrapper {
+    .friend-profile-dialog {
+        background-color: #36393f;
+
+        .add-friend-dialog-input {
+            background-color: #525863;
+        }
+
+        .add-friend-dialog-suggestion {
+            border-top: 1px solid #41454d;
+            border-bottom: 1px solid #41454d;
+        }
+
+        .add-friend-dialog-title {
+            border-bottom: 1px solid #41454d;;
+        }
+        .add-friend-btn-cancel {
+            color: #5865F2;
+            border-color: #5865F2;
+            background-color: #36393f;
+        }
+    }
+}

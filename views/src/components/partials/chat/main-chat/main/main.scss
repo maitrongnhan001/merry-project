@@ -1,13 +1,14 @@
 
 .main-chat-chat-area {
     width: 100%;
-    height: calc(100% - 5rem - 3rem - 4rem);
-    border-bottom: 1px solid #e1e1e1;
+    height: calc(100% - 7rem);
+    overflow: hidden;
     padding-bottom: 1rem;
     .main-chat-chat-area-wrapper {
         width: 100%;
         height: 100%;
         overflow-y: auto;
+        overflow-x: hidden;
         display: flex;
         flex-direction: column-reverse;
         padding: 0 1rem;
@@ -40,9 +41,6 @@
 }
 
 .chat-wrapper[data-theme='dark-theme'] {
-    .main-chat-chat-area {
-        border-bottom: 1px solid #4e535c;
-    }
     .main-chat-chat-area-wrapper::-webkit-scrollbar-track {
         background: #36393f;
       }

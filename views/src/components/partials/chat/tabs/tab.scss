@@ -7,6 +7,7 @@
         height: calc(100vh - 5rem);
         border-top: 1px solid #e1e1e1;
         overflow-y: auto;
+        overflow-x: hidden;
     }
     .tab-main::-webkit-scrollbar {
         width: .4rem;
@@ -30,5 +31,16 @@
     border-right: 1px solid #41454d;
     .tab-main{
         border-top: 1px solid #41454d;
+    }
+}
+
+@media  screen and (max-width: 800px) {
+    .tab-wrapper{
+        width: calc(100% - 4rem);
+        display: block;
+    }
+
+    .hide-tab-in-phones-screen {
+        display: none;
     }
 }

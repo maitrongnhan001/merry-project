@@ -18,13 +18,13 @@ function Main(props) {
                 <Message next={0}><p>doi hoi lau nha</p></Message>
                 <Message next={0}><p>gion mat ha</p></Message>
                 <Message next={0}><p>dam cai chet a</p></Message>
-                <Message next={0}><p>alo</p></Message>
+                <Message next={0}><p>aloooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo</p></Message>
                 <Message next={0}><p>alo</p></Message>
                 <Message next={0}><p>ek</p></Message>
                 <Message next={1}><img src="/img/me.jpg" alt="" /></Message>
                 <Message sender={0}><img src="/img/me.jpg" alt="" /></Message>
                 <Message sender={0}><img src="/img/Logos/logo-merry-chat.png" alt="" /></Message>
-                <Message sender={0}><a href="https://www.messenger.com/t/4315663628493165" rel="noreferrer" target='_blank'>https://www.messenger.com/t/4315663628493165</a></Message>
+                <Message sender={0}><a href="https://www.messenger.com/t/4315663628493165" rel="noreferrer" target='_blank'><p>https://www.messenger.com/t/4315663628493165</p></a></Message>
             </div>
         </div>
     );

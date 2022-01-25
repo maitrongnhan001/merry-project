@@ -1,21 +1,53 @@
 .main-chat-input-chat-wrapper {
     width: 100%;
-    height: 4rem;
+
     form {
         width: 100%;
         height: 100%;
         display: flex;
         justify-content: space-around;
-        align-items: center;
-        padding: 0 1rem;
+        align-items: flex-end;
+        padding: 1rem;
+
         .input-chat-content {
-            width: 92%;
-            height: 2.5rem;
+            width: calc(100% - 7rem);
+            max-height: 10rem;
             border: none;
             outline: none;
             font-size: 1.1rem;
-            border-radius: .5rem;
             padding: 0 .5rem;
+            margin: auto .5rem;
+            overflow-y: auto;
+        }
+
+        .input-chat-content:empty::before {
+            content: attr(data-placeholder);
+            color: #525863;
+        }
+
+        .input-chat-content::-webkit-scrollbar {
+            width: .4rem;
+        }
+
+        /* Track */
+        .input-chat-content::-webkit-scrollbar-track {
+            background: white;
+        }
+
+        /* Handle */
+        .input-chat-content::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 1rem;
+        }
+
+        .input-chat-content::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 1rem;
+            visibility: hidden;
+        }
+
+        .input-chat-content:hover::-webkit-scrollbar-thumb {
+            visibility: visible;
         }
 
         .input-chat-submit {

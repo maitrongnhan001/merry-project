@@ -4,6 +4,7 @@ import FriendItem from '../tabs/friend-group-items/item'
 import { useSelector, useDispatch } from 'react-redux'
 import { showDialog } from '../../../../redux/actions/taskbar'
 import { useState } from 'react'
+import $ from 'jquery'
 
 function CreateGroup(props) {
 
@@ -36,13 +37,17 @@ function CreateGroup(props) {
         console.log(group)
     }, [group])
 
+    useEffect(()=>{
+        $('.create-group-form-action').fadeTo('.5s', 1)
+    })
 
     return (
-        <div className="create-group-form-wrapper">
-            <form action="">
-                <div className="create-group-form">
+        <div className="create-group-form-wrapper" onClick={handleClickToHideCreateGroup}>
+            <form action="" className="create-group-form-action">
+                <div className="create-group-form" onClick={(e)=>e.stopPropagation()}>
                     <p className="create-group-form-title">
                         Tạo nhóm
+                        <i className="fas fa-times" onClick={handleClickToHideCreateGroup}></i>
                     </p>
                     <div className="create-group-form-group-info">
                         <label htmlFor="choose-group-avatar" className="create-group-change-group-avatar"><i class="fas fa-camera"></i></label>

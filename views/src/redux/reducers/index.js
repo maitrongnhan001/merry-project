@@ -4,6 +4,7 @@ import taskbar from './taskbar'
 import friends from './friends'
 import groups from './groups'
 import extension from './extension'
+import message from './message'
 
 
 const root = combineReducers({
@@ -11,7 +12,8 @@ const root = combineReducers({
     taskbar: taskbar,
     friends: friends,
     groups: groups,
-    extension: extension
+    extension: extension,
+    message: message
 })
 
 export default root

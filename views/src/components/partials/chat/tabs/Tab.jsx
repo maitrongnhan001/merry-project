@@ -8,12 +8,16 @@ import Search  from './search/search'
 import $ from 'jquery'
 import { showFeature } from '../../../../redux/actions/taskbar'
 
-function Tab(props) {
-    //redux
+function Tab() {
+    /*----redux----*/
+    //lay du lieu tu redux
     const state = useSelector(state => state.taskbar.data)
     const feature = useSelector(state => state.taskbar.feature)
+
+    //ket noi den redux
     const dispatch = useDispatch()
 
+    /*----lifecycle----*/
     useEffect(()=>{
         $('.tab-main').scrollTop(0)
         $('.tab-main').scroll(()=>{

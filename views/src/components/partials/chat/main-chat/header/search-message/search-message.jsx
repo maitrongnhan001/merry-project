@@ -2,27 +2,30 @@ import React, { useState, useEffect } from 'react'
 import './search-message.scss'
 import $ from 'jquery'
 
-function SearchMessage(props) {
+function SearchMessage({onShowSearchMessageBox}) {
 
+    /*----states----*/
     const [search, setSearch] = useState('')
 
-    //handles
+    /*----handles----*/
+    //xu ly dong khung tim kiem tin nhan
     const handleClickButton = () =>{
         $('.search-message-wrapper').slideToggle('.25s')
-        props.onShowSearchMessageBox(0)
+        onShowSearchMessageBox(0)
     }
 
+    //xu ly input
     const handleChange = (e)=> {
         setSearch(e.target.value)
     }
 
+    //xu ly clear du lieu khung tim kiem
     const handleClickClearData = ()=>{
         $('.search-message-wrapper .search-message-input').val('')
         $('.search-message-wrapper .fa-times-circle').css('visibility', 'hidden')
     }
 
-    //lifecycle
-
+    /*----lifecycle----*/
     useEffect(() => {
         $('.search-message-wrapper .search-message-input').focus()
     }, []);

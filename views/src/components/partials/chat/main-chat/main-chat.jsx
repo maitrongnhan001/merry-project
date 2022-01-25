@@ -7,11 +7,12 @@ import './main-chat.scss'
 import {useSelector} from 'react-redux'
 import $ from 'jquery'
 
-function MainChat(props) {
+function MainChat() {
 
-    //redux
+    /*----redux----*/
     const isShowExtension = useSelector(state => state.extension.isShow)
 
+    /*----lifecycle----*/
     useEffect(()=>{
         if(isShowExtension) {
             $('.main-chat-wrapper').css('width', 'calc(100% - 22rem)')

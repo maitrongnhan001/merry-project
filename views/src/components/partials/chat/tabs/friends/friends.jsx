@@ -1,16 +1,20 @@
 import React from 'react'
 import Item from '../friend-group-items/item'
-import './friend.scss'
+import './friends.scss'
 import $ from 'jquery'
 import  {useDispatch, useSelector} from 'react-redux'
 import { showCenter } from '../../../../../redux/actions/taskbar'
 
-function Friends(props) {
-    //redux
+function Friends() {
 
+    /*----redux----*/
+    //lay du lieu tu redux
     const friendsList = useSelector(state => state.friends.friendsList)
+    
+    // ket noi voi redux
     const dispatch = useDispatch()
 
+    /*----data----*/
     const items = friendsList.map((value, idx)=>{
         const name = `${value.firstName} ${value.lastName}`
         return (
@@ -18,10 +22,12 @@ function Friends(props) {
         )
     })
 
-    //handles 
+    /*----handles----*/
+    //xu ly hien thi danh sach yeu cau ket ban
     const handleClickToShowFriendRequest = ()=> {
         $('#tab-wrapper').toggleClass('hide-tab-in-phones-screen')
         $('.main-chat-center').toggleClass('show-main-chat-phone-screen')
+        $('.friend-group-item').removeClass('active-friend-group-item')
         const display = showCenter(3)
         dispatch(display)
     }

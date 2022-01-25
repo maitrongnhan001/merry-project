@@ -3,17 +3,20 @@ import './search.scss'
 import { useDispatch } from 'react-redux'
 import { showDialog } from '../../../../../redux/actions/taskbar'
 
-function Search(props) {
+function Search() {
 
-    //redux
+    /*----redux----*/
+    // ket noi den redux
     const dispatch = useDispatch()
 
-    //handle
+    /*----handles----*/
+    //xu ly hien thi form them ban
     const handleClickToShowAddedFriend = ()=> {
         const isDisplay = showDialog(1)
         dispatch(isDisplay) 
     }
 
+    //xu ly hien thi form tao nhom
     const handleClickToShowCreateGroup = ()=> {
         const isDisplay = showDialog(2)
         dispatch(isDisplay) 

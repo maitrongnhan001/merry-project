@@ -6,11 +6,13 @@ import { showDialog } from '../../../../../redux/actions/taskbar'
 import { useDispatch } from 'react-redux'
 import $ from 'jquery'
 
-function Profile(props) {
+function Profile() {
 
-    //redux
+    /*----redux----*/
+    //ket noi den redux
     const dispatch = useDispatch()
 
+    /*----data----*/
     const date = []
     const year = []
     const month = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
@@ -19,6 +21,7 @@ function Profile(props) {
         year.push(i)
     }
 
+    /*----states ----*/
     const [DOB, setDOB] = useState({
         date: 8,
         month: 6,
@@ -29,6 +32,8 @@ function Profile(props) {
         date.push(i)
     }
 
+    /*----handles----*/
+    //xu ly thay doi ngay sinh
     const handleChangeSelect = (name, value)=> {
         const _DOB = {
             ...DOB,
@@ -37,11 +42,13 @@ function Profile(props) {
         setDOB(_DOB)
     }
 
+    //xu ly an form thong tin ca nhan
     const handleClickToHideMyProfile = (e)=> {
         let display = showDialog(0)
             dispatch(display)
     }
 
+    /*----lifecycle----*/
     useEffect(()=> {
         $('.main-chat-my-profile-form').fadeTo('.5s', 1)
     })

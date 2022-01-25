@@ -7,10 +7,15 @@ import $ from 'jquery'
 
 function AddFriends(props) {
 
-    //redux
+    /*----redux----*/
+    //lay du lieu tu redux
     const friendsList = useSelector(state => state.friends.friendsList)
+
+    //ket noi voi redux
     const dispatch = useDispatch()
 
+    /*----data----*/
+    //map du lieu 
     const items = friendsList.map((value, idx)=>{
 
         const name = value.firstName && value.lastName ? `${value.lastName} ${value.firstName}` : ''
@@ -20,14 +25,14 @@ function AddFriends(props) {
         )
     })
 
-    //handles
-
+    /*----handles----*/
+    //xu ly an form them ban
     const handleClickToHideAddedFriend = () => {
         const isDisplay = showDialog(0)
         dispatch(isDisplay)
     }
 
-
+    /*----lifecycle----*/
     useEffect(()=>{
         $('.add-friend-dialog-form').fadeTo('.5s', 1)
     })

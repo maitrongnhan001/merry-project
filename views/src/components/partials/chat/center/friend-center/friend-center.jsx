@@ -2,7 +2,7 @@ import React from 'react'
 import './friend-center.scss'
 import Item from './friend-request-item/item'
 
-function FriendCenter(props) {
+function FriendCenter() {
 
     const list = [
         {
@@ -159,6 +159,7 @@ function FriendCenter(props) {
         },
     ]
 
+    /*----data----*/
     const items = list.map((value, idx)=> {
         return (
             <Item key={idx} name={value.name} image={value.image} sex={value.sex}></Item>

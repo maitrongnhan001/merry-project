@@ -15,12 +15,20 @@ module.exports.addFriend = async (data, socket) => {
         const receiveId = data.receiverId;
 
         //kiem tra du lieu co ton tai trong bang friend chua
-        const checkFrinend = friend.getFriend(sendId, receiveId);
-        if ( !checkFrinend ) {
+        const checkFrinend = await friend.getFriend(sendId, receiveId);
+        console.log(checkFrinend);
+        if ( checkFrinend ) {
             socket.emit('add-friend-error', {msg: 'Lỗi, thông tin đã tồn tại trong CSDL'});
             return;
         }
 
+        //kiem tra du lieu trong bang waiting
+        const checkWaiting = await waiting.getWaiting(sendId, receiveId);
+        if ( checkWaiting ) {
+            socket.emit('add-friend-error', {msg: 'Lỗi, thông tin đã tồn tại trong CSDL'});
+            return;
+        }
+        
         //luu du lieu vao bang waiting
         const waitingObj = {
             sendId: sendId,

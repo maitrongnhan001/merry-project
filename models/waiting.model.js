@@ -18,6 +18,21 @@ module.exports.create = (waitingObj) => {
     });
 }
 
+//xoa mot yeu cau ket ban
+module.exports.delete = (sendId, receiveId) => {
+    return new Promise((resolve, reject) => {
+        const sql = `DELETE FROM waitingresquest WHERE (sendId=${sendId} AND receiveId=${receiveId})
+        OR (sendId=${receiveId} AND receiveId=${sendId})`;
+        connection.query(sql, (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+}
+
 //lay mot waiting request
 module.exports.getWaiting = (sendId, receiveId) => {
     return new Promise((resolve, reject) => {

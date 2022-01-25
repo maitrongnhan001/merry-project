@@ -1,5 +1,23 @@
 const { connection } = require("../config/database");
 
+//them mot cap du lieu ban moi
+module.exports.create = (friendObj) => {
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO friend SET ?', friendObj, (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                result = JSON.parse(JSON.stringify(result));
+                let res = {
+                    ...friendObj,
+                    'id': result.insertId
+                }
+                resolve(res);
+            }
+        });
+    });
+}
+
 //lay danh sach ban be cua 1 user
 module.exports.listFriend = (userId ,limit, offset) => {
     return new Promise((resolve, reject) => {

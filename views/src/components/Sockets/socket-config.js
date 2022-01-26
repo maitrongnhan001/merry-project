@@ -1,8 +1,12 @@
-import { io} from 'socket.io-client'
+import {connect} from 'socket.io-client'
 
 const server = 'http://localhost:8000/'
 
-const socket = io(server);
+const socket = connect(server);
+
+const connection = ()=> {
+    connect(server)
+}
 
 const sendSocket = (event, data)=> {
     socket.emit(event, data)  
@@ -11,6 +15,7 @@ const sendSocket = (event, data)=> {
 const listenSocket = (event)=> {
     return new Promise ((resolve, reject)=> {
         socket.on(event, (data, err)=> {
+            console.log(data)
             if(data) resolve(data)
             reject(err)
         })
@@ -22,4 +27,4 @@ export  {
     listenSocket
 }
 
-export default socket
+export default connection

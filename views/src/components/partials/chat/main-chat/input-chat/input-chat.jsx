@@ -11,8 +11,8 @@ function InputChat() {
 
     /*----states----*/
     const[message, setMessage] = useState({
-        senderId: 0,
-        receiverId: '',
+        senderId: 1,
+        receiverId: 'G0005',
         message: {
             content: ''
         }
@@ -22,6 +22,7 @@ function InputChat() {
     //xu ly submit form
     const handleSubmit = () => {
         $('#input-chat-content').html('')
+        
         const emptyMessage = {
             ...message,
             message: {
@@ -40,8 +41,7 @@ function InputChat() {
         }
         const value = $(e.target).html()
         const newMessage = {
-            senderId: 0,
-            receiverId: '',
+            ...message,
             message: {
                 content: value
             }
@@ -65,8 +65,7 @@ function InputChat() {
         $('#input-chat-content').html($('#input-chat-content').html() + emoji)
         const value = $('#input-chat-content').html()
         const newMessage = {
-            senderId: 0,
-            receiverId: '',
+            ...message,
             message: {
                 content: value
             }

@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import './toolbar-chat.scss'
 import Emoji from '../../emoji/emoji'
 import $ from 'jquery'

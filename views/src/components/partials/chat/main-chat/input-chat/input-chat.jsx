@@ -63,7 +63,7 @@ function InputChat() {
 
     useEffect(()=>{
         $('#input-chat-content').html($('#input-chat-content').html() + emoji)
-        const value = $('#input-chat-content').html() + emoji
+        const value = $('#input-chat-content').html()
         const newMessage = {
             senderId: 0,
             receiverId: '',

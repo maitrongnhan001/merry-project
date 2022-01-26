@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 19, 2022 at 05:06 AM
+-- Generation Time: Jan 24, 2022 at 10:00 AM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 8.0.8
 
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `merry_project`
+-- Database: `merrychat`
 --
 CREATE DATABASE IF NOT EXISTS `merrychat` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
 USE `merrychat`;
@@ -56,6 +56,18 @@ INSERT INTO `detailgroup` (`groupId`, `userId`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `emotion`
+--
+
+CREATE TABLE `emotion` (
+  `sendId` int(11) NOT NULL,
+  `messageId` int(11) NOT NULL,
+  `emotion` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `friend`
 --
 
@@ -70,7 +82,8 @@ CREATE TABLE `friend` (
 
 INSERT INTO `friend` (`sendId`, `receiveId`) VALUES
 (1, 3),
-(4, 5);
+(4, 5),
+(5, 1);
 
 -- --------------------------------------------------------
 
@@ -125,7 +138,6 @@ INSERT INTO `mediamessage` (`id`, `path`, `messageId`) VALUES
 CREATE TABLE `message` (
   `id` int(11) NOT NULL,
   `time` time NOT NULL DEFAULT current_timestamp(),
-  `emotion` varchar(128) COLLATE utf8mb4_vietnamese_ci NOT NULL,
   `sendId` int(11) NOT NULL,
   `receiveId` varchar(128) COLLATE utf8mb4_vietnamese_ci NOT NULL,
   `status` varchar(64) COLLATE utf8mb4_vietnamese_ci NOT NULL
@@ -135,17 +147,17 @@ CREATE TABLE `message` (
 -- Dumping data for table `message`
 --
 
-INSERT INTO `message` (`id`, `time`, `emotion`, `sendId`, `receiveId`, `status`) VALUES
-(1, '19:30:10', '', 1, 'U0001', 'Đã xem'),
-(2, '19:31:10', '', 2, 'U0001', 'Đã xem'),
-(3, '19:32:10', '', 1, 'U0001', 'Đã xem'),
-(4, '19:32:10', '', 1, 'U0001', 'Đã xem'),
-(5, '19:33:10', '', 2, 'U0001', 'Đã nhận'),
-(6, '19:31:10', '', 1, 'G0005', 'Đã xem'),
-(7, '19:31:10', '', 2, 'G0005', 'Đã xem'),
-(8, '19:32:10', '', 3, 'G0005', 'Đã xem'),
-(9, '19:32:10', '', 4, 'G0005', 'Đã xem'),
-(10, '19:33:10', '', 5, 'G0005', 'Đã nhận');
+INSERT INTO `message` (`id`, `time`, `sendId`, `receiveId`, `status`) VALUES
+(1, '19:30:10', 1, 'U0001', 'Đã xem'),
+(2, '19:31:10', 2, 'U0001', 'Đã xem'),
+(3, '19:32:10', 1, 'U0001', 'Đã xem'),
+(4, '19:32:10', 1, 'U0001', 'Đã xem'),
+(5, '19:33:10', 2, 'U0001', 'Đã nhận'),
+(6, '19:31:10', 1, 'G0005', 'Đã xem'),
+(7, '19:31:10', 2, 'G0005', 'Đã xem'),
+(8, '19:32:10', 3, 'G0005', 'Đã xem'),
+(9, '19:32:10', 4, 'G0005', 'Đã xem'),
+(10, '19:33:10', 5, 'G0005', 'Đã nhận');
 
 -- --------------------------------------------------------
 
@@ -233,6 +245,13 @@ ALTER TABLE `detailgroup`
   ADD KEY `fk_user_detailGroup` (`userId`);
 
 --
+-- Indexes for table `emotion`
+--
+ALTER TABLE `emotion`
+  ADD KEY `sendId` (`sendId`),
+  ADD KEY `messageId` (`messageId`);
+
+--
 -- Indexes for table `friend`
 --
 ALTER TABLE `friend`
@@ -312,6 +331,13 @@ ALTER TABLE `textmessage`
 ALTER TABLE `detailgroup`
   ADD CONSTRAINT `fk_group_detailGroup` FOREIGN KEY (`groupId`) REFERENCES `groupuser` (`id`),
   ADD CONSTRAINT `fk_user_detailGroup` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
+
+--
+-- Constraints for table `emotion`
+--
+ALTER TABLE `emotion`
+  ADD CONSTRAINT `emotion_ibfk_1` FOREIGN KEY (`sendId`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `emotion_ibfk_2` FOREIGN KEY (`messageId`) REFERENCES `message` (`id`);
 
 --
 -- Constraints for table `friend`

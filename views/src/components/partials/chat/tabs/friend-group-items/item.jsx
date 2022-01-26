@@ -6,18 +6,26 @@ import { useDispatch } from 'react-redux'
 import { showCenter, showFeature } from '../../../../../redux/actions/taskbar'
 
 function Item({id, name, image, addFriend, createGroup}) {
-    //redux 
+    
+    /*----redux----*/
+    //ket noi den redux
     const dispatch = useDispatch()
     
-    //states
-
+    /*----states----*/
     const [checked, setChecked] = useState(false)
 
-    //handles 
+    /*----handles----*/
+    //xu ly nhan vao item 
     const handleClickToCheckFriend = (e) => { 
         if(createGroup) {
             $(e.currentTarget).find('.friend-add-friend-checkbox').attr('checked', checked ? false : true)
             setChecked(checked ? false : true)
+        }
+        $(e.currentTarget).addClass('active-friend-group-item')
+        for(let val of $('.friend-group-item')) {
+            if(val !== e.currentTarget) {
+                $(val).removeClass('active-friend-group-item')
+            }
         }
         $('#tab-wrapper').toggleClass('hide-tab-in-phones-screen')
         $('.main-chat-center').toggleClass('show-main-chat-phone-screen')
@@ -25,6 +33,7 @@ function Item({id, name, image, addFriend, createGroup}) {
         dispatch(display)
     }
 
+    //xu ly show khung mo rong
     const handleClickToShowFeature = (e) => {
         e.stopPropagation()
         const top = $(window).height() <=$(e.target).offset().top + 100 ? $(e.target).offset().top - 60 : $(e.target).offset().top
@@ -42,6 +51,7 @@ function Item({id, name, image, addFriend, createGroup}) {
         dispatch(display)
     }
 
+    //xy ly thay doi checked
     const handleChangeChecked = (e)=>{
         setChecked(e.target.checked)
     }

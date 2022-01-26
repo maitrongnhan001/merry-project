@@ -3,9 +3,10 @@ import MyProfile from './my-profile/profile'
 import FriendProfile from './friend-profile/profile'
 import { useSelector } from 'react-redux'
 
-function Profile(props) {
+function Profile() {
 
-    //redux 
+    /*----redux----*/
+    //lay du lieu tu redux
     const friendProfile = useSelector(state=>state.friends.friendProfile)
     
     return (

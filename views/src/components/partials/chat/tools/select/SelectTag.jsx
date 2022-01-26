@@ -3,10 +3,16 @@ import $ from 'jquery'
 import './SelectTag.scss'
 
 
-export default function SelectTag(props) {
-    const {onSelected, option_select, default_value, name} = props
+export default function SelectTag({onSelected, option_select, default_value, name, width}) {
+
+    /*----states----*/
+    //item duoc chon
     const [item, setItem] = useState(default_value)
+    
+    //danh sach item
     const [option, setOption] = useState([])
+
+    /*----data----*/
     const mapOption = ()=> {
         return (
             option.map((elm, idx)=>{
@@ -15,26 +21,11 @@ export default function SelectTag(props) {
         )
     } 
 
-    useEffect(()=>{
-        $('.select-tag .select-option').hide()
-        $('body').click((e)=>{
-            if(!e.target.classList.value.match(/select-items/)){
-                $('.select-tag .select-option').slideUp(400)
-                $('.select-tag .select-items .select-tag-icon').css('transform', 'rotateZ(90deg)')
-            }
-        })
-    },[]) 
-
+    /*----handles----*/
     const changeOption = (e)=>{
         setItem(e.target.dataset.country)
         onSelected(name, e.target.dataset.country)
     }
-
-    useEffect(()=>{
-        if(option_select){
-            setOption(option_select)
-        }
-    }, [option_select])
 
     const handleClickItem = (e)=>{
         $(e.target).next().stop().slideToggle(400)
@@ -48,8 +39,25 @@ export default function SelectTag(props) {
         }
     }
 
+    /*----lifecycle----*/
+    useEffect(()=>{
+        $('.select-tag .select-option').hide()
+        $('body').click((e)=>{
+            if(!e.target.classList.value.match(/select-items/)){
+                $('.select-tag .select-option').slideUp(400)
+                $('.select-tag .select-items .select-tag-icon').css('transform', 'rotateZ(90deg)')
+            }
+        })
+    },[]) 
+
+    useEffect(()=>{
+        if(option_select){
+            setOption(option_select)
+        }
+    }, [option_select])
+
     return (
-        <div className='select-tag' style={{width: props.width ? props.width : ''}}>
+        <div className='select-tag' style={{width: width ? width : ''}}>
             <div className='select-items' onClick={handleClickItem}>
                 <p className='select-tag-title'>{item}</p>
                 <i className='fas fa-chevron-right select-tag-icon'></i>

@@ -5,12 +5,13 @@ import $ from 'jquery'
 import { showFriendProfile } from '../../../../../redux/actions/friends'
 import { showDialog } from '../../../../../redux/actions/taskbar'
 
-function Profile(props) {
+function Profile() {
 
-    //redux
+    /*----redux----*/
+    //ket noi den redux
     const dispatch = useDispatch()
 
-    //handles
+    /*----handles----*/
     const handleClickToHideFriendProfile = () => {
         const show = showDialog(0)
         dispatch(show)
@@ -18,6 +19,7 @@ function Profile(props) {
         dispatch(display)
     }
 
+    /*----lifecycle----*/
     useEffect(()=> {
         $('.friend-profile-dialog-form').fadeTo('.5s', 1)
     })

@@ -7,18 +7,22 @@ import { showDialog, showFeature } from '../../../../../redux/actions/taskbar'
 
 function Feature({children, offset, group}) {
 
-    //redux
+    /*----redux----*/
+    //lay du lieu tu redux
     const feature = useSelector(state => state.taskbar.feature)
+    
+    //ket noi den redux
     const dispatch = useDispatch()
 
-    //ref
+    /*----refs----*/
     const ref = useRef(null)
     
     if(ref.current != null) {
         ref.current.style.display = 'none'
     }
 
-    //handles 
+    /*----handles----*/
+    //xu ly hien thi form thong tin ca nhan 
     const handleClickToShowProfile = ()=> {
         const updateFeature = showFeature({...feature, isShow: 0}) 
         dispatch(updateFeature)
@@ -28,7 +32,7 @@ function Feature({children, offset, group}) {
         dispatch(display)
     }
 
-    //lifecycle
+    /*----lifecycle ----*/
     useEffect(()=>{
         $('.tab-item-feature').slideDown('fast')
     })

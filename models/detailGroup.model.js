@@ -37,3 +37,49 @@ module.exports.getGroups = (userId, limit, offset) => {
         });
     });
 }
+
+//them mot thanh vien moi
+module.exports.create = (detailObj) => {
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO detailgroup SET ?', detailObj, (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                result = JSON.parse(JSON.stringify(result));
+                let res = {
+                    ...detailObj
+                }
+                resolve(res);
+            }
+        });
+    });
+}
+
+//kiem tra mot group chat thuong co ton tai chua
+module.exports.checkSingleGroup = (userId1, userId2) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT COUNT(detailgroup.userId) AS amount
+                     FROM detailgroup 
+                     WHERE (detailgroup.userId = ${userId1}
+                        OR detailgroup.userId = ${userId2})
+                        AND detailgroup.groupId LIKE 'U%'
+                        GROUP BY detailgroup.groupId`;
+        connection.query(sql, (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                result = JSON.parse(JSON.stringify(result));
+                if (result.length != 0) {
+                    for (let i = 0; i < result.length; i++) {
+                        if (result[i].amount == 2) resolve(true);
+                    }
+                    resolve(false);
+
+                } else {
+                    resolve(false);
+                }
+            }
+        })
+
+    })
+}

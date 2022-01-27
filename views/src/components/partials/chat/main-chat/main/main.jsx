@@ -1,8 +1,32 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './main.scss'
 import Message from './messages/message'
 
-function Main(props) {
+function Main() {
+
+    /*----states----*/
+    //tin nhan da gui, nhan
+    const [message,setMessage] = useState({
+        messageId: '',
+        senderId: 0,
+        receiverId: '',
+        message: 
+        {
+            type: 'text',
+            content: '',
+            time: 0,
+            status: 'đã gửi'
+        }
+    }) 
+
+    /*----lifecycle----*/
+    // useEffect(() => {
+    //     (async function () {
+    //         const result = await listenSocket('send-text-message')
+    //         setMessage(result)
+    //     })()
+    // }, [])
+
     return (
         <div className="main-chat-chat-area">
             <div className="main-chat-chat-area-wrapper">

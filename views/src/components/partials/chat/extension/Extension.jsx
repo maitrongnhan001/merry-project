@@ -54,6 +54,9 @@ function Extension(props) {
             if ($(window).width() <= 1200) {
                 const display = showExtension(0)
                 dispatch(display)
+            }else {
+                const display = showExtension(1)
+                dispatch(display)
             }
         })
         // eslint-disable-next-line react-hooks/exhaustive-deps

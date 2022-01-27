@@ -16,11 +16,10 @@
         }
     }
     .message-block-distance {
-        min-width: 5rem;
+        min-width: 2rem;
     }
 
     .message-content {
-        width: auto;
         max-width: 30rem;
         min-width: 5rem;
         background-color: #EFEFEF;  
@@ -34,7 +33,6 @@
         }
 
         a {
-            color: black;
             font-style: italic;
             user-select: text;
             word-break: break-word;

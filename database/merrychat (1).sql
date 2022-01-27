@@ -2,10 +2,10 @@
 -- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Jan 24, 2022 at 03:23 AM
--- Server version: 10.4.21-MariaDB
--- PHP Version: 8.0.12
+-- Host: localhost
+-- Generation Time: Jan 24, 2022 at 10:00 AM
+-- Server version: 10.4.20-MariaDB
+-- PHP Version: 8.0.8
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,6 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `merrychat`
 --
+CREATE DATABASE IF NOT EXISTS `merrychat` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `merrychat`;
 
 -- --------------------------------------------------------
 

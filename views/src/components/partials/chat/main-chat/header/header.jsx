@@ -9,15 +9,19 @@ import $ from 'jquery'
 import { showFriendProfile } from '../../../../../redux/actions/friends'
 import { showDialog } from '../../../../../redux/actions/taskbar'
 
-function Header(props) {
+function Header() {
     
-    //redux
+    /*----redux----*/
+    //lay du lieu tu redux
     const isShowExtension = useSelector(state => state.extension.isShow)
+    
+    //ket noi den redux
     const dispatch = useDispatch()
 
-    //states
+    /*----states----*/
     const [isShowSearchBox, setIsShowSearchBox]  = useState(0)
 
+    /*----data----*/
     const user = {
         id: '1',
         firstName: 'Phuc Khang',
@@ -27,18 +31,20 @@ function Header(props) {
 
     const name = `${user.lastName} ${user.firstName}`
 
-    //handles
-
+    /*----handles ----*/
+    //xu ly an hien extension
     const handleClickShowExtension = (e)=>{
         e.stopPropagation();
         const isShow = showExtension(isShowExtension === 0 ? 1 : 0)
         dispatch(isShow)
     }
 
+    //xu ly an hien khung tim kiem tin nhan
     const handleShowSearchMessageBox = (isShow)=> {
         setIsShowSearchBox(isShow)
     }
 
+    //xu ly an hien form thong tin ca nhan
     const handleClickToShowProfile = ()=> {
         const show = showDialog(3)
         dispatch(show)
@@ -46,6 +52,7 @@ function Header(props) {
         dispatch(display)
     }
 
+    /*----lifecycle----*/
     useEffect(()=>{
         if(isShowExtension === 1) {
             $('.main-chat-header-wrapper .fa-bars').css('background', '#5b67ee49')

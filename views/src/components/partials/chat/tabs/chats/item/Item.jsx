@@ -5,19 +5,20 @@ import { useDispatch } from 'react-redux';
 import { showCenter } from '../../../../../../redux/actions/taskbar';
 import $ from 'jquery'
 
-function Item(props) {
+function Item({id, image, lastName, firstName}) {
 
-    //redux
+    /*----redux----*/
+    //ket noi den redux
     const dispatch = useDispatch()
 
-    //handles  
+    /*----handles----*/
+    //xu ly hien thi chat item  
     const handleClickToShowChat = (e)=> {
         const display = showCenter(1)
         dispatch(display)
         $(e.currentTarget).addClass('active-friend-group-item')
         for(let val of $('.tab-chat-item')) {
             if(val !== e.currentTarget) {
-                console.log(val);
                 $(val).removeClass('active-friend-group-item')
             }
         }
@@ -26,12 +27,12 @@ function Item(props) {
     }
 
     return (
-        <div className="tab-chat-item" data-id={props.id} onClick={handleClickToShowChat}>
+        <div className="tab-chat-item" data-id={id} onClick={handleClickToShowChat}>
             <div className="tab-chat-avatar">
-                <Image image={props.image}></Image>
+                <Image image={image}></Image>
             </div>
             <div className="tab-chat-info">
-                <p className="tab-chat-name">{props.lastName + ' ' + props.firstName}</p>
+                <p className="tab-chat-name">{lastName + ' ' + firstName}</p>
                 <p className="tab-chat-content">Hi! My name is Khang. What can I help you ?</p>
             </div>
         </div>

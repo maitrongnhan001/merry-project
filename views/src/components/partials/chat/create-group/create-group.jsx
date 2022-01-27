@@ -6,7 +6,7 @@ import { showDialog } from '../../../../redux/actions/taskbar'
 import { useState } from 'react'
 import $ from 'jquery'
 
-function CreateGroup(props) {
+function CreateGroup() {
 
     //states
     const [group] = useState({
@@ -16,23 +16,30 @@ function CreateGroup(props) {
         ],
     })
 
-    //redux
+    /*----redux----*/
+    //lay du lieu tu redux
     const friendsList = useSelector(state => state.friends.friendsList)
-    const dispatch = useDispatch()
     
-    //handles
-    const handleClickToHideCreateGroup = () =>{
-        const isDisplay = showDialog(0)
-        dispatch(isDisplay)
-    }
+    //ket noi voi redux
+    const dispatch = useDispatch()
 
+    /*----data----*/
+    //map du lieu
     const items = friendsList.map((value, idx) => {
         const name=value.firstName && value.lastName ? `${value.lastName} ${value.firstName}` : ''
         return  (
             <FriendItem key={idx} name={name} id={value.id} image={value.image} createGroup></FriendItem>
         )
     })
+    
+    /*----handles----*/
+    //xu ly an form tao nhom
+    const handleClickToHideCreateGroup = () =>{
+        const isDisplay = showDialog(0)
+        dispatch(isDisplay)
+    }
 
+    /*----lifecycle----*/
     useEffect(()=>{
         console.log(group)
     }, [group])

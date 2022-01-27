@@ -4,59 +4,31 @@ import './toolbar-chat.scss'
 import Emoji from '../../emoji/emoji'
 import $ from 'jquery'
 
-function ToolbarChat(props) {
+function ToolbarChat() {
 
-    //states
-    const[emoji, setEmoji] = useState(0)
-
-    //
-    const showEmoji= (isTrue)=>{
-        if(isTrue)
-            $('.main-chat-toolbar .main-chat-emoji').css('display', 'block')
-        $('.main-chat-toolbar .main-chat-emoji').css('opacity', 0)
-        
-        setTimeout(()=>{
-            if(isTrue) {
-                $('.main-chat-toolbar .main-chat-emoji').css('opacity', isTrue)
-            }else {
-                $('.main-chat-toolbar .main-chat-emoji').css('display', 'none')
-            }
-        }, 100)
-        
-    } 
-
-    //handles
-
+    /*----states----*/
     const handleClickEmoji = (e)=>{
         e.stopPropagation()
-        setEmoji(emoji ? 0 : 1)
+        $('.main-chat-toolbar .main-chat-emoji').fadeToggle('.5s')
     }
 
-    //lifecycle
-
-    useEffect(()=>{
-        showEmoji(emoji)
-    }, [emoji])
-
+    //lifecyclT
     useEffect(()=>{
         $(window).resize(()=>{
-            setEmoji(0)
+            $('.main-chat-toolbar .main-chat-emoji').fadeOut('.5s')
         })
-    }, [])
-
-    useEffect(()=>{
-        $(window).click(()=> {
-            setEmoji(0)
+        $(window).click(function(e){
+            if(!e.target.classList.value.match(/main-chat-emoji/) || !e.target.classList.value.match(/fa-grin-stars/) ){
+                $('.main-chat-toolbar .main-chat-emoji').fadeOut('.5s')
+            }
         })
     }, [])
 
     return (
         <div className="main-chat-toolbar">
-            {emoji ?
             <div className="main-chat-emoji" onClick={(e)=>e.stopPropagation()}>
                <Emoji></Emoji>
-            </div> : ''
-            }
+            </div>
             <i className="fas fa-grin-stars" title="Gửi biểu tượng cảm xúc" onClick={handleClickEmoji}></i>
             <label htmlFor="main-chat-image-sender">
             <i className="fas fa-photo-video" title="Gửi tệp đa phương tiện"></i>

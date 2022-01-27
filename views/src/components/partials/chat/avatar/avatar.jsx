@@ -1,16 +1,16 @@
 import React from 'react';
 import './avatar.scss'
 
-function Avatar(props) {
+function Avatar({image}) {
 
     return (
         <div className="friend-group-avatar-wrapper">
             {
-                props.image.isGroup ?
+                image.isGroup ?
                 <>
-                    <img src={props.image.firstAvatarMember} className="no-group-avatar no-group-avatar-1"  alt=""></img>
-                    <img src={props.image.secondAvatarMember} className="no-group-avatar no-group-avatar-2" alt=""></img>
-                </> : <img src={props.image} className="avatar" alt=""></img>
+                    <img src={image.firstAvatarMember} className="no-group-avatar no-group-avatar-1"  alt=""></img>
+                    <img src={image.secondAvatarMember} className="no-group-avatar no-group-avatar-2" alt=""></img>
+                </> : <img src={image} className="avatar" alt=""></img>
             }
             <p className="friend-group-avatar-active"></p>
         </div>

@@ -55,6 +55,20 @@ module.exports.create = (detailObj) => {
     });
 }
 
+//xoa du lieu bang detail theo group id
+module.exports.deleteByGroupId = (id) => {
+    return new Promise((resolve, reject) => {
+        const sql = `DELETE FROM detailgroup WHERE groupId = '${id}'`;
+        connection.query(sql, (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+}
+
 //kiem tra mot group chat thuong co ton tai chua
 module.exports.checkSingleGroup = (userId1, userId2) => {
     return new Promise((resolve, reject) => {

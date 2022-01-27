@@ -2,6 +2,8 @@ const userIsLogin = require('../stores/UserLoginStore');
 const group = require('../models/group.model');
 const detailGroup = require('../models/detailGroup.model');
 const user = require('../models/user.model');
+const fs = require('fs');
+const path = require('path');
 
 module.exports.addGroup = async (data, socket, io) => {
     //thong bao toi cac nguoi dung trong nhom, co mot nhom vua tao
@@ -119,12 +121,118 @@ module.exports.addGroup = async (data, socket, io) => {
     }
 }
 
-module.exports.updateGroup = (data, socket, io) => {
+module.exports.updateGroup = async (data, socket, io) => {
     //thong bao toi cac nguoi dung trong nhom, vua cap nhat nhom
+    try {
+        //kiem tra du lieu
+        if (!(data.groupId && (data.groupName || (data.image.fileName && data.image.file)))) {
+            socket.emit('update-group-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
+            return;
+        }
+
+        //lay du lieu
+        const groupId = data.groupId;
+        let updateGroupObj = {};
+        if (data.groupName) updateGroupObj.groupName = data.groupName;
+
+        //random ten anh
+        if (data.image) {
+            const fileName = data.image.fileName;
+            const fileNameArr = fileName.split('.');
+            const extension = fileNameArr.pop();
+            const imageName = `group-${(new Date()).getTime()}.${extension}`;
+            updateGroupObj.image = imageName;
+
+            //luu hinh anh vao server
+            fs.writeFile(path.resolve(__dirname, '../public/avatarGroup/', updateGroupObj.image), data.image.file, (error) => {
+                if (error) {
+                    socket.emit('update-group-error', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+                    console.error(error);
+                }
+            });
+        }
+
+        //luu du lieu vao table group
+        await group.update(updateGroupObj, groupId);
+
+        //lay tat ca user trong room
+        const listMembers = await detailGroup.getMembers(groupId, 10000, 0);
+
+        //join all member to room
+        await listMembers.forEach(async (Element) => {
+            const userId = Element.userId;
+            const userSocket = await userIsLogin.getUserSocket(userId);
+
+            if (userSocket) {
+                userSocket.join(`${groupId}`);
+            }
+        });
+
+        //tra du lieu ve cho client
+        const returnData = {
+            groupId: groupId,
+            groupName: (updateGroupObj.groupName) ? updateGroupObj.groupName : null,
+            image: (updateGroupObj.image) ? { img1: updateGroupObj.image, img2: null } : null
+        }
+
+        io.to(`${groupId}`).emit('update-group', returnData);
+    } catch (err) {
+        socket.emit('update-group-error', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+        console.error(err);
+    }
 }
 
-module.exports.deleteGroup = (data, socket, io) => {
+module.exports.deleteGroup = async (data, socket, io) => {
     //thong bao toi cac nguoi dung trong nhom, vua xoa nhom
+    try {
+        //kiem tra du lieu
+        if (!data.groupId) {
+            socket.emit('delete-group-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
+            return;
+        }
+        //lay du lieu
+        const groupId = data.groupId;
+
+        //lay tat ca user trong room
+        const listMembers = await detailGroup.getMembers(groupId, 10000, 0);
+
+        //xoa du lieu trong bang detail group
+        await detailGroup.deleteByGroupId(groupId);
+
+        //xoa hinh anh group
+        const image = (await group.get(groupId))[0].image;
+        console.log(image);
+        if (image) {
+            fs.unlink(path.resolve(__dirname, '../public/avatarGroup/', image), (error) => {
+                if (error) {
+                    socket.emit('update-group-error', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+                    console.error(error);
+                }
+            });
+        }
+
+        //xoa du lieu trong bang group
+        await group.delete(groupId);
+
+        //join all member to room
+        await listMembers.forEach(async (Element) => {
+            const userId = Element.userId;
+            const userSocket = await userIsLogin.getUserSocket(userId);
+
+            if (userSocket) {
+                userSocket.join(`${groupId}`);
+            }
+        });
+
+        //tra du lieu ve cho client
+        const returnData = {
+            groupId: groupId
+        }
+        io.to(`${groupId}`).emit('delete-group', returnData);
+    } catch (err) {
+        socket.emit('delete-group-error', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+        console.error(err);
+    }
 }
 
 module.exports.addMember = (data, socket, io) => {

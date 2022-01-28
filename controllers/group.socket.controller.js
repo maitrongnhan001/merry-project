@@ -235,8 +235,57 @@ module.exports.deleteGroup = async (data, socket, io) => {
     }
 }
 
-module.exports.addMember = (data, socket, io) => {
+module.exports.addMember = async (data, socket, io) => {
     //thong bao toi cac nguoi dung trong nhom, chao don thanh vien moi
+    try {
+        //kiem tra du lieu
+        if (!(data.groupId && data.member && (data.member.length > 0))) {
+            socket.emit('add-member-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
+            return;
+        }
+
+        //lay du lieu
+        const groupId = data.groupId;
+        const member = data.member;
+
+        //luu du lieu vao table detail group
+        let listDetailGroups = [];
+        for (let i = 0; i < member.length; i++) {
+            if (member[i]) {
+                const detailGroupObj = [
+                    groupId,
+                    member[i]
+                ]
+                listDetailGroups.push(detailGroupObj);
+            }
+        }
+        console.log(listDetailGroups);
+        await detailGroup.create(listDetailGroups);
+
+        //tra du lieu cho client
+        //lay tat ca user trong room
+        const listMembers = await detailGroup.getMembers(groupId, 10000, 0);
+
+        //join all member to room
+        await listMembers.forEach(async (Element) => {
+            const userId = Element.userId;
+            const userSocket = await userIsLogin.getUserSocket(userId);
+
+            if (userSocket) {
+                userSocket.join(`${groupId}`);
+            }
+        });
+
+        //tra du lieu ve cho client
+        const returnData = {
+            groupId: groupId,
+            member: member
+        }
+        io.to(`${groupId}`).emit('add-member', returnData);
+    } catch (err) {
+        socket.emit('add-member-error', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+        console.error(err);
+    }
 }
 
 module.exports.deleteMember = (data, socket, io) => {

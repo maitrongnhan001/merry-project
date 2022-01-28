@@ -41,7 +41,7 @@ module.exports.getGroups = (userId, limit, offset) => {
 //them mot thanh vien moi
 module.exports.create = (detailObj) => {
     return new Promise((resolve, reject) => {
-        connection.query('INSERT INTO detailgroup SET ?', detailObj, (error, result) => {
+        connection.query('INSERT INTO detailgroup (groupId, userId) VALUES ?', [detailObj], (error, result) => {
             if (error) {
                 reject(error);
             } else {

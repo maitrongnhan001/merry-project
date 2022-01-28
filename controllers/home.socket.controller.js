@@ -17,11 +17,13 @@ module.exports.login = async (data, socket, io) => {
         //chuyen tat ca trang thai tin nhan thanh da nhan
         const listGroupChat = await detailGroup.getGroups(userId, 10000, 0);
         let groupChatArr = [];
-        for (let i = 0; i < listGroupChat.length; i++) {
-            groupChatArr.push(listGroupChat[i].groupId);
+        if (listGroupChat) {
+            for (let i = 0; i < listGroupChat.length; i++) {
+                groupChatArr.push(listGroupChat[i].groupId);
+            }
+            const status = 'Đã nhận';
+            await chat.updateStatus(status, groupChatArr);
         }
-        const status = 'Đã nhận';
-        await chat.updateStatus(status, groupChatArr);
 
         //lay danh sach ban be
         const listFriend = await friend.listFriend(userId, 10000, 0);

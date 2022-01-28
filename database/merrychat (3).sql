@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 28, 2022 at 06:38 AM
+-- Generation Time: Jan 28, 2022 at 08:11 AM
 -- Server version: 10.4.20-MariaDB
 -- PHP Version: 8.0.8
 
@@ -44,6 +44,9 @@ INSERT INTO `detailgroup` (`groupId`, `userId`) VALUES
 ('G0005', 3),
 ('G0005', 4),
 ('G0005', 5),
+('G1643350531590', 1),
+('G1643350531590', 2),
+('G1643350531590', 3),
 ('U0001', 1),
 ('U0001', 2),
 ('U0002', 1),
@@ -54,6 +57,18 @@ INSERT INTO `detailgroup` (`groupId`, `userId`) VALUES
 ('U0004', 5),
 ('U1643188466232', 2),
 ('U1643188466232', 3);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `documentmessage`
+--
+
+CREATE TABLE `documentmessage` (
+  `id` int(11) NOT NULL,
+  `fileName` varchar(255) NOT NULL,
+  `messageId` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -106,6 +121,7 @@ CREATE TABLE `groupuser` (
 
 INSERT INTO `groupuser` (`id`, `groupName`, `AdminId`, `image`) VALUES
 ('G0005', 'Tối nay ăn gì??', 1, 'avatar-group-1'),
+('G1643350531590', 'alo alo', 1, NULL),
 ('U0001', '', NULL, NULL),
 ('U0002', '', NULL, NULL),
 ('U0003', '', NULL, NULL),
@@ -141,8 +157,7 @@ CREATE TABLE `mediamessage` (
 --
 
 INSERT INTO `mediamessage` (`id`, `path`, `messageId`) VALUES
-(1, 'message-image-1.jpeg', 9),
-(2, 'message-document-1.doc', 10);
+(1, 'message-image-1.jpeg', 9);
 
 -- --------------------------------------------------------
 
@@ -172,8 +187,7 @@ INSERT INTO `message` (`id`, `time`, `sendId`, `receiveId`, `status`, `type`) VA
 (6, '19:31:10', 1, 'G0005', 'Đã xem', 'text'),
 (7, '19:31:10', 2, 'G0005', 'Đã xem', 'text'),
 (8, '19:32:10', 3, 'G0005', 'Đã xem', 'text'),
-(9, '19:32:10', 4, 'G0005', 'Đã xem', 'media'),
-(10, '19:33:10', 5, 'G0005', 'Đã nhận', 'media');
+(9, '19:32:10', 4, 'G0005', 'Đã xem', 'media');
 
 -- --------------------------------------------------------
 
@@ -228,7 +242,8 @@ INSERT INTO `user` (`id`, `email`, `password`, `DOB`, `firstName`, `lastName`, `
 (2, 'phanvantung@gmail.com', 'tung@12345', '1999-03-11', 'Tùng', 'Phan Văn', 0, 'avatar-2.jpeg', 0),
 (3, 'lethuyduong@gmail.com', 'duong@12345', '2000-05-09', 'Dương', 'Lê Thuỳ', 1, 'avatar-3.jpeg', 0),
 (4, 'nguyenleanhtu@gmail.com', 'tu@12345', '2000-11-20', 'Tú', 'Nguyễn Lê Anh', 0, 'avatar-4.jpeg', 0),
-(5, 'tranhuyentrang@gmail.com', 'trang@12345', '2001-10-20', 'Trang', 'Trần Huyền', 0, 'avatar-5.jpeg', 0);
+(5, 'tranhuyentrang@gmail.com', 'trang@12345', '2001-10-20', 'Trang', 'Trần Huyền', 0, 'avatar-5.jpeg', 0),
+(6, 'ni@gmail.com', 'toni@4321', '2000-01-19', 'Ni', 'Nguyen To', 1, '', 1);
 
 -- --------------------------------------------------------
 
@@ -259,6 +274,13 @@ INSERT INTO `waitingresquest` (`sendId`, `receiveId`) VALUES
 ALTER TABLE `detailgroup`
   ADD PRIMARY KEY (`groupId`,`userId`),
   ADD KEY `fk_user_detailGroup` (`userId`);
+
+--
+-- Indexes for table `documentmessage`
+--
+ALTER TABLE `documentmessage`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `messageId` (`messageId`);
 
 --
 -- Indexes for table `emotion`
@@ -329,6 +351,12 @@ ALTER TABLE `waitingresquest`
 --
 
 --
+-- AUTO_INCREMENT for table `documentmessage`
+--
+ALTER TABLE `documentmessage`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `linkmessage`
 --
 ALTER TABLE `linkmessage`
@@ -362,6 +390,12 @@ ALTER TABLE `textmessage`
 ALTER TABLE `detailgroup`
   ADD CONSTRAINT `fk_group_detailGroup` FOREIGN KEY (`groupId`) REFERENCES `groupuser` (`id`),
   ADD CONSTRAINT `fk_user_detailGroup` FOREIGN KEY (`userId`) REFERENCES `user` (`id`);
+
+--
+-- Constraints for table `documentmessage`
+--
+ALTER TABLE `documentmessage`
+  ADD CONSTRAINT `documentmessage_ibfk_1` FOREIGN KEY (`messageId`) REFERENCES `message` (`id`);
 
 --
 -- Constraints for table `emotion`

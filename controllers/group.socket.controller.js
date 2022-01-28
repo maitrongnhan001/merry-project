@@ -52,14 +52,18 @@ module.exports.addGroup = async (data, socket, io) => {
         const dataGroup = await group.create(groupObj);
 
         //luu thong tin member vao bang detailgroup
+        let listDetailGroups = [];
         for (let i = 0; i < members.length; i++) {
-            const detailObj = {
-                groupId: groupId,
-                userId: members[i]
+            if (members[i]) {
+                const detailGroupObj = [
+                    groupId,
+                    members[i]
+                ]
+                listDetailGroups.push(detailGroupObj);
             }
-            await detailGroup.create(detailObj);
         }
-
+        await detailGroup.create(listDetailGroups);
+       
         //create room
         //lay tat ca user trong room
         const listMembers = await detailGroup.getMembers(groupId, 10000, 0);
@@ -137,6 +141,17 @@ module.exports.updateGroup = async (data, socket, io) => {
 
         //random ten anh
         if (data.image) {
+            //kiem tra hinh anh da luu truoc do, neu anh ton tai thi xoa
+            let getImage = (await group.get(groupId))[0].image;
+            if (getImage) {
+                fs.unlink(path.resolve(__dirname, '../public/avatarGroup/', getImage), (error) => {
+                    if (error) {
+                        socket.emit('update-group-error', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+                        console.error(error);
+                    }
+                });
+            }
+
             const fileName = data.image.fileName;
             const fileNameArr = fileName.split('.');
             const extension = fileNameArr.pop();
@@ -168,11 +183,45 @@ module.exports.updateGroup = async (data, socket, io) => {
             }
         });
 
+        //lay ten group
+        if (!updateGroupObj.groupName) {
+            let groupName = (await group.get(groupId))[0].groupName;
+            if (groupName.length == 0) {
+                const getNameFromMembers = await detailGroup.getUserByGroupId(groupId, 2, 0);
+                groupName = `${getNameFromMembers[0].firstName}, ${getNameFromMembers[1].firstName}, ...`;
+            }
+            updateGroupObj.groupName = groupName;
+        }
+
+        let image = {};
+        //lay anh dai dien group
+        if (!updateGroupObj.image) {
+            let getImage = (await group.get(groupId))[0].image;
+            if (image) {
+                const getImageFromMembers = await detailGroup.getUserByGroupId(groupId, 2, 0);
+                console.log(getImageFromMembers);
+                image = {
+                    img1: getImageFromMembers[0].image,
+                    img2: getImageFromMembers[1].image
+                }
+            } else {
+                image = {
+                    img1: getImage,
+                    img2: null
+                }
+            }
+        } else {
+            image = {
+                img1: updateGroupObj.image,
+                img2: null
+            }
+        }
+
         //tra du lieu ve cho client
         const returnData = {
             groupId: groupId,
-            groupName: (updateGroupObj.groupName) ? updateGroupObj.groupName : null,
-            image: (updateGroupObj.image) ? { img1: updateGroupObj.image, img2: null } : null
+            groupName: updateGroupObj.groupName,
+            image: image
         }
 
         io.to(`${groupId}`).emit('update-group', returnData);
@@ -201,11 +250,10 @@ module.exports.deleteGroup = async (data, socket, io) => {
 
         //xoa hinh anh group
         const image = (await group.get(groupId))[0].image;
-        console.log(image);
         if (image) {
             fs.unlink(path.resolve(__dirname, '../public/avatarGroup/', image), (error) => {
                 if (error) {
-                    socket.emit('update-group-error', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+                    socket.emit('delete-group-error', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
                     console.error(error);
                 }
             });
@@ -239,27 +287,26 @@ module.exports.addMember = async (data, socket, io) => {
     //thong bao toi cac nguoi dung trong nhom, chao don thanh vien moi
     try {
         //kiem tra du lieu
-        if (!(data.groupId && data.member && (data.member.length > 0))) {
+        if (!(data.groupId && data.members && (data.members.length > 0))) {
             socket.emit('add-member-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
             return;
         }
 
         //lay du lieu
         const groupId = data.groupId;
-        const member = data.member;
+        const members = data.members;
 
         //luu du lieu vao table detail group
         let listDetailGroups = [];
-        for (let i = 0; i < member.length; i++) {
-            if (member[i]) {
+        for (let i = 0; i < members.length; i++) {
+            if (members[i]) {
                 const detailGroupObj = [
                     groupId,
-                    member[i]
+                    members[i]
                 ]
                 listDetailGroups.push(detailGroupObj);
             }
         }
-        console.log(listDetailGroups);
         await detailGroup.create(listDetailGroups);
 
         //tra du lieu cho client
@@ -279,7 +326,7 @@ module.exports.addMember = async (data, socket, io) => {
         //tra du lieu ve cho client
         const returnData = {
             groupId: groupId,
-            member: member
+            member: members
         }
         io.to(`${groupId}`).emit('add-member', returnData);
     } catch (err) {
@@ -288,6 +335,45 @@ module.exports.addMember = async (data, socket, io) => {
     }
 }
 
-module.exports.deleteMember = (data, socket, io) => {
+module.exports.deleteMember = async (data, socket, io) => {
     //thong bao toi cac nguoi dung trong nhom, vua xoa thanh vien
+     try {
+        //kiem tra du lieu
+        if (!(data.groupId && data.memberId)) {
+            socket.emit('delete-member-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
+            return;
+        }
+
+        //lay du lieu
+        const groupId = data.groupId;
+        const memberId = data.memberId;
+
+        //lay tat ca user trong room
+        const listMembers = await detailGroup.getMembers(groupId, 10000, 0);
+
+        //luu du lieu vao table detail group
+        await detailGroup.deleteByUserId(groupId, memberId);
+
+        //tra du lieu cho client
+
+        //join all member to room
+        await listMembers.forEach(async (Element) => {
+            const userId = Element.userId;
+            const userSocket = await userIsLogin.getUserSocket(userId);
+
+            if (userSocket) {
+                userSocket.join(`${groupId}`);
+            }
+        });
+
+        //tra du lieu ve cho client
+        const returnData = {
+            groupId: groupId,
+            memberId: memberId
+        }
+        io.to(`${groupId}`).emit('delete-member', returnData);
+    } catch (err) {
+        socket.emit('delete-member-error', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+        console.error(err);
+    }
 }

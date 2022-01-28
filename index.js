@@ -50,8 +50,14 @@ app.use(express.json());
 
 //-------------------use router---------------------//
 const friendRouter = require('./routers/friend')
+const groupRouter = require('./routers/group')
+const chatRouter = require('./routers/chat')
+const mediaRouter = require('./routers/contentChat')
 
 app.use('/api/friends', friendRouter)
+app.use('/api/groups', groupRouter)
+app.use('/api/chat', chatRouter)
+app.use('/api/content', mediaRouter)
 
 
 

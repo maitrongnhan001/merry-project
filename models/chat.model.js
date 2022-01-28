@@ -65,3 +65,30 @@ module.exports.updateEmotion = (emotion, id) => {
         });
     })
 }
+
+
+//lay danh sach nhan tin 
+module.exports.getListChat = (userId, limit, offset) =>{
+    return new Promise((resolve, reject) =>{
+        const sql = `SELECT messageTable.id, messageTable.receiveId, messageTable.type  FROM  detailgroup 
+        JOIN (
+            SELECT message.id as id, message.receiveId as receiveId , message.type AS type FROM user JOIN message ON user.id = message.sendId 
+                JOIN 
+                    (SELECT MAX(message.id) as lastId FROM message GROUP BY message.receiveId) 
+                    as lastIdTable ON message.id = lastIdTable.lastId ) as messageTable  ON detailgroup.groupId = messageTable.receiveId
+                    WHERE detailgroup.userId = ? LIMIT ? OFFSET ?`
+        connection.query(sql,[userId, limit, offset], function (error, result) {
+            if (error) {
+                reject(error);
+            } else {
+                if (result.length > 0) {
+                    const endResult = JSON.parse(JSON.stringify(result));
+                    resolve(endResult);
+                } else {
+                    resolve(null);
+                }
+            }
+        });
+    })
+}
+

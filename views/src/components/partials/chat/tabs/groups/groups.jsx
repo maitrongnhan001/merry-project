@@ -2,11 +2,13 @@ import React from 'react'
 import  {useSelector} from 'react-redux'
 import Item from '../friend-group-items/item'
 
-function Groups(props) {
+function Groups() {
 
-    //redux
+    /*----redux----*/
+    //lay du lieu tu redux
     const groupsList = useSelector(state => state.groups.groupsList)
 
+    /*----data----*/
     const items = groupsList.map((value, idx)=>{
         const name = value.name ? value.name : `${value.members[0].lastName} ${value.members[0].firstName}, 
                                                 ${value.members[1].lastName} ${value.members[1].firstName}, 

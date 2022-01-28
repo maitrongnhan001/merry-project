@@ -1,38 +1,86 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useEffect } from 'react'
 import './input-chat.scss'
 import $ from 'jquery'
+import {useSelector} from 'react-redux'
 
-function InputChat(props) {
+function InputChat() {
 
 
-    //handles
+    const emoji = useSelector(state => state.message.emoji)
 
-    const handleSubmit = (e)=>{
-        e.preventDefault()
+    /*----states----*/
+    const[message, setMessage] = useState({
+        senderId: 0,
+        receiverId: '',
+        message: {
+            content: ''
+        }
+    })
+
+    /*----handles----*/
+    //xu ly submit form
+    const handleSubmit = () => {
+        $('#input-chat-content').html('')
+        const emptyMessage = {
+            ...message,
+            message: {
+                content: ''
+            }
+        }
+        setMessage(emptyMessage)
     }
 
+    //xu ly the input
     const handleChange = (e)=> {
-        console.log($(e.target).html());
         if($(e.target).find('.placeholder'))
             $(e.target).find('.placeholder').css('display', 'none')
         if($(e.target).html() === '') {
-            console.log('ui');
             $(e.target).find('.placeholder').css('display', 'block')
+        }
+        const value = $(e.target).html()
+        const newMessage = {
+            senderId: 0,
+            receiverId: '',
+            message: {
+                content: value
+            }
+        }
+        setMessage(newMessage)
+    }
+
+    const handleStopDefault = (e)=> {
+        if(e.which === 13) {
+            handleSubmit()
+            e.preventDefault()
         }
     }
 
-    //lifecycle
+    /*----lifecycle ----*/
     useEffect(()=>{
         $('.main-chat-input-chat-wrapper .input-chat-content').focus()
     }, [])
 
+    useEffect(()=>{
+        $('#input-chat-content').html($('#input-chat-content').html() + emoji)
+        const value = $('#input-chat-content').html()
+        const newMessage = {
+            senderId: 0,
+            receiverId: '',
+            message: {
+                content: value
+            }
+        }
+        setMessage(newMessage)
+        console.log(newMessage);
+    }, [emoji])
+
     return (
         <div className="main-chat-input-chat-wrapper">
-            <form onSubmit={handleSubmit}>
-                <div contentEditable id="input-chat-content"  className="input-chat-content" data-placeholder="Gửi tin nhắn đến Đinh Phúc Khang." onKeyUp={handleChange}></div>
-                <input type="submit" className="input-chat-submit" value="Gửi" />
-            </form>
+            <div className="main-chat-input-chat-form">
+                <div contentEditable id="input-chat-content" className="input-chat-content" data-placeholder="Gửi tin nhắn đến Đinh Phúc Khang." onKeyPress={handleStopDefault} onKeyUp={handleChange}></div>
+                <button className="input-chat-submit" onClick={handleSubmit}>Gửi</button>
+            </div>
         </div>
     )
 }

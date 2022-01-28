@@ -4,23 +4,16 @@ import {useDispatch, useSelector} from 'react-redux'
 import { saveTab, setTheme, showCenter, showDialog } from '../../../../redux/actions/taskbar'
 import $ from 'jquery'
 
-function TaskBar(props) {
+function TaskBar() {
 
-    //redux
+    /*----redux----*/
+    //lay du lieu tu redux
     const focusTab = useSelector(state => state.taskbar.data)
+    
+    //ket noi den redux
     const dispatch = useDispatch() 
 
-    //hooks
-    useEffect(()=>{
-        if(focusTab === 0) {
-            $('.taskbar-wrapper .task-item-focus span').animate({top: '.5rem'}, 250)
-        }else if(focusTab === 1) {
-            $('.taskbar-wrapper .task-item-focus span').animate({top: "5.5rem"}, 250)
-        }else {
-            $('.taskbar-wrapper .task-item-focus span').animate({top: "10.5rem"}, 250)
-        }
-    }, [focusTab])
-
+    /*----handles----*/
     //handle avatar item
     const handleClickAvatar = (e)=>{
         const display = showDialog(3)
@@ -75,6 +68,17 @@ function TaskBar(props) {
     const handleClickSignOut = (e)=> {
 
     }
+
+    /*----lifecycle----*/
+    useEffect(()=>{
+        if(focusTab === 0) {
+            $('.taskbar-wrapper .task-item-focus span').animate({top: '.5rem'}, 250)
+        }else if(focusTab === 1) {
+            $('.taskbar-wrapper .task-item-focus span').animate({top: "5.5rem"}, 250)
+        }else {
+            $('.taskbar-wrapper .task-item-focus span').animate({top: "10.5rem"}, 250)
+        }
+    }, [focusTab])
 
     useEffect(()=>{
         const themeLocal = localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light-theme'

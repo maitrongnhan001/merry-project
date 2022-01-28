@@ -1,7 +1,7 @@
 import React from 'react'
 import './started-center.scss'
 
-function StartedCenter(props) {
+function StartedCenter() {
     return (
         <div className="started-center-wrapper">
             <div className="started-center">

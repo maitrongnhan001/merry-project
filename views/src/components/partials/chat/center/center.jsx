@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './center.scss'
 import FriendCenter from './friend-center/friend-center'
 import StartedCenter from './started-center/started-center'
@@ -6,9 +6,10 @@ import Chat from '../main-chat/main-chat'
 import Extension from '../extension/Extension'
 import  { useSelector } from 'react-redux'
 
-function Center(props) {
+function Center() {
 
-    //states 
+    /*----redux ----*/
+    //lay du lieu tu redux
     const center = useSelector(state => state.taskbar.center)
 
     return (

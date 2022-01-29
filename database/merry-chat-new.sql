@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `merrychat`
 --
-CREATE DATABASE IF NOT EXISTS `merrychat` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `merrychat`;
 
 -- --------------------------------------------------------
 
@@ -255,7 +253,6 @@ ALTER TABLE `emotion`
 -- Indexes for table `friend`
 --
 ALTER TABLE `friend`
-  ADD PRIMARY KEY (`sendId`,`receiveId`),
   ADD KEY `sendId` (`sendId`),
   ADD KEY `receiveId` (`receiveId`);
 
@@ -297,7 +294,6 @@ ALTER TABLE `user`
 -- Indexes for table `waitingresquest`
 --
 ALTER TABLE `waitingresquest`
-  ADD PRIMARY KEY (`sendId`,`receiveId`),
   ADD KEY `sendId` (`sendId`),
   ADD KEY `receiveId` (`receiveId`);
 

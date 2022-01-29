@@ -17,3 +17,21 @@ module.exports.create = (mediaMessage) => {
         });
     })
 }
+
+module.exports.get = (userId, limit, offset) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT message.id, path FROM message JOIN mediamessage ON message.id = mediamessage.messageId and message.type = "media" WHERE message.receiveId = ?;`
+        connection.query(sql,[userId, limit, offset], function (error, result) {
+            if (error) {
+                reject(error);
+            } else {
+                if (result.length > 0) {
+                    const endResult = JSON.parse(JSON.stringify(result));
+                    resolve(endResult);
+                } else {
+                    resolve(null);
+                }
+            }
+        });
+    })
+}

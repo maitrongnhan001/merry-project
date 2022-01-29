@@ -1,7 +1,8 @@
-const media = require('../models/mediaMessage.model')
+const document = require('../models/document.model')
 
-module.exports.getMedia = async (req, res) => {
+module.exports.getdocument = async (req, res) =>{
     try{
+        // return res.json({data: "hello"})
         const receiveId = req.query.receiveId;
         if(!receiveId){
             return res.status(404)
@@ -11,17 +12,18 @@ module.exports.getMedia = async (req, res) => {
         let offset = req.query.position ?? '0';
         limit = parseInt(limit);
         offset = parseInt(offset);
-        const mediaContent = await media.get(receiveId, limit, offset);
-      
-        if(mediaContent ){
-            const medias = mediaContent.map((value)=>{
+
+        const documentContend = await document.get(receiveId, limit, offset);
+        
+        if(documentContend ){
+            const documents = documentContend.map((value)=>{
                 return {
                     id: value.id,
-                    fileName: value.path,
+                    fileName: value.fileName,
                 }
              })
             res.status(200).json({
-                data: medias,
+                data: documents,
                 message: "Thành công!"
             })
         }else{
@@ -31,12 +33,7 @@ module.exports.getMedia = async (req, res) => {
             })
         }
         
-      
     }catch(err){
         console.error(err)
     }
-}
-
-module.exports.getlink = ()=>{
-
 }

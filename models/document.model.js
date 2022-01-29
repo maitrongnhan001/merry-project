@@ -19,3 +19,22 @@ module.exports.get = async (receiverId, limit, offset) => {
 
   
 }
+
+
+//them mot tin nhan document
+module.exports.create = (documentMessage) => {
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO documentmessage SET ?', documentMessage, (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                result = JSON.parse(JSON.stringify(result))
+                let res = {
+                    ...documentMessage,
+                    'id': result.insertId
+                }
+                resolve(res);
+            }
+        });
+    })
+}

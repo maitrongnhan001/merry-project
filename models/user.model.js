@@ -1,5 +1,6 @@
 const { connection } = require("../config/database");
 
+<<<<<<< HEAD
 module.exports.getUserId = (userId) => {
     return new Promise((resolve, reject) => {
         const sql = `SELECT * FROM user WHERE id=${userId} `
@@ -16,3 +17,23 @@ module.exports.getUserId = (userId) => {
         })
     })
 }
+=======
+//lay thong tin user theo user Id
+module.exports.get = (userId) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM user WHERE id='${userId}'`;
+        connection.query(sql, function (error, result) {
+            if (error) {
+                reject(error);
+            } else {
+                if (result.length > 0) {
+                    const endResult = JSON.parse(JSON.stringify(result));
+                    resolve(endResult);
+                } else {
+                    resolve(null);
+                }
+            }
+        });
+    });
+}
+>>>>>>> 7a02c7c37e7f79d154ac523b9445723428a6744b

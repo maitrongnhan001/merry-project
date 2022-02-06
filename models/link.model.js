@@ -19,3 +19,22 @@ module.exports.get = async (receiverId, limit, offset) => {
 
   
 }
+
+
+//them mot tin nhan link
+module.exports.create = (linkMessage) => {
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO linkmessage SET ?', linkMessage, (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                result = JSON.parse(JSON.stringify(result))
+                let res = {
+                    ...linkMessage,
+                    'id': result.insertId
+                }
+                resolve(res);
+            }
+        });
+    })
+}

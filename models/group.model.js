@@ -1,6 +1,5 @@
 const { connection } = require("../config/database");
 
-<<<<<<< HEAD
 module.exports.getGroup = (userId ,limit, offset) =>{
     return new Promise((resolve, reject) => {
         const sql = `SELECT * FROM detailgroup JOIN groupuser WHERE detailgroup.groupId = groupuser.id and detailgroup.userId = ${userId} LIMIT ${limit} OFFSET ${offset}`
@@ -37,7 +36,6 @@ module.exports.getMembers = (groupID) => {
     })
 }
 
-=======
 //them mot group moi
 module.exports.create = (groupObj) => {
     return new Promise((resolve, reject) => {
@@ -96,4 +94,3 @@ module.exports.delete = (id) => {
         });
     });
 }
->>>>>>> 7a02c7c37e7f79d154ac523b9445723428a6744b

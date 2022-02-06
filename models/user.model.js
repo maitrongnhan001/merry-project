@@ -1,6 +1,5 @@
 const { connection } = require("../config/database");
 
-<<<<<<< HEAD
 module.exports.getUserId = (userId) => {
     return new Promise((resolve, reject) => {
         const sql = `SELECT * FROM user WHERE id=${userId} `
@@ -17,7 +16,6 @@ module.exports.getUserId = (userId) => {
         })
     })
 }
-=======
 //lay thong tin user theo user Id
 module.exports.get = (userId) => {
     return new Promise((resolve, reject) => {
@@ -36,4 +34,3 @@ module.exports.get = (userId) => {
         });
     });
 }
->>>>>>> 7a02c7c37e7f79d154ac523b9445723428a6744b

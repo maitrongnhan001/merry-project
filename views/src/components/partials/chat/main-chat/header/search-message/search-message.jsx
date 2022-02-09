@@ -10,7 +10,7 @@ function SearchMessage({onShowSearchMessageBox}) {
     /*----handles----*/
     //xu ly dong khung tim kiem tin nhan
     const handleClickButton = () =>{
-        $('.search-message-wrapper').slideToggle('.25s')
+        $('.search-message-wrapper').slideToggle('.15s')
         onShowSearchMessageBox(0)
     }
 

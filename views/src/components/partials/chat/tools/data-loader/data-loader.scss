@@ -1,0 +1,33 @@
+.main-chat-data-loader {
+    width: 100%;
+    min-height: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    span {
+        width: 1rem;
+        height: 1rem;
+        margin: 0 .2rem;
+        display: inline-block;
+        background-color: #525863;
+        border-radius: 50%;
+        visibility: hidden;
+        animation: dataLoader 1s linear infinite alternate; 
+        animation-delay: calc(1s * var(--value) / 3);
+    }
+}
+
+@keyframes dataLoader {
+    to {
+        transform: scale(0);
+        visibility: visible;
+    }
+}
+
+.chat-wrapper[data-theme='dark-theme'] {
+    .main-chat-data-loader {
+        span {
+            background-color: #ffffff;
+        }
+    }
+}

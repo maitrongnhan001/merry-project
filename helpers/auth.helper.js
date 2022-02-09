@@ -12,7 +12,7 @@ module.exports.createToken = (user, token_key, expires) => {
             token_key,
             {
                 algorithm: "HS256",
-                expiresIn: expire, //quy dinh thoi gian
+                expiresIn: expires, //quy dinh thoi gian
             },
             (error, token) => {
                 if (error) {

@@ -70,9 +70,9 @@ module.exports.updateEmotion = (emotion, id) => {
 //lay danh sach nhan tin 
 module.exports.getListChat = (userId, limit, offset) =>{
     return new Promise((resolve, reject) =>{
-        const sql = `SELECT messageTable.id, messageTable.receiveId, messageTable.type  FROM  detailgroup 
+        const sql = `SELECT messageTable.id, messageTable.sendId, messageTable.receiveId, messageTable.type FROM  detailgroup 
         JOIN (
-            SELECT message.id as id, message.receiveId as receiveId , message.type AS type FROM user JOIN message ON user.id = message.sendId 
+            SELECT message.id as id, message.receiveId as receiveId , message.type AS type, message.sendId AS sendId FROM user JOIN message ON user.id = message.sendId 
                 JOIN 
                     (SELECT MAX(message.id) as lastId FROM message GROUP BY message.receiveId) 
                     as lastIdTable ON message.id = lastIdTable.lastId ) as messageTable  ON detailgroup.groupId = messageTable.receiveId
@@ -92,3 +92,41 @@ module.exports.getListChat = (userId, limit, offset) =>{
     })
 }
 
+// lay ve list messageId
+module.exports.getMessageID = (content,receiveId) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT textmessage.messageId FROM textmessage WHERE textmessage.content like ?`
+        const sql1 =`SELECT * FROM textmessage JOIN message ON textmessage.messageId = message.id WHERE textmessage.content like ? and message.receiveId = ?`
+        connection.query(sql1,[content, receiveId],(error, result)=>{
+            if (error) {
+                reject(error);
+            } else {
+                if (result.length > 0) {
+                    const endResult = JSON.parse(JSON.stringify(result));
+                    resolve(endResult);
+                } else {
+                    resolve(null);
+                }
+            }
+        })
+    })
+}
+
+// 
+module.exports.getMessageByReceiverId = (receiverId) =>{
+    return new Promise((resolve, reject) =>{
+        const sql = `SELECT * FROM message WHERE message.receiveId = ?`
+        connection.query(sql,[receiverId],(error, result)=>{
+            if (error) {
+                reject(error);
+            } else {
+                if (result.length > 0) {
+                    const endResult = JSON.parse(JSON.stringify(result));
+                    resolve(endResult);
+                } else {
+                    resolve(null);
+                }
+            }
+        })
+    })
+}

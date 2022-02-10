@@ -4,6 +4,8 @@ const userController = require('../controllers/user.controller')
 
 const router = express.Router()
 
+//register
+
 
 //get user 
 router.get('/', userController.viewUser);

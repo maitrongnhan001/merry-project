@@ -4,6 +4,8 @@ const textMessage = require('../models/textMessage.model');
 const mediaMessage = require('../models/mediaMessage.model');
 const userIsOnline = require('../stores/UserLoginStore');
 const emotionMessage = require('../models/emotion.model');
+const documentMessage = require('../models/document.model');
+const linkMessage = require('../models/link.model');
 const path = require('path');
 const fs = require('fs');
 
@@ -24,6 +26,7 @@ module.exports.sendTextMessage = async (data, socket, io) => {
         //luu message vao trong database message
         const message = {
             sendId: senderId,
+            type: 'text',
             receiveId: receiverId,
             status: 'Đã gửi'
         }
@@ -44,7 +47,7 @@ module.exports.sendTextMessage = async (data, socket, io) => {
             senderId: dataMessage.sendId,
             receiverId: dataMessage.receiveId,
             message: {
-                type: 'text',
+                type: dataMessage.type,
                 content: dataContent.content,
                 time: time,
                 status: dataMessage.status
@@ -76,6 +79,7 @@ module.exports.sendMediaMessage = async (data, socket, io) => {
         //luu message vao trong database message
         const message = {
             sendId: senderId,
+            type: 'media',
             receiveId: receiverId,
             status: 'Đã gửi'
         }
@@ -105,7 +109,7 @@ module.exports.sendMediaMessage = async (data, socket, io) => {
                     senderId: dataMessage.sendId,
                     receiverId: dataMessage.receiveId,
                     message: {
-                        type: 'media',
+                        type: dataMessage.type,
                         fileName: dataContent.path,
                         time: time,
                         status: dataMessage.status
@@ -139,6 +143,7 @@ module.exports.sendDocumentMessage = async (data, socket, io) => {
         //luu message vao trong database message
         const message = {
             sendId: senderId,
+            type: 'document',
             receiveId: receiverId,
             status: 'Đã gửi'
         }
@@ -153,12 +158,12 @@ module.exports.sendDocumentMessage = async (data, socket, io) => {
             if (!err) {
                 //luu message vao trong database media message
                 const contentMessage = {
-                    path: fileNameStore,
+                    fileName: fileNameStore,
                     messageId: dataMessage.id
                 }
 
                 //tra thong tin ve cho client
-                const dataContent = await mediaMessage.create(contentMessage);
+                const dataContent = await documentMessage.create(contentMessage);
 
                 //tra thong tin ve cho client
                 const time = await chat.getTime(dataMessage.id);
@@ -168,8 +173,8 @@ module.exports.sendDocumentMessage = async (data, socket, io) => {
                     senderId: dataMessage.sendId,
                     receiverId: dataMessage.receiveId,
                     message: {
-                        type: 'document',
-                        fileName: dataContent.path,
+                        type: dataMessage.type,
+                        fileName: dataContent.fileName,
                         time: time,
                         status: dataMessage.status
                     }
@@ -180,6 +185,58 @@ module.exports.sendDocumentMessage = async (data, socket, io) => {
         });
     } catch (err) {
         socket.emit('send-document-message-error', { msg: 'Lỗi, không gửi tin nhắn được' });
+        console.error(err);
+    }
+}
+
+module.exports.sendLinkMesssage = async (data, socket, io) => {
+    //gui link
+    try {
+        //kiem tra du lieu co ton tai
+        if (!(data.senderId && data.receiverId && data.message.content)) {
+            socket.emit('send-link-message-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
+            return;
+        }
+
+        //lay du lieu
+        const senderId = data.senderId;
+        const receiverId = data.receiverId;
+        const content = data.message.content;
+
+        //luu message vao trong database message
+        const message = {
+            sendId: senderId,
+            type: 'link',
+            receiveId: receiverId,
+            status: 'Đã gửi'
+        }
+        const dataMessage = await chat.create(message);
+
+        //luu message vao trong database link message
+        const contentMessage = {
+            link: content,
+            messageId: dataMessage.id
+        }
+        const dataContent = await linkMessage.create(contentMessage);
+
+        //tra thong tin ve cho client
+        const time = await chat.getTime(dataMessage.id);
+
+        const returnData = {
+            messageId: dataMessage.id,
+            senderId: dataMessage.sendId,
+            receiverId: dataMessage.receiveId,
+            message: {
+                type: dataMessage.type,
+                content: dataContent.link,
+                time: time,
+                status: dataMessage.status
+            }
+        }
+
+        io.to(`${dataMessage.receiveId}`).emit('send-link-message', returnData);
+    } catch (err) {
+        socket.emit('send-link-message-error', { msg: 'Lỗi, không gửi tin nhắn được' });
         console.error(err);
     }
 }

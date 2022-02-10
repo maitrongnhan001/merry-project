@@ -46,6 +46,26 @@ module.exports.getUserSocket = (userId) => {
     });
 }
 
+module.exports.getUserId = (Socket) => {
+    return new Promise((resolve, reject) => {
+        //lay id socket theo id user
+
+        //lay vi tri cua user theo id user
+        const index = [...initialData].findIndex((Element) => {
+            return Element.userSocket.id == Socket.id;
+        });
+
+        //kiem tra vi tri
+        if (index === -1) {
+            resolve(null);
+        }
+
+        //tra ve user socket id
+        const userId = initialData[index].userId;
+        resolve(userId);
+    });
+}
+
 module.exports.checkUser = (userId) => {
     return new Promise((resolve, reject) => {
         //kiem tra user co trong mang

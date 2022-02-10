@@ -13,6 +13,10 @@ module.exports.chat = (io, socket) => {
         chatSocket.sendDocumentMessage(data, socket, io);
     });
 
+    socket.on('send-link-message', (data) => {
+        chatSocket.sendLinkMesssage(data, socket, io);
+    });
+
     socket.on('emotion', (data) => {
         chatSocket.emotion(data, socket, io);
     });

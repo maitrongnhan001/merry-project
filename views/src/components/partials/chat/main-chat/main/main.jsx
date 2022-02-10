@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import './main.scss'
 import Message from './messages/message'
+import Document from './messages/document/document'
+import DataLoader from '../../tools/data-loader/data-loader'
 
 function Main() {
 
@@ -30,6 +32,7 @@ function Main() {
     return (
         <div className="main-chat-chat-area">
             <div className="main-chat-chat-area-wrapper">
+                <Message sender={0}><Document>nienluannganhcongnghephanmem.docx</Document></Message>
                 <Message sender={0}><p>Ngu</p></Message>
                 <Message sender={0}><p>Ngu</p></Message>                
                 <Message sender={0}><p>Ngu</p></Message>
@@ -49,6 +52,7 @@ function Main() {
                 <Message sender={0}><img src="/img/me.jpg" alt="" /></Message>
                 <Message sender={0}><img src="/img/Logos/logo-merry-chat.png" alt="" /></Message>
                 <Message sender={0}><a href="https://www.messenger.com/t/4315663628493165" rel="noreferrer" target='_blank'><p>https://www.messenger.com/t/4315663628493165</p></a></Message>
+                <DataLoader></DataLoader>
             </div>
         </div>
     );

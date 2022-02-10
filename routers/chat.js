@@ -11,6 +11,6 @@ router.get('/list-chat/:userId', chatController.getListChat)
 // router.get('/content-chat', chatController.contentChat)
 
 //search message
-// router.get('/search-message/:content', chatController.search)
+router.get('/search-message', chatController.searchMessage)
 
 module.exports = router

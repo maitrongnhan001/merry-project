@@ -20,7 +20,7 @@ module.exports.getGroup = (userId ,limit, offset) =>{
 
 module.exports.getMembers = (groupID) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM detailgroup WHERE detailgroup.groupId = "${groupID}" LIMIT 2`
+        const sql = `SELECT * FROM detailgroup join groupuser on detailgroup.groupId = groupuser.id WHERE detailgroup.groupId = "${groupID}" LIMIT 2`
         connection.query(sql, function (error, result) {
             if (error) {
                 reject(error)
@@ -38,30 +38,19 @@ module.exports.getMembers = (groupID) => {
 
 //them mot group moi
 module.exports.create = (groupObj) => {
+module.exports.getByGroupId = (groupId) =>{
     return new Promise((resolve, reject) => {
-        connection.query('INSERT INTO groupuser SET ?', groupObj, (error, result) => {
+        const sql = `SELECT groupuser.AdminId FROM groupuser WHERE groupuser.id = ?`
+        connection.query(sql,[groupId], function (error, result) {
             if (error) {
-                reject(error);
+                reject(error)
             } else {
-                result = JSON.parse(JSON.stringify(result));
-                let res = {
-                    ...groupObj
+                if (result.length > 0) {
+                    const endResult = JSON.parse(JSON.stringify(result))
+                    resolve(endResult)
+                } else {
+                    resolve(null)
                 }
-                resolve(res);
-            }
-        });
-    });
-}
-
-//cap nhat thong tin nhom
-module.exports.update = (updateGroupObj, id) => {
-    return new Promise((resolve, reject) => {
-        let sql = "UPDATE groupuser SET ? where id=?";
-        connection.query(sql, [updateGroupObj, id], (error, result) => {
-            if (error) {
-                reject(error);
-            } else {
-                resolve(updateGroupObj);
             }
         });
     });
@@ -93,4 +82,4 @@ module.exports.delete = (id) => {
             }
         });
     });
-}
+}}

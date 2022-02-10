@@ -6,16 +6,16 @@ const router = express.Router()
 const homeController = require('../controllers/home.controller')
 
 // api register
-router.post('/register', homeController.register)
+//router.post('/register', homeController.register)
 
 //api login
-router.post('/login', homeController.login)
+//router.post('/login', homeController.login)
 
 //check gmail
-router.post('/check-gmail', homeController.checkgmail)
+router.post('/check-email', homeController.verifyEmail)
 
 //search
-router.get('/search/:name', homeController);
+//router.get('/search/:name', homeController);
 
 
 module.exports = router

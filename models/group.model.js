@@ -38,6 +38,36 @@ module.exports.getMembers = (groupID) => {
 
 //them mot group moi
 module.exports.create = (groupObj) => {
+    return new Promise((resolve, reject) => {
+        connection.query('INSERT INTO groupuser SET ?', groupObj, (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                result = JSON.parse(JSON.stringify(result));
+                let res = {
+                    ...groupObj
+                }
+                resolve(res);
+            }
+        });
+    });
+}
+
+//cap nhat thong tin nhom
+module.exports.update = (updateGroupObj, id) => {
+    return new Promise((resolve, reject) => {
+        let sql = "UPDATE groupuser SET ? where id=?";
+        connection.query(sql, [updateGroupObj, id], (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(updateGroupObj);
+            }
+        });
+    });
+}
+
+
 module.exports.getByGroupId = (groupId) =>{
     return new Promise((resolve, reject) => {
         const sql = `SELECT groupuser.AdminId FROM groupuser WHERE groupuser.id = ?`
@@ -82,4 +112,6 @@ module.exports.delete = (id) => {
             }
         });
     });
-}}
+}
+
+//lay thanh vien trong nhom

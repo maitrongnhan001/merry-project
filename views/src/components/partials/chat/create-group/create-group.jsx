@@ -34,7 +34,8 @@ function CreateGroup() {
     
     /*----handles----*/
     //xu ly an form tao nhom
-    const handleClickToHideCreateGroup = () =>{
+    const handleClickToHideCreateGroup = (e) =>{
+        e.stopPropagation()
         const isDisplay = showDialog(0)
         dispatch(isDisplay)
     }

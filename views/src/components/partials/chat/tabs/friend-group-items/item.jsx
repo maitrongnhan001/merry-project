@@ -20,17 +20,18 @@ function Item({id, name, image, addFriend, createGroup}) {
         if(createGroup) {
             $(e.currentTarget).find('.friend-add-friend-checkbox').attr('checked', checked ? false : true)
             setChecked(checked ? false : true)
-        }
-        $(e.currentTarget).addClass('active-friend-group-item')
-        for(let val of $('.friend-group-item')) {
-            if(val !== e.currentTarget) {
-                $(val).removeClass('active-friend-group-item')
+        }else {
+            $(e.currentTarget).addClass('active-friend-group-item')
+            for(let val of $('.friend-group-item')) {
+                if(val !== e.currentTarget) {
+                    $(val).removeClass('active-friend-group-item')
+                }
             }
+            $('#tab-wrapper').toggleClass('hide-tab-in-phones-screen')
+            $('.main-chat-center').toggleClass('show-main-chat-phone-screen')
+            const display = showCenter(1)
+            dispatch(display)
         }
-        $('#tab-wrapper').toggleClass('hide-tab-in-phones-screen')
-        $('.main-chat-center').toggleClass('show-main-chat-phone-screen')
-        const display = showCenter(1)
-        dispatch(display)
     }
 
     //xu ly show khung mo rong

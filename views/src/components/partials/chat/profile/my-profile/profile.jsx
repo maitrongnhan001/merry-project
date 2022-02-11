@@ -34,10 +34,49 @@ function Profile() {
 
     /*----handles----*/
     //xu ly thay doi ngay sinh
-    const handleChangeSelect = (name, value)=> {
+    const handleChangeDateSelect = (name, value)=> {
         const _DOB = {
             ...DOB,
-            [name]: value
+            date: value,
+        }
+        setDOB(_DOB)
+    }
+
+    //xu ly thay doi tháng sinh
+    const handleChangeMonthSelect = (name, value)=> {
+        let maxDate;
+        for(let val of month) {
+            if(val === parseInt(value) && name === 'month') {
+                maxDate = new Date(DOB.year, val, 0).getDate()
+                break
+            }else {
+                maxDate = DOB.date
+            }
+        }
+        const _DOB = {
+            ...DOB,
+            month: value,
+            date: DOB.date > maxDate ? maxDate.toString() : DOB.date
+        }
+        console.log(_DOB)
+        setDOB(_DOB)
+    }
+
+    //xu ly thay doi name sinh
+    const handleChangeYearSelect = (name, value)=> {
+        let maxDate;
+        for(let val of year) {
+            if(val === parseInt(value) && name === 'year') {
+                maxDate = new Date(val, DOB.month, 0).getDate()
+                break
+            }else {
+                maxDate = DOB.date
+            }
+        }
+        const _DOB = {
+            ...DOB,
+            year: value,
+            date: DOB.date > maxDate ? maxDate.toString() : DOB.date
         }
         setDOB(_DOB)
     }
@@ -52,6 +91,10 @@ function Profile() {
     useEffect(()=> {
         $('.main-chat-my-profile-form').fadeTo('.5s', 1)
     })
+
+    useEffect(()=>{
+        console.log(DOB);
+    }, [DOB])
 
     return (
         <div className="main-chat-my-profile-wrapper" onClick={handleClickToHideMyProfile}>
@@ -85,9 +128,9 @@ function Profile() {
                         <div className="my-profile-update my-profile-update-DOB">
                             <label htmlFor="">Ngày sinh:</label>
                             <div className="my-profile-update-DOB-wrapper">
-                                <Select width={'30%'} onSelected={handleChangeSelect} name="date" option_select={date} default_value={DOB.date}></Select>
-                                <Select width={'30%'} onSelected={handleChangeSelect} name="month" option_select={month} default_value={DOB.month}></Select>
-                                <Select width={'30%'} onSelected={handleChangeSelect} name="year" option_select={year} default_value={DOB.year}></Select>
+                                <Select width={'30%'} onSelected={handleChangeDateSelect} name="date" option_select={date} default_value={DOB.date}></Select>
+                                <Select width={'30%'} onSelected={handleChangeMonthSelect} name="month" option_select={month} default_value={DOB.month}></Select>
+                                <Select width={'30%'} onSelected={handleChangeYearSelect} name="year" option_select={year} default_value={DOB.year}></Select>
                             </div>
                         </div>
                         <div className="my-profile-update my-profile-update-sex">

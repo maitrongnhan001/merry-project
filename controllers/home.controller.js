@@ -2,6 +2,7 @@ const nodemailer = require('nodemailer')
 const { google } = require('googleapis')
 const home = require('../models/home.model')
 const JWTHelper = require('../helpers/auth.helper')
+const user = require('../models/user.model')
 
 module.exports.register = async (req, res) => {
     try {
@@ -58,9 +59,9 @@ module.exports.verifyEmail = async (req, res)=> {
         })
 
         let info = await transporter.sendMail({
-            from: 'khangphuc1@gmail.com',
+            from: `'${email}'`,
             to: email,
-            subject: 'Confirm your account on Hippo Movies',
+            subject: 'Confirm your account on Merry-chat',
             html: ` <form style="padding: 0 20px; width: 600px; height: 300px; margin: 0 auto; border: 1px solid lightgrey; border-radius: 10px;">
                         <h1 style="margin-bottom: 15px; width: 100%; color: #9c2ec4; text-align: center;">MERRY CHAT</h1>
                         <h3 style="color: grey; font-size: 17px;"> Xác nhận email đăng nhập cùng Merry!</h3>

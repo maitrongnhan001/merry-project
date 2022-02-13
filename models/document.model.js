@@ -16,8 +16,6 @@ module.exports.get = async (receiverId, limit, offset) => {
             }
         });
     })
-
-  
 }
 
 

@@ -24,3 +24,17 @@ module.exports.register = (user)=>{
         .catch(error => console.error(error))
     })
 }
+
+module.exports.login = (email, password) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT id, firstName, lastName FROM user WHERE email='${email}' AND password='${password}'`;
+        connection.query(sql, (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                result = JSON.parse(JSON.stringify(result));
+                resolve(result);
+            }
+        })
+    });
+}

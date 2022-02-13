@@ -2,6 +2,7 @@ const nodemailer = require('nodemailer')
 const { google } = require('googleapis')
 const home = require('../models/home.model')
 const JWTHelper = require('../helpers/auth.helper')
+const user = require('../models/user.model');
 
 module.exports.register = async (req, res) => {
     try {

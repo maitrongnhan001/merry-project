@@ -2,9 +2,13 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import StartLogo from '../start-logo/start-logo';
 import { verifiEmail } from '../../../APIs/ConnectAPI';
+import { useDispatch } from 'react-redux';
+import { updateEmail } from '../../../../redux/reducers/email';
 import './get-started.scss';
 
 const GetStarted = () => {
+    const dispatch = useDispatch();
+
     const navigate = useNavigate();
 
     const [email, setEmail] = useState("");
@@ -36,6 +40,9 @@ const GetStarted = () => {
        
         if (result.message) {
             if (result.message === "Email đã được đăng ký!") {
+                //luu thong tin email len reduct
+                const action = updateEmail(email);
+                dispatch(action);
                 navigate('/login');
                 return;
             }

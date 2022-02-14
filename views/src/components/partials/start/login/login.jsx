@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../../../Sockets/home';
+import { useSelector } from 'react-redux';
 import './login.scss';
 
 const Login = () => {
-    const [user, setUser] = useState({ email: "", password: "" });
+    const initEmail = useSelector(state => state.email);
+    const [user, setUser] = useState({ email: (""), password: "" });
 
     const [errorEmail, setErroremail] = useState({ error: null });
 
@@ -14,17 +16,24 @@ const Login = () => {
 
     const navigate = useNavigate();
 
+    const iconError = (
+        <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" focusable="false" width="20px" height="20px" viewBox="0 0 24 24">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
+        </svg>
+    );
+
     const handleChangeEmail = (e) => {
         const value = e.target.value;
         if (!value || value.length === 0) {
             setErroremail({ error: "Xin hãy nhập email" });
-            return;
+        } else {
+            if ( !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)) ) {
+                setErroremail({ error: "Không đúng định dạng. Ví dụ: mttam@gmail.com" });
+            } else {
+                setErroremail({ error: null });
+            }
         }
-        if ( !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)) ) {
-            setErroremail({ error: "Không đúng định dạng. Ví dụ: mttam@gmail.com" });
-            return;
-        }
-        setErroremail({ error: null });
+
         setUser({ ...user, email: value });
     }
 
@@ -32,30 +41,31 @@ const Login = () => {
         const value = e.target.value;
         if (!value || value.length === 0) {
             setErrorPassword({ error: "Xin hãy nhập mật khẩu" });
-            return;
+        } else {
+            setErrorPassword({ error: null });
         }
-        setErrorPassword({ error: null });
         setUser({ ...user, password: value });
     }
 
     const handleSubmitLogin = async (e) => {
         e.preventDefault();
         //check data
-        if (user.email.length === 0) {
+        if (!user.email || user.email.length === 0) {
             setErroremail({ error: "Xin hãy nhập email" });
         }
-        if (user.password.length === 0) {
+        if (!user.password || user.password.length === 0) {
             setErrorPassword({ error: "Xin hãy nhập mật khẩu" });
             return;
         }
         setErroremail({ error: null });
         setErrorPassword({ error: null });
         const data = await login(user);
+
         
         if (data.token) {
             localStorage.setItem('accessToken', data.token);
             localStorage.setItem('userId', data.userId);
-            navigate('/me');
+            navigate(`/me/${data.userId}`);
         } else {
             setAnotherError({error: 'Email hoặc mật khẩu không chính xác'});
         }
@@ -84,11 +94,12 @@ const Login = () => {
                     className={`input-start ${errorEmail.error ? 'input-start-error' : ''}`}
                     placeholder='Nhập email của bạn'
                     onChange={(e) => handleChangeEmail(e)}
+                    value={user.email}
                 />
 
                 <span className='text-error'>
-                    {errorEmail.error ? (<svg aria-hidden="true" fill="currentColor" focusable="false" width="16px" height="16px" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg>) : ""}
-                    &nbsp; {errorEmail.error}
+                    {errorEmail.error ? iconError : ""}
+                    {errorEmail.error}
                 </span>
 
                 <br />
@@ -102,8 +113,8 @@ const Login = () => {
                 />
 
                 <span className='text-error'>
-                    {errorPassword.error ? (<svg aria-hidden="true" fill="currentColor" focusable="false" width="16px" height="16px" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg>) : ""}
-                    &nbsp; {errorPassword.error}</span>
+                    {errorPassword.error ? iconError : ""}
+                    {errorPassword.error}</span>
                 <br/>
 
                 <div className='text-order-feature'>
@@ -124,8 +135,8 @@ const Login = () => {
 
                 <br /><br />
                 <span className='text-error center'>
-                    {anotherError.error ? (<svg aria-hidden="true" fill="currentColor" focusable="false" width="16px" height="16px" viewBox="0 0 24 24" xmlns="https://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path></svg>) : ""}
-                    &nbsp; {anotherError.error}</span>
+                    {anotherError.error ? (iconError) : ""}
+                    {anotherError.error}</span>
 
                 <div className="two-button">
                     <button 

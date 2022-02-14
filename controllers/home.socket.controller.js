@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const userIsLogin = require('../stores/UserLoginStore');
 const friend = require('../models/friend.model');
 const chat = require('../models/chat.model');
@@ -5,18 +6,21 @@ const home = require('../models/home.model');
 const detailGroup = require('../models/detailGroup.model');
 const token_key = process.env.ACCESS_TOKEN_SECRET;
 const authHelper = require('../helpers/auth.helper');
+const user = require('../models/user.model');
 
 module.exports.login = async (data, socket, io) => {
     try {
         //lay thong tin
         const email = data.email;
-        const password = data.password;
+        let password = data.password;
 
         //kiem tra thong tin
         if (!email && !password) {
             socket.emit('user-login-error', {msg: 'Không có dữ liệu'});
             return;
         }
+
+        password = await bcrypt.hash(password, 10);
 
         //kiem tra thong tin voi database
         const resultLogin = await home.login(email, password);
@@ -31,8 +35,7 @@ module.exports.login = async (data, socket, io) => {
             firstName: resultLogin[0].firstName,
             lastName: resultLogin[0].lastName,
         }
-        console.log(InfoUserLogin);
-        const token = await authHelper.createToken(InfoUserLogin, token_key, "24h");
+        const token = await authHelper.createToken(InfoUserLogin, token_key, "48h");
 
         //luu thong tin vua dang nhap vao arr
         const userId = resultLogin[0].id;

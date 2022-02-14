@@ -9,11 +9,9 @@ import $ from 'jquery'
 function CreateGroup() {
 
     //states
-    const [group] = useState({
+    const [group, setGroup] = useState({
         name: '',
-        members: [
-            1231, 123
-        ],
+        members: [],
     })
 
     /*----redux----*/
@@ -22,17 +20,29 @@ function CreateGroup() {
     
     //ket noi voi redux
     const dispatch = useDispatch()
-
-    /*----data----*/
-    //map du lieu
-    const items = friendsList.map((value, idx) => {
-        const name=value.firstName && value.lastName ? `${value.lastName} ${value.firstName}` : ''
-        return  (
-            <FriendItem key={idx} name={name} id={value.id} image={value.image} createGroup></FriendItem>
-        )
-    })
     
     /*----handles----*/
+
+    //xu ly them vao danh sach nhom
+    const handleAddMember = (checked ,id)=> {
+        if(checked) {
+            const data = group.members
+            data.push(id)
+            setGroup({
+                ...group,
+                members: data.sort()
+            })
+        }else {
+            const idx = group.members.findIndex((value)=> value === id)
+            const data = group.members
+            data.splice(idx, 1)
+            setGroup({
+                ...group,
+                members: data
+            })
+        }
+    }
+
     //xu ly an form tao nhom
     const handleClickToHideCreateGroup = (e) =>{
         e.stopPropagation()
@@ -49,6 +59,15 @@ function CreateGroup() {
         $('.create-group-form-action').fadeTo('.5s', 1)
     })
 
+    /*----data----*/
+    //map du lieu
+    const items = friendsList.map((value, idx) => {
+        const name=value.firstName && value.lastName ? `${value.lastName} ${value.firstName}` : ''
+        return  (
+            <FriendItem key={idx} name={name} id={value.id} image={value.image} createGroup onAddMember={handleAddMember}></FriendItem>
+        )
+    })
+
     return (
         <div className="create-group-form-wrapper" onClick={handleClickToHideCreateGroup}>
             <form action="" className="create-group-form-action">
@@ -58,7 +77,7 @@ function CreateGroup() {
                         <i className="fas fa-times" onClick={handleClickToHideCreateGroup}></i>
                     </p>
                     <div className="create-group-form-group-info">
-                        <label htmlFor="choose-group-avatar" className="create-group-change-group-avatar"><i class="fas fa-camera"></i></label>
+                        <label htmlFor="choose-group-avatar" className="create-group-change-group-avatar"><i className="fas fa-camera"></i></label>
                         <input type="file" name="" id="choose-group-avatar" style={{display: 'none'}}/>
                         <div className="create-group-form-name-group">
                             <input type="text" placeholder="Nhập tên nhóm..."/>

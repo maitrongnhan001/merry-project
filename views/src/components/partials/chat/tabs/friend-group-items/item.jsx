@@ -1,11 +1,11 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from '../../avatar/avatar'
 import './item.scss'
 import $ from 'jquery'
 import { useDispatch } from 'react-redux'
 import { showCenter, showFeature } from '../../../../../redux/actions/taskbar'
 
-function Item({id, name, image, addFriend, createGroup}) {
+function Item({id, name, image, addFriend, createGroup, onAddMember}) {
     
     /*----redux----*/
     //ket noi den redux
@@ -56,6 +56,14 @@ function Item({id, name, image, addFriend, createGroup}) {
     const handleChangeChecked = (e)=>{
         setChecked(e.target.checked)
     }
+
+    //lifecycle
+
+    useEffect(()=> {
+        if(onAddMember)
+            onAddMember(checked, id)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[checked])
 
 
 

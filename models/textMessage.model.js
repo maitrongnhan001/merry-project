@@ -17,3 +17,21 @@ module.exports.create = (textMessage) => {
         });
     })
 }
+
+module.exports.get = async (userId) =>{
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT  textmessage.content as content  FROM textmessage WHERE textmessage.messageId = ? `
+        connection.query(sql,[userId], (err, result) =>{
+            if (err) {
+                reject(err);
+            } else {
+                if (result.length > 0) {
+                    const endResult = JSON.parse(JSON.stringify(result));
+                    resolve(endResult[0].content);
+                } else {
+                    resolve(null);
+                }
+            }
+        })
+    })
+}

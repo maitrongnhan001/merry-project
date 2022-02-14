@@ -84,3 +84,34 @@ module.exports.getGroups = async (req, res) => {
         console.error(err)
     }
 }
+
+//lay thanh vien nien
+module.exports.getMembersLimit = async (req, res) => {
+    try {
+        const receiverId = req.query.receiverId;
+        // console.log(req.query)
+        let limit = req.query.limit ?? '100000000';
+        let offset = req.query.position ?? '0';
+        limit = parseInt(limit);
+        offset = parseInt(offset);
+        const getMembersLimits = await group.getMembersLimit(receiverId, limit, offset)
+        // console.log(getMembersLimits)
+        const getIDAdmin = await group.getByGroupId(receiverId)
+        const infoAdmin = await  user.getUserId(getIDAdmin[0].AdminId)
+        const admin = {
+            id: infoAdmin[0].id,
+            image: infoAdmin[0].image,
+            name: infoAdmin[0].lastName+ ' ' + infoAdmin[0].firstName,
+        }
+        return res.status(200).json({
+            message: 'Lay thanh vien thanh cong!',
+            data: {
+                member: getMembersLimits,
+                admin: admin
+            }
+        })
+
+    } catch (err) {
+        console.error(err)
+    }
+}

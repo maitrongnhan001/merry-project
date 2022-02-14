@@ -20,7 +20,7 @@ module.exports.getGroup = (userId ,limit, offset) =>{
 
 module.exports.getMembers = (groupID) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM detailgroup WHERE detailgroup.groupId = "${groupID}" LIMIT 2`
+        const sql = `SELECT * FROM detailgroup join groupuser on detailgroup.groupId = groupuser.id WHERE detailgroup.groupId = "${groupID}" LIMIT 2`
         connection.query(sql, function (error, result) {
             if (error) {
                 reject(error)
@@ -67,6 +67,25 @@ module.exports.update = (updateGroupObj, id) => {
     });
 }
 
+// lay id admin 
+module.exports.getByGroupId = (groupId) =>{
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT groupuser.AdminId FROM groupuser WHERE groupuser.id = ?`
+        connection.query(sql,[groupId], function (error, result) {
+            if (error) {
+                reject(error)
+            } else {
+                if (result.length > 0) {
+                    const endResult = JSON.parse(JSON.stringify(result))
+                    resolve(endResult)
+                } else {
+                    resolve(null)
+                }
+            }
+        });
+    });
+}
+
 //lay thong tin cua mot nhom theo id
 module.exports.get = (id) => {
     return new Promise((resolve, reject) => {
@@ -94,3 +113,18 @@ module.exports.delete = (id) => {
         });
     });
 }
+
+//lay thanh vien trong nhom
+module.exports.getMembersLimit = (groupId, limit, offset) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT user.id, user.image, concat(user.lastName, user.firstName) as name FROM detailgroup JOIN user on detailgroup.userId = user.id WHERE detailgroup.groupId = ? LIMIT ? OFFSET ?`;
+        connection.query(sql, [groupId, limit, offset], (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(result);
+            }
+        });
+    });
+}
+

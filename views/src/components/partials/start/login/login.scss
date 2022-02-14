@@ -9,14 +9,6 @@
         display: block;
     }
 
-    .text-error {
-        color: red;
-        font-size: 20px;
-        width: 85%;
-        margin: 0 auto;
-        display: block;
-    }
-
     .text-order-feature {
         width: 85%;
         margin: 0 auto;
@@ -36,6 +28,19 @@
         padding: 0 2rem 0 2rem;
         border-radius: 5px;
         display: block;
+    }
+}
+
+.text-error {
+    color: red;
+    font-size: 16px;
+    width: 85%;
+    margin: 0 auto;
+    display: block;
+
+    svg {
+        position: relative;
+        top: 7px;
     }
 }
 

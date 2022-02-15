@@ -6,7 +6,6 @@ const home = require('../models/home.model');
 const detailGroup = require('../models/detailGroup.model');
 const token_key = process.env.ACCESS_TOKEN_SECRET;
 const authHelper = require('../helpers/auth.helper');
-const user = require('../models/user.model');
 
 module.exports.login = async (data, socket, io) => {
     try {
@@ -20,11 +19,11 @@ module.exports.login = async (data, socket, io) => {
             return;
         }
 
-        password = await bcrypt.hash(password, 10);
-
         //kiem tra thong tin voi database
-        const resultLogin = await home.login(email, password);
-        if (resultLogin.length === 0) {
+        const resultLogin = await home.login(email);
+
+
+        if (resultLogin.length !== 1 && !(await bcrypt.compare(password, resultLogin[0].password))) {
             socket.emit('user-login', {msg: 'Đăng nhập không thành công'});
             return;
         }

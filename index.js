@@ -27,11 +27,11 @@ const onConnection = (socket) => {
 
 const io = require("socket.io")(server, {
     cors: {
-        origin: "*"
+        origin: "*",
         //test socket
         //origin: "http://127.0.0.1:5500"
         //real socket
-        //origin: "http://localhost:3000"
+        origin: "http://localhost:3000"
     }
 });
 
@@ -49,6 +49,17 @@ app.use(express.json());
 //---------------end use extension------------------//
 
 //-------------------use router---------------------//
+const friendRouter = require('./routers/friend')
+const groupRouter = require('./routers/group')
+const chatRouter = require('./routers/chat')
+const mediaRouter = require('./routers/contentChat')
+const homeRouter = require('./routers/home')
+
+app.use('/api/friends', friendRouter)
+app.use('/api/groups', groupRouter)
+app.use('/api/chat', chatRouter)
+app.use('/api/content', mediaRouter)
+app.use('/api',homeRouter)
 
 
 //----------------end use router--------------------//

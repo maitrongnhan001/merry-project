@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import './tab.scss'
 import { useDispatch, useSelector } from 'react-redux'
+import { showFeature } from '../../../../redux/actions/taskbar'
+import $ from 'jquery'
 import ChatTab from './chats/Chats'
 import FriendsTab from '../tabs/friends/friends'
 import GroupsTab from '../tabs/groups/groups'
 import Search  from './search/search'
-import $ from 'jquery'
-import { showFeature } from '../../../../redux/actions/taskbar'
+import DataLoader from '../tools/data-loader/data-loader'
 
 function Tab() {
     /*----redux----*/
@@ -34,6 +35,7 @@ function Tab() {
                 {state === 0 ? <ChatTab></ChatTab>: 
                  state === 1 ? <FriendsTab></FriendsTab> : 
                                <GroupsTab></GroupsTab>}
+                <DataLoader></DataLoader>
             </div>
         </div>
     );

@@ -52,11 +52,28 @@ module.exports.listFriend = (userId ,limit, offset) => {
     });
 }
 
-//kiem tra thong tin ban theo receive id va send id
-module.exports.getFriend = (sendId, receiveId) => {
+//lay ho, ten , anh cua ban be
+module.exports.getUserId = (userId) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM friend WHERE (sendId=${sendId} AND receiveId=${receiveId})
-        OR (sendId=${receiveId} AND receiveId=${sendId})`;
+        const sql = `SELECT user.id, user.firstName, user.lastName, user.image FROM user WHERE id=${userId} `
+        connection.query(sql, function (error, result) {
+            if(error){
+                reject(error)
+            }else{
+                if(result.length > 0){
+                    resolve(result)
+                }else{
+                    resolve(null)
+                }
+            }
+        })
+    })
+}
+
+//lay id cua request ban be
+module.exports.getRequestFriend = (userId ,limit, offset) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM waitingresquest WHERE sendId = ${userId} OR receiveId = ${userId} LIMIT ${limit} OFFSET ${offset}`;
         connection.query(sql, function (error, result) {
             if (error) {
                 reject(error);

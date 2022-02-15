@@ -8,7 +8,6 @@
         justify-content: space-around;
         align-items: flex-end;
         padding: 1rem;
-
         .input-chat-content {
             width: calc(100% - 7rem);
             max-height: 10rem;
@@ -18,8 +17,11 @@
             padding: 0 .5rem;
             margin: auto .5rem;
             overflow-y: auto;
+            * {
+                background: none !important;
+                color: black !important;
+            }
         }
-
         .input-chat-content:empty::before {
             content: attr(data-placeholder);
             color: #525863;
@@ -64,7 +66,11 @@
 }
 
 .chat-wrapper[data-theme='dark-theme'] {
-    form .input-chat-content {
+    .input-chat-content {
         background-color: #36393f;
+        * {
+            background: #36393f !important;
+            color: white !important;
+        }
     }
 }

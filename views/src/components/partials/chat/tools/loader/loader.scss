@@ -1,0 +1,43 @@
+.app-loader {
+    width: 100vw;
+    height: 100vh;
+    background-color: #ffffff;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    div {
+        width: 4rem;
+        height: 4rem;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) rotate(calc(var(--value) * 45deg));
+        &:before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: .75rem;
+            height: .75rem;
+            border: 3px solid #5865F2;
+            border-radius: 50%;
+            visibility: hidden;
+            filter: hue-rotate(calc(var(--value) * 10deg));
+            animation: loader 1s infinite;
+            animation-delay: calc(var(--value) * .125s);
+            animation-timing-function: linear;
+        }
+    }
+}
+
+@keyframes loader  {
+    to {
+        visibility: visible;
+        transform: scale(0);
+    }
+}
+
+.chat-wrapper[data-theme='dark-theme'] .app-loader {
+    background-color: #36393f;
+}

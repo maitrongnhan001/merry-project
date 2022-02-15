@@ -6,23 +6,24 @@ const router = express.Router()
 
 //get group(name, image), if have id then get all member
 
-router.get('/groups/:id', groupController.getGroups)
+router.get('/member-list', groupController.getMembersLimit)
+router.get('/:userId', groupController.getGroups)
 
 //post group(add group)
 
-router.post('/add-group', groupController.createGroup)
+// router.post('/add-group', groupController.createGroup)
 
 //post members group
 
-router.post('/add-members', groupController.createMember)
+// router.post('/add-members', groupController.createMember)
 
 // put group ()
-router.put('/update/:id', groupController.update)
+// router.put('/update/:id', groupController.update)
 
 //delete group()
-router.delete('/delete-group/:id', groupController.deleteGroup)
+// router.delete('/delete-group/:id', groupController.deleteGroup)
 
 //delete members
-router.delete('/delete-member/:id', groupController.deleteMembers)
+// router.delete('/delete-member/:id', groupController.deleteMembers)
 
 module.exports = router

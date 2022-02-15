@@ -1,0 +1,37 @@
+.message-doc-content-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin: .5rem 0;
+    .message-doc-content {
+        min-width: 12rem;
+        max-width: 20rem;
+        .message-doc-icon {
+            width: 2.5rem;   
+            display: inline-block;
+            .fa-file-word {
+                font-size: 2rem;
+            }
+        }
+
+        .message-doc-content {
+            max-width: 15rem;
+            font-size: 1.1rem;
+            display:inline-block;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-style: normal;
+        }
+    }
+
+    .message-doc-download-btn {
+        width: 5rem;
+        .fa-cloud-download-alt {
+            font-size: 1.5rem;
+            float: right;
+        }
+    }
+}

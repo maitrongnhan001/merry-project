@@ -4,6 +4,8 @@ import Image from '../../../avatar/avatar'
 import { useDispatch } from 'react-redux';
 import { showCenter } from '../../../../../../redux/actions/taskbar';
 import $ from 'jquery'
+import { createRoom, getRoom } from '../../../../../Sockets/socket-chat';
+import { listenSocket, sendSocket } from '../../../../../Sockets/socket-config';
 
 function Item({id, image, lastName, firstName}) {
 
@@ -13,7 +15,7 @@ function Item({id, image, lastName, firstName}) {
 
     /*----handles----*/
     //xu ly hien thi chat item  
-    const handleClickToShowChat = (e)=> {
+    const handleClickToShowChat = async (e)=> {
         const display = showCenter(1)
         dispatch(display)
         $(e.currentTarget).addClass('active-friend-group-item')

@@ -51,7 +51,3 @@ module.exports.findByEmail = (email) =>{
         });
     });
 }
-
-module.exports.updatePassword = (password, id) => {
-    connection.query(`UPDATE user SET password = '${password}' WHERE email='${id}'`);
-}

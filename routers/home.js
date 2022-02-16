@@ -6,7 +6,7 @@ const router = express.Router()
 const homeController = require('../controllers/home.controller')
 
 // api register
-//router.post('/register', homeController.register)
+router.post('/register', homeController.register)
 
 //api login
 //router.post('/login', homeController.login)

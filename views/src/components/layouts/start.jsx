@@ -13,7 +13,7 @@ const Start = () => {
         const token = localStorage.getItem('accessToken');
         const userId = localStorage.getItem('userId');
         if (token) {
-           return navigate(`/me/${userId}`);
+           //return navigate(`/me/${userId}`);
         }
     });
     return (

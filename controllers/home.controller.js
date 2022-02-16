@@ -1,41 +1,80 @@
 const nodemailer = require('nodemailer')
 const { google } = require('googleapis')
+const fs = require('fs');
+const path = require('path');
 const home = require('../models/home.model')
 const JWTHelper = require('../helpers/auth.helper')
 const user = require('../models/user.model')
+const upload = require('../helpers/storeImage.helper');
 
 module.exports.register = async (req, res) => {
     try {
-        const { password, image, lastName, firstName, sex, DOB, template } = req.body
-        const {email} = req.user
-        if(!email || !password || !image || !lastName || !firstName || !sex || !DOB || !template) 
-            return res.sendStatus(404)
-        const result= await home.register({email, password, image, lastName, firstName, sex, DOB, template})
-        delete result.password
-        return res.status(200).json({
-            message: 'Đăng ký thành công',
-            data: result
+        upload(req, res, async (err) => {
+            if (err) {
+                console.log(err)
+                return res.sendStatus(500)
+            }
+
+            try {
+                const { password, lastName, firstName, sex, email } = req.body
+                if (!email || !password || !lastName || !firstName || !sex)
+                    return res.sendStatus(404)
+
+                const image = req.file ? req.file.filename : ""
+
+                const data = {
+                    email: email,
+                    password: password,
+                    DOB: null,
+                    firstName: firstName,
+                    lastName: lastName,
+                    sex: sex,
+                    image: image,
+                    template: 0
+                }
+
+                const result = await home.register(data)
+
+                const userToken = {
+                    email: email,
+                    firstName: firstName,
+                    lastName: lastName
+                }
+                //set token
+                const token = await JWTHelper.createToken(userToken, process.env.ACCESS_TOKEN_SECRET, '48h')
+                delete result.password
+                return res.status(200).json({
+                    message: 'Đăng ký thành công',
+                    data: result,
+                    token: token
+                })
+            } catch (err) {
+                console.log('trung email \n\n\n\n');
+                console.error(err)
+                return res.sendStatus(500)
+            }
         })
-    }catch (err) {
+    } catch (err) {
+        console.log('trung email \n\n\n\n');
         console.error(err)
         return res.sendStatus(500)
     }
 }
 
-module.exports.verifyEmail = async (req, res)=> {
+module.exports.verifyEmail = async (req, res) => {
     try {
-        const  { email } = req.body
+        const { email } = req.body
         console.log(email)
-        if(!email)
+        if (!email)
             return res.sendStatus(404)
         const checkEmail = await user.findByEmail(email)
-        if(checkEmail) {
-            return res.status(200).json ({
+        if (checkEmail) {
+            return res.status(200).json({
                 message: 'Email đã được đăng ký!'
             })
         }
 
-        const token = await JWTHelper.createToken({email}, process.env.ACCESS_TOKEN_SECRET, '10m')
+        const token = await JWTHelper.createToken({ email }, process.env.ACCESS_TOKEN_SECRET, '10m')
         const oAuth2Option = {
             clientId: process.env.EMAIL_CLIENT_ID,
             clientSecret: process.env.EMAIL_CLIENT_SECRET,
@@ -43,11 +82,11 @@ module.exports.verifyEmail = async (req, res)=> {
         }
 
         const oAuth2Client = new google.auth.OAuth2(oAuth2Option)
-        oAuth2Client.setCredentials({refresh_token: process.env.EMAIL_REFRESH_TOKEN})
+        oAuth2Client.setCredentials({ refresh_token: process.env.EMAIL_REFRESH_TOKEN })
         const accessToken = await oAuth2Client.getAccessToken()
-        
-        let transporter= nodemailer.createTransport({
-            service:'gmail', 
+
+        let transporter = nodemailer.createTransport({
+            service: 'gmail',
             auth: {
                 type: 'OAuth2',
                 user: 'titustran0601@gmail.com',
@@ -91,7 +130,7 @@ module.exports.verifyEmail = async (req, res)=> {
         return res.status(200).json({
             message: 'Vui lòng kiểm tra gmail!'
         })
-    }catch(err) {
+    } catch (err) {
         console.error(err)
         return res.sendStatus(500)
     }

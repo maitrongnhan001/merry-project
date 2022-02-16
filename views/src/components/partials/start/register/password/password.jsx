@@ -43,7 +43,7 @@ const Password = (props) => {
             return -1;
         }
 
-        if (!value.length >= 8) {
+        if (value.length < 8) {
             return passwordStrength;
         }
 
@@ -143,7 +143,7 @@ const Password = (props) => {
                 type="password"
                 name='password'
                 className={`input-start ${errorPassword.error ? 'input-start-error' : ''}`}
-                style={{ borderColor: color }}
+                style={{ borderColor: `${color}` }}
                 placeholder='Nhập mật khẩu của bạn'
                 onChange={(e) => handleChangePassword(e)}
             />

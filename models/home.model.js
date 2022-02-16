@@ -7,7 +7,7 @@ module.exports.register = (user)=>{
         bcrypt.hash(user.password, 10)
         .then(data=>{
             user.password = data
-            const sql = `INSERT INTO user( email, password, DOB, firstName, lastName, sex, image, template) SET ?`
+            const sql = `INSERT INTO user SET ?`
             connection.query(sql, user, (error, result) => {
                 if (error) {
                     reject(error);

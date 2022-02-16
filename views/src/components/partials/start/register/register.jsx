@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Route, Routes, useParams, useNavigate, useRoutes, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Route, Routes, useParams } from 'react-router-dom';
+import FormData from 'form-data';
 import Password from './password/password';
 import Name from './name/name';
 import Avatar from './avatar/avatar';
 import './register.scss';
+import { register } from '../../../APIs/ConnectAPI';
 
 const Register = () => {
     const params = useParams();
-    const email = useSelector(state => state.email.email);
+    const email = localStorage.getItem('email');
 
     const [token] = useState(params.token);
 
@@ -31,34 +32,36 @@ const Register = () => {
         setPassword(password);
     }
 
-    const handleUpdateUserInfo = (firstName = null, lastName = null, sex = null) => {
-        if (firstName) 
-            setUserInfo({...UserInfo, firstName: firstName});
-            
-        if (lastName) 
-            setUserInfo({...UserInfo, lastName: lastName});
-
-        if (sex) 
-            setUserInfo({...UserInfo, sex: sex});
+    const handleUpdateUserInfo = (firstName, lastName, sex) => {
+        if (firstName && lastName && sex) {
+            sex = (sex === 'Nam') ? 0 : 1;
+            setUserInfo({
+                firstName: firstName,
+                lastName: lastName,
+                sex: sex
+            });
+        }
     }
 
     const handleUpdateAvatar = (imageName, fileImage) => {
         if (!imageName && !fileImage) return;
 
-        setAvatar({...avatar, nameImg: imageName, file: fileImage});
+        setAvatar({ ...avatar, nameImg: imageName, file: fileImage });
     }
 
     const handleSubmitRegister = async () => {
-        const data = {
-            password: password,
-            lastName: UserInfo.lastName,
-            firstName: UserInfo.firstName,
-            sex: UserInfo.sex,
-            imageName: avatar.nameImg,
-            imageFile: avatar.file
-        }
+        const formData = new FormData();
+        formData.append('email', email)
+        formData.append('password', password)
+        formData.append('lastName', UserInfo.lastName)
+        formData.append('firstName', UserInfo.firstName)
+        formData.append('sex', UserInfo.sex)
+        formData.append('file', avatar.file)
 
-        console.log(data);
+        // console.log(formData);
+
+        console.log(await register(formData));
+
     }
 
     return (
@@ -76,7 +79,7 @@ const Register = () => {
             <Route
                 path='/name/'
                 element={
-                    <Name 
+                    <Name
                         token={token}
                         handleUpdateUserInfo={handleUpdateUserInfo}
                     />
@@ -85,7 +88,13 @@ const Register = () => {
 
             <Route
                 path='/avatar/'
-                element={<Avatar />}
+                element={
+                    <Avatar
+                        token={token}
+                        handleUpdateAvatar={handleUpdateAvatar}
+                        handleSubmitRegister={handleSubmitRegister}
+                    />
+                }
             ></Route>
         </Routes>
     );

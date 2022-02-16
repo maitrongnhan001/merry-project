@@ -6,11 +6,21 @@ import './name.scss';
 const Name = (props) => {
     const { token, handleUpdateUserInfo } = props;
 
-    const [firstName, setfirstName] = useState(null);
+    const [firstName, setFirstName] = useState(null);
 
     const [lastName, setLastName] = useState(null);
 
+    const [errorFName, setErrorFName] = useState(null);
+
+    const [errorLName, setErrorLName] = useState(null);
+
+    const [errorSex, setErrorSex] = useState(null);
+
     const [sex, setSex] = useState(null);
+
+    const [isShowList, setIsShowList] = useState('hide');
+
+    const [forcus, setForcus] = useState(null);
 
     const navigate = useNavigate();
 
@@ -21,11 +31,85 @@ const Name = (props) => {
     );
 
     const forcusSelect = () => {
-
+        if (isShowList === 'hide') {
+            setIsShowList('show');
+            setForcus('on-forcus');
+        }
+        else {
+            setIsShowList('hide');
+            setForcus(null);
+        }
     }
 
-    const clickliElement = (value) => {
+    const clickLiElement = (value) => {
+        if (!value) return;
 
+        setSex(value);
+        setErrorSex(null); 
+
+        setIsShowList('hide');
+        setForcus(null);
+    }
+
+    const checkName = (value) => {
+        if (!value || value.length == 0) return false;
+        return true;
+    }
+
+    const handleChangFirstName = (e) => {
+        const value = e.target.value;
+
+        if (!checkName(value))
+            setErrorFName('Xin hãy nhập tên của bạn');
+        else
+            setErrorFName(null);
+
+        setFirstName(value);
+    }
+
+    const handleChangLastName = (e) => {
+        const value = e.target.value;
+
+        if (!checkName(value))
+            setErrorLName('Xin hãy nhập họ của bạn');
+        else
+            setErrorLName(null);
+
+        setLastName(value);
+    }
+
+    const handleSubmitData = (e) => {
+        e.preventDefault();
+
+        const isErrorFName = !checkName(firstName);
+        const isErrorLName = !checkName(lastName);
+        const isErrorSex = !checkName(sex);
+
+        if (isErrorFName) {
+            setErrorFName('Xin hãy nhập tên của bạn');
+        }
+
+        if (isErrorLName) {
+            setErrorLName('Xin hãy nhập họ của bạn');
+        }
+
+        if (isErrorSex) {
+            setErrorSex('Xin hãy chọn giới tính của bạn');
+        }
+
+        if (isErrorFName || isErrorLName || isErrorSex) return;
+
+        setErrorFName(null);
+        setErrorLName(null);
+        setErrorSex(null);
+        handleUpdateUserInfo(firstName, lastName, sex);
+
+        navigate(`/register/${token}/avatar`);
+    }
+
+    const handleGoBack = (e) => {
+        e.preventDefault();
+        navigate(`/register/${token}/`);
     }
 
     return (
@@ -36,63 +120,84 @@ const Name = (props) => {
 
             <br /><br /><br /><br />
 
-            <div className="two-input">
-                <div className="block-input">
-                    <input
-                        type="text"
-                        name='last_name'
-                        className='input-start'
-                        placeholder='Nhập họ của bạn'
-                    />
-                    <span className='text-error'></span>
+            <form method='POST' onSubmit={(e) => handleSubmitData(e)}>
+                <div className="two-input">
+                    <div className="block-input">
+                        <input
+                            type="text"
+                            name='last_name'
+                            className={`input-start ${(errorLName) ? 'input-start-error' : ''}`}
+                            placeholder='Nhập họ của bạn'
+                            onChange={(e) => handleChangLastName(e)}
+                        />
+                        <span className='text-error'>
+                            {(errorLName) ? iconError : ''}
+                            {errorLName}
+                        </span>
+                    </div>
+
+                    <div className="block-input">
+                        <input
+                            type="text"
+                            name='first_name'
+                            className={`input-start ${(errorFName) ? 'input-start-error' : ''}`}
+                            placeholder='Nhập tên của bạn'
+                            onChange={(e) => handleChangFirstName(e)}
+                        />
+                        <span className='text-error'>
+                            {(errorFName) ? iconError : ''}
+                            {errorFName}
+                        </span>
+                    </div>
                 </div>
 
-                <div className="block-input">
-                    <input
-                        type="text"
-                        name='first_name'
-                        className='input-start'
-                        placeholder='Nhập tên của bạn'
-                    />
-                    <span className='text-error'></span>
+                <div className="clearfix"></div>
+
+                <br />
+
+                <div className="block-input-sex">
+                    <div
+                        className={`input-start div-input-start ${forcus} ${(errorSex) ? 'input-start-error' : ''} ${(sex) ? 'on-have-data' : ''}`}
+                        onClick={() => forcusSelect()}
+                    >{sex}</div>
+                    <ul name='sex' className={`ul-input ${isShowList}`}>
+                        <li
+                            className={`li-input ${(errorSex) ? 'li-error' : ''}`}
+                            onClick={() => clickLiElement('Nam')}
+                        >
+                            Nam
+                        </li>
+
+                        <li
+                            className={`li-input ${(errorSex) ? 'li-error' : ''}`}
+                            onClick={() => clickLiElement('Nữ')}
+                        >
+                            Nữ
+                        </li>
+                    </ul>
                 </div>
-            </div>
 
-            <div className="clearfix"></div>
+                <span className='text-error'>
+                    {(errorSex) ? iconError : ""}
+                    {errorSex}
+                </span>
 
-            <br />
+                <br /><br />
 
-            <div className="block-input-sex">
-                <div className='input-start'></div>
-                <ul name='sex' className='ul-input hide'>
-                    <li
-                        className='li-input'
+                <div className="two-button">
+                    <button 
+                        className='custom-btn left start-btn-white'
+                        onClick={(e) => handleGoBack(e)}    
                     >
-                        Nam
-                    </li>
+                        Trở về
+                    </button>
 
-                    <li
-                        className='li-input'
-                    >
-                        Nữ
-                    </li>
-                </ul>
-            </div>
-
-            <span className='text-error'></span>
-
-            <br /><br /><br />
-
-            <div className="two-button">
-                <button className='custom-btn left start-btn-white'>
-                    Trở về
-                </button>
-
-                <button className='start-btn right start-btn-primary'>
-                    Tiếp tục
-                </button>
-            </div>
-            <div className="end-space"></div>
+                    <button className='start-btn right start-btn-primary'>
+                        Tiếp tục
+                    </button>
+                </div>
+                <div className="end-space"></div>
+            </form>
         </div>
     );
 }

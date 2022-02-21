@@ -5,7 +5,7 @@ import './name.scss';
 
 const Name = (props) => {
     const { firstNameProps, lastNameProps, sexProps,
-         token, handleUpdateUserInfo } = props;
+         token, handleUpdateUserInfo, passwordProps } = props;
 
     const [firstName, setFirstName] = useState(null);
 
@@ -32,11 +32,16 @@ const Name = (props) => {
     );
 
     useEffect(() => {
-       if (!firstNameProps || !lastNameProps || !sexProps) return;
+        if (!passwordProps) {
+            navigate(`/register/${token}`);
+            return;
+        }
 
-       setFirstName(firstNameProps);
-       setLastName(lastNameProps);
-       setSex(sexProps);
+        if (!firstNameProps || !lastNameProps || !sexProps) return;
+
+        setFirstName(firstNameProps);
+        setLastName(lastNameProps);
+        setSex(sexProps);
     }, []);
 
     const forcusSelect = () => {

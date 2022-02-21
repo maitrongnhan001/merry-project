@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StartLoading from '../../tools/start-loading/start-loading';
 import './avatar.scss';
 
 const Avatar = (props) => {
-    const { token, error, handleUpdateAvatar, handleSubmitRegister } = props;
+    const { token, error, handleUpdateAvatar, handleSubmitRegister, passwordProps } = props;
 
     const [img_tag, set_img_tag] = useState(
         <img
@@ -21,6 +21,13 @@ const Avatar = (props) => {
     );
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        if (!passwordProps) {
+            navigate(`/register/${token}`);
+            return;
+        }
+    }, []);
 
     //Update image file
     const handleChangeFile = async (e) => {

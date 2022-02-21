@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import FormData from 'form-data';
 import Password from './password/password';
@@ -81,6 +81,7 @@ const Register = () => {
         if (!result.error) {
             localStorage.setItem('accessToken', result.token);
             localStorage.setItem('userId', result.id);
+
             cleanData();
             naviagate('/me');
         } else {
@@ -109,6 +110,7 @@ const Register = () => {
                         lastNameProps={UserInfo.lastName}
                         firstNameProps={UserInfo.firstName}
                         sexProps={UserInfo.sex ? 'Nữ' : 'Nam'}
+                        passwordProps={password}
                         token={token}
                         handleUpdateUserInfo={handleUpdateUserInfo}
                     />
@@ -121,6 +123,7 @@ const Register = () => {
                     <Avatar
                         error={error}
                         token={token}
+                        passwordProps={password}
                         handleUpdateAvatar={handleUpdateAvatar}
                         handleSubmitRegister={handleSubmitRegister}
                     />

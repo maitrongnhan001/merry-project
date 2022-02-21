@@ -148,7 +148,7 @@ const Password = (props) => {
             <input
                 type="password"
                 name='password'
-                value={password ?? ''}
+                value={password || ''}
                 className={`input-start ${errorPassword ? 'input-start-error' : ''}`}
                 style={{ borderColor: `${color}` }}
                 placeholder='Nhập mật khẩu của bạn'

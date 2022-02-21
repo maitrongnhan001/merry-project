@@ -1,19 +1,23 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../../../Sockets/home';
 import { useSelector } from 'react-redux';
+import StartLoading from '../tools/start-loading/start-loading';
 import './login.scss';
 
 const Login = () => {
     const initEmail = useSelector(state => state.email);
+
     const [user, setUser] = useState({ email: (""), password: "" });
 
-    const [errorEmail, setErroremail] = useState({ error: null });
+    const [errorEmail, setErroremail] = useState(null);
 
-    const [errorPassword, setErrorPassword] = useState({ error: null });
+    const [errorPassword, setErrorPassword] = useState(null);
 
-    const [anotherError, setAnotherError] = useState({error: null});
+    const [anotherError, setAnotherError] = useState(null);
 
+    const [isLoading, setIsLoading] = useState(false);
+    
     const navigate = useNavigate();
 
     const iconError = (
@@ -22,15 +26,19 @@ const Login = () => {
         </svg>
     );
 
+    useEffect(() => {
+        if (initEmail.email) setUser({...user, email: initEmail.email});
+    }, []);
+
     const handleChangeEmail = (e) => {
         const value = e.target.value;
         if (!value || value.length === 0) {
-            setErroremail({ error: "Xin hãy nhập email" });
+            setErroremail("Xin hãy nhập email");
         } else {
             if ( !(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value)) ) {
-                setErroremail({ error: "Không đúng định dạng. Ví dụ: mttam@gmail.com" });
+                setErroremail("Không đúng định dạng. Ví dụ: mttam@gmail.com");
             } else {
-                setErroremail({ error: null });
+                setErroremail(null);
             }
         }
 
@@ -40,25 +48,27 @@ const Login = () => {
     const handleChangePassword = (e) => {
         const value = e.target.value;
         if (!value || value.length === 0) {
-            setErrorPassword({ error: "Xin hãy nhập mật khẩu" });
+            setErrorPassword("Xin hãy nhập mật khẩu");
         } else {
-            setErrorPassword({ error: null });
+            setErrorPassword(null);
         }
         setUser({ ...user, password: value });
     }
 
-    const handleSubmitLogin = async (e) => {
-        e.preventDefault();
+    const handleSubmitLogin = async (e = null) => {
+        setIsLoading(true);
+        if (e) e.preventDefault();
         //check data
         if (!user.email || user.email.length === 0) {
-            setErroremail({ error: "Xin hãy nhập email" });
+            setErroremail("Xin hãy nhập email");
         }
         if (!user.password || user.password.length === 0) {
-            setErrorPassword({ error: "Xin hãy nhập mật khẩu" });
+            setErrorPassword("Xin hãy nhập mật khẩu");
+            setIsLoading(false);
             return;
         }
-        setErroremail({ error: null });
-        setErrorPassword({ error: null });
+        setErroremail(null);
+        setErrorPassword(null);
         const data = await login(user);
 
         
@@ -67,13 +77,21 @@ const Login = () => {
             localStorage.setItem('userId', data.userId);
             navigate(`/me/${data.userId}`);
         } else {
-            setAnotherError({error: 'Email hoặc mật khẩu không chính xác'});
+            setAnotherError('Email hoặc mật khẩu không chính xác');
         }
+        setIsLoading(false);
     }
 
     const handleGoBack = (e) => {
         e.preventDefault();
         navigate('/');
+    }
+
+    const handlePressEnter = (e) => {
+        if (e.key !== 'Enter') return;
+
+        e.preventDefault();
+        handleSubmitLogin();
     }
 
     return (
@@ -91,15 +109,17 @@ const Login = () => {
                 <input
                     type="mail"
                     name='email'
-                    className={`input-start ${errorEmail.error ? 'input-start-error' : ''}`}
+                    value={user.email}
+                    className={`input-start ${errorEmail ? 'input-start-error' : ''}`}
                     placeholder='Nhập email của bạn'
                     onChange={(e) => handleChangeEmail(e)}
                     value={user.email}
+                    onKeyPress={(e) => handlePressEnter(e)}
                 />
 
                 <span className='text-error'>
-                    {errorEmail.error ? iconError : ""}
-                    {errorEmail.error}
+                    {errorEmail ? iconError : ""}
+                    {errorEmail}
                 </span>
 
                 <br />
@@ -107,14 +127,15 @@ const Login = () => {
                 <input
                     type="password"
                     name='password'
-                    className={`input-start ${errorPassword.error ? 'input-start-error' : ''}`}
+                    className={`input-start ${errorPassword ? 'input-start-error' : ''}`}
                     placeholder='Nhập mật khẩu của bạn'
                     onChange={(e) => handleChangePassword(e)}
+                    onKeyPress={(e) => handlePressEnter(e)}
                 />
 
                 <span className='text-error'>
-                    {errorPassword.error ? iconError : ""}
-                    {errorPassword.error}</span>
+                    {errorPassword ? iconError : ""}
+                    {errorPassword}</span>
                 <br/>
 
                 <div className='text-order-feature'>
@@ -135,8 +156,8 @@ const Login = () => {
 
                 <br /><br />
                 <span className='text-error center'>
-                    {anotherError.error ? (iconError) : ""}
-                    {anotherError.error}</span>
+                    {anotherError ? (iconError) : ""}
+                    {anotherError}</span>
 
                 <div className="two-button">
                     <button 
@@ -149,7 +170,7 @@ const Login = () => {
                     <button
                         className='start-btn start-btn-primary'
                     >
-                        Đăng nhập
+                        {isLoading ? <StartLoading/> : 'Đăng nhập'}
                     </button>
                 </div>
             </form>

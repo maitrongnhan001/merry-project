@@ -1,6 +1,6 @@
 .start-input-component {
     .two-input {
-        width: 85%;
+        width: 87%;
         margin: 0 auto;
 
         .block-input {
@@ -29,11 +29,25 @@
 
     .block-input-sex {
         position: relative;
-        width: 85%;
+        width: 87%;
         margin: 0 auto;
 
         .input-start {
             width: 100%;
+        }
+
+        .div-input-start {
+            line-height: 3rem;
+            transition: 0.1s all ease;
+        }
+
+        .on-forcus {
+            background-color: #fff;
+            border: 1.5px solid rgb(3, 76, 185);
+        }
+
+        .on-forcus.input-start-error {
+            border: 1.5px solid red;
         }
 
         .hide {
@@ -60,9 +74,9 @@
                 height: 3rem;
                 line-height: 3rem;
                 font-size: 20px;
-                border-top: 1px solid rgb(3, 76, 185);
-                border-left: 1px solid rgb(3, 76, 185);
-                border-right: 1px solid rgb(3, 76, 185);
+                border-top: 1.5px solid rgb(3, 76, 185);
+                border-left: 1.5px solid rgb(3, 76, 185);
+                border-right: 1.5px solid rgb(3, 76, 185);
                 border-top-left-radius: 5px;
                 border-top-right-radius: 5px;
                 padding: 0 1rem 0 1rem;
@@ -75,13 +89,21 @@
                 border-top-right-radius: 0px;
                 border-bottom-left-radius: 5px;
                 border-bottom-right-radius: 5px;
-                border-bottom: 1px solid rgb(3, 76, 185);
+                border-bottom: 1.5px solid rgb(3, 76, 185);
             }
     
             .li-input:hover {
                 cursor: pointer;
                 background-color: #e2e0e0;
             }
+
+            .li-error {
+                border-color: red;
+            }
         }
     }
+}
+
+.on-have-data {
+    background-color: rgb(221, 231, 247);
 }

@@ -1,0 +1,31 @@
+.start-notification {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    z-index: 50;
+    bottom: 0vh;
+    display: table;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    .start-notification-main {
+        display: table-cell;
+        vertical-align: middle;
+        
+        .notification-main {
+            width: 50rem;
+            background-color: #fff;
+            margin: 0 auto;
+            border-radius: 10px;
+            padding: 2rem;
+
+            .start-notification-title {
+                font-size: 30px;
+            }
+
+            .start-notification-message {
+                font-size: 18px;
+                margin: 2rem 0;
+            }
+        }
+    }
+}

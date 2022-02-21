@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import StartLogo from '../start-logo/start-logo';
-import StartLoading from '../tools/start-loading';
+import StartLoading from '../tools/start-loading/start-loading';
 import { verifiEmail } from '../../../APIs/ConnectAPI';
 import { useDispatch } from 'react-redux';
-import { updateEmail } from '../../../../redux/reducers/email';
+import { update, updateEmail } from '../../../../redux/reducers/email';
 import './get-started.scss';
 
 const GetStarted = () => {
@@ -20,7 +20,7 @@ const GetStarted = () => {
 
     const [isLoading, setIsLoading] = useState(false);
 
-    const [notification, setNotification] = useState(false);
+    const [notification, setNotification] = useState(true);
 
     const iconError = (
         <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" focusable="false" width="20px" height="20px" viewBox="0 0 24 24">
@@ -34,8 +34,6 @@ const GetStarted = () => {
     }, []);
 
     const checkMail = (value) => {
-        if (!value) return;
-
         if (!value || value.length === 0) {
             setErroremail("Xin hãy nhập email");
             return false;
@@ -64,6 +62,8 @@ const GetStarted = () => {
 
         const result = await verifiEmail(email);
 
+        setIsLoading(false);
+
         if (result.message) {
             if (result.message === "Email đã được đăng ký!") {
                 //luu thong tin email len reduct
@@ -72,76 +72,81 @@ const GetStarted = () => {
                 navigate('/login');
             } else {
                 //email chua duoc dang ky
-                alert("Hệ thống vừa gửi một email tới địa chỉ email của bạn. Vui lòng kiểm tra email để tiếp tục.");
+                const stoteData = {
+                    email: email,
+                    showNotification: true
+                }
+                const action = update(stoteData);
+                dispatch(action);
                 localStorage.setItem('email', email);
             }
         } else {
             setAnotherError(result.error);
         }
-
-        setIsLoading(false);
     }
 
     return (
-        <div className='get-start-component'>
-            <StartLogo></StartLogo>
+        <>
+            <div className='get-start-component'>
+                <StartLogo></StartLogo>
 
-            <div className='get-start-title'>
+                <div className='get-start-title'>
 
-                <p>Chia sẻ</p>
+                    <p>Chia sẻ</p>
 
-                <p style={{ 'fontSize': '46px' }}>
-                    Niềm vui,
+                    <p style={{ 'fontSize': '46px' }}>
+                        Niềm vui,
+                    </p>
+
+                    <p>Gắn kết</p>
+
+                    <p style={{ 'fontSize': '50px' }}>
+                        cuộc sống
+                    </p>
+
+                </div>
+                <p className='get-start-slogan'>
+                    Hãy để Merry kết nối chúng ta lại gần nhau hơn.
                 </p>
+                <form onSubmit={e => handleSubmitEmail(e)} method='POST'>
+                    <input
+                        type="mail"
+                        name='email'
+                        value={email ?? ''}
+                        className={`input-start ${errorEmail ? 'input-start-error' : ''} ${(email) ? 'on-have-data' : ''}`}
+                        placeholder='Nhập email của bạn'
+                        onChange={(e) => handleChangeEmail(e)}
+                    />
+                    <span className='text-error'>
+                        {errorEmail ? (iconError) : ""}
+                        {errorEmail}
+                    </span>
 
-                <p>Gắn kết</p>
 
-                <p style={{ 'fontSize': '50px' }}>
-                    cuộc sống
-                </p>
+                    <span className='text-error center'>
+                        {anotherError ? (iconError) : ""}
+                        {anotherError}
+                    </span>
 
+                    <button className='start-btn start-btn-primary custom-btn-start '>
+                        {isLoading ? <StartLoading /> : 'Bắt đầu'}
+                    </button>
+                </form>
+
+                <br />
+
+                <div className='center'>
+                    {!isLoading ? <Link
+                        className='text-primary'
+                        to="/login"
+                    >
+                        Đăng nhập
+                    </Link> : ''}
+
+                </div>
+                <div className="end-space"></div>
             </div>
-            <p className='get-start-slogan'>
-                Hãy để Merry kết nối chúng ta lại gần nhau hơn.
-            </p>
-            <form onSubmit={e => handleSubmitEmail(e)} method='POST'>
-                <input
-                    type="mail"
-                    name='email'
-                    value={email ?? ''}
-                    className={`input-start ${errorEmail ? 'input-start-error' : ''} ${(email) ? 'on-have-data' : ''}`}
-                    placeholder='Nhập email của bạn'
-                    onChange={(e) => handleChangeEmail(e)}
-                />
-                <span className='text-error'>
-                    {errorEmail ? (iconError) : ""}
-                    {errorEmail}
-                </span>
-
-
-                <span className='text-error center'>
-                    {anotherError ? (iconError) : ""}
-                    {anotherError}
-                </span>
-
-                <button className='start-btn start-btn-primary custom-btn-start '>
-                    {isLoading ? <StartLoading/> : 'Bắt đầu'}
-                </button>
-            </form>
-
-            <br />
-
-            <div className='center'>
-                <Link
-                    className='text-primary'
-                    to="/login"
-                >
-                    Đăng nhập
-                </Link>
-
-            </div>
-            <div className="end-space"></div>
-        </div>
+        </>
     );
 }
 

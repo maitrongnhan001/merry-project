@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { login } from '../../../Sockets/home';
 import { useSelector } from 'react-redux';
-import StartLoading from '../tools/start-loading';
+import StartLoading from '../tools/start-loading/start-loading';
 import './login.scss';
 
 const Login = () => {

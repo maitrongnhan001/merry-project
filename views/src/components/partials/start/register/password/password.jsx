@@ -133,8 +133,7 @@ const Password = (props) => {
 
     const handlePressEnter = (e) => {
         if (e.key !== 'Enter') return;
-
-        handleStorePassword();        
+        handleStorePassword();
     }
 
     return (

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import StartLoading from '../../tools/start-loading/start-loading';
 import './avatar.scss';
 
 const Avatar = (props) => {
@@ -10,6 +11,8 @@ const Avatar = (props) => {
             src="/img/img-description/choose-avatar.jpeg"
             alt="choose avatar"></img>
     );
+
+    const [isLoading, setIsloading] = useState(false);
 
     const iconError = (
         <svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" fill="currentColor" focusable="false" width="20px" height="20px" viewBox="0 0 24 24">
@@ -40,7 +43,9 @@ const Avatar = (props) => {
     }
 
     const handleSubmitFile = () => {
+        setIsloading(true);
         handleSubmitRegister();
+        setIsloading(false);
     }
 
     const handleGoBack = () => {
@@ -93,7 +98,7 @@ const Avatar = (props) => {
                     className='start-btn right start-btn-primary'
                     onClick={handleSubmitFile}
                 >
-                    Tiếp tục
+                    {isLoading ? <StartLoading/> : 'Tiếp tục'}
                 </button>
             </div>
             <div className="end-space"></div>

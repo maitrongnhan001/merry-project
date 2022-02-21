@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StartLogo from '../../start-logo/start-logo';
 import './name.scss';
 
 const Name = (props) => {
-    const { token, handleUpdateUserInfo } = props;
+    const { firstNameProps, lastNameProps, sexProps,
+         token, handleUpdateUserInfo } = props;
 
     const [firstName, setFirstName] = useState(null);
 
@@ -29,6 +30,14 @@ const Name = (props) => {
             <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
         </svg>
     );
+
+    useEffect(() => {
+       if (!firstNameProps || !lastNameProps || !sexProps) return;
+
+       setFirstName(firstNameProps);
+       setLastName(lastNameProps);
+       setSex(sexProps);
+    }, []);
 
     const forcusSelect = () => {
         if (isShowList === 'hide') {
@@ -79,7 +88,7 @@ const Name = (props) => {
     }
 
     const handleSubmitData = (e) => {
-        e.preventDefault();
+        if (e) e.preventDefault();
 
         const isErrorFName = !checkName(firstName);
         const isErrorLName = !checkName(lastName);
@@ -112,6 +121,13 @@ const Name = (props) => {
         navigate(`/register/${token}/`);
     }
 
+    const handlePressEnter = (e) => {
+        e.preventDefault();
+        if( e.key !== 'Enter' ) return;
+
+        handleSubmitData();
+    }
+
     return (
         <div className='start-input-component'>
             <div className="start-space"></div>
@@ -126,9 +142,11 @@ const Name = (props) => {
                         <input
                             type="text"
                             name='last_name'
-                            className={`input-start ${(errorLName) ? 'input-start-error' : ''}`}
+                            value={lastName ?? ''}
+                            className={`input-start ${(errorLName) ? 'input-start-error' : ''} ${(lastName) ? 'on-have-data' : ''}`}
                             placeholder='Nhập họ của bạn'
                             onChange={(e) => handleChangLastName(e)}
+                            onKeyPress={(e) => handlePressEnter(e)}
                         />
                         <span className='text-error'>
                             {(errorLName) ? iconError : ''}
@@ -140,9 +158,11 @@ const Name = (props) => {
                         <input
                             type="text"
                             name='first_name'
-                            className={`input-start ${(errorFName) ? 'input-start-error' : ''}`}
+                            value={firstName ?? ''}
+                            className={`input-start ${(errorFName) ? 'input-start-error' : ''} ${(firstName) ? 'on-have-data' : ''}`}
                             placeholder='Nhập tên của bạn'
                             onChange={(e) => handleChangFirstName(e)}
+                            onKeyPress={(e) => handlePressEnter(e)}
                         />
                         <span className='text-error'>
                             {(errorFName) ? iconError : ''}
@@ -155,7 +175,12 @@ const Name = (props) => {
 
                 <br />
 
-                <div className="block-input-sex">
+                <div 
+                    className="block-input-sex" 
+                    onKeyPress={(e) => handlePressEnter(e)}
+                    tabIndex="0"
+                    style={{outline: 'none'}}
+                    >
                     <div
                         className={`input-start div-input-start ${forcus} ${(errorSex) ? 'input-start-error' : ''} ${(sex) ? 'on-have-data' : ''}`}
                         onClick={() => forcusSelect()}

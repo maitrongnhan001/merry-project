@@ -1,11 +1,9 @@
 const nodemailer = require('nodemailer')
 const { google } = require('googleapis')
-const fs = require('fs');
-const path = require('path');
 const home = require('../models/home.model')
 const JWTHelper = require('../helpers/auth.helper')
 const user = require('../models/user.model')
-const upload = require('../helpers/storeImage.helper');
+const upload = require('../helpers/storeImage.helper')
 
 module.exports.register = async (req, res) => {
     try {
@@ -49,13 +47,11 @@ module.exports.register = async (req, res) => {
                     token: token
                 })
             } catch (err) {
-                console.log('trung email \n\n\n\n');
                 console.error(err)
                 return res.sendStatus(500)
             }
         })
     } catch (err) {
-        console.log('trung email \n\n\n\n');
         console.error(err)
         return res.sendStatus(500)
     }

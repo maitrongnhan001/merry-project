@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Routes, useParams } from 'react-router-dom';
+import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import FormData from 'form-data';
 import Password from './password/password';
 import Name from './name/name';
@@ -26,6 +26,10 @@ const Register = () => {
         file: null
     });
 
+    const [error, setError] = useState(null);
+
+    const naviagate = useNavigate();
+
     const handleUdpatePassword = (password) => {
         if (!password) return;
 
@@ -49,6 +53,20 @@ const Register = () => {
         setAvatar({ ...avatar, nameImg: imageName, file: fileImage });
     }
 
+    const cleanData = () => {
+        setPassword(null);
+        setUserInfo({
+            firstName: null,
+            lastName: null,
+            sex: null
+        });
+        setAvatar({
+            nameImg: null,
+            file: null
+        });
+        setError(null);
+    }
+
     const handleSubmitRegister = async () => {
         const formData = new FormData();
         formData.append('email', email)
@@ -58,10 +76,17 @@ const Register = () => {
         formData.append('sex', UserInfo.sex)
         formData.append('file', avatar.file)
 
-        // console.log(formData);
+        const result = await register(formData);
 
-        console.log(await register(formData));
-
+        if (!result.error) {
+            localStorage.setItem('accessToken', result.token);
+            localStorage.setItem('userId', result.id);
+            cleanData();
+            naviagate('/me');
+        } else {
+            const stringError = result.error;
+            setError(stringError);
+        }
     }
 
     return (
@@ -71,6 +96,7 @@ const Register = () => {
                 element={
                     <Password
                         token={token}
+                        passwordProps={password}
                         handleUpdatePassword={handleUdpatePassword}
                     />
                 }
@@ -80,6 +106,9 @@ const Register = () => {
                 path='/name/'
                 element={
                     <Name
+                        lastNameProps={UserInfo.lastName}
+                        firstNameProps={UserInfo.firstName}
+                        sexProps={UserInfo.sex ? 'Nữ' : 'Nam'}
                         token={token}
                         handleUpdateUserInfo={handleUpdateUserInfo}
                     />
@@ -90,6 +119,7 @@ const Register = () => {
                 path='/avatar/'
                 element={
                     <Avatar
+                        error={error}
                         token={token}
                         handleUpdateAvatar={handleUpdateAvatar}
                         handleSubmitRegister={handleSubmitRegister}

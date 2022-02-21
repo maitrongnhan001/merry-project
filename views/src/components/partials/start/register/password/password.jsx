@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import StartLogo from '../../start-logo/start-logo';
 
 const Password = (props) => {
-    const { token, handleUpdatePassword } = props;
+    const { token, passwordProps, handleUpdatePassword } = props;
 
     const [password, setPassword] = useState(null);
 
-    const [errorPassword, setErrorPassword] = useState({ error: null });
+    const [errorPassword, setErrorPassword] = useState(null);
 
     const [icon, setIcon] = useState(null);
 
@@ -33,6 +33,13 @@ const Password = (props) => {
     );
 
     const [color, setColor] = useState(null);
+
+    useEffect(()=> {
+        if (passwordProps) {
+            setPassword(passwordProps);
+            notification(checkPassword(passwordProps));
+        }
+    }, []);
 
     const checkPassword = (value) => {
         // if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])([A-Za-z0-9]{8,20})$/.test(value))
@@ -65,35 +72,35 @@ const Password = (props) => {
     const notification = (value) => {
         switch (value) {
             case 0: {
-                setErrorPassword({ error: "Mật khẩu quá ngắn, độ dài mật khẩu tối thiểu: 8 kí tự" });
+                setErrorPassword("Mật khẩu quá ngắn, độ dài mật khẩu tối thiểu: 8 kí tự");
                 setIcon(iconError);
                 setColor('red');
                 break;
             }
 
             case 1: {
-                setErrorPassword({ error: "Mật khẩu yếu. Nên có thêm các kí tự in hoa và số" });
+                setErrorPassword("Mật khẩu yếu. Nên có thêm các kí tự in hoa và số");
                 setIcon(iconError);
                 setColor('red');
                 break;
             }
 
             case 2: {
-                setErrorPassword({ error: "Mật khẩu trung bình. Nên có thêm các kí tự số" });
+                setErrorPassword("Mật khẩu trung bình. Nên có thêm các kí tự số");
                 setIcon(iconWarning);
                 setColor('orange');
                 break;
             }
 
             case 3: {
-                setErrorPassword({ error: "Mật khẩu mạnh" });
+                setErrorPassword("Mật khẩu mạnh");
                 setIcon(iconSuccess);
                 setColor('green');
                 break;
             }
 
             default: {
-                setErrorPassword({ error: "Xin hãy nhập mật khẩu" });
+                setErrorPassword("Xin hãy nhập mật khẩu");
                 setIcon(iconError);
                 setColor('red');
             }
@@ -102,12 +109,6 @@ const Password = (props) => {
 
     const handleChangePassword = (e) => {
         const passwordValue = e.target.value;
-
-        if (!passwordValue && passwordValue.length === 0) {
-            setErrorPassword({ error: "Xin hãy nhập mật khẩu" });
-            setIcon(iconError);
-            return;
-        }
 
         const resultCheckPassword = checkPassword(passwordValue);
 
@@ -130,6 +131,12 @@ const Password = (props) => {
         navigate(`/`);
     }
 
+    const handlePressEnter = (e) => {
+        if (e.key !== 'Enter') return;
+
+        handleStorePassword();        
+    }
+
     return (
         <div className='start-input-component'>
             <div className="start-space"></div>
@@ -142,15 +149,17 @@ const Password = (props) => {
             <input
                 type="password"
                 name='password'
-                className={`input-start ${errorPassword.error ? 'input-start-error' : ''}`}
+                value={password ?? ''}
+                className={`input-start ${errorPassword ? 'input-start-error' : ''}`}
                 style={{ borderColor: `${color}` }}
                 placeholder='Nhập mật khẩu của bạn'
                 onChange={(e) => handleChangePassword(e)}
+                onKeyPress={(e) => handlePressEnter(e)}
             />
 
             <span className='text-error' style={{ color: color }}>
                 {icon}
-                {errorPassword.error}
+                {errorPassword}
             </span>
 
             <br /><br /><br />

@@ -46,7 +46,7 @@
             border: 1.5px solid rgb(3, 76, 185);
         }
 
-        .input-start-error.on-forcus {
+        .on-forcus.input-start-error {
             border: 1.5px solid red;
         }
 
@@ -56,10 +56,6 @@
 
         .show {
             display: block;
-        }
-
-        .on-have-data {
-            background-color: rgb(221, 231, 247);
         }
 
         .ul-input {
@@ -102,8 +98,12 @@
             }
 
             .li-error {
-                border-color: red !important;
+                border-color: red;
             }
         }
     }
+}
+
+.on-have-data {
+    background-color: rgb(221, 231, 247);
 }

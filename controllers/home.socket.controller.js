@@ -36,45 +36,6 @@ module.exports.login = async (data, socket, io) => {
         }
         const token = await authHelper.createToken(InfoUserLogin, token_key, "48h");
 
-        //luu thong tin vua dang nhap vao arr
-        const userId = resultLogin[0].id;
-        const result = await userIsLogin.store(userId, socket);
-
-        if (!result) {
-            //neu that bai thong bao cho nguoi dung that bai
-            socket.emit('error', { message: 'login error' })
-        }
-
-        //chuyen tat ca trang thai tin nhan thanh da nhan
-        const listGroupChat = await detailGroup.getGroups(userId, 10000, 0);
-        let groupChatArr = [];
-        if (listGroupChat) {
-            for (let i = 0; i < listGroupChat.length; i++) {
-                groupChatArr.push(listGroupChat[i].groupId);
-            }
-            const status = 'Đã nhận';
-            await chat.updateStatus(status, groupChatArr);
-        }
-
-        //lay danh sach ban be
-        const listFriend = await friend.listFriend(userId, 10000, 0);
-
-        if (listFriend) {
-            //thong bao den tat ca nguoi dung trong danh sach ban minh vua dang nhap
-            listFriend.forEach(async (Element) => {
-                let receiveId;
-                //tim ban
-                receiveId = (Element.sendId == userId) ? Element.receiveId : Element.sendId;
-
-                //kiem tra co online khong
-                const userSocket = (await userIsLogin.getUserSocket(receiveId));
-
-                if (userSocket) {
-                    //gui thong bao
-                    io.to(`${userSocket.id}`).emit('user-login', { userId: userId });
-                }
-            });
-        }
         socket.emit('user-login', {
             userId: userId,
             token: token

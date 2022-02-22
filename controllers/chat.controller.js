@@ -6,8 +6,8 @@ const user = require('../models/user.model')
 const getMembers = async (groupId,userId) => {
 
     let id = await group.getMembers(groupId)
-    let user1, user2;
-    if(userId ===  id[0].userId) {
+    var user1, user2;
+    if(userId ==  id[0].userId) {
         user1 = await user.getUserId(id[0].userId)
         user2 = await user.getUserId(id[1].userId)
     }else {

@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react'
 import Image from '../../avatar/avatar'
 import './item.scss'
 import $ from 'jquery'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { showCenter, showFeature } from '../../../../../redux/actions/taskbar'
+import { saveCurrentChat } from '../../../../../redux/actions/message'
 
 function Item({id, name, image, addFriend, createGroup, onAddMember}) {
     
     /*----redux----*/
+    const currentChatSelector = useSelector(state => state.message.currentChat)
     //ket noi den redux
     const dispatch = useDispatch()
     
@@ -21,6 +23,8 @@ function Item({id, name, image, addFriend, createGroup, onAddMember}) {
             $(e.currentTarget).find('.friend-add-friend-checkbox').attr('checked', checked ? false : true)
             setChecked(checked ? false : true)
         }else {
+            const currentChat = saveCurrentChat({receiverId: id, image, name})
+            dispatch(currentChat)
             $(e.currentTarget).addClass('active-friend-group-item')
             for(let val of $('.friend-group-item')) {
                 if(val !== e.currentTarget) {

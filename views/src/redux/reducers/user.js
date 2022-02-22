@@ -1,15 +1,17 @@
 
 
 const initial =  {
-    data: {},
+    userLogin: []
 } 
 
 const userReducer = (state = initial, action) => {
     switch(action.type) {
         case "USER_LOGIN": {
+            const newUserLogin = state.userLogin
+            newUserLogin.push(action.data)
             return {
                 ...state,
-                data: action.payload,
+                isLogin: newUserLogin,
             }
         }
         default: {

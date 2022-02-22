@@ -31,6 +31,7 @@ async function verifiEmail (email) {
         email: email
     }
     const result = await getAPI('POST', '/check-email', data)
+    // eslint-disable-next-line default-case
     switch (result.status) {
         case 200:
             return result.data
@@ -43,6 +44,29 @@ async function verifiEmail (email) {
     }
 }
 
+
+//APIs get chats list
+async function getListChat(userId) {
+    const result = await getAPI('GET', `/chat/list-chat/${userId}`)
+    return result
+}
+
+//APIs get friends list
+async function getFriendsList(userId) {
+    const result = await getAPI('GET', `/friends/${userId}`)
+    return result
+}
+
+//APIs get groups list
+async function getGroupsList(userId) {
+    const result = await getAPI('GET', `/groups/${userId}`)
+    return result
+}
+
+
 export {
-    verifiEmail
+    verifiEmail,
+    getListChat,
+    getFriendsList,
+    getGroupsList
 }

@@ -38,12 +38,30 @@ module.exports.login = async (data, socket, io) => {
 
         //luu thong tin vua dang nhap vao arr
         const userId = resultLogin[0].id;
-        const result = await userIsLogin.store(userId, socket);
 
-        if (!result) {
-            //neu that bai thong bao cho nguoi dung that bai
-            socket.emit('error', { message: 'login error' })
+        socket.emit('user-login', {
+            userId: userId,
+            token: token
+        });
+    } catch (err) {
+        socket.emit('user-login', {msg: 'Đăng nhập không thành công'});
+        console.error(err);
+    }
+}
+
+module.exports.connection = async (data, socket, io) => {
+    try {
+        //lay thong tin
+        const userId = data.userId;
+
+        //kiem tra thong tin
+        if (!userId) {
+            socket.emit('connection', {msg: 'Không có dữ liệu'});
+            return;
         }
+
+        //luu thong tin vua dang nhap vao arr
+        await userIsLogin.store(userId, socket);
 
         //chuyen tat ca trang thai tin nhan thanh da nhan
         const listGroupChat = await detailGroup.getGroups(userId, 10000, 0);
@@ -71,16 +89,15 @@ module.exports.login = async (data, socket, io) => {
 
                 if (userSocket) {
                     //gui thong bao
-                    io.to(`${userSocket.id}`).emit('user-login', { userId: userId });
+                    io.to(`${userSocket.id}`).emit('connection', { userId: userId });
                 }
             });
         }
-        socket.emit('user-login', {
+        socket.emit('connection', {
             userId: userId,
-            token: token
         });
     } catch (err) {
-        socket.emit('user-login', {msg: 'Đăng nhập không thành công'});
+        socket.emit('connection', {msg: 'Kết nối không thành công'});
         console.error(err);
     }
 }

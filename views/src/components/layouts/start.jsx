@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import GetStarted from '../partials/start/get-started/get-started';
 import Register from '../partials/start/register/register';
 import Login from '../partials/start/login/login';
@@ -11,12 +11,12 @@ import { useSelector } from 'react-redux';
 const Start = () => {
     const email = useSelector(state => state.email).email;
     const isShowNotification = useSelector(state => state.email).showNotification;
+    const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
-        const userId = localStorage.getItem('userId');
         if (token) {
-            //return navigate(`/me/${userId}`);
+            return navigate(`/me/`);
         }
     });
     return (

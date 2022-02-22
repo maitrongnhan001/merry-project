@@ -13,7 +13,7 @@ import Center from '../partials/chat/center/center'
 import Loader from '../partials/chat/tools/loader/loader'
 import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList } from '../APIs/ConnectAPI'
-import { saveChatList } from '../../redux/actions/friends'
+import { saveChatList, saveFriendsList } from '../../redux/actions/friends'
 import { saveGroupsList } from '../../redux/actions/groups'
 import { getAddFriend } from '../Sockets/socket-friend'
 import { getAddGroup } from '../Sockets/socket-group'
@@ -50,7 +50,7 @@ function Chat() {
             const friendsList = await getFriendsList(localStorage.getItem('userId'))
             console.log(friendsList);
             if(friendsList.status && friendsList.status === 200) {
-                let friendsListAction = getFriendsList(friendsList.data.data)
+                let friendsListAction = saveFriendsList(friendsList.data.data)
                 dispatch(friendsListAction)
             }
 

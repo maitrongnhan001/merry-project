@@ -131,7 +131,6 @@ module.exports.connection = async (data, socket, io) => {
         }
         socket.emit('connection', {
             userId: userId,
-            token: token
         });
     } catch (err) {
         socket.emit('connection', {msg: 'Kết nối không thành công'});

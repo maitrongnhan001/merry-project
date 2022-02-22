@@ -6,8 +6,9 @@ const login = async (data) => {
     return result;
 }
 
-const getLogin = async () => {
-    const result = await listenSocket('user-login')
+const getConnection = async (userId) => {
+    sendSocket('connection', userId)
+    const result = await listenSocket('connection')
     return result;
 }
 
@@ -21,7 +22,7 @@ const sendLogout = async(data)=> {
 
 export {
     login,
-    getLogin,
+    getConnection,
     getLogout,
     sendLogout
 }

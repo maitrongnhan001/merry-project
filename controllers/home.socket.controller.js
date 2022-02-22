@@ -85,6 +85,60 @@ module.exports.login = async (data, socket, io) => {
     }
 }
 
+module.exports.connection = async (data, socket, io) => {
+    try {
+        //lay thong tin
+        const userId = data.userId;
+
+        //kiem tra thong tin
+        if (!userId) {
+            socket.emit('connection', {msg: 'Không có dữ liệu'});
+            return;
+        }
+
+        //luu thong tin vua dang nhap vao arr
+        await userIsLogin.store(userId, socket);
+
+        //chuyen tat ca trang thai tin nhan thanh da nhan
+        const listGroupChat = await detailGroup.getGroups(userId, 10000, 0);
+        let groupChatArr = [];
+        if (listGroupChat) {
+            for (let i = 0; i < listGroupChat.length; i++) {
+                groupChatArr.push(listGroupChat[i].groupId);
+            }
+            const status = 'Đã nhận';
+            await chat.updateStatus(status, groupChatArr);
+        }
+
+        //lay danh sach ban be
+        const listFriend = await friend.listFriend(userId, 10000, 0);
+
+        if (listFriend) {
+            //thong bao den tat ca nguoi dung trong danh sach ban minh vua dang nhap
+            listFriend.forEach(async (Element) => {
+                let receiveId;
+                //tim ban
+                receiveId = (Element.sendId == userId) ? Element.receiveId : Element.sendId;
+
+                //kiem tra co online khong
+                const userSocket = (await userIsLogin.getUserSocket(receiveId));
+
+                if (userSocket) {
+                    //gui thong bao
+                    io.to(`${userSocket.id}`).emit('connection', { userId: userId });
+                }
+            });
+        }
+        socket.emit('connection', {
+            userId: userId,
+            token: token
+        });
+    } catch (err) {
+        socket.emit('connection', {msg: 'Kết nối không thành công'});
+        console.error(err);
+    }
+}
+
 module.exports.logout = async (data, socket, io) => {
     try {
         //xoa thong tin vua dang nhap vao arr

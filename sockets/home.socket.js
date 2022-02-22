@@ -5,6 +5,10 @@ module.exports.home = (io, socket) => {
         homeSocketController.login(data, socket, io);
     });
 
+    socket.on('connection', (data) => {
+        homeSocketController.connection(data, socket, io);
+    });
+
     socket.on('logout', (data) => {
         homeSocketController.logout(data, socket, io);
     });

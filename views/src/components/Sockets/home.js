@@ -21,8 +21,8 @@ const getLogout = async()=> {
     return await listenSocket('logout')
 } 
 
-const sendLogout = (data)=> {
-    sendSocket('logout', data);
+const sendLogout = (userId)=> {
+    sendSocket('logout', {userId});
 }
 
 export {

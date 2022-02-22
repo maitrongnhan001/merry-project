@@ -17,7 +17,7 @@ import { saveChatList } from '../../redux/actions/friends'
 import { saveGroupsList } from '../../redux/actions/groups'
 import { getAddFriend } from '../Sockets/socket-friend'
 import { getAddGroup } from '../Sockets/socket-group'
-import { getConnection, sendConnection } from '../Sockets/home'
+import { getConnection, getLogout, sendConnection } from '../Sockets/home'
 
 function Chat() {
     const theme = useSelector(state => state.taskbar.theme)
@@ -47,12 +47,12 @@ function Chat() {
                 dispatch(chatListAction)
             } 
             //call friends list API
-            // const friendsList = await getFriendsList(localStorage.getItem('userId'))
-            // console.log(friendsList);
-            // if(friendsList.status && friendsList.status === 200) {
-            //     let friendsListAction = getFriendsList(friendsList.data.data)
-            //     dispatch(friendsListAction)
-            // }
+            const friendsList = await getFriendsList(localStorage.getItem('userId'))
+            console.log(friendsList);
+            if(friendsList.status && friendsList.status === 200) {
+                let friendsListAction = getFriendsList(friendsList.data.data)
+                dispatch(friendsListAction)
+            }
 
             const groupsList = await getGroupsList(localStorage.getItem('userId'))
             if(groupsList.status && groupsList.status === 200) {
@@ -61,10 +61,14 @@ function Chat() {
             }
 
             //emit user login
-            const _connection = await sendConnection(localStorage.getItem('userId'));
-            console.log(_connection);
-            const userConnection = await getConnection()
-            console.log(userConnection)
+             const _connection = await sendConnection(localStorage.getItem('userId'));
+            // console.log(_connection);
+             const userConnection = await getConnection()
+            // console.log(userConnection)
+
+            //emit user logout
+            const userLogout = await getLogout()
+            console.log(userLogout)
 
             //emit Socket add friend
             // const addFriendSocket = await getAddFriend()

@@ -31,7 +31,7 @@ const io = require("socket.io")(server, {
         //test socket
         //origin: "http://127.0.0.1:5500"
         //real socket
-        origin: "http://localhost:3000"
+        //origin: "http://localhost:3000"
     }
 });
 

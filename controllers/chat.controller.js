@@ -3,11 +3,17 @@ const getText = require('../models/textMessage.model')
 const group = require('../models/group.model')
 const user = require('../models/user.model')
 
-const getMembers = async (groupId) => {
+const getMembers = async (groupId,userId) => {
 
     let id = await group.getMembers(groupId)
-    let user1 = await user.getUserId(id[0].userId)
-    let user2 = await user.getUserId(id[1].userId)
+    let user1, user2;
+    if(userId ===  id[0].userId) {
+        user1 = await user.getUserId(id[0].userId)
+        user2 = await user.getUserId(id[1].userId)
+    }else {
+        user1 = await user.getUserId(id[1].userId)
+        user2 = await user.getUserId(id[0].userId)
+    }
     const members = {
         image: id[0].AdminId ?
             { image1: user1[0].image, image2: user2[0].image } : { image1: user2[0].image, image2: null },
@@ -39,7 +45,7 @@ module.exports.getListChat = async (req, res) => {
                 const getTexts = await getText.get(value.id)
                 lastMessage.content = getTexts
             }
-            const receiver = await getMembers(value.receiveId)
+            const receiver = await getMembers(value.receiveId, userId)
 
             const chatItem = {
                 receiverId: value.receiveId,

@@ -36,6 +36,9 @@ module.exports.login = async (data, socket, io) => {
         }
         const token = await authHelper.createToken(InfoUserLogin, token_key, "48h");
 
+        //luu thong tin vua dang nhap vao arr
+        const userId = resultLogin[0].id;
+
         socket.emit('user-login', {
             userId: userId,
             token: token

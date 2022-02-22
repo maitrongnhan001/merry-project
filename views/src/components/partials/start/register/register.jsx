@@ -1,14 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Link, Route, Routes, useParams, useNavigate, useRoutes, Navigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
+import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
+import FormData from 'form-data';
 import Password from './password/password';
 import Name from './name/name';
 import Avatar from './avatar/avatar';
 import './register.scss';
+import { register } from '../../../APIs/ConnectAPI';
 
 const Register = () => {
     const params = useParams();
-    const email = useSelector(state => state.email.email);
+    const email = localStorage.getItem('email');
 
     const [token] = useState(params.token);
 
@@ -25,40 +26,68 @@ const Register = () => {
         file: null
     });
 
+    const [error, setError] = useState(null);
+
+    const naviagate = useNavigate();
+
     const handleUdpatePassword = (password) => {
         if (!password) return;
 
         setPassword(password);
     }
 
-    const handleUpdateUserInfo = (firstName = null, lastName = null, sex = null) => {
-        if (firstName) 
-            setUserInfo({...UserInfo, firstName: firstName});
-            
-        if (lastName) 
-            setUserInfo({...UserInfo, lastName: lastName});
-
-        if (sex) 
-            setUserInfo({...UserInfo, sex: sex});
+    const handleUpdateUserInfo = (firstName, lastName, sex) => {
+        if (firstName && lastName && sex) {
+            sex = (sex === 'Nam') ? 0 : 1;
+            setUserInfo({
+                firstName: firstName,
+                lastName: lastName,
+                sex: sex
+            });
+        }
     }
 
     const handleUpdateAvatar = (imageName, fileImage) => {
         if (!imageName && !fileImage) return;
 
-        setAvatar({...avatar, nameImg: imageName, file: fileImage});
+        setAvatar({ ...avatar, nameImg: imageName, file: fileImage });
+    }
+
+    const cleanData = () => {
+        setPassword(null);
+        setUserInfo({
+            firstName: null,
+            lastName: null,
+            sex: null
+        });
+        setAvatar({
+            nameImg: null,
+            file: null
+        });
+        setError(null);
     }
 
     const handleSubmitRegister = async () => {
-        const data = {
-            password: password,
-            lastName: UserInfo.lastName,
-            firstName: UserInfo.firstName,
-            sex: UserInfo.sex,
-            imageName: avatar.nameImg,
-            imageFile: avatar.file
-        }
+        const formData = new FormData();
+        formData.append('email', email)
+        formData.append('password', password)
+        formData.append('lastName', UserInfo.lastName)
+        formData.append('firstName', UserInfo.firstName)
+        formData.append('sex', UserInfo.sex)
+        formData.append('file', avatar.file)
 
-        console.log(data);
+        const result = await register(formData);
+
+        if (!result.error) {
+            localStorage.setItem('accessToken', result.token);
+            localStorage.setItem('userId', result.id);
+
+            cleanData();
+            naviagate('/me');
+        } else {
+            const stringError = result.error;
+            setError(stringError);
+        }
     }
 
     return (
@@ -68,6 +97,7 @@ const Register = () => {
                 element={
                     <Password
                         token={token}
+                        passwordProps={password}
                         handleUpdatePassword={handleUdpatePassword}
                     />
                 }
@@ -76,7 +106,11 @@ const Register = () => {
             <Route
                 path='/name/'
                 element={
-                    <Name 
+                    <Name
+                        lastNameProps={UserInfo.lastName}
+                        firstNameProps={UserInfo.firstName}
+                        sexProps={UserInfo.sex ? 'Nữ' : 'Nam'}
+                        passwordProps={password}
                         token={token}
                         handleUpdateUserInfo={handleUpdateUserInfo}
                     />
@@ -85,7 +119,15 @@ const Register = () => {
 
             <Route
                 path='/avatar/'
-                element={<Avatar />}
+                element={
+                    <Avatar
+                        error={error}
+                        token={token}
+                        passwordProps={password}
+                        handleUpdateAvatar={handleUpdateAvatar}
+                        handleSubmitRegister={handleSubmitRegister}
+                    />
+                }
             ></Route>
         </Routes>
     );

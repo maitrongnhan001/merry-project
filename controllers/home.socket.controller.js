@@ -80,7 +80,7 @@ module.exports.login = async (data, socket, io) => {
             token: token
         });
     } catch (err) {
-        socket.emit('user-login-error', {msg: 'socket đăng nhập không thành công'});
+        socket.emit('user-login', {msg: 'Đăng nhập không thành công'});
         console.error(err);
     }
 }

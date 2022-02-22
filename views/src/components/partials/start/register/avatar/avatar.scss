@@ -26,6 +26,13 @@
             height: 23rem;
             border-radius: 80%;
             margin: 0 auto;
+            transition: 0.1s all ease;
+        }
+
+        .label-input-avatar:hover {
+            background-color: #949494;
+            opacity: 0.5;
+            cursor: pointer;
         }
     }
 

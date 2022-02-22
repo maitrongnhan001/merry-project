@@ -7,6 +7,7 @@ export default function getAPI(method, url, data = null, token = null) {
         method: method,
         url: url,
         headers:  token && `Authorization: Bearer ${token}`,
+        //headers: { 'Content-Type': 'multipart/form-data' },
         data: data
     })
     .then(res=>{
@@ -31,6 +32,7 @@ async function verifiEmail (email) {
         email: email
     }
     const result = await getAPI('POST', '/check-email', data)
+    console.log(result);
     // eslint-disable-next-line default-case
     switch (result.status) {
         case 200:
@@ -63,10 +65,28 @@ async function getGroupsList(userId) {
     return result
 }
 
+async function register (userInfo) {
+    if (!userInfo) return
+    const result = await getAPI('POST', '/register', userInfo)
+
+    // eslint-disable-next-line default-case
+    switch (result.status) {
+        case 200:
+            return result.data
+        
+        case 404:
+            return {error: "Lỗi, dữ liệu khans dunk danu dạng"}
+        
+        case 500:
+            return {error: "Có lỗi xảy ra, xin vui lòng thử lại"}
+    }
+}
+
 
 export {
     verifiEmail,
     getListChat,
     getFriendsList,
-    getGroupsList
+    getGroupsList,
+    register
 }

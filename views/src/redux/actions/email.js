@@ -1,13 +1,29 @@
 const initial = {
-    email: ""
+    email: "",
+    showNotification: false
 }
 
 const emailReducer = (state = initial, action) => {
     switch (action.type) {
-        case "UPDARE_EMAIL": {
+        case "UPDATE" : {
+            return {
+                ...state,
+                email: action.data.email,
+                showNotification: action.data.showNotification
+            }
+        }
+
+        case "UPDATE_EMAIL": {
             return {
                 ...state,
                 email: action.data
+            }
+        }
+
+        case "UPDATE_NOTIFICATION" : {
+            return {
+                ...state,
+                showNotification: action.data
             }
         }
 

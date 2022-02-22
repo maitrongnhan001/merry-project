@@ -1,0 +1,26 @@
+.start-loading-component {
+    width: 24px;
+    height: 24px;
+    margin: 0 auto;
+
+    .start-loading-icon {
+        animation: start_loading_icon_animation 1s linear infinite;;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        border: 3px solid;
+        border-color: #fff;
+        border-top-color: transparent;
+        transition: 0.2s all ease;
+    }
+}
+
+@keyframes start_loading_icon_animation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

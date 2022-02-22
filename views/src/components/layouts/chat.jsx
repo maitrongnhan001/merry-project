@@ -17,7 +17,7 @@ import { saveChatList } from '../../redux/actions/friends'
 import { saveGroupsList } from '../../redux/actions/groups'
 import { getAddFriend } from '../Sockets/socket-friend'
 import { getAddGroup } from '../Sockets/socket-group'
-import { getConnection } from '../Sockets/home'
+import { getConnection, sendConnection } from '../Sockets/home'
 
 function Chat() {
     const theme = useSelector(state => state.taskbar.theme)
@@ -53,6 +53,7 @@ function Chat() {
             //     let friendsListAction = getFriendsList(friendsList.data.data)
             //     dispatch(friendsListAction)
             // }
+
             const groupsList = await getGroupsList(localStorage.getItem('userId'))
             if(groupsList.status && groupsList.status === 200) {
                 let groupsListAction = saveGroupsList(groupsList.data.data)
@@ -60,8 +61,10 @@ function Chat() {
             }
 
             //emit user login
-            const userLogin = await getConnection(localStorage.getItem('userId'))
-            console.log(userLogin)
+            const _connection = await sendConnection(localStorage.getItem('userId'));
+            console.log(_connection);
+            const userConnection = await getConnection()
+            console.log(userConnection)
 
             //emit Socket add friend
             // const addFriendSocket = await getAddFriend()

@@ -1,34 +1,21 @@
-import { sendSocket, listenSocket } from "./socket-config";
+import { sendSocket, listenSocketOneTime, listenSocket } from "./socket-config";
 
 const login = async (data) => {
     sendSocket('user-login', data);
-    const result = await listenSocket('user-login');
+    const result = await listenSocketOneTime('user-login');
     return result;
 }
 
-const sendConnection = async (userId) => {
-    sendSocket('connection', {userId})
-    const result = await listenSocket('connection')
-    return result;
+const sendConnection = (userId) => {
+    sendSocket('connection', {userId: userId});
 }
 
-const getConnection = async () => {
-    const result = await listenSocket('connection')
-    return result;
-}
-
-const getLogout = async()=> {
-    return await listenSocket('logout')
-} 
-
-const sendLogout = (userId)=> {
-    sendSocket('logout', {userId});
+const getConnection = (callback) => {
+    listenSocket('connection', callback);
 }
 
 export {
     login,
-    getConnection,
-    getLogout,
-    sendLogout, 
-    sendConnection
+    sendConnection,
+    getConnection
 }

@@ -12,7 +12,7 @@ const sendSocket = (event, data)=> {
     socket.emit(event, data)  
 }
 
-const listenSocket = (event)=> {
+const listenSocketOneTime = (event)=> {
     return new Promise ((resolve, reject)=> {
         socket.on(event, (data, err)=> {
             if(data) resolve(data)
@@ -21,8 +21,19 @@ const listenSocket = (event)=> {
     })
 }
 
+const listenSocket = (event, Callback) => {
+    /* 
+    this function run every time
+    and update data through callback
+    */
+    socket.on(event, data => {
+        if (data) Callback(data)
+    })
+}
+
 export  {
     sendSocket,
+    listenSocketOneTime,
     listenSocket
 }
 

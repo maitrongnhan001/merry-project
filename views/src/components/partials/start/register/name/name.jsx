@@ -4,8 +4,7 @@ import StartLogo from '../../start-logo/start-logo';
 import './name.scss';
 
 const Name = (props) => {
-    const { firstNameProps, lastNameProps, sexProps,
-         token, handleUpdateUserInfo, passwordProps } = props;
+    const { token, handleUpdateUserInfo, passwordProps } = props;
 
     const [firstName, setFirstName] = useState(null);
 
@@ -37,11 +36,7 @@ const Name = (props) => {
             return;
         }
 
-        if (!firstNameProps || !lastNameProps || !sexProps) return;
-
-        setFirstName(firstNameProps);
-        setLastName(lastNameProps);
-        setSex(sexProps);
+        return () => {}
     }, []);
 
     const forcusSelect = () => {
@@ -53,6 +48,11 @@ const Name = (props) => {
             setIsShowList('hide');
             setForcus(null);
         }
+    }
+
+    const hideSelect = () => {
+        setIsShowList('hide');
+            setForcus(null);
     }
 
     const clickLiElement = (value) => {
@@ -127,9 +127,9 @@ const Name = (props) => {
     }
 
     const handlePressEnter = (e) => {
-        e.preventDefault();
         if( e.key !== 'Enter' ) return;
 
+        e.preventDefault();
         handleSubmitData();
     }
 
@@ -147,11 +147,12 @@ const Name = (props) => {
                         <input
                             type="text"
                             name='last_name'
-                            value={lastName ?? ''}
+                            value={lastName ? lastName : ''}
                             className={`input-start ${(errorLName) ? 'input-start-error' : ''} ${(lastName) ? 'on-have-data' : ''}`}
                             placeholder='Nhập họ của bạn'
                             onChange={(e) => handleChangLastName(e)}
                             onKeyPress={(e) => handlePressEnter(e)}
+                            onClick={() => hideSelect()}
                         />
                         <span className='text-error'>
                             {(errorLName) ? iconError : ''}
@@ -163,11 +164,12 @@ const Name = (props) => {
                         <input
                             type="text"
                             name='first_name'
-                            value={firstName ?? ''}
+                            value={firstName ? firstName : ''}
                             className={`input-start ${(errorFName) ? 'input-start-error' : ''} ${(firstName) ? 'on-have-data' : ''}`}
                             placeholder='Nhập tên của bạn'
                             onChange={(e) => handleChangFirstName(e)}
                             onKeyPress={(e) => handlePressEnter(e)}
+                            onClick={() => hideSelect()}
                         />
                         <span className='text-error'>
                             {(errorFName) ? iconError : ''}

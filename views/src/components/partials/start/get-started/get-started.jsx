@@ -29,6 +29,8 @@ const GetStarted = () => {
     useEffect(() => {
         const localEmail = localStorage.getItem('email');
         if (localEmail) setEmail(localEmail);
+
+        return () => setEmail(null);
     }, []);
 
     const checkMail = (value) => {

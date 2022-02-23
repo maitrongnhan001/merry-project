@@ -27,6 +27,8 @@ const Avatar = (props) => {
             navigate(`/register/${token}`);
             return;
         }
+
+        return () => {}
     }, []);
 
     //Update image file

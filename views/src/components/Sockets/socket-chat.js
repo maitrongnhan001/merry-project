@@ -1,4 +1,4 @@
-import { sendSocket, listenSocket } from "./socket-config"
+import { sendSocket, listenSocketOneTime } from "./socket-config"
 
 const sendTextMessage = (data)=> {
     sendSocket('send-text-message', data)
@@ -21,23 +21,23 @@ const createRoom = async (data)=> {
 }
 
 const getTextMessage = async ()=> {
-    return await listenSocket('send-text-message')
+    return await listenSocketOneTime('send-text-message')
 }
 
 const getMediaMessage = async ()=> {
-    return await listenSocket('send-media-message')
+    return await listenSocketOneTime('send-media-message')
 }
 
 const getDocumentMessage = async ()=> {
-    return await listenSocket('send-document-message')
+    return await listenSocketOneTime('send-document-message')
 }
 
 const getEmotionMessage = async ()=> {
-    return await listenSocket('emotion')
+    return await listenSocketOneTime('emotion')
 }
 
 const getRoom = async ()=> {
-    return await listenSocket('create-room')
+    return await listenSocketOneTime('create-room')
 }
 
 export {

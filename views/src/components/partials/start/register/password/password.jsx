@@ -39,6 +39,8 @@ const Password = (props) => {
             setPassword(passwordProps);
             notification(checkPassword(passwordProps));
         }
+
+        return () => {}
     }, []);
 
     const checkPassword = (value) => {

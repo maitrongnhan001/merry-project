@@ -28,6 +28,8 @@ const Login = () => {
 
     useEffect(() => {
         if (initEmail.email) setUser({...user, email: initEmail.email});
+
+        return () => setUser({email: null, password: null});
     }, []);
 
     const handleChangeEmail = (e) => {

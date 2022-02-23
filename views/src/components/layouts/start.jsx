@@ -18,6 +18,7 @@ const Start = () => {
         if (token) {
             //return navigate(`/me/`);
         }
+
     });
     return (
         <>

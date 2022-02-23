@@ -35,6 +35,8 @@ const Name = (props) => {
             navigate(`/register/${token}`);
             return;
         }
+
+        return () => {}
     }, []);
 
     const forcusSelect = () => {

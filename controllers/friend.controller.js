@@ -14,7 +14,7 @@ module.exports.getFriend = async(req, res) =>{
             if(value.sendId == userId ){
                 delete value.sendId;
                 array.push(value.receiveId)
-                continue         
+                continue
             }
             if(value.receiveId == userId){
                 delete value.receiveId

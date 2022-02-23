@@ -107,9 +107,6 @@ const Register = () => {
                 path='/name/'
                 element={
                     <Name
-                        lastNameProps={UserInfo.lastName}
-                        firstNameProps={UserInfo.firstName}
-                        sexProps={UserInfo.sex ? 'Nữ' : 'Nam'}
                         passwordProps={password}
                         token={token}
                         handleUpdateUserInfo={handleUpdateUserInfo}

@@ -32,7 +32,6 @@ async function verifiEmail (email) {
         email: email
     }
     const result = await getAPI('POST', '/check-email', data)
-    console.log(result);
     switch (result.status) {
         case 200:
             return result.data

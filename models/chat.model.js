@@ -95,7 +95,7 @@ module.exports.getListChat = (userId, limit, offset) =>{
 // lay ve list messageId
 module.exports.getMessageID = (content,receiveId) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT textmessage.messageId FROM textmessage WHERE textmessage.content like ?`
+        // const sql = `SELECT textmessage.messageId FROM textmessage WHERE textmessage.content like ?`
         const sql1 =`SELECT * FROM textmessage JOIN message ON textmessage.messageId = message.id WHERE textmessage.content like ? and message.receiveId = ?`
         connection.query(sql1,[content, receiveId],(error, result)=>{
             if (error) {

@@ -8,15 +8,15 @@ const router = express.Router()
 
 
 //get user 
-router.get('/', userController.viewUser);
+router.get('/', userController.search);
 
-//post template
-router.put('/template/:id', userController.template);
+// template
+router.put('/', userController.setTemplate);
 
 //search user
-router.get('/search-user/:email', userController.searchUser);//search
+// router.get('/search-user/:email', userController.searchUser);//search
 
 // put user 
-router.put('/:id', userController.update);
+// router.put('/:id', userController.update);
 
 module.exports = router

@@ -7,7 +7,7 @@ module.exports.register = (user)=>{
         bcrypt.hash(user.password, 10)
         .then(data=>{
             user.password = data
-            const sql = `INSERT INTO user( email, password, DOB, firstName, lastName, sex, image, template) SET ?`
+            const sql = `INSERT INTO user SET ?`
             connection.query(sql, user, (error, result) => {
                 if (error) {
                     reject(error);
@@ -23,4 +23,18 @@ module.exports.register = (user)=>{
         })
         .catch(error => console.error(error))
     })
+}
+
+module.exports.login = (email, password) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT id, firstName, lastName, password FROM user WHERE email='${email}'`;
+        connection.query(sql, (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                result = JSON.parse(JSON.stringify(result));
+                resolve(result);
+            }
+        })
+    });
 }

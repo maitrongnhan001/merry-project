@@ -1,12 +1,43 @@
+const bcrypt = require('bcrypt');
 const userIsLogin = require('../stores/UserLoginStore');
 const friend = require('../models/friend.model');
 const chat = require('../models/chat.model');
+const home = require('../models/home.model');
 const detailGroup = require('../models/detailGroup.model');
+const token_key = process.env.ACCESS_TOKEN_SECRET;
+const authHelper = require('../helpers/auth.helper');
 
 module.exports.login = async (data, socket, io) => {
     try {
+        //lay thong tin
+        const email = data.email;
+        let password = data.password;
+
+        //kiem tra thong tin
+        if (!email && !password) {
+            socket.emit('user-login-error', {msg: 'Không có dữ liệu'});
+            return;
+        }
+
+        //kiem tra thong tin voi database
+        const resultLogin = await home.login(email);
+
+
+        if (resultLogin.length !== 1 && !(await bcrypt.compare(password, resultLogin[0].password))) {
+            socket.emit('user-login', {msg: 'Đăng nhập không thành công'});
+            return;
+        }
+
+        //set token
+        const InfoUserLogin = {
+            email: email,
+            firstName: resultLogin[0].firstName,
+            lastName: resultLogin[0].lastName,
+        }
+        const token = await authHelper.createToken(InfoUserLogin, token_key, "48h");
+
         //luu thong tin vua dang nhap vao arr
-        const userId = data.userId;
+        const userId = resultLogin[0].id;
         const result = await userIsLogin.store(userId, socket);
 
         if (!result) {
@@ -44,8 +75,12 @@ module.exports.login = async (data, socket, io) => {
                 }
             });
         }
+        socket.emit('user-login', {
+            userId: userId,
+            token: token
+        });
     } catch (err) {
-        socket.emit('user-login-error', {msg: 'socket đăng nhập không thành công'});
+        socket.emit('user-login', {msg: 'Đăng nhập không thành công'});
         console.error(err);
     }
 }

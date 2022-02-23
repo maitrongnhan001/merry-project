@@ -27,11 +27,11 @@ const onConnection = (socket) => {
 
 const io = require("socket.io")(server, {
     cors: {
-        origin: "*"
+        origin: "*",
         //test socket
         //origin: "http://127.0.0.1:5500"
         //real socket
-        //origin: "http://localhost:3000"
+        origin: "http://localhost:3000"
     }
 });
 
@@ -44,7 +44,6 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
-
 
 //---------------end use extension------------------//
 

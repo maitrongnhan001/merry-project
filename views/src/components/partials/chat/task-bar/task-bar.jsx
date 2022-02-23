@@ -75,9 +75,9 @@ function TaskBar() {
 
     //handle sign out item
     const handleClickSignOut = (e)=> {
-        localStorage.removeItem('accessToken')
-        localStorage.removeItem('uid')
         sendLogout(localStorage.getItem('userId'))
+        localStorage.removeItem('userId')
+        localStorage.removeItem('accessToken')
         navigate('/')
     }
 

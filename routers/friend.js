@@ -15,10 +15,8 @@ router.get('/:userId', friendController.getFriend)
 //get request friend
 router.get('/friends-request/:userId', friendController.requestFriend)
 
-//post friend
-// router.post('/add-friend', friendController.addFriend)
+//search friend
+router.get('/', friendController.search)
 
-//delete friend
-// router.delete('/delete-friend', friendController.deleteFriend)
 
 module.exports = router

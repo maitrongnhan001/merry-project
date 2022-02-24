@@ -55,7 +55,7 @@ module.exports.listFriend = (userId ,limit, offset) => {
 //lay ho, ten , anh cua ban be
 module.exports.getUserId = (userId) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT user.id, user.firstName, user.lastName, user.image FROM user WHERE id=${userId} `
+        const sql = `SELECT user.id, user.firstName, user.lastName, user.image, user.sex FROM user WHERE id=${userId} `
         connection.query(sql, function (error, result) {
             if(error){
                 reject(error)

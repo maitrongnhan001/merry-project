@@ -69,6 +69,23 @@ module.exports.search = (email) =>{
         });
     });
 }
+//user search friend
+module.exports.searchUser = (email,userId) =>{
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM user WHERE id = ? AND  email  LIKE ?`
+        connection.query(sql, [userId, email], function (error, result) {
+            if(error){
+                reject(error)
+            }else{
+                if(result.length > 0){
+                    resolve(result)
+                }else{
+                    resolve(null)
+                }
+            }
+        });
+    });
+}
 
 module.exports.searchFriend = (senderid) =>{
     return new Promise((resolve, reject) => {
@@ -92,7 +109,6 @@ module.exports.updateTemplate = (userId, template) =>{
     return new Promise((resolve, reject) => {
         const sql = `UPDATE user SET template = ? WHERE id = ?`
         connection.query(sql, [template, userId], function (error, result) {
-            // console.log(result)
             if(error){
                 reject(error)
             }else{

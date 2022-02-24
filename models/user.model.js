@@ -51,3 +51,57 @@ module.exports.findByEmail = (email) =>{
         });
     });
 }
+
+//search with senderid or search email
+module.exports.search = (email) =>{
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM user WHERE email  LIKE ?`
+        connection.query(sql, [email], function (error, result) {
+            if(error){
+                reject(error)
+            }else{
+                if(result.length > 0){
+                    resolve(result)
+                }else{
+                    resolve(null)
+                }
+            }
+        });
+    });
+}
+
+module.exports.searchFriend = (senderid) =>{
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM friend WHERE sendId = ? OR receiveId = ?`
+        connection.query(sql, [senderid, senderid], function (error, result) {
+            if(error){
+                reject(error)
+            }else{
+                if(result.length > 0){
+                    resolve(result)
+                }else{
+                    resolve(null)
+                }
+            }
+        });
+    });
+}
+
+//put template 
+module.exports.updateTemplate = (userId, template) =>{
+    return new Promise((resolve, reject) => {
+        const sql = `UPDATE user SET template = ? WHERE id = ?`
+        connection.query(sql, [template, userId], function (error, result) {
+            // console.log(result)
+            if(error){
+                reject(error)
+            }else{
+                if(result){
+                    resolve(result)
+                }else{
+                    resolve(null)
+                }
+            }
+        });
+    });
+}

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './chat.scss'
 import Item from './item/Item'
 import {useSelector} from 'react-redux'
@@ -12,7 +12,7 @@ function Chats() {
     /*----data----*/
     const items = chatsList.map((value, idx)=>{
         return (
-            <Item key={idx} id={value.id} image={value.image} firstName={value.firstName} lastName={value.lastName}></Item>
+            <Item key={idx} id={value.receiverId} image={value.image} name={value.receiverName} lastMessage={value.lastMessage}></Item>
         )
     })
 

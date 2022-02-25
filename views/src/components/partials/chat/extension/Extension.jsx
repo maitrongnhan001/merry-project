@@ -15,8 +15,6 @@ function Extension(props) {
     const isShowExtension = useSelector(state => state.extension.isShow);
     const dispatch = useDispatch()
 
-    console.log(isShowExtension)
-
     useEffect(() => {
         if (isShowExtension === 1) {
             if ($(window).width() <= 1200) {

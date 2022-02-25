@@ -1,21 +1,26 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './item.scss'
 import Image from '../../../avatar/avatar'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
 import { showCenter } from '../../../../../../redux/actions/taskbar';
 import $ from 'jquery'
-import { createRoom, getRoom } from '../../../../../Sockets/socket-chat';
-import { listenSocket, sendSocket } from '../../../../../Sockets/socket-config';
+import { saveCurrentChat } from '../../../../../../redux/actions/message';
 
-function Item({id, image, lastName, firstName}) {
+function Item({id, image, name, lastMessage}) {
 
     /*----redux----*/
     //ket noi den redux
+
+    const currentChatSelector = useSelector(state => state.message.currentChat)
+
     const dispatch = useDispatch()
+
 
     /*----handles----*/
     //xu ly hien thi chat item  
     const handleClickToShowChat = async (e)=> {
+        const currentChat = saveCurrentChat({receiverId: id, image, name})
+        dispatch(currentChat)
         const display = showCenter(1)
         dispatch(display)
         $(e.currentTarget).addClass('active-friend-group-item')
@@ -28,14 +33,25 @@ function Item({id, image, lastName, firstName}) {
         $('.main-chat-center').toggleClass('show-main-chat-phone-screen')
     }
 
+    useEffect(()=> {
+        if(currentChatSelector.receiverId === id) {
+            for(let val of $('.tab-chat-item')) {
+                if(val.getAttribute('data-id') === id.toString()) {
+                    val.classList.add('active-friend-group-item')
+                }
+            }
+        }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentChatSelector])
+
     return (
         <div className="tab-chat-item" data-id={id} onClick={handleClickToShowChat}>
             <div className="tab-chat-avatar">
                 <Image image={image}></Image>
             </div>
             <div className="tab-chat-info">
-                <p className="tab-chat-name">{lastName + ' ' + firstName}</p>
-                <p className="tab-chat-content">Hi! My name is Khang. What can I help you ?</p>
+                <p className="tab-chat-name">{name}</p>
+                <p className="tab-chat-content"> {lastMessage.isSender ? 'Bạn: ' : ''} {lastMessage.type === 'text' ? lastMessage.content : 'Đã gửi 1 tệp.'}</p>
             </div>
         </div>
     );

@@ -36,8 +36,8 @@ module.exports.delete = (sendId, receiveId) => {
 //lay danh sach ban be cua 1 user
 module.exports.listFriend = (userId ,limit, offset) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM friend WHERE sendId= ? OR receiveId= ? LIMIT ? OFFSET ?`;
-        connection.query(sql,[userId, userId, limit, offset], function (error, result) {
+        const sql = `SELECT * FROM friend WHERE sendId=${userId} OR receiveId=${userId} LIMIT ${limit} OFFSET ${offset}`;
+        connection.query(sql, function (error, result) {
             if (error) {
                 reject(error);
             } else {

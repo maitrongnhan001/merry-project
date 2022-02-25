@@ -1,13 +1,11 @@
-import React, {useState} from 'react'
+import React from 'react'
 import './message.scss'
 
 function Message({sender, next, children}) {
     /*----redux----*/
     //lay du lieu tu redux
 
-    /*----states----*/
-    //xac dinh bay to cam xuc
-    const [emotion, setEmotion] = useState(0)    
+    /*----states----*/ 
 
     /*----styles----*/
     const styleContent = {
@@ -21,10 +19,6 @@ function Message({sender, next, children}) {
     }
 
     /*----handles----*/
-    //xu ly bay to bieu tuong cam xuc
-    const handleExpressEmotion = (e) => {
-        setEmotion(emotion ? 0 : 1)
-    }
 
     return (
         <div className="message-block" style={{justifyContent: sender === 0 ? 'flex-end' : 'flex-start'}}>
@@ -36,7 +30,6 @@ function Message({sender, next, children}) {
             <div className="message-content" style={{background: styleContent.backgroundColor, color: styleContent.color, padding: styleContent.padding}}>
                 {children}
                 <p className="message-content-time" style={{position: styleContent.position, left: styleContent.leftTime}}>7.30pm</p>
-                <p className='message-content-emotion' onClick={handleExpressEmotion} style={{position: styleContent.position, left: styleContent.left, float: styleContent.float, color: emotion ? 'red ': ''}}><i className="fas fa-heart" style={{color: emotion ? 'red ': ''}}></i> 0</p>
             </div>
         </div>
     );

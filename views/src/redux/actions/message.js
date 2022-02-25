@@ -6,6 +6,14 @@ const saveEmoji = (payload)=> {
     }
 }
 
+const saveCurrentChat = (payload)=> {
+    return {
+        type: 'SAVE_CURRENT_CHAT',
+        data: payload
+    }
+}
+
 export {
-    saveEmoji
+    saveEmoji,
+    saveCurrentChat
 }

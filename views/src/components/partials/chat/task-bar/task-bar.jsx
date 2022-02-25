@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import './task-bar.scss'
 import {useDispatch, useSelector} from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import { saveTab, setTheme, showCenter, showDialog } from '../../../../redux/actions/taskbar'
 import $ from 'jquery'
 
@@ -9,9 +10,13 @@ function TaskBar() {
     /*----redux----*/
     //lay du lieu tu redux
     const focusTab = useSelector(state => state.taskbar.data)
+    const currentChat = useSelector(state => state.message.currentChat)
     
     //ket noi den redux
     const dispatch = useDispatch() 
+
+    //history
+    const navigate = useNavigate()
 
     /*----handles----*/
     //handle avatar item
@@ -24,7 +29,10 @@ function TaskBar() {
     const handleClickMessage = (e)=> {
         const tab = saveTab(0)
         dispatch(tab)
-        const center = showCenter(1)
+        let center = showCenter(0)
+        if(currentChat.receiverId) {
+            center = showCenter(1)
+        }
         dispatch(center)
         $('#tab-wrapper').removeClass('hide-tab-in-phones-screen')
         $('.main-chat-center').removeClass('show-main-chat-phone-screen')
@@ -66,9 +74,14 @@ function TaskBar() {
 
     //handle sign out item
     const handleClickSignOut = (e)=> {
-
+        localStorage.removeItem('userId')
+        localStorage.removeItem('accessToken')
+        navigate('/')
     }
 
+    if(!localStorage.getItem('accessToken')) {
+        navigate('/')
+    }
     /*----lifecycle----*/
     useEffect(()=>{
         if(focusTab === 0) {

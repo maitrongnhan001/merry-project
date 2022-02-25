@@ -32,6 +32,8 @@ async function verifiEmail (email) {
         email: email
     }
     const result = await getAPI('POST', '/check-email', data)
+    console.log(result);
+    // eslint-disable-next-line default-case
     switch (result.status) {
         case 200:
             return result.data
@@ -44,23 +46,47 @@ async function verifiEmail (email) {
     }
 }
 
+
+//APIs get chats list
+async function getListChat(userId) {
+    const result = await getAPI('GET', `/chat/list-chat/${userId}`)
+    return result
+}
+
+//APIs get friends list
+async function getFriendsList(userId) {
+    const result = await getAPI('GET', `/friends/${userId}`)
+    return result
+}
+
+//APIs get groups list
+async function getGroupsList(userId) {
+    const result = await getAPI('GET', `/groups/${userId}`)
+    return result
+}
+
 async function register (userInfo) {
     if (!userInfo) return
     const result = await getAPI('POST', '/register', userInfo)
 
+    // eslint-disable-next-line default-case
     switch (result.status) {
         case 200:
             return result.data
         
         case 404:
-            return {error: "Lỗi, dữ liệu không đúng định dạng"}
+            return {error: "Lỗi, dữ liệu khans dunk danu dạng"}
         
         case 500:
             return {error: "Có lỗi xảy ra, xin vui lòng thử lại"}
     }
 }
 
+
 export {
     verifiEmail,
+    getListChat,
+    getFriendsList,
+    getGroupsList,
     register
 }

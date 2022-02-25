@@ -142,11 +142,8 @@ const Password = (props) => {
         <div className='start-input-component'>
             <div className="start-space"></div>
             <div className="start-space"></div>
-
             <StartLogo></StartLogo>
-
             <br /><br /><br /><br />
-
             <input
                 type="password"
                 name='password'
@@ -157,14 +154,11 @@ const Password = (props) => {
                 onChange={(e) => handleChangePassword(e)}
                 onKeyPress={(e) => handlePressEnter(e)}
             />
-
             <span className='text-error' style={{ color: color }}>
                 {icon}
                 {errorPassword}
             </span>
-
-            <br /><br /><br />
-
+            <br />
             <div className="two-button">
                 <button 
                     className='custom-btn left start-btn-white'
@@ -172,7 +166,6 @@ const Password = (props) => {
                 >
                     Trở về
                 </button>
-
                 <button 
                     className='start-btn right start-btn-primary'
                     onClick={() => handleStorePassword()}

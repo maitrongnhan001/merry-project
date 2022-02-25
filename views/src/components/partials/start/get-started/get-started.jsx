@@ -89,21 +89,15 @@ const GetStarted = () => {
         <>
             <div className='get-start-component'>
                 <StartLogo></StartLogo>
-
                 <div className='get-start-title'>
-
                     <p>Chia sẻ</p>
-
                     <p style={{ 'fontSize': '46px' }}>
                         Niềm vui,
                     </p>
-
                     <p>Gắn kết</p>
-
                     <p style={{ 'fontSize': '50px' }}>
                         cuộc sống
                     </p>
-
                 </div>
                 <p className='get-start-slogan'>
                     Hãy để Merry kết nối chúng ta lại gần nhau hơn.
@@ -121,20 +115,15 @@ const GetStarted = () => {
                         {errorEmail ? (iconError) : ""}
                         {errorEmail}
                     </span>
-
-
                     <span className='text-error center'>
                         {anotherError ? (iconError) : ""}
                         {anotherError}
                     </span>
-
                     <button className='start-btn start-btn-primary custom-btn-start '>
                         {isLoading ? <StartLoading /> : 'Bắt đầu'}
                     </button>
                 </form>
-
                 <br />
-
                 <div className='center'>
                     {!isLoading ? <Link
                         className='text-primary'
@@ -142,7 +131,6 @@ const GetStarted = () => {
                     >
                         Đăng nhập
                     </Link> : ''}
-
                 </div>
                 <div className="end-space"></div>
             </div>

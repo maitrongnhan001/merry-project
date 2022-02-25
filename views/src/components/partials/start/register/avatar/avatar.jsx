@@ -71,8 +71,7 @@ const Avatar = (props) => {
         <div 
         className='start-input-component'
         >
-            <div className="start-space"></div>
-            
+            <div className="start-space"></div>            
             <div 
                 className="review-avatar"
                 onKeyPress={(e) => handlePressEnter(e)}
@@ -82,8 +81,6 @@ const Avatar = (props) => {
                 {img_tag}
                 <label className='label-input-avatar' htmlFor='input-avatar'></label>
             </div>
-
-
             <input
                 type="file"
                 name='avatar'

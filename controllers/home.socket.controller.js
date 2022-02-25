@@ -22,8 +22,7 @@ module.exports.login = async (data, socket) => {
         //kiem tra thong tin voi database
         const resultLogin = await home.login(email);
 
-
-        if (resultLogin.length !== 1 && !(await bcrypt.compare(password, resultLogin[0].password))) {
+        if (resultLogin.length !== 1 || !(await bcrypt.compare(password, resultLogin[0].password))) {
             socket.emit('user-login', {msg: 'Đăng nhập không thành công'});
             return;
         }

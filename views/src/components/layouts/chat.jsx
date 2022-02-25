@@ -14,10 +14,9 @@ import Loader from '../partials/chat/tools/loader/loader'
 import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList } from '../APIs/ConnectAPI'
 import { saveChatList, saveFriendsList } from '../../redux/actions/friends'
-import { saveGroupsList } from '../../redux/actions/groups'
-import { getAddFriend } from '../Sockets/socket-friend'
-import { getAddGroup } from '../Sockets/socket-group'
-import { getConnection, getLogout, sendConnection } from '../Sockets/home'
+import { saveGroupsList,  } from '../../redux/actions/groups'
+import { getConnection, sendConnection } from '../Sockets/home'
+import { saveUserOnline } from '../../redux/actions/user'
 
 function Chat() {
     const theme = useSelector(state => state.taskbar.theme)
@@ -48,7 +47,6 @@ function Chat() {
             } 
             //call friends list API
             const friendsList = await getFriendsList(localStorage.getItem('userId'))
-            console.log(friendsList);
             if(friendsList.status && friendsList.status === 200) {
                 let friendsListAction = saveFriendsList(friendsList.data.data)
                 dispatch(friendsListAction)
@@ -60,23 +58,16 @@ function Chat() {
                 dispatch(groupsListAction)
             }
 
-            //emit user login
-             const _connection = await sendConnection(localStorage.getItem('userId'));
-            // console.log(_connection);
-             const userConnection = await getConnection()
-            // console.log(userConnection)
-
-            //emit user logout
-            const userLogout = await getLogout()
-            console.log(userLogout)
-
-            //emit Socket add friend
-            // const addFriendSocket = await getAddFriend()
-            // console.log(addFriendSocket)
-
-            //emit Socket add group
-            // const addGroupSocket = await getAddGroup()
-            // console.log(addGroupSocket) 
+            
+            // //socket connection
+            // //send connection
+            // sendConnection(localStorage.getItem('userId'))
+            // //listen connection
+            // getConnection((data)=> {
+            //     console.log(data.userId)
+            //     const userOnline = saveUserOnline(data.userId)
+            //     dispatch(userOnline)
+            // })
         })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

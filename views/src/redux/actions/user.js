@@ -1,11 +1,18 @@
-
-const saveUser = (user)=>{
+const saveUserOnline = (payload)=> {
     return {
-        type: "USER_LOGIN",
-        payload: user
+        type: "USER_ONLINE",
+        data: payload
     }
 }
 
-export { 
-    saveUser
+const saveUserOffline = (payload)=> {
+    return {
+        type: "USER_OFFLINE",
+        data: payload
+    }
+}
+
+export {
+    saveUserOnline,
+    saveUserOffline
 }

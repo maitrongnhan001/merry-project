@@ -74,7 +74,7 @@ function Item({id, name, image, addFriend, createGroup, onAddMember}) {
     return (
         <div className="friend-group-item" data-id={id} onClick={handleClickToCheckFriend}>
             <div className="friend-group-avatar">
-                <Image image={image ? image : undefined}></Image>
+                <Image image={image ? image : undefined} id={id}></Image>
             </div>
             <div className="friend-group-info">
                 <p className="friend-group-name">{name}</p>

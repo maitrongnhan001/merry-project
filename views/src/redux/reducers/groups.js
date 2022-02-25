@@ -6,7 +6,6 @@ const groupsReducer = (state = initial, action)=> {
     switch(action.type) {
         case 'GET_GROUPS': {
             const data = [...action.data]
-            console.log(data)
             return {
                 ...state,
                 groupsList: data

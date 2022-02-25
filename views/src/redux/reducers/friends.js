@@ -17,7 +17,6 @@ const friendsReducer = (state = initial, action) => {
         }
         case 'SAVE_FRIENDS_LIST': {
             const friendsList = [...action.data]
-            console.log(friendsList)
             return {
                 ...state,
                 friendsList

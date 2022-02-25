@@ -1,20 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { getLogout } from '../../../Sockets/home';
+import { useSelector } from 'react-redux';
 import './avatar.scss'
 
-function Avatar({image}) {
+function Avatar({image, id}) {
+
+    /*----redux----*/
+    const userOnline = useSelector((state)=> state.user.userOnline)
 
     /*----states----*/
     const [isActive, setIsActive] = useState(0)
 
     useEffect(()=> {
-        (async () => {
-            const disconnection = await getLogout()
-            if(disconnection) {
-                setIsActive(0)
-            }
-        })()
-    }, [])
+        console.log(userOnline)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [userOnline])
 
     return (
         <div className="friend-group-avatar-wrapper">

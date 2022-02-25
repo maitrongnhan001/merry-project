@@ -4,7 +4,6 @@ import {useDispatch, useSelector} from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { saveTab, setTheme, showCenter, showDialog } from '../../../../redux/actions/taskbar'
 import $ from 'jquery'
-import { sendLogout } from '../../../Sockets/home'
 
 function TaskBar() {
 
@@ -75,7 +74,6 @@ function TaskBar() {
 
     //handle sign out item
     const handleClickSignOut = (e)=> {
-        sendLogout(localStorage.getItem('userId'))
         localStorage.removeItem('userId')
         localStorage.removeItem('accessToken')
         navigate('/')

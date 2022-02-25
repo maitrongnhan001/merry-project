@@ -71,7 +71,7 @@ function InputChat() {
             }
         }
         setMessage(newMessage)
-        console.log(newMessage);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [emoji])
 
     return (

@@ -115,7 +115,6 @@ const Login = () => {
                     className={`input-start ${errorEmail ? 'input-start-error' : ''}`}
                     placeholder='Nhập email của bạn'
                     onChange={(e) => handleChangeEmail(e)}
-                    value={user.email}
                     onKeyPress={(e) => handlePressEnter(e)}
                 />
 

@@ -2,7 +2,7 @@ const { connection } = require("../config/database")
 const user = require("../models/user.model")
 
 
-module.exports.search =  async(req, res) => {
+module.exports.search = async (req, res) => {
     try {
         let senderId = req.query.senderId ?? ''
         // let senderId = `%${id}%`
@@ -13,18 +13,18 @@ module.exports.search =  async(req, res) => {
         const data = []
         const friends = await user.searchFriend(senderId)
         let array = []
-        for(let friend of friends){
-            if(friend.sendId == senderId ){
+        for (let friend of friends) {
+            if (friend.sendId == senderId) {
                 array.push(friend.receiveId)
                 continue
             }
-            if(friend.receiveId == senderId){
-                array.push(friend.sendId) 
+            if (friend.receiveId == senderId) {
+                array.push(friend.sendId)
             }
         }
         // console.log(array)
-        for(let value of finds) {
-            if(value.id == senderId)
+        for (let value of finds) {
+            if (value.id == senderId)
                 continue
             const object = {
                 receiverId: value.id,
@@ -32,15 +32,15 @@ module.exports.search =  async(req, res) => {
                 name: value.lastName + ' ' + value.firstName,
                 isFriend: 0,
             }
-            for(let arr of array){
-                if(arr == value.id){
+            for (let arr of array) {
+                if (arr == value.id) {
                     object.isFriend = 1
                     break
-                }else{
+                } else {
                     object.isFriend = 0
                 }
             }
-           
+
             data.push(object)
         }
         // console.log(data)
@@ -49,31 +49,61 @@ module.exports.search =  async(req, res) => {
             message: 'Tìm kiếm thành công!',
             data
         })
-    }catch(err) {
+    } catch (err) {
         console.error(err)
         return res.sendStatus(500)
     }
 }
 
-module.exports.setTemplate = async(req, res) =>{
-    try{
-        const {userId, template} = req.body
-        if(!userId || !template){
+module.exports.setTemplate = async (req, res) => {
+    try {
+        const { userId, template } = req.body
+        if (!userId || !template) {
             return res.sendStatus(404)
         }
         const updateTemplates = await user.updateTemplate(template, userId);
-        if(updateTemplates){
+        if (updateTemplates) {
             return res.status(200).json({
                 message: 'Cập nhật thành công',
                 data: {
-                    userId, template              
+                    userId, template
                 }
             })
         }
 
         return res.sendStatus(404)
-        
-    }catch(err){
+
+    } catch (err) {
+        console.error(err)
+    }
+}
+
+//search by id 
+module.exports.searchById = async (req, res) => {
+    try {
+        const id = req.params.id
+        if (!id) {
+            return res.sendStatus(404)
+        }
+        const info = await user.get(id)
+        const data = {
+            name: info[0].lastName + ' ' + info[0].firstName,
+            email: info[0].email,
+            firstName: info[0].firstName,
+            lastName: info[0].lastName,
+            DOB: info[0].DOB,
+            image: info[0].image,
+            sex: info[0].sex,
+
+        }
+        if (data) {
+            return res.status(200).json({
+                message: "Có thông tin người dùng",
+                data
+            })
+        }
+        return res.sendStatus(404)
+    } catch (err) {
         console.error(err)
     }
 }

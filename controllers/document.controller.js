@@ -19,7 +19,8 @@ module.exports.getdocument = async (req, res) =>{
             const documents = documentContend.map((value)=>{
                 return {
                     id: value.id,
-                    fileName: value.fileName,
+                    fileName: value.content,
+                    type: value.type
                 }
              })
             res.status(200).json({

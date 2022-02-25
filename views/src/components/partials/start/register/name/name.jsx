@@ -136,11 +136,8 @@ const Name = (props) => {
     return (
         <div className='start-input-component'>
             <div className="start-space"></div>
-
             <StartLogo></StartLogo>
-
             <br /><br /><br /><br />
-
             <form method='POST' onSubmit={(e) => handleSubmitData(e)}>
                 <div className="two-input">
                     <div className="block-input">
@@ -159,7 +156,6 @@ const Name = (props) => {
                             {errorLName}
                         </span>
                     </div>
-
                     <div className="block-input">
                         <input
                             type="text"
@@ -177,11 +173,8 @@ const Name = (props) => {
                         </span>
                     </div>
                 </div>
-
                 <div className="clearfix"></div>
-
                 <br />
-
                 <div 
                     className="block-input-sex" 
                     onKeyPress={(e) => handlePressEnter(e)}
@@ -208,14 +201,11 @@ const Name = (props) => {
                         </li>
                     </ul>
                 </div>
-
                 <span className='text-error'>
                     {(errorSex) ? iconError : ""}
                     {errorSex}
                 </span>
-
-                <br /><br />
-
+                <br />
                 <div className="two-button">
                     <button 
                         className='custom-btn left start-btn-white'

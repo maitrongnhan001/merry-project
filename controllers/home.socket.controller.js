@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const userIsLogin = require('../stores/UserLoginStore');
-const friend = require('../models/friend.model');
 const chat = require('../models/chat.model');
 const home = require('../models/home.model');
 const detailGroup = require('../models/detailGroup.model');
@@ -22,8 +21,7 @@ module.exports.login = async (data, socket) => {
         //kiem tra thong tin voi database
         const resultLogin = await home.login(email);
 
-
-        if (resultLogin.length !== 1 && !(await bcrypt.compare(password, resultLogin[0].password))) {
+        if (resultLogin.length !== 1 || !(await bcrypt.compare(password, resultLogin[0].password))) {
             socket.emit('user-login', {msg: 'Đăng nhập không thành công'});
             return;
         }

@@ -20,7 +20,7 @@ module.exports.create = (mediaMessage) => {
 
 module.exports.get = (userId, limit, offset) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT message.id, path FROM message JOIN mediamessage ON message.id = mediamessage.messageId and message.type = "media" WHERE message.receiveId = ?;`
+        const sql = `SELECT *FROM message WHERE type = "media" AND receiveId = ? LIMIT ? OFFSET ?`
         connection.query(sql,[userId, limit, offset], function (error, result) {
             if (error) {
                 reject(error);

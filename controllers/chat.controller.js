@@ -40,9 +40,9 @@ module.exports.getListChat = async (req, res) => {
                 isSender: value.sendId == userId ? 1 : 0,
                 content: null
             };
-
+            console.log(value.id);
             if (value.type == 'text') {
-                const getTexts = await getText.get(value.id)
+                const getTexts = await getText.get(value.receiveId)
                 lastMessage.content = getTexts
             }
             const receiver = await getMembers(value.receiveId, userId)

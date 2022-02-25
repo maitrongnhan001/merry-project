@@ -2,7 +2,7 @@ const { connection } = require("../config/database");
 
 module.exports.get = async (receiverId, limit, offset) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT message.id, fileName FROM message JOIN documentmessage ON message.id = documentmessage.messageId and message.type = "document" WHERE message.receiveId = ?`
+        const sql = `SELECT *FROM message WHERE type = "document" AND receiveId = ? LIMIT ? OFFSET ?`
         connection.query(sql,[receiverId, limit, offset], function (error, result) {
             if (error) {
                 reject(error);

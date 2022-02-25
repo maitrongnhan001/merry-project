@@ -12,8 +12,13 @@ function Avatar({image, id}) {
 
     useEffect(()=> {
         console.log(userOnline)
+        userOnline.forEach((value)=> {
+            if(value === id) {
+                setIsActive(1)
+            }
+        })
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [userOnline])
+    })
 
     return (
         <div className="friend-group-avatar-wrapper">

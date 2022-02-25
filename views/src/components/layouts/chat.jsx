@@ -41,33 +41,34 @@ function Chat() {
             dispatch(themeState)
             //call chat list API
             const chatsList = await getListChat(localStorage.getItem('userId'))
-            if(chatsList.status && chatsList.status === 200) {
+            if(chatsList && chatsList.status === 200) {
                 let chatListAction = saveChatList(chatsList.data.data)
                 dispatch(chatListAction)
             } 
             //call friends list API
             const friendsList = await getFriendsList(localStorage.getItem('userId'))
-            if(friendsList.status && friendsList.status === 200) {
+            if(friendsList && friendsList.status === 200) {
                 let friendsListAction = saveFriendsList(friendsList.data.data)
                 dispatch(friendsListAction)
             }
 
             const groupsList = await getGroupsList(localStorage.getItem('userId'))
-            if(groupsList.status && groupsList.status === 200) {
+            if(groupsList && groupsList.status === 200) {
                 let groupsListAction = saveGroupsList(groupsList.data.data)
                 dispatch(groupsListAction)
             }
 
             
-            // //socket connection
-            // //send connection
-            // sendConnection(localStorage.getItem('userId'))
-            // //listen connection
-            // getConnection((data)=> {
-            //     console.log(data.userId)
-            //     const userOnline = saveUserOnline(data.userId)
-            //     dispatch(userOnline)
-            // })
+            //socket connection
+            //send connection
+            sendConnection(localStorage.getItem('userId'))
+            //listen connection
+            getConnection((data)=> {
+                if(data.userId !== localStorage.getItem('userId')) {
+                    const userOnline = saveUserOnline(data.userId)
+                    dispatch(userOnline)
+                }
+            })
         })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

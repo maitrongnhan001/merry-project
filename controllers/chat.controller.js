@@ -32,6 +32,9 @@ module.exports.getListChat = async (req, res) => {
         limit = parseInt(limit);
         offset = parseInt(offset);
         const listChat = await chat.getListChat(userId, limit, offset);
+        if(!listChat) {
+            return res.sendStatus(404)
+        }
         const arr = []
         for (let value of listChat) {
 

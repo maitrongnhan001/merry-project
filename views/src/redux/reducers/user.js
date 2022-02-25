@@ -1,5 +1,5 @@
 const initial =  {
-    userOnline: [1, 2]
+    userOnline: []
 } 
 
 const userReducer = (state = initial, action) => {

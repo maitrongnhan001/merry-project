@@ -24,6 +24,9 @@ module.exports.getGroups = async (req, res) => {
         limit = parseInt(limit);
         offset = parseInt(offset);
         const getGroup = await group.getGroup(userId, limit, offset);
+        if(!getGroup) {
+            res.sendStatus(404)
+        }
         const getGroupMembers = []
         const arrImage = {
             image1: "",

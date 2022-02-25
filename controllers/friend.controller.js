@@ -11,6 +11,9 @@ module.exports.getFriend = async (req, res) => {
         offset = parseInt(offset);
         const array = [];
         const friends = await friend.listFriend(userId, limit, offset);
+        if(!friends) {
+            return res.sendStatus(404)
+        }
         for (let value of friends) {
             if (value.sendId == userId) {
                 delete value.sendId;

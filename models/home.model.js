@@ -25,9 +25,9 @@ module.exports.register = (user)=>{
     })
 }
 
-module.exports.login = (email, password) => {
+module.exports.login = (email) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT id, firstName, lastName, password FROM user WHERE email='${email}'`;
+        const sql = `SELECT * FROM user WHERE email='${email}'`;
         connection.query(sql, (error, result) => {
             if (error) {
                 reject(error);

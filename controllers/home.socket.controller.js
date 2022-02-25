@@ -1,6 +1,5 @@
 const bcrypt = require('bcrypt');
 const userIsLogin = require('../stores/UserLoginStore');
-const friend = require('../models/friend.model');
 const chat = require('../models/chat.model');
 const home = require('../models/home.model');
 const detailGroup = require('../models/detailGroup.model');

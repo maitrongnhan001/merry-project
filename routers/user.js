@@ -4,7 +4,9 @@ const userController = require('../controllers/user.controller')
 
 const router = express.Router()
 
-//register
+//searchid
+router.get('/:id', userController.searchById);
+
 
 
 //get user 

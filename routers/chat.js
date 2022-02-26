@@ -8,7 +8,7 @@ const router = express.Router()
 router.get('/list-chat/:userId', chatController.getListChat)
 
 //get content chat
-// router.get('/content-chat', chatController.contentChat)
+router.get('/content', chatController.getContent)
 
 //search message
 router.get('/search-message', chatController.searchMessage)

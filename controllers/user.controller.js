@@ -85,19 +85,27 @@ module.exports.setTemplate = async (req, res) => {
 }
 
 //search by id 
+
 module.exports.searchById = async (req, res) => {
     try {
         const id = req.params.id
         if (!id) {
             return res.sendStatus(404)
         }
+        
         const info = await user.get(id)
+        var timeObj = new Date(info[0].DOB);
+        const day = timeObj.getDate()
+        const month = timeObj.getMonth() + 1
+        const year = timeObj.getFullYear()
+        
         const data = {
             name: info[0].lastName + ' ' + info[0].firstName,
             email: info[0].email,
             firstName: info[0].firstName,
             lastName: info[0].lastName,
-            DOB: info[0].DOB,
+            // DOB: info[0].DOB,
+            DOB: day + '/' + month + '/' + year,
             image: info[0].image,
             sex: info[0].sex,
 

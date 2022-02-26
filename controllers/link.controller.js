@@ -14,7 +14,9 @@ module.exports.getlink = async (req, res) =>{
         offset = parseInt(offset);
        
         const linkContent = await link.get(receiveId, limit, offset);
-      
+        if(!linkContent) {
+            return res.sendStatus(404)
+        }
         if(linkContent ){
             const links = linkContent.map((value)=>{
                 return {
@@ -36,5 +38,6 @@ module.exports.getlink = async (req, res) =>{
         
     }catch(err){
         console.error(err)
+        return res.sendStatus(500)
     }
 }

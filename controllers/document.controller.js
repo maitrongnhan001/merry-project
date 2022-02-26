@@ -2,7 +2,6 @@ const document = require('../models/document.model')
 
 module.exports.getdocument = async (req, res) =>{
     try{
-        // return res.json({data: "hello"})
         const receiveId = req.query.receiveId;
         if(!receiveId){
             return res.status(404)
@@ -14,7 +13,7 @@ module.exports.getdocument = async (req, res) =>{
         offset = parseInt(offset);
 
         const documentContend = await document.get(receiveId, limit, offset);
-        
+
         if(documentContend ){
             const documents = documentContend.map((value)=>{
                 return {
@@ -36,5 +35,6 @@ module.exports.getdocument = async (req, res) =>{
         
     }catch(err){
         console.error(err)
+        return res.sendStatus(500)
     }
 }

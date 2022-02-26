@@ -5,7 +5,6 @@ const user = require("../models/user.model")
 module.exports.search = async (req, res) => {
     try {
         let senderId = req.query.senderId ?? ''
-        // let senderId = `%${id}%`
         let email = req.query.search ?? ''
         const search = `%${email}%`
         const finds = await user.search(search)
@@ -22,7 +21,6 @@ module.exports.search = async (req, res) => {
                 array.push(friend.sendId)
             }
         }
-        // console.log(array)
         for (let value of finds) {
             if (value.id == senderId)
                 continue
@@ -43,12 +41,19 @@ module.exports.search = async (req, res) => {
 
             data.push(object)
         }
-        // console.log(data)
+        if(data.length > 0) {
+            return res.status(200).json({
+                message: 'Tìm kiếm thành công!',
+                data
+            })
+        }else{
+            return res.json({
+                message: 'Không có dữ liệu',
+                data: []
+            })
+        }
+        
 
-        return res.status(200).json({
-            message: 'Tìm kiếm thành công!',
-            data
-        })
     } catch (err) {
         console.error(err)
         return res.sendStatus(500)
@@ -75,6 +80,7 @@ module.exports.setTemplate = async (req, res) => {
 
     } catch (err) {
         console.error(err)
+        return res.sendStatus(500)
     }
 }
 
@@ -105,5 +111,6 @@ module.exports.searchById = async (req, res) => {
         return res.sendStatus(404)
     } catch (err) {
         console.error(err)
+        return res.sendStatus(500)
     }
 }

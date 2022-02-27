@@ -5,12 +5,24 @@ import Select from '../../tools/select/SelectTag'
 import { showDialog } from '../../../../../redux/actions/taskbar'
 import { useDispatch } from 'react-redux'
 import $ from 'jquery'
+import { getUserById } from '../../../../APIs/ConnectAPI'
 
 function Profile() {
 
     /*----redux----*/
     //ket noi den redux
     const dispatch = useDispatch()
+
+    /*---state----*/
+    const [user, setUser] = useState({
+        email: '',
+        name: '',
+        firstName: '',
+        lastName: '',
+        sex: '',
+        image: ''
+
+    })
 
     /*----data----*/
     const date = []
@@ -87,6 +99,16 @@ function Profile() {
             dispatch(display)
     }
 
+    //xu ly thay doi input
+    const handleChange = (e) => {
+        const {value, name} = e.target
+        const newUser = {
+            ...user,
+            [name]: value
+        }
+        setUser(newUser)
+    }
+
     /*----lifecycle----*/
     useEffect(()=> {
         $('.main-chat-my-profile-form').fadeTo('.5s', 1)
@@ -95,6 +117,35 @@ function Profile() {
     useEffect(()=>{
         console.log(DOB);
     }, [DOB])
+
+    useEffect(()=> {
+        (async ()=>{
+            try {
+                const result = await getUserById(localStorage.getItem('userId'))
+                console.log(result)
+                if(result && result.status === 200) {
+                    const newUser = {
+                        firstName: result.data.data.firstName,
+                        lastName: result.data.data.lastName,
+                        email: result.data.data.email,
+                        sex: result.data.data.sex,
+                        image: result.data.data.image,
+                        name: result.data.data.name
+                    }
+                    setUser(newUser)
+                    const newDOB = {
+                        date: result.data.data.date,
+                        year: result.data.data.year,
+                        month: result.data.data.month,
+                    }
+                    setDOB(newDOB)
+                }
+            }catch(err) {
+                alert("Có lỗi xảy ra")
+            }
+        })()
+    
+    }, [])
 
     return (
         <div className="main-chat-my-profile-wrapper" onClick={handleClickToHideMyProfile}>
@@ -109,20 +160,20 @@ function Profile() {
                             <img src="/img/cover-background/cover-background.jpg" alt="" className="my-profile-cover-background"/>
                             <div className="my-profile-avatar">
                                 <div className="my-profile-update-avatar">
-                                    <label htmlFor="my-profile-change-avatar"><img src="/img/me.jpg" alt="" /></label>
+                                    <label htmlFor="my-profile-change-avatar"><img src={user.image} alt="" /></label>
                                     <input type="file" id="my-profile-change-avatar" accept="image/*" style={{display: 'none'}}/>
                                 </div>
                                 <div className="my-profile-update-static">
-                                    <p className="my-profile-name">Dinh Phuc Khang</p>
-                                    <p className="my-profile-email">khangphuc@gmail.com</p>
+                                    <p className="my-profile-name">{user.name}</p>
+                                    <p className="my-profile-email">{user.email}</p>
                                 </div>
                             </div>
                         </div>
                         <div className="my-profile-update my-profile-update-name">
                             <label htmlFor="">Tên:</label>
                             <div className="my-profile-update-name-wrapper">
-                                <input type="text" className="update-name update-last-name" placeholder="Họ" />
-                                <input type="text" className="update-name update-first-name" placeholder="Tên" />
+                                <input type="text" className="update-name update-last-name" placeholder="Họ" name="lastName" value={user.lastName} onChange={handleChange}/>
+                                <input type="text" className="update-name update-first-name" placeholder="Tên" name="firstName" value={user.firstName} onChange={handleChange}/>
                             </div>
                         </div>
                         <div className="my-profile-update my-profile-update-DOB">
@@ -137,11 +188,11 @@ function Profile() {
                             <label htmlFor="">Giới tính:</label>
                             <div className="my-profile-update-sex-wrapper">
                                 <div className="sex male">
-                                    <input type="radio" name="sex" id="" value="1" checked/>
+                                    <input type="radio" name="sex" id="" value="0" checked={parseInt(user.sex) === 0} onChange={handleChange}/>
                                     <label htmlFor="">Nam</label>
                                 </div>
                                 <div className="sex female">
-                                    <input type="radio" name="sex" id="" value="0" />
+                                    <input type="radio" name="sex" id="" value="1" checked={parseInt(user.sex) === 1} onChange={handleChange}/>
                                     <label htmlFor="">Nữ</label>
                                 </div>
                             </div>

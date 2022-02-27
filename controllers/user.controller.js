@@ -62,7 +62,8 @@ module.exports.search = async (req, res) => {
 
 module.exports.setTemplate = async (req, res) => {
     try {
-        const { userId, template } = req.body
+        const { userId } = req.params
+        const {  template } = req.body
         if (!userId || !template) {
             return res.sendStatus(404)
         }
@@ -95,7 +96,7 @@ module.exports.searchById = async (req, res) => {
         
         const info = await user.get(id)
         var timeObj = new Date(info[0].DOB);
-        const day = timeObj.getDate()
+        const date = timeObj.getDate()
         const month = timeObj.getMonth() + 1
         const year = timeObj.getFullYear()
         
@@ -105,7 +106,9 @@ module.exports.searchById = async (req, res) => {
             firstName: info[0].firstName,
             lastName: info[0].lastName,
             // DOB: info[0].DOB,
-            DOB: day + '/' + month + '/' + year,
+            date,
+            month,
+            year,
             image: info[0].image,
             sex: info[0].sex,
 

@@ -4,16 +4,14 @@ const userController = require('../controllers/user.controller')
 
 const router = express.Router()
 
-//searchid
-router.get('/:id', userController.searchById);
-
-
-
 //get user 
 router.get('/', userController.search);
 
+//searchid
+router.get('/:id', userController.searchById);
+
 // template
-router.put('/', userController.setTemplate);
+router.put('/template', userController.setTemplate);
 
 //search user
 // router.get('/search-user/:email', userController.searchUser);//search

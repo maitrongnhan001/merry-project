@@ -4,6 +4,8 @@ import {useDispatch, useSelector} from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { saveTab, setTheme, showCenter, showDialog } from '../../../../redux/actions/taskbar'
 import $ from 'jquery'
+import { setTemplate } from '../../../APIs/ConnectAPI'
+import { sendLogout } from '../../../Sockets/home'
 
 function TaskBar() {
 
@@ -59,7 +61,7 @@ function TaskBar() {
     }
 
     //handle dark mode item
-    const handleClickDarkMode = (e)=> {
+    const handleClickDarkMode = async (e)=> {
         const themeLocal = localStorage.getItem('theme')
         const isDark = themeLocal && themeLocal === 'dark-theme'  ? 'light-theme' : 'dark-theme' 
         localStorage.setItem('theme', isDark)
@@ -74,6 +76,7 @@ function TaskBar() {
 
     //handle sign out item
     const handleClickSignOut = (e)=> {
+        sendLogout(localStorage.getItem('userId'))
         localStorage.removeItem('userId')
         localStorage.removeItem('accessToken')
         navigate('/')

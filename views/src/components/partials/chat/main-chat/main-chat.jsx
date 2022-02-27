@@ -11,6 +11,7 @@ function MainChat() {
 
     /*----redux----*/
     const isShowExtension = useSelector(state => state.extension.isShow)
+    const currentChat = useSelector(state => state.message.currentChat)
 
     /*----lifecycle----*/
     useEffect(()=>{
@@ -23,11 +24,11 @@ function MainChat() {
 
     return (
         <div className="main-chat-wrapper">
-            <Header></Header>
+            <Header name={currentChat.name} image={currentChat.image}></Header>
             <div className="main-chat-chat-group-wrapper-box">
-                <ChatArea></ChatArea>
+                <ChatArea id={currentChat.receiverId}></ChatArea>
                 <ToolbarChat></ToolbarChat>
-                <InputChat></InputChat>
+                <InputChat id={currentChat.receiverId}></InputChat>
             </div>
         </div>
     );

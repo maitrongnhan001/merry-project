@@ -9,12 +9,11 @@ import $ from 'jquery'
 import { showFriendProfile } from '../../../../../redux/actions/friends'
 import { showDialog } from '../../../../../redux/actions/taskbar'
 
-function Header() {
+function Header({image, name}) {
     
     /*----redux----*/
     //lay du lieu tu redux
     const isShowExtension = useSelector(state => state.extension.isShow)
-    const currentChat = useSelector(state => state.message.currentChat)
     
     //ket noi den redux
     const dispatch = useDispatch()
@@ -66,10 +65,10 @@ function Header() {
                 <div className="main-chat-header-box">
                     <div className="main-chat-header-receiver-info">
                         <div className="main-chat-header-receiver-avatar" onClick={handleClickToShowProfile}>
-                            <Image image={currentChat.image}></Image>
+                            <Image image={image}></Image>
                         </div>
                         <div className="main-chat-header-receiver-text">
-                            <p className="main-chat-header-username">{currentChat.name}</p>
+                            <p className="main-chat-header-username">{name}</p>
                             <p className="main-chat-header-active">Đang hoạt động</p>
                         </div>
                     </div>

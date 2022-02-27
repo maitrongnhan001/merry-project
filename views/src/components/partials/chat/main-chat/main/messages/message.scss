@@ -38,6 +38,8 @@
             word-break: break-word;
             white-space: pre-line;
             overflow-wrap: break-word;
+            color: black;
+            text-decoration: underline;
         }
 
         p {
@@ -50,7 +52,7 @@
 
         .message-content-time {
             margin-top: .75rem;
-            font-size: 1rem;
+            font-size: .8rem;
             color: #afbace;
             bottom: 1.35rem;
             display: block;
@@ -84,4 +86,7 @@
         background-color: #797a8d;
         color: white;
     }
+     a{
+         color: white;
+     }
 }

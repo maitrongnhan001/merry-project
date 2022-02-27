@@ -10,7 +10,7 @@ function Item({name, sex, image}) {
             </div>
             <div className="friend-request-item-info">
                 <p className="friend-request-item-info-name">{name}</p>
-                <p className="friend-request-item-info-sex">{sex ? 'Nam' : 'Nữ'}</p>
+                <p className="friend-request-item-info-sex">{sex ? 'Nữ' : 'Nam'}</p>
             </div>
             <div className="friend-request-item-btn">
                 <button className="btn friend-request-item-btn-1">Từ chối</button>

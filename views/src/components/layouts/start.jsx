@@ -16,7 +16,7 @@ const Start = () => {
     useEffect(() => {
         const token = localStorage.getItem('accessToken');
         if (token) {
-            //return navigate(`/me/`);
+            return navigate(`/me/`);
         }
 
     });

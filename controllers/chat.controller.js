@@ -108,6 +108,7 @@ module.exports.getContent = async (req, res) => {
             return res.sendStatus(404)
         }
         const getMessage = await chat.getContents(senderId, receiverId)
+        
         if (!getMessage) {
             return res.sendStatus(404)
         }
@@ -123,18 +124,16 @@ module.exports.getContent = async (req, res) => {
                 receiverId : message.receiveId,
                 content : message.content,
                 type : message.type,
-                status : message.status
+                status : message.status,
+                time: message.time,
+                
             }
             data.message.push(object)
         }
-        if(data.length > 0){
-            return res.status(200).json({
-                message: 'Có tin nhắn',
-                data
-            })
-        }else{
-            return res.sendStatus(404)
-        }
+        return res.status(200).json({
+            message: 'Có tin nhắn',
+            data
+        })
     } catch (err) {
         console.error(err)
         return res.sendStatus(500)

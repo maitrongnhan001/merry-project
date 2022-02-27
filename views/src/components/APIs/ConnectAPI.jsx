@@ -97,6 +97,11 @@ async function setTemplate(userId, data) {
     return await getAPI('put', `/users/template/${userId}`, data)
 }
 
+//APIs get content chat
+async function getContentChat(userId, receiveId) {
+    return await getAPI('get', `/chat/content?senderId=${userId}&receiverId=${receiveId}`)
+}
+
 
 export {
     verifiEmail,
@@ -107,4 +112,5 @@ export {
     getUserById,
     getFriendRequest,
     setTemplate,
+    getContentChat
 }

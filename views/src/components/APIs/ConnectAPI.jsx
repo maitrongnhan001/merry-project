@@ -82,11 +82,29 @@ async function register (userInfo) {
     }
 }
 
+//APIs get user profile
+async function getUserById(userId) {
+    return await getAPI('get', `/users/${userId}`)
+}
+
+//APIs get friends request
+async function getFriendRequest(userId) {
+    return await getAPI('get', `/friends/friends-request/${userId}`)
+}
+
+//APIs set template 
+async function setTemplate(userId, data) {
+    return await getAPI('put', `/users/template/${userId}`, data)
+}
+
 
 export {
     verifiEmail,
     getListChat,
     getFriendsList,
     getGroupsList,
-    register
+    register,
+    getUserById,
+    getFriendRequest,
+    setTemplate,
 }

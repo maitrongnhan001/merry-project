@@ -15,8 +15,8 @@ import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList } from '../APIs/ConnectAPI'
 import { saveChatList, saveFriendsList } from '../../redux/actions/friends'
 import { saveGroupsList,  } from '../../redux/actions/groups'
-import { getConnection, sendConnection } from '../Sockets/home'
-import { saveUserOnline } from '../../redux/actions/user'
+import { getConnection, getLogout, sendConnection } from '../Sockets/home'
+import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
 
 function Chat() {
     const theme = useSelector(state => state.taskbar.theme)
@@ -67,6 +67,14 @@ function Chat() {
                 if(data.userId !== localStorage.getItem('userId')) {
                     const userOnline = saveUserOnline(data.userId)
                     dispatch(userOnline)
+                }
+            })
+
+            //logout 
+            getLogout((data)=> {
+                if(data.userId !== localStorage.getItem('userId')) {
+                    const userOffline = saveUserOffline(data.userId)
+                    dispatch(userOffline)
                 }
             })
         })()

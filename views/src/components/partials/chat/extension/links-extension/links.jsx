@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { getLinks } from '../../../../APIs/ConnectAPI';
 import './links.scss';
 import LinkItem from './link-item/link-item';
 import $ from 'jquery';
 
 const Links = () => {
 
+    const [receiverId, setReceiverId] = useState(useSelector(state => state.extension).idHeader);
     const [is_active, setIsActive] = useState(false);
+
+    //get list link
+    useEffect(async () => {
+
+    }, []);
 
     const list_links = [
         'https://www.facebook.com',

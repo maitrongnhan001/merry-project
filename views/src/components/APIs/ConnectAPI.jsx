@@ -97,6 +97,14 @@ async function setTemplate(userId, data) {
     return await getAPI('put', `/users/template/${userId}`, data)
 }
 
+//APIs extension
+async function getLinks(limit, offset) {
+    const endLimit = limit || 10000;
+    const endOffset = offset || 0;
+
+    return await getAPI('GET', `/link?limit=${endLimit}&offset=${endOffset}`)
+}
+
 
 export {
     verifiEmail,
@@ -107,4 +115,5 @@ export {
     getUserById,
     getFriendRequest,
     setTemplate,
+    getLinks
 }

@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Image from '../../avatar/avatar'
 import './item.scss'
 import $ from 'jquery'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { showCenter, showFeature } from '../../../../../redux/actions/taskbar'
+import { saveCurrentChat } from '../../../../../redux/actions/message'
 
-function Item({id, name, image, addFriend, createGroup}) {
+function Item({id, name, image, addFriend, createGroup, onAddMember}) {
     
     /*----redux----*/
+    const currentChatSelector = useSelector(state => state.message.currentChat)
     //ket noi den redux
     const dispatch = useDispatch()
     
@@ -20,17 +22,20 @@ function Item({id, name, image, addFriend, createGroup}) {
         if(createGroup) {
             $(e.currentTarget).find('.friend-add-friend-checkbox').attr('checked', checked ? false : true)
             setChecked(checked ? false : true)
-        }
-        $(e.currentTarget).addClass('active-friend-group-item')
-        for(let val of $('.friend-group-item')) {
-            if(val !== e.currentTarget) {
-                $(val).removeClass('active-friend-group-item')
+        }else {
+            const currentChat = saveCurrentChat({receiverId: id, image, name})
+            dispatch(currentChat)
+            $(e.currentTarget).addClass('active-friend-group-item')
+            for(let val of $('.friend-group-item')) {
+                if(val !== e.currentTarget) {
+                    $(val).removeClass('active-friend-group-item')
+                }
             }
+            $('#tab-wrapper').toggleClass('hide-tab-in-phones-screen')
+            $('.main-chat-center').toggleClass('show-main-chat-phone-screen')
+            const display = showCenter(1)
+            dispatch(display)
         }
-        $('#tab-wrapper').toggleClass('hide-tab-in-phones-screen')
-        $('.main-chat-center').toggleClass('show-main-chat-phone-screen')
-        const display = showCenter(1)
-        dispatch(display)
     }
 
     //xu ly show khung mo rong
@@ -56,12 +61,20 @@ function Item({id, name, image, addFriend, createGroup}) {
         setChecked(e.target.checked)
     }
 
+    //lifecycle
+
+    useEffect(()=> {
+        if(onAddMember)
+            onAddMember(checked, id)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[checked])
+
 
 
     return (
         <div className="friend-group-item" data-id={id} onClick={handleClickToCheckFriend}>
             <div className="friend-group-avatar">
-                <Image image={image ? image : undefined}></Image>
+                <Image image={image ? image : undefined} id={id}></Image>
             </div>
             <div className="friend-group-info">
                 <p className="friend-group-name">{name}</p>

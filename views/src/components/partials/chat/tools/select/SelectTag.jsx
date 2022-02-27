@@ -4,14 +4,13 @@ import './SelectTag.scss'
 
 
 export default function SelectTag({onSelected, option_select, default_value, name, width}) {
-
     /*----states----*/
     //item duoc chon
     const [item, setItem] = useState(default_value)
     
     //danh sach item
     const [option, setOption] = useState([])
-
+    console.log(item)
     /*----data----*/
     const mapOption = ()=> {
         return (
@@ -23,7 +22,7 @@ export default function SelectTag({onSelected, option_select, default_value, nam
 
     /*----handles----*/
     const changeOption = (e)=>{
-        setItem(e.target.dataset.country)
+        setItem(default_value)
         onSelected(name, e.target.dataset.country)
     }
 
@@ -42,7 +41,7 @@ export default function SelectTag({onSelected, option_select, default_value, nam
     /*----lifecycle----*/
     useEffect(()=>{
         $('.select-tag .select-option').hide()
-        $('body').click((e)=>{
+        $('.main-chat-my-profile-form').click((e)=>{
             if(!e.target.classList.value.match(/select-items/)){
                 $('.select-tag .select-option').slideUp(400)
                 $('.select-tag .select-items .select-tag-icon').css('transform', 'rotateZ(90deg)')
@@ -59,7 +58,7 @@ export default function SelectTag({onSelected, option_select, default_value, nam
     return (
         <div className='select-tag' style={{width: width ? width : ''}}>
             <div className='select-items' onClick={handleClickItem}>
-                <p className='select-tag-title'>{item}</p>
+                <p className='select-tag-title'>{default_value}</p>
                 <i className='fas fa-chevron-right select-tag-icon'></i>
             </div>
             <div className='select-option'>

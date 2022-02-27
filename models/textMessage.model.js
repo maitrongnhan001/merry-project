@@ -20,7 +20,7 @@ module.exports.create = (textMessage) => {
 
 module.exports.get = async (userId) =>{
     return new Promise((resolve, reject) => {
-        const sql = `SELECT  textmessage.content as content  FROM textmessage WHERE textmessage.messageId = ? `
+        const sql = `SELECT * FROM message WHERE type = "text" AND receiveId = ?`
         connection.query(sql,[userId], (err, result) =>{
             if (err) {
                 reject(err);

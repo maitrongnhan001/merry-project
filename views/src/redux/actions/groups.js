@@ -1,4 +1,4 @@
-const getGroups = (payload) =>{
+const saveGroupsList = (payload) =>{
     return {
         type: 'GET_GROUPS',
         data: payload
@@ -6,5 +6,5 @@ const getGroups = (payload) =>{
 }
 
 export {
-    getGroups
+    saveGroupsList
 }

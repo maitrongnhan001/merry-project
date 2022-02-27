@@ -80,7 +80,7 @@ const Register = () => {
 
         if (!result.error) {
             localStorage.setItem('accessToken', result.token);
-            localStorage.setItem('userId', result.id);
+            localStorage.setItem('userId', result.data.id);
 
             cleanData();
             naviagate('/me');

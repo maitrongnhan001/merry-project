@@ -2,7 +2,6 @@ const group = require('../models/group.model')
 const user = require('../models/user.model')
 
 const getMembers = async (groupId) => {
-
     let id = await group.getMembers(groupId)
     let user1 = await user.getUserId(id[0].userId)
     let user2 = await user.getUserId(id[1].userId)
@@ -12,7 +11,7 @@ const getMembers = async (groupId) => {
             { image1: user1[0].image, image2: user2[0].image },
         groupName: `${user1[0].lastName} ${user1[0].firstName}, ${user2[0].lastName} ${user2[0].firstName},...`,
     }
-    console.log(members)
+    // console.log(members)
     return members
 }
 
@@ -23,7 +22,13 @@ module.exports.getGroups = async (req, res) => {
         let offset = req.query.position ?? '0';
         limit = parseInt(limit);
         offset = parseInt(offset);
+        if (!userId) {
+            return res.sendStatus(404)
+        }
         const getGroup = await group.getGroup(userId, limit, offset);
+        if (!getGroup) { //refalsy
+            return res.sendStatus(404)
+        }
         const getGroupMembers = []
         const arrImage = {
             image1: "",
@@ -89,29 +94,39 @@ module.exports.getGroups = async (req, res) => {
 module.exports.getMembersLimit = async (req, res) => {
     try {
         const receiverId = req.query.receiverId;
-        // console.log(req.query)
         let limit = req.query.limit ?? '100000000';
         let offset = req.query.position ?? '0';
         limit = parseInt(limit);
         offset = parseInt(offset);
+        if(!receiverId){
+            return res.sendStatus(404)
+        }
         const getMembersLimits = await group.getMembersLimit(receiverId, limit, offset)
         // console.log(getMembersLimits)
         const getIDAdmin = await group.getByGroupId(receiverId)
-        const infoAdmin = await  user.getUserId(getIDAdmin[0].AdminId)
+        const infoAdmin = await user.getUserId(getIDAdmin[0].AdminId)
+        if(!getMembersLimits && !getIDAdmin && !infoAdmin){
+            return res.sendStatus(404)
+        }
         const admin = {
             id: infoAdmin[0].id,
             image: infoAdmin[0].image,
-            name: infoAdmin[0].lastName+ ' ' + infoAdmin[0].firstName,
+            name: infoAdmin[0].lastName + ' ' + infoAdmin[0].firstName,
         }
-        return res.status(200).json({
-            message: 'Lay thanh vien thanh cong!',
-            data: {
-                member: getMembersLimits,
-                admin: admin
-            }
-        })
-
+        if(admin){
+            return res.status(200).json({
+                message: 'Lay thanh vien thanh cong!',
+                data: {
+                    member: getMembersLimits,
+                    admin: admin
+                }
+            })
+        }else{
+            return res.sendStatus(404)
+        }
+       
     } catch (err) {
         console.error(err)
+        return res.sendStatus(500)
     }
 }

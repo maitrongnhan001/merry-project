@@ -14,8 +14,18 @@ const getConnection = (callback) => {
     listenSocket('connection', callback);
 }
 
+const sendLogout = (userId) => {
+    sendSocket('logout', {userId: userId})
+}
+
+const getLogout = (callback) => {
+    listenSocket('logout', callback);
+}
+
 export {
     login,
     sendConnection,
-    getConnection
+    getConnection,
+    sendLogout,
+    getLogout
 }

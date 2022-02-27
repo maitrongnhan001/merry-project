@@ -12,6 +12,13 @@ const saveFriendsList = (payload) =>{
     }
 }
 
+const saveFriendRequest = (payload) =>{
+    return { 
+        type: 'SAVE_FRIEND_REQUEST',
+        data: payload
+    }
+}
+
 const showFriendProfile = (payload) => {
     return {
         type: 'SHOW_FRIEND_PROFILE',
@@ -22,5 +29,6 @@ const showFriendProfile = (payload) => {
 export { 
     saveChatList,
     saveFriendsList,
-    showFriendProfile
+    showFriendProfile,
+    saveFriendRequest
 }

@@ -1,9 +1,10 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import FriendItem from '../tabs/friend-group-items/item'
 import './add-friends.scss'
 import { useSelector, useDispatch } from 'react-redux'
 import {showDialog}  from '../../../../redux/actions/taskbar'
 import $ from 'jquery'
+import { getAddFriend, sendAddFriend } from '../../../Sockets/socket-friend'
 
 function AddFriends(props) {
 
@@ -13,6 +14,9 @@ function AddFriends(props) {
 
     //ket noi voi redux
     const dispatch = useDispatch()
+
+    /*----states----*/
+    const [email, setEmail] = useState("")
 
     /*----data----*/
     //map du lieu 
@@ -32,6 +36,19 @@ function AddFriends(props) {
         dispatch(isDisplay)
     }
 
+    const handleChange = (e)=> {
+        const {value} = e.target
+        setEmail(value)
+    }
+
+    const handleSubmitFriend = async (e)=> {
+        e.preventDefault()
+        sendAddFriend(email)
+        const result = await getAddFriend()
+        console.log("object");
+        console.log(result)
+    }
+
     /*----lifecycle----*/
     useEffect(()=>{
         $('.add-friend-dialog-form').fadeTo('.5s', 1)
@@ -39,14 +56,14 @@ function AddFriends(props) {
 
     return (
         <div className="add-friend-dialog-wrapper" onClick={handleClickToHideAddedFriend}>
-            <form action="" className="add-friend-dialog-form" onClick={(e)=>e.stopPropagation()}>
+            <form onSubmit={handleSubmitFriend} className="add-friend-dialog-form" onClick={(e)=>e.stopPropagation()}>
                 <div className="add-friend-dialog">
                     <p className="add-friend-dialog-title">
                         Thêm bạn
                         <i className="fas fa-times" onClick={handleClickToHideAddedFriend}></i>
                     </p>
                     <div className="add-friend-dialog-input">
-                        <input type="text" placeholder="Nhập email bạn muốn thêm."/>
+                        <input type="text" placeholder="Nhập email bạn muốn thêm." name="email" onChange={handleChange}/>
                         <i className="fas fa-search"></i>
                     </div>
                     <div className="add-friend-dialog-suggestion">

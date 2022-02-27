@@ -10,12 +10,19 @@ module.exports.getFriend = async (req, res) => {
         limit = parseInt(limit);
         offset = parseInt(offset);
         const array = [];
+        if(!userId) {
+            return res.sendStatus(404)
+        }
         const friends = await friend.listFriend(userId, limit, offset);
+        
+        if(!friends) {
+            return res.sendStatus(404)
+        }
         for (let value of friends) {
             if (value.sendId == userId) {
                 delete value.sendId;
                 array.push(value.receiveId)
-                continue
+                continue         
             }
             if (value.receiveId == userId) {
                 delete value.receiveId
@@ -40,6 +47,7 @@ module.exports.getFriend = async (req, res) => {
         }
     } catch (err) {
         console.error(err);
+        return res.sendStatus(500)
     }
 }
 
@@ -53,6 +61,9 @@ module.exports.requestFriend = async (req, res) => {
         limit = parseInt(limit);
         offset = parseInt(offset);
         const array = [];
+        if(!userId) {
+            return res.sendStatus(404)
+        }
         const requestfriends = await friend.getRequestFriend(userId, limit, offset);
         for (let value of requestfriends) {
             if (value.sendId == userId) {
@@ -83,6 +94,7 @@ module.exports.requestFriend = async (req, res) => {
         }
     } catch (err) {
         console.error(err);
+        return res.sendStatus(500)
     }
 }
 
@@ -96,6 +108,9 @@ module.exports.search = async (req, res) => {
         const friends = await user.searchFriend(senderId)
         const data = []
         let array = []
+        if(!senderId) {
+            return res.sendStatus(404)
+        }
         for (let friend of friends) {
             if (friend.sendId == senderId) {
                 array.push(friend.receiveId)
@@ -105,7 +120,6 @@ module.exports.search = async (req, res) => {
                 array.push(friend.sendId)
             }
         }
-        console.log(search)
         for (let value of array) {
             const finds = await user.searchUser(search, value)
             for (let info in finds) {
@@ -119,10 +133,14 @@ module.exports.search = async (req, res) => {
                 data.push(object)
             }
         }
-        return res.status(200).json({
-            message: 'Tìm kiếm thành công!',
-            data
-        })
+        if(data.length > 0){
+            return res.status(200).json({
+                message: 'Tìm kiếm thành công!',
+                data
+            })
+        }else{
+            return res.sendStatus(404)
+        }
     } catch (err) {
         console.error(err)
         return res.sendStatus(500)

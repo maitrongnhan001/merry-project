@@ -1,170 +1,38 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { saveFriendRequest } from '../../../../../redux/actions/friends'
+import { getFriendRequest } from '../../../../APIs/ConnectAPI'
 import './friend-center.scss'
 import Item from './friend-request-item/item'
 
 function FriendCenter() {
 
-    const list = [
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
+    /*----redux----*/
+    const friendRequestSelector = useSelector(state=>state.friends.friendRequest)
 
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
-
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
-
-
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
-
-
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
-
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
-
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
-
-
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
-
-
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
-
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
-
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
-
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
-
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
-
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
-
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
-
-
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
-
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
-
-
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
-
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
-
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
-
-        {
-            id: 1,
-            name: 'Dinh Phuc Khang',
-            image: '/img/me.jpg',
-            sex: 1
-        },
-    ]
+    const dispatch = useDispatch()
 
     /*----data----*/
-    const items = list.map((value, idx)=> {
+    const items = friendRequestSelector.map((value, idx)=> {
         return (
             <Item key={idx} name={value.name} image={value.image} sex={value.sex}></Item>
         )
     })
+
+    useEffect(()=>{
+        (async ()=> {
+            try {
+                const result = await getFriendRequest(localStorage.getItem('userId'))
+                if(result && result.status === 200) {
+                    const friendRequestAction = saveFriendRequest(result.data.data)
+                    dispatch(friendRequestAction)
+                }
+            }catch (err) {
+                alert("Có lỗi xảy ra!")
+            }
+        })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <div className="friend-center-wrapper">

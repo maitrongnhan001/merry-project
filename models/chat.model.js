@@ -130,3 +130,22 @@ module.exports.getMessageByReceiverId = (receiverId) =>{
         })
     })
 }
+
+//get content 
+module.exports.getContents = (senderId,receiverId) =>{
+    return new Promise((resolve, reject) =>{
+        const sql = `SELECT * FROM message WHERE message.sendId = ? AND message.receiveId = ?`
+        connection.query(sql,[senderId,receiverId],(error, result)=>{
+            if (error) {
+                reject(error);
+            } else {
+                if (result.length > 0) {
+                    const endResult = JSON.parse(JSON.stringify(result));
+                    resolve(endResult);
+                } else {
+                    resolve(null);
+                }
+            }
+        })
+    })
+}

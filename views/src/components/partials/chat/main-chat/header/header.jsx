@@ -14,22 +14,13 @@ function Header() {
     /*----redux----*/
     //lay du lieu tu redux
     const isShowExtension = useSelector(state => state.extension.isShow)
+    const currentChat = useSelector(state => state.message.currentChat)
     
     //ket noi den redux
     const dispatch = useDispatch()
 
     /*----states----*/
     const [isShowSearchBox, setIsShowSearchBox]  = useState(0)
-
-    /*----data----*/
-    const user = {
-        id: '1',
-        firstName: 'Phuc Khang',
-        lastName: 'Dinh',
-        image: '/img/me.jpg'
-    }
-
-    const name = `${user.lastName} ${user.firstName}`
 
     /*----handles ----*/
     //xu ly an hien extension
@@ -75,10 +66,10 @@ function Header() {
                 <div className="main-chat-header-box">
                     <div className="main-chat-header-receiver-info">
                         <div className="main-chat-header-receiver-avatar" onClick={handleClickToShowProfile}>
-                            <Image image={user.image}></Image>
+                            <Image image={currentChat.image}></Image>
                         </div>
                         <div className="main-chat-header-receiver-text">
-                            <p className="main-chat-header-username">{name}</p>
+                            <p className="main-chat-header-username">{currentChat.name}</p>
                             <p className="main-chat-header-active">Đang hoạt động</p>
                         </div>
                     </div>

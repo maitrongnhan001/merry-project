@@ -17,7 +17,8 @@ module.exports.getMedia = async (req, res) => {
             const medias = mediaContent.map((value)=>{
                 return {
                     id: value.id,
-                    fileName: value.path,
+                    fileName: value.content,
+                    type: value.type,
                 }
              })
             res.status(200).json({

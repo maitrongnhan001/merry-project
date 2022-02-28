@@ -16,15 +16,15 @@ const HeaderExtension = () => {
 
     useEffect( async () => {
         //get data of the main use
-        const result = await getUserById(userInfo.id);
+        //const result = await getUserById(userInfo.id);
 
-        const image = `http://localhost:8080/avatarUser/${result.data.data.image}`;
+        // const image = `http://localhost:8080/avatarUser/${result.data.data.image}`;
  
-        setUserInfo({
-            ...userInfo,
-            image: image,
-            name: result.data.data.name
-        });
+        // setUserInfo({
+        //     ...userInfo,
+        //     image: image,
+        //     name: result.data.data.name
+        // });
     }, []);
 
     return (

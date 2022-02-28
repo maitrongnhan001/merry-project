@@ -98,11 +98,12 @@ async function setTemplate(userId, data) {
 }
 
 //APIs extension
-async function getLinks(limit, offset) {
-    const endLimit = limit || 10000;
-    const endOffset = offset || 0;
-
-    return await getAPI('GET', `/link?limit=${endLimit}&offset=${endOffset}`)
+async function getLinks(receiverId, limit, offset) {
+    if (!receiverId) return
+    const endLimit = limit || 10000
+    const endOffset = offset || 0
+    
+    return await getAPI('GET', `/content/link?receiveId=${receiverId}&limit=${endLimit}&position=${endOffset}`)
 }
 
 

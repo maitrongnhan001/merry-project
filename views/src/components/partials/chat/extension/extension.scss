@@ -5,6 +5,13 @@
     display: none;
     background-color: #ffffff;
     border-left: 1px solid #e1e1e1;
+
+    .main-chat-data-loader {
+        span {
+            width: 0.5rem;
+            height: 0.5rem;
+        }
+    }
 }
 
 .extension-wrapper::-webkit-scrollbar{

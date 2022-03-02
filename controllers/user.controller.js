@@ -60,6 +60,30 @@ module.exports.search = async (req, res) => {
     }
 }
 
+//get template
+module.exports.getTemplate = async (req, res) => {
+    try {
+        const {userId} = req.params
+        if(!userId){
+            return res.semdStatus(404)
+        }
+        const template = await user.getTemplates(userId)
+        if(!template){
+            return res.semdStatus(404)
+        }else{
+            return res.status(200).json({
+                message: 'Tìm kiếm thành công!',
+                template
+            })
+        }
+
+    }catch (err) {
+        console.error(err)
+        return res.sendStatus(500)
+    }
+}
+
+//update template
 module.exports.setTemplate = async (req, res) => {
     try {
         const { userId } = req.params

@@ -97,6 +97,29 @@ async function setTemplate(userId, data) {
     return await getAPI('put', `/users/template/${userId}`, data)
 }
 
+//APIs extension
+async function getLinks(receiverId, limit, offset) {
+    if (!receiverId) return
+    const endLimit = limit || 10000
+    const endOffset = offset || 0
+    
+    return await getAPI('GET', `/content/link?receiveId=${receiverId}&limit=${endLimit}&position=${endOffset}`)
+}
+
+async function getDocuments(receiverId, limit, offset) {
+    if (!receiverId) return
+    const endLimit = limit || 10000
+    const endOffset = offset || 0
+    
+    return await getAPI('GET', `/content/document?receiveId=${receiverId}&limit=${endLimit}&position=${endOffset}`)
+}
+
+async function getMedias(receiverId, limit, offset) {
+    if (!receiverId) return
+    const endLimit = limit || 10000
+    const endOffset = offset || 0
+    
+    return await getAPI('GET', `/content/media?receiveId=${receiverId}&limit=${endLimit}&position=${endOffset}`)
 //APIs get content chat
 async function getContentChat(userId, receiveId) {
     return await getAPI('get', `/chat/content?senderId=${userId}&receiverId=${receiveId}`)
@@ -112,5 +135,8 @@ export {
     getUserById,
     getFriendRequest,
     setTemplate,
+    getLinks,
+    getDocuments,
+    getMedias,
     getContentChat
 }

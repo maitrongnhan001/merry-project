@@ -18,7 +18,13 @@ module.exports.register = async (req, res) => {
                 if (!email || !password || !lastName || !firstName || !sex)
                     return res.sendStatus(404)
 
-                const image = req.file ? req.file.filename : ""
+                let image;
+
+                if (!req.file) {
+                    image = (sex == 0) ? 'male-avatar.png' : 'female-avatar.png'
+                } else {
+                    image = req.file.filename
+                }
 
                 const data = {
                     email: email,

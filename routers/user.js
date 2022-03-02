@@ -12,6 +12,8 @@ router.get('/:id', userController.searchById);
 
 // template
 router.put('/template', userController.setTemplate);
+router.get('/template/:userId', userController.getTemplate);
+
 
 //search user
 // router.get('/search-user/:email', userController.searchUser);//search

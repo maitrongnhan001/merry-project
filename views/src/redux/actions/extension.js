@@ -6,6 +6,14 @@ const showExtension = (payload)=>{
     }
 }
 
+const updateIdHeader = (payload) => {
+    return {
+        type: 'UPDATE_ID_HEADER',
+        data: payload
+    }
+}
+
 export {
-    showExtension
+    showExtension,
+    updateIdHeader
 }

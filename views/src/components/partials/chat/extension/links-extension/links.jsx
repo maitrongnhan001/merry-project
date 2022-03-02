@@ -14,6 +14,7 @@ const Links = () => {
     const [offset, setOffset] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [notification, setNotification] = useState(null);
     const [listLinksTag, setListLinksTag] = useState(() => {
         const listElements = links.map((Element, Key) => {
             return <LinkItem link={Element} key={Key} />;
@@ -43,9 +44,16 @@ const Links = () => {
                 setListLinksTag(listElements);
                 break;
             }
-            case 500:
+
+            case 404: {
+                setNotification("Không có tin nhắn liên kết nào");
+                break;
+            }
+
+            case 500: {
                 setError("Có lỗi xảy ra, xin vui lòng thử lại");
                 break;
+            }
         }
         
         setIsLoading(false);
@@ -55,6 +63,9 @@ const Links = () => {
     useEffect(async () => {
         setOffset(0);
         setLinks([]);
+        setIsLoading(false);
+        setError(null);
+        setNotification(null);
         setListLinksTag(null);
 
         await getListAndSetState(receiverId, 10, 0);
@@ -99,6 +110,7 @@ const Links = () => {
             >
                 <div id='list-link-full-size'>
                     {listLinksTag}
+                    <div className="text-notification center">{notification}</div>
                     <div className="text-error center">{error}</div>
                     {isLoading ? <DataLoader/> : ''}
                 </div>

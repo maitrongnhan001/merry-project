@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './extension.scss'
 import { useSelector, useDispatch } from 'react-redux'
 import HeaderExtension from './header-extension/header-extension'
@@ -12,8 +12,11 @@ import { showExtension } from '../../../../redux/actions/extension'
 function Extension(props) {
 
     //redux
-    const isShowExtension = useSelector(state => state.extension.isShow);
+    const isShowExtension = useSelector(state => state.extension.isShow)
+    const idChat = useSelector(state => state.extension.idHeader);
     const dispatch = useDispatch()
+
+    const [isGroup, setIsGroup] = useState(false);
 
     useEffect(() => {
         if (isShowExtension === 1) {
@@ -39,6 +42,14 @@ function Extension(props) {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isShowExtension]);
+    
+    useEffect(() => {
+        if (idChat.indexOf('G') === 0) {
+            setIsGroup(true);
+        } else {
+            setIsGroup(false);
+        }
+    }, [idChat]);
 
     useEffect(() => {
         $(window).click(() => {
@@ -57,18 +68,14 @@ function Extension(props) {
                 dispatch(display)
             }
         })
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-
-
-
-
 
     return (
         <div className="extension-wrapper" onClick={(e) => e.stopPropagation()}>
             <HeaderExtension></HeaderExtension>
-            <MemberGroup></MemberGroup>
+            {isGroup ? <MemberGroup></MemberGroup> : ''}
             <Links></Links>
             <Medias></Medias>
             <Documents></Documents>

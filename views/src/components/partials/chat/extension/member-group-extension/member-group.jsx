@@ -1,23 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Member from './member/member';
+import { getMembers } from '../../../../APIs/ConnectAPI';
 import './member-group.scss';
 import { useSelector } from 'react-redux';
 import $ from 'jquery';
 
 const MemberGroup = () => {
+    const idChat = useSelector(state => state.extension.idHeader);
+
     const [is_active, setIsActive] = useState(false);
 
-    //get temp data
-    const chatsList = useSelector(state => state.friends.chatsList);
+    // const list_member_group = chatsList.map((Element, index) => {
+    //     return (
+    //         <Member key={index}
+    //             image={Element.image}
+    //             first_name={Element.firstName}
+    //             last_name={Element.lastName} ></Member>
+    //     );
+    // })
 
-    const list_member_group = chatsList.map((Element, index) => {
-        return (
-            <Member key={index}
-                image={Element.image}
-                first_name={Element.firstName}
-                last_name={Element.lastName} ></Member>
-        );
-    })
+    useEffect(async () => {
+        const members = await getMembers(idChat);
+        console.log(members);
+    }, [idChat]);
 
     const onActive = () => {
         setIsActive(!is_active);
@@ -47,7 +52,7 @@ const MemberGroup = () => {
             </div>
 
             <div className={`list-member-group ${is_active ? 'show' : 'hide'}`}>
-                {list_member_group}
+                {/* list members group */}
             </div>
         </div>
     );

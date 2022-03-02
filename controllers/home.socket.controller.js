@@ -59,7 +59,7 @@ module.exports.connection = async (data, socket, io) => {
         }
 
         //luu thong tin vua dang nhap vao arr
-        await userIsLogin.store(userId, socket);
+        await userIsLogin.update(userId, socket);
 
         //chuyen tat ca trang thai tin nhan thanh da nhan
         const listGroupChat = await detailGroup.getGroups(userId, 10000, 0);

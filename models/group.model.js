@@ -18,6 +18,24 @@ module.exports.getGroup = (userId ,limit, offset) =>{
     })
 }
 
+module.exports.getGroupQuery = (userId ,groupId) =>{
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM detailgroup JOIN groupuser WHERE detailgroup.groupId = groupuser.id AND detailgroup.userId = ? AND detailgroup.groupId = ?`
+        connection.query(sql,[userId, groupId] ,function (error, result) {
+            if (error) {
+                reject(error)
+            } else {
+                if (result.length > 0) {
+                    const endResult = JSON.parse(JSON.stringify(result))
+                    resolve(endResult)
+                } else {
+                    resolve(null)
+                }
+            }
+        })
+    })
+}
+
 module.exports.getMembers = (groupID) => {
     return new Promise((resolve, reject) => {
         const sql = `SELECT * FROM detailgroup join groupuser on detailgroup.groupId = groupuser.id WHERE detailgroup.groupId = "${groupID}" LIMIT 2`

@@ -1,7 +1,7 @@
 import React from 'react'
 import './message.scss'
 
-function Message({sender, next, children}) {
+function Message({sender, next, children, date}) {
     /*----redux----*/
     //lay du lieu tu redux
 
@@ -29,7 +29,7 @@ function Message({sender, next, children}) {
             }
             <div className="message-content" style={{background: styleContent.backgroundColor, color: styleContent.color, padding: styleContent.padding}}>
                 {children}
-                <p className="message-content-time" style={{position: styleContent.position, left: styleContent.leftTime}}>7.30pm</p>
+                <p className="message-content-time" style={{position: styleContent.position, left: styleContent.leftTime}}>{date}</p>
             </div>
         </div>
     );

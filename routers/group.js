@@ -6,6 +6,7 @@ const router = express.Router()
 
 //get group(name, image), if have id then get all member
 
+router.get('/', groupController.getGroupQuery)
 router.get('/member-list', groupController.getMembersLimit)
 router.get('/:userId', groupController.getGroups)
 

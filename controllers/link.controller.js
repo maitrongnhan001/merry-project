@@ -21,7 +21,7 @@ module.exports.getlink = async (req, res) =>{
             const links = linkContent.map((value)=>{
                 return {
                     id: value.id,
-                    fileName: value.content,
+                    link: value.content,
                     type: value.type
                 }
              })

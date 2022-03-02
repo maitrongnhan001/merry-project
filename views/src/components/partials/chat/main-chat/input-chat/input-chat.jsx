@@ -3,16 +3,17 @@ import { useEffect } from 'react'
 import './input-chat.scss'
 import $ from 'jquery'
 import {useSelector} from 'react-redux'
+import { sendTextMessage } from '../../../../Sockets/socket-chat'
 
-function InputChat() {
+function InputChat({id}) {
 
 
     const emoji = useSelector(state => state.message.emoji)
 
     /*----states----*/
     const[message, setMessage] = useState({
-        senderId: 1,
-        receiverId: 'G0005',
+        senderId: localStorage.getItem('userId'),
+        receiverId: id,
         message: {
             content: ''
         }
@@ -21,15 +22,15 @@ function InputChat() {
     /*----handles----*/
     //xu ly submit form
     const handleSubmit = () => {
+        sendTextMessage(message)
         $('#input-chat-content').html('')
-        
-        const emptyMessage = {
+        const newMessage = {
             ...message,
             message: {
                 content: ''
             }
         }
-        setMessage(emptyMessage)
+        setMessage(newMessage)
     }
 
     //xu ly the input
@@ -56,10 +57,21 @@ function InputChat() {
         }
     }
 
+
     /*----lifecycle ----*/
     useEffect(()=>{
         $('.main-chat-input-chat-wrapper .input-chat-content').focus()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    useEffect(()=>{
+        setMessage({...message, receiverId: id})
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [id])
+
+    useEffect(()=>{
+        console.log(message.receiverId)
+    }, [message])
 
     useEffect(()=>{
         $('#input-chat-content').html($('#input-chat-content').html() + emoji)

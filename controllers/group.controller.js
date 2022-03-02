@@ -15,6 +15,7 @@ const getMembers = async (groupId) => {
     return members
 }
 
+// get groups api/groups/:userId
 module.exports.getGroups = async (req, res) => {
     try {
         const userId = req.params.userId;
@@ -89,6 +90,87 @@ module.exports.getGroups = async (req, res) => {
         console.error(err)
     }
 }
+
+//get groups api/group?groupId=&userId= (nhan)
+module.exports.getGroupQuery = async (req, res) => {
+    try {
+
+        const { userId, groupId}= req.query
+        if (!userId || !groupId) {
+            return res.sendStatus(404)
+        }
+        const getGroup = await group.getGroupQuery(userId, groupId);
+        console.log(getGroup)
+        if (!getGroup) { //refalsy
+            return res.sendStatus(404)
+        }
+        const getGroupMembers = []
+        const arrImage = {
+            image1: "",
+            image2: ""
+        }
+        const getMemberID = []
+        const arr = []
+        var ob = {}
+
+        for (let value of getGroup) {
+            if (value.AdminId != null) {
+
+                if (value.image) {
+                    arrImage.image1 = value.image
+
+                    if (value.groupName) {
+                        const group = {
+                            groupId: value.groupId,
+                            image: arrImage,
+                            groupName: value.groupName
+                        }
+                        ob = group
+                        arr.push(group)
+                    } else {
+                        //truy xuat 2 doi tuong trong nhom
+                        const members = await getMembers(value.groupId)
+                        const group = {
+                            groupId: value.groupId,
+                            image: arrImage,
+                            groupName: members.groupName
+                        }
+                        arr.push(group)
+                        ob = group
+                    }
+                } else {
+
+                    const members = await getMembers(value.groupId)
+                    const group = {
+                        groupId: value.groupId,
+                        image: members.image,
+                        groupName: members.groupName
+                    }
+                    arr.push(group)
+                    ob = group
+
+                }
+
+            }
+        }
+
+        if (arr.length > 0) {
+            res.status(200).json({
+                data: ob
+            });
+        } else {
+            res.json({
+                data: {}
+            })
+        }
+
+    } catch (err) {
+        console.error(err)
+    }
+}
+
+
+
 
 //lay thanh vien nien
 module.exports.getMembersLimit = async (req, res) => {

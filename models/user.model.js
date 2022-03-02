@@ -122,3 +122,21 @@ module.exports.updateTemplate = (userId, template) =>{
         });
     });
 }
+
+// get template
+module.exports.getTemplates = (userId)=>{
+    return new Promise((resolve, reject) =>{
+        const sql = `SELECT template FROM user WHERE id = ?`
+        connection.query(sql, [userId], function (error, result) {
+            if(error){
+                reject(error)
+            }else{
+                if(result){
+                    resolve(result)
+                }else{
+                    resolve(null)
+                }
+            }
+        })  
+    })
+}

@@ -39,7 +39,8 @@ module.exports.login = async (data, socket) => {
 
         socket.emit('user-login', {
             userId: userId,
-            token: token
+            token: token,
+            userAvatar: resultLogin[0].image
         });
     } catch (err) {
         socket.emit('user-login', {msg: 'Đăng nhập không thành công'});

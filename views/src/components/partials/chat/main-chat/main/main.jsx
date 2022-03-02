@@ -3,7 +3,7 @@ import './main.scss'
 import Message from './messages/message'
 import Document from './messages/document/document'
 import DataLoader from '../../tools/data-loader/data-loader'
-import { getContentChat } from '../../../../APIs/ConnectAPI'
+import { getContentChat, getUserById } from '../../../../APIs/ConnectAPI'
 import { getTextMessageChat } from '../../../../Sockets/socket-chat'
 
 function Main({id}) {
@@ -69,10 +69,12 @@ function Main({id}) {
             }
         }
 
+        let image = 'image-1.jpg'
+
         const next = messageList[idx + 1]  && messageList[idx + 1].senderId === value.senderId ? 0 : 1
         return (
             // eslint-disable-next-line eqeqeq
-            <Message  key ={idx} sender={value.senderId == localStorage.getItem('userId') ? 0 : 1} next={next} date={value.time}>{message}</Message>
+            <Message  key ={idx} image={image} sender={value.senderId == localStorage.getItem('userId') ? 0 : 1} next={next} date={value.time}>{message}</Message>
         )
     })
 

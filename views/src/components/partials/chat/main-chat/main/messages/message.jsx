@@ -1,7 +1,8 @@
 import React from 'react'
+import { urlUserAvatar } from '../../../../../APIs/ConnectAPI';
 import './message.scss'
 
-function Message({sender, next, children, date}) {
+function Message({sender, next, children, date, image}) {
     /*----redux----*/
     //lay du lieu tu redux
 
@@ -24,7 +25,7 @@ function Message({sender, next, children, date}) {
         <div className="message-block" style={{justifyContent: sender === 0 ? 'flex-end' : 'flex-start'}}>
             {
                 sender === 0 ? <div  className="message-block-distance"></div> : <div className="avatar">
-                    {next === 0 ? '' : <img src="/img/me.jpg" alt="" />}
+                    {next === 0 ? '' : <img src={urlUserAvatar + image} alt="" />}
                 </div>
             }
             <div className="message-content" style={{background: styleContent.backgroundColor, color: styleContent.color, padding: styleContent.padding}}>

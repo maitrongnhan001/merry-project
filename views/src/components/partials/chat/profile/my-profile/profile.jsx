@@ -5,7 +5,7 @@ import Select from '../../tools/select/SelectTag'
 import { showDialog } from '../../../../../redux/actions/taskbar'
 import { useDispatch } from 'react-redux'
 import $ from 'jquery'
-import { getUserById } from '../../../../APIs/ConnectAPI'
+import { getUserById, urlUserAvatar } from '../../../../APIs/ConnectAPI'
 
 function Profile() {
 
@@ -160,7 +160,7 @@ function Profile() {
                             <img src="/img/cover-background/cover-background.jpg" alt="" className="my-profile-cover-background"/>
                             <div className="my-profile-avatar">
                                 <div className="my-profile-update-avatar">
-                                    <label htmlFor="my-profile-change-avatar"><img src={user.image} alt="" /></label>
+                                    <label htmlFor="my-profile-change-avatar"><img src={urlUserAvatar + user.image} alt="" /></label>
                                     <input type="file" id="my-profile-change-avatar" accept="image/*" style={{display: 'none'}}/>
                                 </div>
                                 <div className="my-profile-update-static">

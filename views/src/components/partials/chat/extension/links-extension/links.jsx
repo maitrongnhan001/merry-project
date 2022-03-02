@@ -33,7 +33,7 @@ const Links = () => {
                 const listResponeLink = result.data.data;
                 let list_links = links;
                 for (let index of listResponeLink) {
-                    list_links.push(index.fileName);
+                    list_links.push(index.link);
                 }
                 setLinks(list_links);
                 setOffset(list_links.length);

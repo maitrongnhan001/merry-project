@@ -108,6 +108,12 @@ async function getLinks(receiverId, limit, offset) {
     return await getAPI('GET', `/content/link?receiveId=${receiverId}&limit=${endLimit}&position=${endOffset}`)
 }
 
+async function getGroupInfo (groupId, userId) {
+    if ( !(groupId && userId) ) return
+    
+    return await getAPI('GET', `/groups/?groupId=${groupId}&userId=${userId}`)
+}
+
 async function getDocuments(receiverId, limit, offset) {
     if (!receiverId) return
     const endLimit = limit || 10000
@@ -143,5 +149,6 @@ export {
     getMedias,
     getContentChat,
     urlImage,
-    urlUserAvatar
+    urlUserAvatar,
+    getGroupInfo
 }

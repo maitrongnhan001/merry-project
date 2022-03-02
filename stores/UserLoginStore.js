@@ -32,14 +32,14 @@ module.exports.update = async (userId, userSocket) => {
 
             //tra ve user socket id
             initialData[index].userSocket = userSocket;
-            
+
             //tra ve thanh cong
             resolve(true);
+        } else {
+            //neu khong co element thi them data
+            await this.store(userId, userSocket);
+            resolve(false);
         }
-
-        //neu khong co element thi them data
-        await this.store(userId, userSocket);
-        resolve(false);
     });
 }
 

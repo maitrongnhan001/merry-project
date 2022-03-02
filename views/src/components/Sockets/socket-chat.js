@@ -16,7 +16,7 @@ const sendEmotionMessage = (data)=> {
     sendSocket('emotion', data)
 }
 
-const createRoom = async (data)=> {
+const createRoom = (data)=> {
     sendSocket('create-room', data)
 }
 
@@ -40,8 +40,8 @@ const getEmotionMessage = async ()=> {
     return await listenSocketOneTime('emotion')
 }
 
-const getRoom = async ()=> {
-    return await listenSocketOneTime('create-room')
+const getRoom = (cb)=> {
+    listenSocket('create-room', cb)
 }
 
 export {

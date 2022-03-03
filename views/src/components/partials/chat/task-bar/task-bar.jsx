@@ -4,8 +4,9 @@ import {useDispatch, useSelector} from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { saveTab, setTheme, showCenter, showDialog } from '../../../../redux/actions/taskbar'
 import $ from 'jquery'
-import { setTemplate } from '../../../APIs/ConnectAPI'
+import { setTemplate, urlUserAvatar } from '../../../APIs/ConnectAPI'
 import { sendLogout } from '../../../Sockets/home'
+
 
 function TaskBar() {
 
@@ -109,7 +110,7 @@ function TaskBar() {
         <div className="taskbar-wrapper">
             <div className="taskbar-top">
                 <div className="my-avatar" onClick={handleClickAvatar}>
-                    <img src="/img/me.jpg" alt="avt" />
+                    <img src={urlUserAvatar + localStorage.getItem('userAvatar')} alt="avt" />
                 </div>
                 <div className="task-items">
                     <div className="task-item-focus">

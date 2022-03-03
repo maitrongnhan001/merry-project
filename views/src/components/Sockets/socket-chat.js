@@ -16,7 +16,7 @@ const sendEmotionMessage = (data)=> {
     sendSocket('emotion', data)
 }
 
-const createRoom = async (data)=> {
+const createRoom = (data)=> {
     sendSocket('create-room', data)
 }
 
@@ -26,6 +26,10 @@ const getTextMessage = async ()=> {
 
 const getTextMessageChat = (cb)=> {
     listenSocket('send-text-message', cb)
+}
+
+const getTextMessageChatX = async ()=> {
+    return await listenSocketOneTime('send-message-message')
 }
 
 const getMediaMessage = async ()=> {
@@ -40,8 +44,8 @@ const getEmotionMessage = async ()=> {
     return await listenSocketOneTime('emotion')
 }
 
-const getRoom = async ()=> {
-    return await listenSocketOneTime('create-room')
+const getRoom = (cb)=> {
+    listenSocket('create-room', cb)
 }
 
 export {
@@ -55,5 +59,6 @@ export {
     getEmotionMessage,
     createRoom,
     getRoom,
-    getTextMessageChat
+    getTextMessageChat,
+    getTextMessageChatX
 }

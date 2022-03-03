@@ -19,6 +19,30 @@ module.exports.store = (userId, userSocket) => {
     });
 }
 
+module.exports.update = async (userId, userSocket) => {
+    return new Promise(async (resolve, reject) => {
+        //kiem tra socket
+        const result = await this.checkUser(userId);
+        if (result) {
+            //cap nhat socke theo userId
+            //lay vi tri cua user theo id user
+            const index = [...initialData].findIndex((Element) => {
+                return Element.userId == userId;
+            });
+
+            //tra ve user socket id
+            initialData[index].userSocket = userSocket;
+
+            //tra ve thanh cong
+            resolve(true);
+        } else {
+            //neu khong co element thi them data
+            await this.store(userId, userSocket);
+            resolve(false);
+        }
+    });
+}
+
 module.exports.getAll = () => {
     return new Promise((resolve, reject) => {
         //lay tat ca user dang online trong mang
@@ -78,9 +102,9 @@ module.exports.checkUser = (userId) => {
 }
 
 module.exports.remove = (userId) => {
-    return new Promise ((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         //xoa user trong mang theo id user
-        const index = initialData.findIndex((Element) => {return userId === Element.userId});
+        const index = initialData.findIndex((Element) => { return userId === Element.userId });
 
         //kiem tra vi tri
         if (index === -1) {

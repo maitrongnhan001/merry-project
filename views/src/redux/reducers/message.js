@@ -1,6 +1,7 @@
 const initial = {
     emoji: '',
     currentChat: {},
+    message: {}
 }
 
 const messageReducer = (state = initial, action)=> {
@@ -17,6 +18,14 @@ const messageReducer = (state = initial, action)=> {
             return {
                 ...state,
                 currentChat
+            }
+        }
+
+        case 'SEND_MESSAGE': {
+            return {
+                ...state,
+                message:  action.data
+
             }
         }
         default: {

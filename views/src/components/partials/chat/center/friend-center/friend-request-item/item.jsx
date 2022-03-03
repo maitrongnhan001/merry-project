@@ -1,4 +1,5 @@
 import React from 'react'
+import { urlUserAvatar } from '../../../../../APIs/ConnectAPI';
 import './item.scss'
 
 function Item({name, sex, image}) {
@@ -6,7 +7,7 @@ function Item({name, sex, image}) {
         <div className="friend-request-item-wrapper">
             <div className="friend-request-item">
             <div className="friend-request-item-avatar">
-                <img src={image} alt="" />
+                <img src={urlUserAvatar + image} alt="" />
             </div>
             <div className="friend-request-item-info">
                 <p className="friend-request-item-info-name">{name}</p>

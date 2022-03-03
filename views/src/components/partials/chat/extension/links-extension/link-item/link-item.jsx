@@ -7,7 +7,7 @@ const LinkItem = (props) => {
 
     return (
         <div className='link-item'>
-            <a href={`${link}`} target='_blank'>{link}</a>
+            <a href={`https://${link}`} target='_blank'>{link}</a>
         </div>
     );
 }

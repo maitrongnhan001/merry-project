@@ -77,6 +77,7 @@ const Login = () => {
         if (data.token) {
             localStorage.setItem('accessToken', data.token);
             localStorage.setItem('userId', data.userId);
+            localStorage.setItem('userAvatar', data.userAvatar);
             navigate(`/me/${data.userId}`);
         } else {
             setAnotherError('Email hoặc mật khẩu không chính xác');

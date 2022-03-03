@@ -3,18 +3,18 @@ import './item.scss'
 import Image from '../../../avatar/avatar'
 import { useDispatch, useSelector} from 'react-redux';
 import { showCenter } from '../../../../../../redux/actions/taskbar';
+import { updateIdHeader } from '../../../../../../redux/actions/extension';
 import $ from 'jquery'
 import { saveCurrentChat } from '../../../../../../redux/actions/message';
+import { createRoom } from '../../../../../Sockets/socket-chat';
 
 function Item({id, image, name, lastMessage}) {
 
     /*----redux----*/
     //ket noi den redux
-
     const currentChatSelector = useSelector(state => state.message.currentChat)
 
     const dispatch = useDispatch()
-
 
     /*----handles----*/
     //xu ly hien thi chat item  
@@ -31,6 +31,23 @@ function Item({id, image, name, lastMessage}) {
         }
         $('#tab-wrapper').toggleClass('hide-tab-in-phones-screen')
         $('.main-chat-center').toggleClass('show-main-chat-phone-screen')
+        const dataRoom = {
+            senderId: localStorage.getItem('userId'),
+            receiverId: id
+        }
+
+        console.log(dataRoom)
+        createRoom(dataRoom)
+    }
+
+    const updateIdExtensionHeader = () => {
+        const data = updateIdHeader(id);
+        dispatch(data)
+    }
+
+    const GenneralHandleClickItem = (e) => {
+        handleClickToShowChat(e);
+        updateIdExtensionHeader();
     }
 
     useEffect(()=> {
@@ -45,7 +62,7 @@ function Item({id, image, name, lastMessage}) {
     }, [currentChatSelector])
 
     return (
-        <div className="tab-chat-item" data-id={id} onClick={handleClickToShowChat}>
+        <div className="tab-chat-item" data-id={id} onClick={GenneralHandleClickItem}>
             <div className="tab-chat-avatar">
                 <Image image={image}></Image>
             </div>

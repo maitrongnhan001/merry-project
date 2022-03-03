@@ -1,6 +1,8 @@
 import axios from 'axios'
 
 axios.defaults.baseURL = 'http://localhost:8080/api'
+const urlImage = 'http://localhost:8080/Medias/'
+const urlUserAvatar = 'http://localhost:8080/avatarUser/'
 
 export default function getAPI(method, url, data = null, token = null) {
     return axios({
@@ -97,6 +99,30 @@ async function setTemplate(userId, data) {
     return await getAPI('put', `/users/template/${userId}`, data)
 }
 
+//APIs extension
+async function getLinks(receiverId, limit, offset) {
+    if (!receiverId) return
+    const endLimit = limit || 10000
+    const endOffset = offset || 0
+    
+    return await getAPI('GET', `/content/link?receiveId=${receiverId}&limit=${endLimit}&position=${endOffset}`)
+}
+
+async function getDocuments(receiverId, limit, offset) {
+    if (!receiverId) return
+    const endLimit = limit || 10000
+    const endOffset = offset || 0
+    
+    return await getAPI('GET', `/content/document?receiveId=${receiverId}&limit=${endLimit}&position=${endOffset}`)
+}
+
+async function getMedias(receiverId, limit, offset) {
+    if (!receiverId) return
+    const endLimit = limit || 10000
+    const endOffset = offset || 0
+    
+    return await getAPI('GET', `/content/media?receiveId=${receiverId}&limit=${endLimit}&position=${endOffset}`)
+}
 //APIs get content chat
 async function getContentChat(userId, receiveId) {
     return await getAPI('get', `/chat/content?senderId=${userId}&receiverId=${receiveId}`)
@@ -112,5 +138,10 @@ export {
     getUserById,
     getFriendRequest,
     setTemplate,
-    getContentChat
+    getLinks,
+    getDocuments,
+    getMedias,
+    getContentChat,
+    urlImage,
+    urlUserAvatar
 }

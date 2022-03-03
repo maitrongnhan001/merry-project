@@ -39,7 +39,8 @@ module.exports.login = async (data, socket) => {
 
         socket.emit('user-login', {
             userId: userId,
-            token: token
+            token: token,
+            userAvatar: resultLogin[0].image
         });
     } catch (err) {
         socket.emit('user-login', {msg: 'Đăng nhập không thành công'});
@@ -59,8 +60,8 @@ module.exports.connection = async (data, socket, io) => {
         }
 
         //luu thong tin vua dang nhap vao arr
-        await userIsLogin.store(userId, socket);
-
+        await userIsLogin.update(userId, socket);
+        console.log(await userIsLogin.getAll());
         //chuyen tat ca trang thai tin nhan thanh da nhan
         const listGroupChat = await detailGroup.getGroups(userId, 10000, 0);
         let groupChatArr = [];

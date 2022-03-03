@@ -17,6 +17,7 @@ import { saveChatList, saveFriendsList } from '../../redux/actions/friends'
 import { saveGroupsList,  } from '../../redux/actions/groups'
 import { getConnection, getLogout, sendConnection } from '../Sockets/home'
 import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
+import { getRoom } from '../Sockets/socket-chat'
 
 function Chat() {
     const theme = useSelector(state => state.taskbar.theme)
@@ -77,6 +78,12 @@ function Chat() {
                     dispatch(userOffline)
                 }
             })
+
+            //getRoom
+            getRoom((data)=> {
+                console.log(data)
+            })
+
         })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

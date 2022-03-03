@@ -80,6 +80,14 @@ function CreateGroup() {
         $('.create-group-form-action').fadeTo('.5s', 1)
     })
 
+    useEffect(()=> {
+        setGroup({
+            ...group,
+            members: [1]
+        })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
     /*----data----*/
     //map du lieu
     const items = friendsList.map((value, idx) => {

@@ -1,39 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Image from '../../avatar/avatar';
 import './header-extension.scss';
 import { useSelector } from 'react-redux';
-import { getUserById } from '../../../../APIs/ConnectAPI';
 
 const HeaderExtension = () => {
 
-    const userId = useSelector(state => state.extension).idHeader;
-
-    const [userInfo, setUserInfo] = useState({
-        id: userId || null,
-        image: '',
-        name: ''
-    });
-
-    useEffect( async () => {
-        //get data of the main use
-        //const result = await getUserById(userInfo.id);
-
-        // const image = `http://localhost:8080/avatarUser/${result.data.data.image}`;
- 
-        // setUserInfo({
-        //     ...userInfo,
-        //     image: image,
-        //     name: result.data.data.name
-        // });
-    }, []);
+    const currentChat = useSelector(state => state.message.currentChat);
+    const userId = localStorage.getItem('userId');
 
     return (
         <div className='extension-header'>
             <div className="extension-header-avatar">
-                <Image image={{image1: userInfo.image}} id={userInfo.id} ></Image>
+                <Image image={currentChat.image} id={userId} ></Image>
             </div>
 
-            <p className='name-user-extension'>{userInfo.name}</p>
+            <p className='name-user-extension'>{currentChat.name}</p>
         </div>
     );
 }

@@ -1,23 +1,83 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Member from './member/member';
+import { getMembers } from '../../../../APIs/ConnectAPI';
 import './member-group.scss';
 import { useSelector } from 'react-redux';
 import $ from 'jquery';
 
 const MemberGroup = () => {
+    const idChat = useSelector(state => state.extension.idHeader);
+
     const [is_active, setIsActive] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [members, setMembers] = useState([]);
+    const [admin, setAdmin] = useState(null);
+    const [offset, setOffset] = useState(0);
 
-    //get temp data
-    const chatsList = useSelector(state => state.friends.chatsList);
-
-    const list_member_group = chatsList.map((Element, index) => {
-        return (
-            <Member key={index}
+    const [listMembersTag, setListMembersTag] = useState(() => {
+        const listElements = members.map((Element, Key) => {
+            return <Member
                 image={Element.image}
-                first_name={Element.firstName}
-                last_name={Element.lastName} ></Member>
-        );
-    })
+                name={Element.name}
+                key={Key}
+                />;
+        });
+        return listElements;
+    });
+
+    const getListAndSetState = async (idGroup, limit, position = null) => {
+        if (!idGroup) return;
+        setIsLoading(true);
+        const endLimit = limit || 10000;
+        const endPosition = (position) ? position : 0;
+        const result = await getMembers(idGroup, endLimit, endPosition);
+
+        switch (result.status) {
+            case 200: {
+                const listResponeMembers = result.data.data;
+                let list_members = members;
+                for (let index of listResponeMembers.member) {
+                    list_members.push(index);
+                }
+                setMembers(list_members);
+                setAdmin(listResponeMembers.admin);
+                setOffset(list_members.length);
+                const listElements = members.map((Element, Key) => {
+                    return <Member
+                        image={Element.image}
+                        name={Element.name}
+                        key={Key}
+                        />;
+                });
+                setListMembersTag(listElements);
+                break;
+            }
+
+            case 500: {
+                setError("Có lỗi xảy ra, xin vui lòng thử lại");
+                break;
+            }
+        }
+
+        setIsLoading(false);
+    }
+
+    useEffect(async () => {
+        setOffset(0);
+        setMembers([]);
+        setIsLoading(false);
+        setError(null);
+        setListMembersTag(null);
+
+        getListAndSetState(idChat, 10, 0);
+    }, [idChat]);
+
+    const handleScroll = async () => {
+        if ($('#list_member_elements').scrollTop() + $('#list_member_elements').height() == $('#list-members-full-size').height()) {
+            await getListAndSetState(idChat, 10, offset);
+        }
+    }
 
     const onActive = () => {
         setIsActive(!is_active);
@@ -46,8 +106,15 @@ const MemberGroup = () => {
                 </svg>
             </div>
 
-            <div className={`list-member-group ${is_active ? 'show' : 'hide'}`}>
-                {list_member_group}
+            <div 
+                className={`list-member-group ${is_active ? 'show' : 'hide'}`}
+                id='list_member_elements'
+                onScroll={handleScroll}
+            >
+                <div id="list-members-full-size">
+                    {listMembersTag}
+                    <div className="text-error center">{error}</div>
+                </div>
             </div>
         </div>
     );

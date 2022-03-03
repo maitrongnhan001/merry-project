@@ -15,6 +15,7 @@ const Documents = () => {
     const [offset, setOffset] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [notification, setNotification] = useState(null);
 
     const [listDocumentsTag, setListDocumentsTag] = useState(() => {
         const listElements = documents.map((Element, Key) => {
@@ -45,9 +46,16 @@ const Documents = () => {
                 setListDocumentsTag(listElements);
                 break;
             }
-            case 500:
+
+            case 404: {
+                setNotification("Không có tài liệu nào được gửi");
+                break;
+            }
+
+            case 500: {
                 setError("Có lỗi xảy ra, xin vui lòng thử lại");
                 break;
+            }
         }
 
         setIsLoading(false);
@@ -56,6 +64,9 @@ const Documents = () => {
     useEffect(async () => {
         setOffset(0);
         setDocuments([]);
+        setIsLoading(false);
+        setError(null);
+        setNotification(null);
         setListDocumentsTag(null);
 
         await getListAndSetState(receiverId, 10, 0);
@@ -100,6 +111,7 @@ const Documents = () => {
             >
                 <div id='list-link-full-size'>
                     {listDocumentsTag}
+                    <div className="text-notification center">{notification}</div>
                     <div className="text-error center">{error}</div>
                     {isLoading ? <DataLoader /> : ''}
                 </div>

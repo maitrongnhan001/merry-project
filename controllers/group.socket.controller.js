@@ -10,13 +10,15 @@ module.exports.addGroup = async (data, socket, io) => {
     try {
         //kiem tra du lieu
         if (!(data.members)) {
-            socket.emit('add-group-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
+            socket.emit('add-group', { msg: 'Lỗi, không đính kèm dữ liệu' });
             return;
         }
 
         //lay du lieu
         var groupName = (data.groupName) ? data.groupName : '';
-        const members = data.members;
+        const members = data.members.map(Element => {
+            return parseInt(Element);
+        });
 
         //lay admin id
         const AdminId = await userIsLogin.getUserId(socket);
@@ -44,7 +46,7 @@ module.exports.addGroup = async (data, socket, io) => {
                     groupName: ''
                 }
             } else {
-                socket.emit('add-group-error', { msg: 'Lỗi, chat này đã tồn tại' });
+                socket.emit('add-group', { msg: 'Lỗi, chat này đã tồn tại' });
                 return;
             }
         }
@@ -120,7 +122,7 @@ module.exports.addGroup = async (data, socket, io) => {
 
         io.to(`${groupId}`).emit('add-group', returnData);
     } catch (err) {
-        socket.emit('add-group-error', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+        socket.emit('add-group', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
         console.error(err);
     }
 }

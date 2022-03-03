@@ -108,6 +108,12 @@ async function getLinks(receiverId, limit, offset) {
     return await getAPI('GET', `/content/link?receiveId=${receiverId}&limit=${endLimit}&position=${endOffset}`)
 }
 
+async function getGroupInfo (groupId, userId) {
+    if ( !(groupId && userId) ) return
+    
+    return await getAPI('GET', `/groups?groupId=${groupId}&userId=${userId}`)
+}
+
 async function getDocuments(receiverId, limit, offset) {
     if (!receiverId) return
     const endLimit = limit || 10000
@@ -123,6 +129,15 @@ async function getMedias(receiverId, limit, offset) {
     
     return await getAPI('GET', `/content/media?receiveId=${receiverId}&limit=${endLimit}&position=${endOffset}`)
 }
+
+async function getMembers (idGroup, limit, offset) {
+    if (!idGroup) return;
+    const endLimit = limit || 1000;
+    const endOffset = offset || 0;
+
+    return await getAPI('GET', `/groups/member-list?receiverId=${idGroup}&limit=${endLimit}&position=${endOffset}`);
+}
+
 //APIs get content chat
 async function getContentChat(userId, receiveId) {
     return await getAPI('get', `/chat/content?senderId=${userId}&receiverId=${receiveId}`)
@@ -148,5 +163,7 @@ export {
     getContentChat,
     urlImage,
     urlUserAvatar,
-    getOthersUsers
+    getOthersUsers,
+    getGroupInfo,
+    getMembers
 }

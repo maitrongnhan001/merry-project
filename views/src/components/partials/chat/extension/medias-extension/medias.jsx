@@ -14,6 +14,7 @@ const Medias = () => {
     const [offset, setOffset] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [notification, setNotification] = useState(null);
     const [listMediasTag, setListMediasTag] = useState(() => {
         const listElements = medias.map((Element, Key) => {
             return <MeidaItem link_media={Element} key={Key} />;
@@ -43,9 +44,16 @@ const Medias = () => {
                 setListMediasTag(listElements);
                 break;
             }
-            case 500:
+
+            case 404: {
+                setNotification('Không có hình ảnh nào được gửi');
+                break;
+            }
+
+            case 500: {
                 setError("Có lỗi xảy ra, xin vui lòng thử lại");
                 break;
+            }
         }
 
         setIsLoading(false);
@@ -54,6 +62,9 @@ const Medias = () => {
     useEffect(async () => {
         setOffset(0);
         setMedia([]);
+        setIsLoading(false);
+        setError(null);
+        setNotification(null);
         setListMediasTag(null);
 
         await getListAndSetState(receiverId, 10, 0);
@@ -98,6 +109,7 @@ const Medias = () => {
             >
                 <div id='list-media-full-size'>
                     {listMediasTag}
+                    <div className="text-notification center">{notification}</div>
                     <div className="text-error center">{error}</div>
                     {isLoading ? <DataLoader /> : ''}
                 </div>

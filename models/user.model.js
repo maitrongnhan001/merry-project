@@ -140,3 +140,21 @@ module.exports.getTemplates = (userId)=>{
         })  
     })
 }
+
+//get Other user
+module.exports.getAllUser = () => {
+    return new Promise((resolve, reject) =>{
+        const sql = `SELECT user.id FROM user LIMIT 10`
+        connection.query(sql, function (error, result) {
+            if(error){
+                reject(error)
+            }else{
+                if(result){
+                    resolve(result)
+                }else{
+                    resolve(null)
+                }
+            }
+        })  
+    })
+}

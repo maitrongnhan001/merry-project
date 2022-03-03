@@ -143,6 +143,10 @@ async function getContentChat(userId, receiveId) {
     return await getAPI('get', `/chat/content?senderId=${userId}&receiverId=${receiveId}`)
 }
 
+async function getOthersUsers(userId) {
+    return await getAPI('get', `/users/others-users/${userId}`)
+}
+
 
 export {
     verifiEmail,
@@ -159,6 +163,7 @@ export {
     getContentChat,
     urlImage,
     urlUserAvatar,
+    getOthersUsers,
     getGroupInfo,
     getMembers
 }

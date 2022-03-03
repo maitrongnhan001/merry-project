@@ -28,6 +28,10 @@ const getTextMessageChat = (cb)=> {
     listenSocket('send-text-message', cb)
 }
 
+const getTextMessageChatX = async ()=> {
+    return await listenSocketOneTime('send-message-message')
+}
+
 const getMediaMessage = async ()=> {
     return await listenSocketOneTime('send-media-message')
 }
@@ -55,5 +59,6 @@ export {
     getEmotionMessage,
     createRoom,
     getRoom,
-    getTextMessageChat
+    getTextMessageChat,
+    getTextMessageChatX
 }

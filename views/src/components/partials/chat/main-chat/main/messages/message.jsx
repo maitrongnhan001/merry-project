@@ -36,4 +36,4 @@ function Message({sender, next, children, date, image}) {
     );
 }
 
-export default React.memo(Message)
+export default Message

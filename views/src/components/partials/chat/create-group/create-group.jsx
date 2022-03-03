@@ -5,12 +5,14 @@ import { useSelector, useDispatch } from 'react-redux'
 import { showDialog } from '../../../../redux/actions/taskbar'
 import { useState } from 'react'
 import $ from 'jquery'
+import { sendAddGroup } from '../../../Sockets/socket-group'
 
 function CreateGroup() {
 
     //states
     const [group, setGroup] = useState({
-        name: '',
+        image: null,
+        groupName: '',
         members: [],
     })
 
@@ -50,10 +52,29 @@ function CreateGroup() {
         dispatch(isDisplay)
     }
 
-    /*----lifecycle----*/
-    useEffect(()=>{
+    //xu ly submits form
+    const handleSubmit = async (e) => {
+        e.preventDefault()
         console.log(group)
-    }, [group])
+        sendAddGroup(group)
+    }
+
+    //xu ly file
+    const handleChangeFile = (e) => {
+        const file = e.target.file[0]
+        setGroup({
+            ...group,
+            image: file
+        })
+    }
+
+    const handleChange = (e) => {
+        const {name, value} = e.target
+        setGroup({
+            ...group,
+            [name]: value
+        })
+    }
 
     useEffect(()=>{
         $('.create-group-form-action').fadeTo('.5s', 1)
@@ -62,15 +83,14 @@ function CreateGroup() {
     /*----data----*/
     //map du lieu
     const items = friendsList.map((value, idx) => {
-        const name=value.firstName && value.lastName ? `${value.lastName} ${value.firstName}` : ''
         return  (
-            <FriendItem key={idx} name={name} id={value.id} image={value.image} createGroup onAddMember={handleAddMember}></FriendItem>
+            <FriendItem key={idx} name={value.name} id={value.id} image={value.image} createGroup onAddMember={handleAddMember}></FriendItem>
         )
     })
 
     return (
         <div className="create-group-form-wrapper" onClick={handleClickToHideCreateGroup}>
-            <form action="" className="create-group-form-action">
+            <form className="create-group-form-action" onSubmit={handleSubmit}>
                 <div className="create-group-form" onClick={(e)=>e.stopPropagation()}>
                     <p className="create-group-form-title">
                         Tạo nhóm
@@ -78,9 +98,9 @@ function CreateGroup() {
                     </p>
                     <div className="create-group-form-group-info">
                         <label htmlFor="choose-group-avatar" className="create-group-change-group-avatar"><i className="fas fa-camera"></i></label>
-                        <input type="file" name="" id="choose-group-avatar" style={{display: 'none'}}/>
+                        <input type="file" name="" id="choose-group-avatar" accept='image/*' style={{display: 'none'}} onChange={handleChangeFile}/>
                         <div className="create-group-form-name-group">
-                            <input type="text" placeholder="Nhập tên nhóm..."/>
+                            <input type="text" name="groupName" placeholder="Nhập tên nhóm..." onChange={handleChange}/>
                         </div>
                     </div>
                     
@@ -91,7 +111,7 @@ function CreateGroup() {
                     </div>
                     <div className="create-group-form-submit">
                         <input type="button" className="create-group-form-submit-btn create-group-form-submit-btn-1" value="Hủy bỏ" onClick={handleClickToHideCreateGroup}/>
-                        <input type="button" className="create-group-form-submit-btn create-group-form-submit-btn-2" value="Tạo nhóm" />
+                        <input type="submit"  className="create-group-form-submit-btn create-group-form-submit-btn-2" value="Tạo nhóm" />
                     </div>
                 </div>
             </form>

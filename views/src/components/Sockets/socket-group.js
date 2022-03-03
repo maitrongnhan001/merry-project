@@ -20,8 +20,8 @@ const sendDeleteMember = (data) => {
     sendSocket('delete-member', data)
 }
 
-const getAddGroup = async ()=> {
-    return await listenSocket('add-group')
+const getAddGroup = async (cb)=> {
+     listenSocket('add-group', cb)
 }
 
 const getUpdateGroup = async ()=> {

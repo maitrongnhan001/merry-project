@@ -51,6 +51,7 @@ function Main({id}) {
         (async ()=> {
             const result = await getContentChat(localStorage.getItem('userId'), id)
             if (result && result.status === 200) {
+                console.log(result)
                 setMessageList(result.data.data.message)
             }
         })()
@@ -59,7 +60,6 @@ function Main({id}) {
 
     useEffect(()=> {
         getTextMessageChat((data)=> {
-            console.log(data)
             setMessage(data)
         })  
     }, [])
@@ -80,10 +80,9 @@ function Main({id}) {
             }    
             const message = isType(value.message, style)
             const next = messageList[idx + 1]  && messageList[idx + 1].senderId === value.senderId ? 0 : 1
-            let image = 'image-1.jpg'
             return (
                 // eslint-disable-next-line eqeqeq
-                <Message  key ={idx} image={image} sender={value.senderId == localStorage.getItem('userId') ? 0 : 1} next={next} date={value.time}>{message}</Message>
+                <Message  key ={idx} image={value.image} sender={value.senderId == localStorage.getItem('userId') ? 0 : 1} next={next} date={value.time}>{message}</Message>
             )
         })
         setDataState(result)
@@ -96,11 +95,10 @@ function Main({id}) {
             color: value.senderId == localStorage.getItem('userId') ? 'white' : ''
         }
         const message = isType(value, style)
-        let image = 'image-1.jpg'
         const next = messageList[idx + 1]  && messageList[idx + 1].senderId === value.senderId ? 0 : 1
         return (
             // eslint-disable-next-line eqeqeq
-            <Message  key ={idx} image={image} sender={value.senderId == localStorage.getItem('userId') ? 0 : 1} next={next} date={value.time}>{message}</Message>
+            <Message  key ={idx} image={value.image} sender={value.senderId == localStorage.getItem('userId') ? 0 : 1} next={next} date={value.time}>{message}</Message>
         )
     })
 

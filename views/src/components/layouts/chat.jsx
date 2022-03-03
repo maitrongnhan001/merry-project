@@ -18,6 +18,7 @@ import { saveGroupsList,  } from '../../redux/actions/groups'
 import { getConnection, getLogout, sendConnection } from '../Sockets/home'
 import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
 import { getRoom } from '../Sockets/socket-chat'
+import { getAddGroup } from '../Sockets/socket-group'
 
 function Chat() {
     const theme = useSelector(state => state.taskbar.theme)
@@ -81,6 +82,11 @@ function Chat() {
 
             //getRoom
             getRoom((data)=> {
+                console.log(data)
+            })
+
+            //getAddGroup
+            getAddGroup((data)=> {
                 console.log(data)
             })
 

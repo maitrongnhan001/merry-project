@@ -35,6 +35,7 @@ function Item({id, name, image, addFriend, createGroup, onAddMember}) {
             $('.main-chat-center').toggleClass('show-main-chat-phone-screen')
             const display = showCenter(1)
             dispatch(display)
+            
         }
     }
 
@@ -68,7 +69,6 @@ function Item({id, name, image, addFriend, createGroup, onAddMember}) {
             onAddMember(checked, id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
     },[checked])
-
 
 
     return (

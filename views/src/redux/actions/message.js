@@ -13,7 +13,15 @@ const saveCurrentChat = (payload)=> {
     }
 }
 
+const saveMassage = (payload)=> {
+    return {
+        type: 'SEND_MESSAGE',
+        data: payload
+    }
+}
+
 export {
     saveEmoji,
-    saveCurrentChat
+    saveCurrentChat,
+    saveMassage
 }

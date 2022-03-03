@@ -123,6 +123,7 @@ module.exports.getContent = async (req, res) => {
                 senderId : message.sendId,
                 receiverId : message.receiveId,
                 content : message.content,
+                image: message.image,
                 type : message.type,
                 status : message.status,
                 time: message.time,

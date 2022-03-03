@@ -4,25 +4,46 @@ import Message from './messages/message'
 import Document from './messages/document/document'
 import DataLoader from '../../tools/data-loader/data-loader'
 import { getContentChat, getUserById } from '../../../../APIs/ConnectAPI'
-import { getTextMessageChat } from '../../../../Sockets/socket-chat'
+import { getTextMessageChat, getTextMessageChatX } from '../../../../Sockets/socket-chat'
+
+const isType = (value, style) => {
+    switch(value.type) {
+        case "document": {
+            return (<Document color={style.color}>{value.content}</Document>)
+           
+        }
+        case "link" : {
+            return (<a style={{color: style.color}} href={value.content} rel="noreferrer" target='_blank'>{value.content}</a>)
+        }
+        case "media" : {
+            return (<img src={value.content} alt="Chua co anh"/>)
+        }
+        default: {
+            return (<p>{value.content}</p>)
+        }
+    }
+
+}
 
 function Main({id}) {
 
     /*----states----*/
     //tin nhan da gui, nhan
-    const [message,setMessage] = useState({
-        messageId: '',
-        senderId: 0,
-        receiverId: '',
-        message: 
-        {
-            type: 'text',
-            content: '',
-            time: 0,
-            status: 'đã gửi'
-        }
-    })
-    
+    const [message,setMessage] = useState(null
+        // messageId: '',
+        // senderId: 0,
+        // receiverId: '',
+        // message: 
+        // {
+        //     type: 'text',
+        //     content: '',
+        //     time: 0,
+        //     status: 'đã gửi'
+        // }
+    )
+
+    const [messageStateList, setMessageStateList] = useState([])
+    const [dataState, setDataState] = useState(null)
     const [messageList, setMessageList] = useState([])
 
     /*----lifecycle----*/
@@ -30,6 +51,7 @@ function Main({id}) {
         (async ()=> {
             const result = await getContentChat(localStorage.getItem('userId'), id)
             if (result && result.status === 200) {
+                console.log(result)
                 setMessageList(result.data.data.message)
             }
         })()
@@ -38,49 +60,52 @@ function Main({id}) {
 
     useEffect(()=> {
         getTextMessageChat((data)=> {
-            console.log('hello')
-            console.log(data)
             setMessage(data)
-        })   
-    })
+        })  
+    }, [])
+
+    useEffect(()=> {
+        let newList = messageStateList
+        if(message !== null)
+            newList.unshift(message)
+        setMessageStateList(newList)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [message])
+
+    useEffect(()=> {
+        const result = messageStateList.map((value, idx) => {
+            let style = {
+                // eslint-disable-next-line eqeqeq
+                color: value.senderId == localStorage.getItem('userId') ? 'white' : ''
+            }    
+            const message = isType(value.message, style)
+            const next = messageList[idx + 1]  && messageList[idx + 1].senderId === value.senderId ? 0 : 1
+            return (
+                // eslint-disable-next-line eqeqeq
+                <Message  key ={idx} image={value.image} sender={value.senderId == localStorage.getItem('userId') ? 0 : 1} next={next} date={value.time}>{message}</Message>
+            )
+        })
+        setDataState(result)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [message])
 
     const data = messageList.map((value, idx)=> {
-        let message
         let style = {
             // eslint-disable-next-line eqeqeq
             color: value.senderId == localStorage.getItem('userId') ? 'white' : ''
         }
-        switch(value.type) {
-            case "document": {
-                message = (<Document color={style.color}>{value.content}</Document>)
-                break
-            }
-            case "link" : {
-                
-                message = (<a style={{color: style.color}} href={value.content} rel="noreferrer" target='_blank'>{value.content}</a>)
-                break
-            }
-            case "media" : {
-                message = (<img src={value.content} alt="Chua co anh"/>)
-                break
-            }
-            default: {
-                message = (<p>{value.content}</p>)
-            }
-        }
-
-        let image = 'image-1.jpg'
-
+        const message = isType(value, style)
         const next = messageList[idx + 1]  && messageList[idx + 1].senderId === value.senderId ? 0 : 1
         return (
             // eslint-disable-next-line eqeqeq
-            <Message  key ={idx} image={image} sender={value.senderId == localStorage.getItem('userId') ? 0 : 1} next={next} date={value.time}>{message}</Message>
+            <Message  key ={idx} image={value.image} sender={value.senderId == localStorage.getItem('userId') ? 0 : 1} next={next} date={value.time}>{message}</Message>
         )
     })
 
     return (
         <div className="main-chat-chat-area">
             <div className="main-chat-chat-area-wrapper">
+                {dataState}
                 {data}
                 {/* <DataLoader></DataLoader> */}
             </div>

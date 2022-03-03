@@ -1,18 +1,21 @@
 import React from 'react';
 import Image from '../../../avatar/avatar';
+import Feature from './feature/feature';
 import './member.scss';
 
 const Member = (props) => {
-    const full_name = `${props.last_name} ${props.first_name}`;
-    const { image } = props;
-
+    const { name } = props;
+    const image = {
+        image1: props.image,
+        image2: null
+    }
 
     return (
         <div className='member-group'>
             <div className="member-image">
                 <Image image={image}></Image>
             </div>
-            <p className='member-fullname'>{full_name}</p>
+            <p className='member-fullname'>{name}</p>
 
             <button className='other-feature'>
                 <svg 

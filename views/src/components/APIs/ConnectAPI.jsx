@@ -135,7 +135,7 @@ async function getMembers (idGroup, limit, offset) {
     const endLimit = limit || 1000;
     const endOffset = offset || 0;
 
-    return await getAPI('GET', `/groups/member-list?receiverId=${idGroup}&limit=${endLimit}&offset=${endOffset}`);
+    return await getAPI('GET', `/groups/member-list?receiverId=${idGroup}&limit=${endLimit}&position=${endOffset}`);
 }
 
 //APIs get content chat

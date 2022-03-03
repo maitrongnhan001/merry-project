@@ -81,9 +81,10 @@ function CreateGroup() {
     })
 
     useEffect(()=> {
+        const id = localStorage.getItem('userId')
         setGroup({
             ...group,
-            members: [1]
+            members: [id]
         })
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

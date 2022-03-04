@@ -7,6 +7,7 @@ import $ from 'jquery';
 
 const MemberGroup = () => {
     const idChat = useSelector(state => state.extension.idHeader);
+    const userId = localStorage.getItem('userId');
 
     const [is_active, setIsActive] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -20,6 +21,7 @@ const MemberGroup = () => {
             return <Member
                 image={Element.image}
                 name={Element.name}
+                isAdmin={(admin == Element.id) ? true : false}
                 key={Key}
                 />;
         });
@@ -38,6 +40,10 @@ const MemberGroup = () => {
                 const listResponeMembers = result.data.data;
                 let list_members = members;
                 for (let index of listResponeMembers.member) {
+                    //becasue admin must in top array member
+                    if (index.id === listResponeMembers.id) {
+                        list_members.unshift(index);
+                    }
                     list_members.push(index);
                 }
                 setMembers(list_members);
@@ -47,6 +53,7 @@ const MemberGroup = () => {
                     return <Member
                         image={Element.image}
                         name={Element.name}
+                        isAdmin={(listResponeMembers.admin.id == Element.id) ? true : false}
                         key={Key}
                         />;
                 });

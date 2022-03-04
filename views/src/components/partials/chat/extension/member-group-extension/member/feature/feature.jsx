@@ -8,7 +8,7 @@ const Feature = () => {
                 Kết bạn
             </div>
             <div className="feature-item">
-                Kết bạn
+                Mời ra khỏi nhóm
             </div>
         </div>
     );

@@ -111,7 +111,7 @@ module.exports.getGroupQuery = async (req, res) => {
             return res.sendStatus(404)
         }
         const getGroup = await group.getGroupQuery(userId, groupId);
-        console.log(getGroup)
+        // console.log(getGroup)
         if (!getGroup) { //refalsy
             return res.sendStatus(404)
         }
@@ -171,7 +171,7 @@ module.exports.getGroupQuery = async (req, res) => {
             });
         } else {
             res.json({
-                data: {}
+                data: []
             })
         }
 

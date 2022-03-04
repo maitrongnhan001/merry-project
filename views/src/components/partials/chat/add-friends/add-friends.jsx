@@ -5,18 +5,19 @@ import { useSelector, useDispatch } from 'react-redux'
 import {showDialog}  from '../../../../redux/actions/taskbar'
 import $ from 'jquery'
 import { getAddFriend, sendAddFriend } from '../../../Sockets/socket-friend'
+import { getOthersUsers } from '../../../APIs/ConnectAPI'
 
 function AddFriends(props) {
 
     /*----redux----*/
     //lay du lieu tu redux
-    const friendsList = useSelector(state => state.friends.friendsList)
-
+    
     //ket noi voi redux
     const dispatch = useDispatch()
-
+    
     /*----states----*/
     const [email, setEmail] = useState("")
+    const [friendsList,setFriendList] = useState([])
 
     /*----data----*/
     //map du lieu 
@@ -53,6 +54,14 @@ function AddFriends(props) {
     useEffect(()=>{
         $('.add-friend-dialog-form').fadeTo('.5s', 1)
     })
+
+    useEffect(async ()=>{
+        const result = await getOthersUsers(localStorage.getItem('userId'))
+        if(result && result.status === 200) {
+            console.log(result)
+            setFriendList(result.data.data)
+        }
+    },[])
 
     return (
         <div className="add-friend-dialog-wrapper" onClick={handleClickToHideAddedFriend}>

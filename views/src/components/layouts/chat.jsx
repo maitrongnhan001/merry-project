@@ -44,6 +44,7 @@ function Chat() {
             //call chat list API
             const chatsList = await getListChat(localStorage.getItem('userId'))
             if(chatsList && chatsList.status === 200) {
+                console.log(chatsList)
                 let chatListAction = saveChatList(chatsList.data.data)
                 dispatch(chatListAction)
             } 

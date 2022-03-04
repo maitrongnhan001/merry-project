@@ -3,10 +3,14 @@ const user = require('../models/user.model')
 
 const getMembers = async (groupId) => {
     let id = await group.getMembers(groupId)
+    console.log(id[0]);
     let user1 = await user.getUserId(id[0].userId)
     let user2 = await user.getUserId(id[1].userId)
-    // console.log(user1)
+    const idMembersArray = id.map(element => {
+        return element.userId
+    })
     const members = {
+        members: idMembersArray,
         image:
             { image1: user1[0].image, image2: user2[0].image },
         groupName: `${user1[0].lastName} ${user1[0].firstName}, ${user2[0].lastName} ${user2[0].firstName},...`,
@@ -40,12 +44,14 @@ module.exports.getGroups = async (req, res) => {
                 image1: "",
                 image2: ""
             }
+            const members = await getMembers(value.groupId)
             if (value.AdminId != null) {
                 //console.log(value);
                 if (value.image) {
                     arrImage.image1 = value.image
                     if (value.groupName) {
                         const group = {
+                            members: members.members,
                             groupId: value.groupId,
                             image: arrImage,
                             groupName: value.groupName
@@ -53,8 +59,8 @@ module.exports.getGroups = async (req, res) => {
                         arr.push(group)
                     } else {
                         //truy xuat 2 doi tuong trong nhom
-                        const members = await getMembers(value.groupId)
                         const group = {
+                            members: members.members,
                             groupId: value.groupId,
                             image: arrImage,
                             groupName: members.groupName
@@ -62,10 +68,10 @@ module.exports.getGroups = async (req, res) => {
                         arr.push(group)
                     }
                 } else {
-                    const members = await getMembers(value.groupId)
                     arrImage = members.image
                     if (value.groupName) {
                         const group = {
+                            members: members.members,
                             groupId: value.groupId,
                             image: arrImage,
                             groupName: value.groupName
@@ -75,6 +81,7 @@ module.exports.getGroups = async (req, res) => {
                         //truy xuat 2 doi tuong trong nhom
                         
                         const group = {
+                            members: members.members,
                             groupId: value.groupId,
                             image: arrImage,
                             groupName: members.groupName

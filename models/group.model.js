@@ -38,7 +38,7 @@ module.exports.getGroupQuery = (userId ,groupId) =>{
 
 module.exports.getMembers = (groupID) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM detailgroup join groupuser on detailgroup.groupId = groupuser.id WHERE detailgroup.groupId = "${groupID}" LIMIT 2`
+        const sql = `SELECT * FROM detailgroup join groupuser on detailgroup.groupId = groupuser.id WHERE detailgroup.groupId = "${groupID}"`
         connection.query(sql, function (error, result) {
             if (error) {
                 reject(error)

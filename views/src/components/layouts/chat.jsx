@@ -57,6 +57,7 @@ function Chat() {
             const groupsList = await getGroupsList(localStorage.getItem('userId'))
             if(groupsList && groupsList.status === 200) {
                 let groupsListAction = saveGroupsList(groupsList.data.data)
+                console.log(groupsList)
                 dispatch(groupsListAction)
             }
 

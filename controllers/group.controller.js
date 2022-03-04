@@ -3,7 +3,6 @@ const user = require('../models/user.model')
 
 const getMembers = async (groupId) => {
     let id = await group.getMembers(groupId)
-    console.log(id[0]);
     let user1 = await user.getUserId(id[0].userId)
     let user2 = await user.getUserId(id[1].userId)
     const idMembersArray = id.map(element => {
@@ -91,7 +90,6 @@ module.exports.getGroups = async (req, res) => {
                 }
             }
         }
-        console.log(arr);
 
         if (arr.length > 0) {
             res.status(200).json({

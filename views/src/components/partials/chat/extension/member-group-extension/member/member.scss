@@ -10,11 +10,27 @@
         margin-top: 0.5rem;
     }
 
-    .member-fullname {
-        font-size: 18px;
+    .member-text {
         float: left;
         margin-left: 1rem;
-        line-height: 4rem;
+        height: 3rem;
+
+        .member-fullname {
+            font-size: 18px;
+            margin-left: 1rem;
+            line-height: 4rem;
+        }
+    
+        .admin-text {
+            position: relative;
+            bottom: 1.3rem;
+            left: 1rem;
+        }
+    }
+
+    .admin {
+        position: relative;
+        bottom: 0.5rem;
     }
 
     .other-feature {

@@ -5,6 +5,14 @@ const saveGroupsList = (payload) =>{
     }
 }
 
+const addGroup = (payload) => {
+    return {
+        type: 'ADD_GROUP',
+        data: payload
+    }
+}
+
 export {
-    saveGroupsList
+    saveGroupsList,
+    addGroup
 }

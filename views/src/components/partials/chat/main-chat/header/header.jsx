@@ -40,6 +40,7 @@ function Header({image, name}) {
         dispatch(show)
         const display = showFriendProfile(1)
         dispatch(display)
+        
     }
 
     /*----lifecycle----*/

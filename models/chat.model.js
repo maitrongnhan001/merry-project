@@ -143,7 +143,7 @@ module.exports.getContents = (senderId,receiverId) =>{
                     const endResult = JSON.parse(JSON.stringify(result));
                     resolve(endResult);
                 } else {
-                    resolve(null);
+                    resolve([]);
                 }
             }
         })

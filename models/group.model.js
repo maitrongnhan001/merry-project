@@ -146,3 +146,15 @@ module.exports.getMembersLimit = (groupId, limit, offset) => {
     });
 }
 
+module.exports.getGroupsById = (groupId) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * from detailgroup where groupId = ?'
+        connection.query(sql, [groupId], (error, result) => {
+            if(err){
+                reject(err)
+            }else {
+                resolve(result)
+            }
+        })
+    })
+}

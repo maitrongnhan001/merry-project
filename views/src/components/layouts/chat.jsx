@@ -14,7 +14,7 @@ import Loader from '../partials/chat/tools/loader/loader'
 import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList } from '../APIs/ConnectAPI'
 import { saveChatList, saveFriendsList } from '../../redux/actions/friends'
-import { saveGroupsList,  } from '../../redux/actions/groups'
+import { addGroup, saveGroupsList,  } from '../../redux/actions/groups'
 import { getConnection, getLogout, sendConnection } from '../Sockets/home'
 import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
 import { getRoom } from '../Sockets/socket-chat'
@@ -58,9 +58,9 @@ function Chat() {
             const groupsList = await getGroupsList(localStorage.getItem('userId'))
             if(groupsList && groupsList.status === 200) {
                 let groupsListAction = saveGroupsList(groupsList.data.data)
+                console.log(groupsList)
                 dispatch(groupsListAction)
             }
-
             
             //socket connection
             //send connection
@@ -88,7 +88,8 @@ function Chat() {
 
             //getAddGroup
             getAddGroup((data)=> {
-                console.log(data)
+                const addGroupAction = addGroup(data)
+                dispatch(addGroupAction)
             })
 
         })()

@@ -23,10 +23,8 @@ function AddFriends(props) {
     //map du lieu 
     const items = friendsList.map((value, idx)=>{
 
-        const name = value.firstName && value.lastName ? `${value.lastName} ${value.firstName}` : ''
-
         return (
-            <FriendItem key={idx} id={value.id} name={name} image={value.image} addFriend={1}></FriendItem>
+            <FriendItem key={idx} id={value.id} name={value.name} image={value.image} addFriend={1}></FriendItem>
         )
     })
 

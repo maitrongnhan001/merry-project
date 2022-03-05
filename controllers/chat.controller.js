@@ -115,9 +115,11 @@ module.exports.getContent = async (req, res) => {
             return res.sendStatus(404)
         }
         const getMessage = await chat.getContents(senderId, receiverId)
-        
-        if (!getMessage) {
-            return res.sendStatus(404)
+        if (getMessage.length === 0) {
+            return res.status(200).json({
+                message: 'không có tin nhắn',
+                data: []
+            })
         }
         let data = {
             receiverId: getMessage[0].receiveId,

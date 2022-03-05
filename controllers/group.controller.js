@@ -224,3 +224,30 @@ module.exports.getMembersLimit = async (req, res) => {
         return res.sendStatus(500)
     }
 }
+
+module.exports.getGroupsById = async (req, res) => {
+    try {
+        const  {groupId} = req.params
+        if(!groupId) {
+            return res.sendStatus(404)
+        }
+        const userListInGroup = await group.getByGroupId(groupId)
+        if(userListInGroup.length == 0) {
+            return res.sendStatus(404)
+        }
+
+        let data =[];
+
+        userListInGroup.forEach((value, idx)=> {
+            data.push(value.userId)
+        })
+
+        return res.status(200).json({
+            message: 'Danh sach Id nhom!',
+            data
+        })
+    }catch(err) {
+        console.error(err)
+        return res.sendStatus(500)
+    }
+}

@@ -1,6 +1,10 @@
 .feature-group {
-    background-color: #111;
-    width: 5rem;
+    background-color: #efefef;
+    width: 10rem;
     position: absolute;
-    left: 5rem;
+    left: 7rem;
+
+    .feature-item {
+        font-size: 17px;
+    }
 }

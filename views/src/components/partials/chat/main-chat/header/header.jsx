@@ -2,7 +2,7 @@ import React from 'react'
 import './header.scss'
 import Image from '../../avatar/avatar'
 import SearchBox from './search-message/search-message'
-import {showExtension} from '../../../../../redux/actions/extension'
+import {showExtension,updateShowOrderFeature} from '../../../../../redux/actions/extension'
 import {useSelector, useDispatch} from 'react-redux'
 import { useEffect, useState } from 'react'
 import $ from 'jquery'
@@ -27,6 +27,10 @@ function Header({image, name}) {
         e.stopPropagation();
         const isShow = showExtension(isShowExtension === 0 ? 1 : 0)
         dispatch(isShow)
+
+        //hide order feature in extension component
+        const hideOrderFeatureExtension = updateShowOrderFeature(null)
+        dispatch(hideOrderFeatureExtension)
     }
 
     //xu ly an hien khung tim kiem tin nhan

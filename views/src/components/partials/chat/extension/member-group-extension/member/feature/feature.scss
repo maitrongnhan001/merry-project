@@ -1,10 +1,29 @@
 .feature-group {
-    background-color: #efefef;
-    width: 10rem;
+    background-color: #ffffff;
     position: absolute;
-    left: 7rem;
+    margin-top: 1rem;
+    left: 5.5rem;
+    border-radius: 5px;
+    box-shadow: 0 0 0.5rem #cecece;
 
     .feature-item {
         font-size: 17px;
+        width: 12rem;
+        height: 40px;
+        padding: 10px 10px 10px 10px;
+        border-bottom: 1px solid rgb(194, 191, 191);
+    }
+
+    .feature-item:last-child {
+        border: none;
+    }
+
+    .feature-item:hover {
+        background-color: #efefef;
+        cursor: pointer;
+    }
+
+    .text-error {
+        color: red;
     }
 }

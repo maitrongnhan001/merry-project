@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Member from './member/member';
+import DataLoader from '../../tools/data-loader/data-loader';
 import { getMembers } from '../../../../APIs/ConnectAPI';
 import './member-group.scss';
 import { useSelector } from 'react-redux';
@@ -7,7 +8,7 @@ import $ from 'jquery';
 
 const MemberGroup = () => {
     const idChat = useSelector(state => state.extension.idHeader);
-    const userId = localStorage.getItem('userId');
+    const userId = parseInt(localStorage.getItem('userId'));
 
     const [is_active, setIsActive] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -22,6 +23,7 @@ const MemberGroup = () => {
                 image={Element.image}
                 name={Element.name}
                 isAdmin={(admin == Element.id) ? true : false}
+                meIsAdmin={userId === admin ? true : false}
                 key={Key}
                 />;
         });
@@ -50,10 +52,14 @@ const MemberGroup = () => {
                 setAdmin(listResponeMembers.admin);
                 setOffset(list_members.length);
                 const listElements = members.map((Element, Key) => {
+                    const admin = listResponeMembers.admin.id;
+
                     return <Member
                         image={Element.image}
                         name={Element.name}
-                        isAdmin={(listResponeMembers.admin.id == Element.id) ? true : false}
+                        isAdmin={(admin === Element.id) ? true : false}
+                        meIsAdmin={userId === admin ? true : false}
+                        index={Key}
                         key={Key}
                         />;
                 });
@@ -121,6 +127,7 @@ const MemberGroup = () => {
                 <div id="list-members-full-size">
                     {listMembersTag}
                     <div className="text-error center">{error}</div>
+                    {isLoading ? <DataLoader /> : ''}
                 </div>
             </div>
         </div>

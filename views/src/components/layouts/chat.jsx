@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setTheme, showFeature } from '../../redux/actions/taskbar'
+import { updateShowOrderFeature } from '../../redux/actions/extension'
 import { useNavigate } from 'react-router-dom'
 import TaskBar from '../partials/chat/task-bar/task-bar'
 import Tab from '../partials/chat/tabs/Tab'
@@ -34,6 +35,10 @@ function Chat() {
             const display = showFeature({...feature, isShow: 0})
             dispatch(display)
         }
+
+        //hide order feature in extension component
+        const hideOrderFeatureExtension = updateShowOrderFeature(null)
+        dispatch(hideOrderFeatureExtension)
     }
 
     useEffect(()=>{

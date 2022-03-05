@@ -13,7 +13,15 @@ const updateIdHeader = (payload) => {
     }
 }
 
+const updateShowOrderFeature = (payload) => {
+    return {
+        type: 'UPDATE_SHOW_ORDER_FEATURE',
+        data: payload
+    }
+}
+
 export {
     showExtension,
-    updateIdHeader
+    updateIdHeader,
+    updateShowOrderFeature
 }

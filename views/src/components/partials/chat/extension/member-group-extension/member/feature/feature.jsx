@@ -1,15 +1,17 @@
 import React from 'react';
 import './feature.scss';
 
-const Feature = () => {
+const Feature = (props) => {
+    const { isActiveFeature, meIsAdmin } = props;
+
     return (
-        <div className='feature-group'>
+        <div className={`feature-group ${!isActiveFeature ? 'hide' : ''}`}>
             <div className="feature-item">
                 Kết bạn
             </div>
-            <div className="feature-item">
+            {meIsAdmin ? <div className="feature-item text-error">
                 Mời ra khỏi nhóm
-            </div>
+            </div> : ''}
         </div>
     );
 }

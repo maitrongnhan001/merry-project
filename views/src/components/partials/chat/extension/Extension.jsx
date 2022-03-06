@@ -15,7 +15,6 @@ function Extension(props) {
 
     //redux
     const isShowExtension = useSelector(state => state.extension.isShow)
-    const showOtherFeature = useSelector(state => state.extension.showOrderFeature)
     const idChat = useSelector(state => state.extension.idHeader)
     const dispatch = useDispatch()
 

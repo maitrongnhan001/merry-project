@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import './another-features.scss';
 import CreateGroup from './create-group/create-group';
 import LeaveGroup from './leave-group/leave-group';
@@ -9,7 +10,18 @@ import AddMember from './add-members/add-member';
 import $ from 'jquery';
 
 const AnotherFeatures = () => {
+    const idChat = useSelector(state => state.extension.idHeader)
+
     const [is_active, setIsActive] = useState(false);
+    const [isGroup, setIsGroup] = useState(false)
+
+    useEffect(() => {
+        if (idChat.indexOf('G') === 0) {
+            setIsGroup(true);
+        } else {
+            setIsGroup(false);
+        }
+    }, [idChat])
 
     const onActive = () => {
         setIsActive(!is_active);
@@ -40,12 +52,17 @@ const AnotherFeatures = () => {
             <div
                 className={`list-another-feature hide ${is_active ? 'show' : 'hide'}`}
             >
-                <CreateGroup/>
-                <ManagerFriend/>
-                <AddMember/>
-                <SetAvatarGroup/>
-                <SetNameGroup/>
-                <LeaveGroup/>
+                {isGroup ?
+                    <>
+                        <AddMember />
+                        <SetAvatarGroup />
+                        <SetNameGroup />
+                        <LeaveGroup />
+                    </> :
+                    <>
+                        <CreateGroup />
+                        <ManagerFriend />
+                    </>}
             </div>
         </div>
     );

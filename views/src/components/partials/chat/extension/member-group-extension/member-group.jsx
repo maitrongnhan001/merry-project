@@ -24,6 +24,7 @@ const MemberGroup = () => {
                 name={Element.name}
                 isAdmin={(admin == Element.id) ? true : false}
                 meIsAdmin={userId === admin ? true : false}
+                id={Element.id}
                 key={Key}
                 />;
         });
@@ -43,11 +44,26 @@ const MemberGroup = () => {
                 let list_members = members;
                 for (let index of listResponeMembers.member) {
                     //becasue admin must in top array member
-                    if (index.id === listResponeMembers.id) {
+                    if (index.id === listResponeMembers.admin.id) {
                         list_members.unshift(index);
+                    } else {
+                        list_members.push(index);
                     }
-                    list_members.push(index);
                 }
+                
+                //swap user is me
+                if (listResponeMembers.admin.id !== parseInt(userId)) {
+                    console.log('hello');
+                    for (let index = 0; index < list_members.length; index ++) {
+                        if (list_members[index].id === parseInt(userId)) {
+                            const element = list_members[index];
+                            list_members.splice(index, 1);
+                            list_members.splice(1, 0, element);
+                            break;
+                        }
+                    }
+                } 
+
                 setMembers(list_members);
                 setAdmin(listResponeMembers.admin);
                 setOffset(list_members.length);
@@ -60,6 +76,7 @@ const MemberGroup = () => {
                         isAdmin={(admin === Element.id) ? true : false}
                         meIsAdmin={userId === admin ? true : false}
                         index={Key}
+                        id={Element.id}
                         key={Key}
                         />;
                 });

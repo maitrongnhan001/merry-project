@@ -5,6 +5,7 @@ import LeaveGroup from './leave-group/leave-group';
 import ManagerFriend from './manager-friend/manager-friend';
 import SetAvatarGroup from './set-avatar-group/set-avatar-group';
 import SetNameGroup from './set-name-group/set-name-group';
+import AddMember from './add-members/add-member';
 import $ from 'jquery';
 
 const AnotherFeatures = () => {
@@ -41,6 +42,7 @@ const AnotherFeatures = () => {
             >
                 <CreateGroup/>
                 <ManagerFriend/>
+                <AddMember/>
                 <SetAvatarGroup/>
                 <SetNameGroup/>
                 <LeaveGroup/>

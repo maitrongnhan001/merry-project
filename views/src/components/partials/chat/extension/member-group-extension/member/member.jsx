@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { showDialog } from '../../../../../../redux/actions/taskbar';
 import { showFriendProfile } from '../../../../../../redux/actions/friends';
@@ -9,12 +9,37 @@ import Feature from './feature/feature';
 import './member.scss';
 
 const Member = (props) => {
-    const { name, isAdmin, meIsAdmin, index } = props;
-    
+    const userId = localStorage.getItem('userId');
+    const listFriend = useSelector(state => state.friends.friendsList);
     const isShowOrderFeature = useSelector(state => state.extension.showOrderFeature);
+    const { name, isAdmin, meIsAdmin, index, id } = props;
+
     const dispatch = useDispatch();
 
     const [isActiveFeature, setIsActiveItem] = useState(false);
+    const [isFeature, setIsFeature] = useState(() => {
+        let resultFriend = false;
+        for (var index of listFriend) {
+            if (index.id === id) {
+                resultFriend = true;
+                break;
+            }
+        }
+
+        return !resultFriend || meIsAdmin;
+    });
+
+    useEffect(() => {
+        let resultFriend = false;
+        for (var index of listFriend) {
+            if (index.id === id) {
+                resultFriend = true;
+                break;
+            }
+        }
+
+        setIsFeature(!resultFriend || meIsAdmin);
+    }, [listFriend, meIsAdmin]);
 
     const image = {
         image1: props.image,
@@ -22,7 +47,7 @@ const Member = (props) => {
     }
 
     //xu ly an hien form thong tin ca nhan
-    const handleClickToShowProfile = ()=> {
+    const handleClickToShowProfile = () => {
         const show = showDialog(3)
         dispatch(show)
         const display = showFriendProfile(1)
@@ -37,7 +62,7 @@ const Member = (props) => {
         if (isShowOrderFeature !== index) {
             setIsActiveItem(false);
         }
-    }, [isShowOrderFeature]); 
+    }, [isShowOrderFeature]);
 
     const handleClickOrderFeature = (e) => {
         e.stopPropagation();
@@ -54,11 +79,11 @@ const Member = (props) => {
             <div className="member-image">
                 <Image image={image}></Image>
             </div>
-            <div className={`member-text ${isAdmin ? 'admin': ''}`}>
-                <p className='member-fullname'>{name}</p>
+            <div className={`member-text ${isAdmin ? 'admin' : ''}`}>
+                <p className='member-fullname'>{(id === parseInt(userId)) ? 'Bạn' : name}</p>
                 {isAdmin ? <span className='admin-text'>Trưởng nhóm</span> : ''}
             </div>
-            <button 
+            {isFeature ? <button
                 className='other-feature'
                 onClick={handleClickOrderFeature}
             >
@@ -70,8 +95,12 @@ const Member = (props) => {
                     viewBox="0 0 16 16">
                     <path d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
                 </svg>
-            </button>
-           <Feature isActiveFeature={isActiveFeature} meIsAdmin={meIsAdmin}/>
+            </button> : ''}
+            <Feature
+                isActiveFeature={isActiveFeature}
+                meIsAdmin={meIsAdmin}
+                id={id}
+            />
         </div>
     );
 }

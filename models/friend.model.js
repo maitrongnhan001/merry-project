@@ -88,3 +88,20 @@ module.exports.getRequestFriend = (userId ,limit, offset) => {
         });
     });
 }
+
+module.exports.isFriend = (userId1, userId2) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * from friend where (sendId = ? and receiveId = ? ) or (sendId = ? and receiveId = ?)'
+        connection.query(sql, [userId1, userId2, userId2, userId1], (err, result) => {
+            if(err)
+                reject(err);
+            else {
+                if(result.length > 0) {
+                    resolve(1)
+                }else{
+                    resolve(0)
+                }
+            }
+        })
+    })
+}

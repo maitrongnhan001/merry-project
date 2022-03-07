@@ -6,10 +6,11 @@ import {showExtension} from '../../../../../redux/actions/extension'
 import {useSelector, useDispatch} from 'react-redux'
 import { useEffect, useState } from 'react'
 import $ from 'jquery'
-import { showFriendProfile } from '../../../../../redux/actions/friends'
+import { saveFriendProfile, showFriendProfile } from '../../../../../redux/actions/friends'
 import { showDialog } from '../../../../../redux/actions/taskbar'
+import { getMemberListFromGroupByGroupId } from '../../../../APIs/ConnectAPI'
 
-function Header({image, name}) {
+function Header({id, image, name}) {
     
     /*----redux----*/
     //lay du lieu tu redux
@@ -35,12 +36,17 @@ function Header({image, name}) {
     }
 
     //xu ly an hien form thong tin ca nhan
-    const handleClickToShowProfile = ()=> {
-        const show = showDialog(3)
-        dispatch(show)
-        const display = showFriendProfile(1)
-        dispatch(display)
-        
+    const handleClickToShowProfile = async ()=> {
+        const result = await getMemberListFromGroupByGroupId(localStorage.getItem('userId'), id) 
+        console.log(result)
+        if(result && result.status === 200) {
+            const friendProfileDataAction = saveFriendProfile(result.data.data)
+            dispatch(friendProfileDataAction)
+            const show = showDialog(3)
+            dispatch(show)
+            const display = showFriendProfile(1)
+            dispatch(display)
+        }
     }
 
     /*----lifecycle----*/

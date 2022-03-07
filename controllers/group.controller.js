@@ -1,5 +1,6 @@
 const group = require('../models/group.model')
 const user = require('../models/user.model')
+const friend = require('../models/friend.model')
 
 const getMembers = async (groupId) => {
     let id = await group.getMembers(groupId)
@@ -96,7 +97,7 @@ module.exports.getGroups = async (req, res) => {
                 data: arr
             });
         } else {
-            res.json({
+            res.status(404).json({
                 data: []
             })
         }
@@ -174,7 +175,7 @@ module.exports.getGroupQuery = async (req, res) => {
                 data: ob
             });
         } else {
-            res.json({
+            res.status(404).json({
                 data: []
             })
         }
@@ -227,20 +228,44 @@ module.exports.getMembersLimit = async (req, res) => {
 
 module.exports.getGroupsById = async (req, res) => {
     try {
-        const  {groupId} = req.params
-        if(!groupId) {
+        const  { groupId, userId } = req.query
+        if(!groupId || !userId) {
             return res.sendStatus(404)
         }
-        const userListInGroup = await group.getByGroupId(groupId)
+
+        const userListInGroup = await group.getDetailByGroupId(groupId)
+        console.log(userListInGroup)
         if(userListInGroup.length == 0) {
             return res.sendStatus(404)
         }
 
-        let data =[];
+        let data = {
+            isGroup: 0,
+            profile: 0
+        }
 
-        userListInGroup.forEach((value, idx)=> {
-            data.push(value.userId)
-        })
+        for(let value of userListInGroup) {
+            if(value.userId != userId){
+                if(!value.adminId) {
+                    const infoUser = await user.getUserId(value.userId)
+                    const isFriend = await friend.isFriend(value.userId, userId)
+                    data.isGroup = 0
+                    data.profile = {
+                        receiverId: groupId,
+                        name: infoUser[0].lastName + ' ' + infoUser[0].firstName,
+                        image: infoUser[0].image,
+                        userId: infoUser[0].id, 
+                        email: infoUser[0].email,
+                        isFriend
+                    }
+                    break
+                }else {
+                    data.isGroup = 1
+                    data.profile = {}
+                    break
+                }
+            }
+        }
 
         return res.status(200).json({
             message: 'Danh sach Id nhom!',

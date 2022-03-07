@@ -65,6 +65,8 @@ module.exports.requestFriend = async (req, res) => {
             return res.sendStatus(404)
         }
         const requestfriends = await friend.getRequestFriend(userId, limit, offset);
+        if(!requestfriends)
+            return res.sendStatus(404)
         for (let value of requestfriends) {
             if (value.sendId == userId) {
                 delete value.sendId;

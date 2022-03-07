@@ -29,18 +29,18 @@ function Main({id}) {
 
     /*----states----*/
     //tin nhan da gui, nhan
-    const [message,setMessage] = useState(null
-        // messageId: '',
-        // senderId: 0,
-        // receiverId: '',
-        // message: 
-        // {
-        //     type: 'text',
-        //     content: '',
-        //     time: 0,
-        //     status: 'đã gửi'
-        // }
-    )
+    const [message,setMessage] = useState({
+        messageId: '',
+        senderId: 0,
+        receiverId: '',
+        message: 
+        {
+            type: 'text',
+            content: '',
+            time: 0,
+            status: 'đã gửi'
+        }
+    })
 
     const [messageStateList, setMessageStateList] = useState([])
     const [dataState, setDataState] = useState(null)
@@ -51,8 +51,12 @@ function Main({id}) {
         (async ()=> {
             const result = await getContentChat(localStorage.getItem('userId'), id)
             if (result && result.status === 200) {
-                console.log(result)
-                setMessageList(result.data.data.message)
+                setDataState(null)
+                if(result.data.data.message.length > 0)
+                    setMessageList(result.data.data.message)
+                else {
+                    setMessageList()
+                }
             }
         })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -66,7 +70,7 @@ function Main({id}) {
 
     useEffect(()=> {
         let newList = messageStateList
-        if(message !== null)
+        if(message.messageId !== '')
             newList.unshift(message)
         setMessageStateList(newList)
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -16,8 +16,8 @@ const sendDeleteFriend = (data)=> {
     sendSocket('delete-friend', data)
 }
 
-const getAddFriend = async ()=> {
-    return await listenSocket('add-friend')
+const getAddFriend = (callBack)=> {
+    listenSocket('add-friend', callBack)
 }
 
 const getAcceptFriend = async ()=> {

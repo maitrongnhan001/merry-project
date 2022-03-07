@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Member from './member/member';
+import DataLoader from '../../tools/data-loader/data-loader';
 import { getMembers } from '../../../../APIs/ConnectAPI';
 import './member-group.scss';
 import { useSelector } from 'react-redux';
@@ -7,7 +8,7 @@ import $ from 'jquery';
 
 const MemberGroup = () => {
     const idChat = useSelector(state => state.extension.idHeader);
-    const userId = localStorage.getItem('userId');
+    const userId = parseInt(localStorage.getItem('userId'));
 
     const [is_active, setIsActive] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -15,13 +16,14 @@ const MemberGroup = () => {
     const [members, setMembers] = useState([]);
     const [admin, setAdmin] = useState(null);
     const [offset, setOffset] = useState(0);
-
     const [listMembersTag, setListMembersTag] = useState(() => {
         const listElements = members.map((Element, Key) => {
             return <Member
                 image={Element.image}
                 name={Element.name}
                 isAdmin={(admin == Element.id) ? true : false}
+                meIsAdmin={userId === admin ? true : false}
+                id={Element.id}
                 key={Key}
                 />;
         });
@@ -41,19 +43,39 @@ const MemberGroup = () => {
                 let list_members = members;
                 for (let index of listResponeMembers.member) {
                     //becasue admin must in top array member
-                    if (index.id === listResponeMembers.id) {
+                    if (index.id === listResponeMembers.admin.id) {
                         list_members.unshift(index);
+                    } else {
+                        list_members.push(index);
                     }
-                    list_members.push(index);
                 }
+                
+                //swap user is me
+                if (listResponeMembers.admin.id !== parseInt(userId)) {
+                    console.log('hello');
+                    for (let index = 0; index < list_members.length; index ++) {
+                        if (list_members[index].id === parseInt(userId)) {
+                            const element = list_members[index];
+                            list_members.splice(index, 1);
+                            list_members.splice(1, 0, element);
+                            break;
+                        }
+                    }
+                } 
+
                 setMembers(list_members);
                 setAdmin(listResponeMembers.admin);
                 setOffset(list_members.length);
                 const listElements = members.map((Element, Key) => {
+                    const admin = listResponeMembers.admin.id;
+
                     return <Member
                         image={Element.image}
                         name={Element.name}
-                        isAdmin={(listResponeMembers.admin.id == Element.id) ? true : false}
+                        isAdmin={(admin === Element.id) ? true : false}
+                        meIsAdmin={userId === admin ? true : false}
+                        index={Key}
+                        id={Element.id}
                         key={Key}
                         />;
                 });
@@ -121,6 +143,7 @@ const MemberGroup = () => {
                 <div id="list-members-full-size">
                     {listMembersTag}
                     <div className="text-error center">{error}</div>
+                    {isLoading ? <DataLoader /> : ''}
                 </div>
             </div>
         </div>

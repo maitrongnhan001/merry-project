@@ -10,7 +10,7 @@ const Documents = () => {
 
     const receiverId = useSelector(state => state.extension).idHeader;
 
-    const [is_active, setIsActive] = useState(true);
+    const [is_active, setIsActive] = useState(false);
     const [documents, setDocuments] = useState([]);
     const [offset, setOffset] = useState(0);
     const [isLoading, setIsLoading] = useState(false);

@@ -1,8 +1,9 @@
 import React from 'react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setTheme, showFeature } from '../../redux/actions/taskbar'
 import { updateShowOrderFeature } from '../../redux/actions/extension'
+import { updateNotification } from '../../redux/actions/notification'
 import { useNavigate } from 'react-router-dom'
 import TaskBar from '../partials/chat/task-bar/task-bar'
 import Tab from '../partials/chat/tabs/Tab'
@@ -12,6 +13,7 @@ import CreateGroup from '../partials/chat/create-group/create-group'
 import Profile from '../partials/chat/profile/profile'
 import Center from '../partials/chat/center/center'
 import Loader from '../partials/chat/tools/loader/loader'
+import Notification from '../partials/chat/tools/notification/notification'
 import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList } from '../APIs/ConnectAPI'
 import { saveChatList, saveFriendsList } from '../../redux/actions/friends'
@@ -19,13 +21,17 @@ import { saveGroupsList,  } from '../../redux/actions/groups'
 import { getConnection, getLogout, sendConnection } from '../Sockets/home'
 import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
 import { getRoom } from '../Sockets/socket-chat'
-import { getAddGroup } from '../Sockets/socket-group'
+import { getAddGroup, getDeleteMember } from '../Sockets/socket-group'
 import { getAddFriend } from '../Sockets/socket-friend'
 
 function Chat() {
     const theme = useSelector(state => state.taskbar.theme)
     const display = useSelector(state => state.taskbar.addedForm)
     const feature = useSelector(state => state.taskbar.feature)
+
+    const [notification, setNotification] = useState(null);
+    const [amoutNotification, setAmountNotification] = useState(0);
+
     const dispatch = useDispatch()
 
     const navigate = useNavigate()
@@ -97,9 +103,15 @@ function Chat() {
                 console.log(data)
             })
 
+            getDeleteMember(data => {
+                const notification = updateNotification('Đã xoá thành viên ra khỏi nhóm thành công');
+                dispatch(notification);
+            })
+
             getAddFriend(data => {
-                console.log(data);
-            });
+                const notification = updateNotification('Gửi lời mời kết bạn thành công');
+                dispatch(notification);
+            })
 
         })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -118,6 +130,7 @@ function Chat() {
     return (
         <div className="chat-wrapper" onClick={handleClick}>
             {/* <Loader></Loader> */}
+            <Notification/>
             {
                 display === 1 ? 
                 <AddedFriendDialog></AddedFriendDialog> 

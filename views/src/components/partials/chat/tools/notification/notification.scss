@@ -1,0 +1,32 @@
+.notification-component {
+    box-shadow: 5px 5px 5px #111;
+    position: fixed;
+    background-color: rgba($color: #000000, $alpha: 0.7);
+    margin: 0 auto;
+    border-radius: 5px;
+    z-index: 100;
+    display: none;
+
+    .text-notification {
+        font-size: 18px;
+        padding: 1rem 2rem;
+        color: #fff;
+    }
+}
+
+.show-notification {
+    display: block;
+    animation: show_notification 0.3s;
+    top: 1rem;
+}
+
+@keyframes show_notification {
+    0% {
+        top: -5rem;
+    }
+
+    100% {
+        top: 1rem;
+    }
+}
+

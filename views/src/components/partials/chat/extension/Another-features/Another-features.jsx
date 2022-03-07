@@ -21,6 +21,12 @@ const AnotherFeatures = () => {
         } else {
             setIsGroup(false);
         }
+
+        return () => {
+            setIsActive(false);
+            setIsGroup(false);
+        }
+
     }, [idChat])
 
     const onActive = () => {

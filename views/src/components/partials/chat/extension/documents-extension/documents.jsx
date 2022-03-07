@@ -8,7 +8,7 @@ import $ from 'jquery';
 
 const Documents = () => {
 
-    const receiverId = useSelector(state => state.extension).idHeader;
+    const receiverId = useSelector(state => state.message.currentChat.receiverId);
 
     const [is_active, setIsActive] = useState(false);
     const [documents, setDocuments] = useState([]);
@@ -24,23 +24,23 @@ const Documents = () => {
         return listElements;
     });
 
-    const getListAndSetState = async (receiverId, limit, position = null) => {
+    const getListAndSetState = async (receiverId, limit, position, caseLoad) => {
         if (!receiverId) return;
         setIsLoading(true);
         const endLimit = limit || 10000;
-        const endPosition = (position !== null) ? position : offset;
+        const endPosition = (position !== null) ? position : 0;
         const result = await getDocuments(receiverId, endLimit, endPosition);
 
         switch (result.status) {
             case 200: {
                 const listResponeDocuments = result.data.data;
-                let list_Documents = documents;
+                let list_Documents = caseLoad ? documents : [];
                 for (let index of listResponeDocuments) {
                     list_Documents.push(index.fileName);
                 }
                 setListDocumentsTag(list_Documents);
                 setOffset(list_Documents.length);
-                const listElements = documents.map((Element, Key) => {
+                const listElements = list_Documents.map((Element, Key) => {
                     return <DocumentItem link_document={Element} key={Key} />
                 });
                 setListDocumentsTag(listElements);
@@ -70,11 +70,20 @@ const Documents = () => {
         setListDocumentsTag(null);
 
         await getListAndSetState(receiverId, 10, 0);
+
+        return () => {
+            setOffset(0);
+            setDocuments([]);
+            setIsLoading(false);
+            setError(null);
+            setNotification(null);
+            setListDocumentsTag(null);
+        }
     }, [receiverId]);
 
     const handleScroll = async () => {
         if ($('#list_document_elements').scrollTop() + $('#list_document_elements').height() == $('#list-link-full-size').height()) {
-            await getListAndSetState(receiverId, 10);
+            await getListAndSetState(receiverId, 10, offset, true);
         }
     }
 

@@ -30,7 +30,7 @@ const MemberGroup = () => {
         return listElements;
     });
 
-    const getListAndSetState = async (idGroup, limit, position = null) => {
+    const getListAndSetState = async (idGroup, limit, position, caseLoad) => {
         if (!idGroup) return;
         setIsLoading(true);
         const endLimit = limit || 10000;
@@ -40,7 +40,7 @@ const MemberGroup = () => {
         switch (result.status) {
             case 200: {
                 const listResponeMembers = result.data.data;
-                let list_members = members;
+                let list_members = caseLoad ? members : [];
                 for (let index of listResponeMembers.member) {
                     //becasue admin must in top array member
                     if (index.id === listResponeMembers.admin.id) {
@@ -66,7 +66,7 @@ const MemberGroup = () => {
                 setMembers(list_members);
                 setAdmin(listResponeMembers.admin);
                 setOffset(list_members.length);
-                const listElements = members.map((Element, Key) => {
+                const listElements = list_members.map((Element, Key) => {
                     const admin = listResponeMembers.admin.id;
 
                     return <Member
@@ -79,6 +79,7 @@ const MemberGroup = () => {
                         key={Key}
                         />;
                 });
+                console.log(listElements);
                 setListMembersTag(listElements);
                 break;
             }
@@ -94,17 +95,25 @@ const MemberGroup = () => {
 
     useEffect(async () => {
         setOffset(0);
-        setMembers([]);
         setIsLoading(false);
+        setMembers([]);
         setError(null);
         setListMembersTag(null);
 
         getListAndSetState(idChat, 10, 0);
+
+        return () => {
+            setOffset(0);
+            setIsLoading(false);
+            setMembers([]);
+            setError(null);
+            setListMembersTag(null);
+        }
     }, [idChat]);
 
     const handleScroll = async () => {
         if ($('#list_member_elements').scrollTop() + $('#list_member_elements').height() == $('#list-members-full-size').height()) {
-            await getListAndSetState(idChat, 10, offset);
+            await getListAndSetState(idChat, 10, offset, true);
         }
     }
 

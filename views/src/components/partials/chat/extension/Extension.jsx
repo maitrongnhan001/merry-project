@@ -61,6 +61,11 @@ function Extension(props) {
         } else {
             setIsGroup(false);
         }
+
+        return () => {
+            setIsGroup(false);
+        }
+
     }, [idChat])
 
     useEffect(() => {

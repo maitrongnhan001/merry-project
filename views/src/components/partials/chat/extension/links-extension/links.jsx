@@ -7,7 +7,7 @@ import LinkItem from './link-item/link-item';
 import $ from 'jquery';
 
 const Links = () => {
-    const receiverId = useSelector(state => state.extension).idHeader;
+    const receiverId = useSelector(state => state.message.currentChat.receiverId);
 
     const [is_active, setIsActive] = useState(false);
     const [links, setLinks] = useState([]);
@@ -22,23 +22,23 @@ const Links = () => {
         return listElements;
     });
 
-    const getListAndSetState = async (receiverId, limit, position=null) => {
+    const getListAndSetState = async (receiverId, limit, position, caseLoad) => {
         if (!receiverId) return;
         setIsLoading(true);
         const endLimit = limit || 10000;
-        const endPosition = (position !== null) ? position : offset;
+        const endPosition = (position !== null) ? position : 0;
         const result = await getLinks(receiverId, endLimit, endPosition);
 
         switch (result.status) {
             case 200: {
                 const listResponeLink = result.data.data;
-                let list_links = links;
+                let list_links = caseLoad ? links : [];
                 for (let index of listResponeLink) {
                     list_links.push(index.link);
                 }
                 setLinks(list_links);
                 setOffset(list_links.length);
-                const listElements = links.map((Element, Key) => {
+                const listElements = list_links.map((Element, Key) => {
                     return <LinkItem link={Element} key={Key} />
                 });
                 setListLinksTag(listElements);
@@ -73,7 +73,7 @@ const Links = () => {
 
     const handleScroll = async () => {
         if ($('#list_link_elements').scrollTop() + $('#list_link_elements').height() == $('#list-link-full-size').height()) {
-            await getListAndSetState(receiverId, 10);
+            await getListAndSetState(receiverId, 10, offset, true);
         }
     }
 

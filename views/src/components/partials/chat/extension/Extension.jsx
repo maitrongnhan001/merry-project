@@ -15,14 +15,14 @@ function Extension(props) {
 
     //redux
     const isShowExtension = useSelector(state => state.extension.isShow)
-    const idChat = useSelector(state => state.extension.idHeader)
+    const idChat = useSelector(state => state.message.currentChat.receiverId)
     const dispatch = useDispatch()
 
     const [isGroup, setIsGroup] = useState(false)
 
     const handleClick = (e) => {
         e.stopPropagation()
-        
+
         if (e.target.classList.value.indexOf('feature-item') === -1) {
             //hide order feature in extension component
             const hideOrderFeatureExtension = updateShowOrderFeature(null)
@@ -91,7 +91,7 @@ function Extension(props) {
             <Links></Links>
             <Medias></Medias>
             <Documents></Documents>
-            <AnotherFeatures/>
+            <AnotherFeatures />
         </div>
     );
 }

@@ -6,13 +6,6 @@ const showExtension = (payload)=>{
     }
 }
 
-const updateIdHeader = (payload) => {
-    return {
-        type: 'UPDATE_ID_HEADER',
-        data: payload
-    }
-}
-
 const updateShowOrderFeature = (payload) => {
     return {
         type: 'UPDATE_SHOW_ORDER_FEATURE',
@@ -22,6 +15,5 @@ const updateShowOrderFeature = (payload) => {
 
 export {
     showExtension,
-    updateIdHeader,
     updateShowOrderFeature
 }

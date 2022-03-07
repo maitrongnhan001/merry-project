@@ -20,6 +20,7 @@ import { getConnection, getLogout, sendConnection } from '../Sockets/home'
 import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
 import { getRoom } from '../Sockets/socket-chat'
 import { getAddGroup } from '../Sockets/socket-group'
+import { getAddFriend } from '../Sockets/socket-friend'
 
 function Chat() {
     const theme = useSelector(state => state.taskbar.theme)
@@ -95,6 +96,10 @@ function Chat() {
             getAddGroup((data)=> {
                 console.log(data)
             })
+
+            getAddFriend(data => {
+                console.log(data);
+            });
 
         })()
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -26,7 +26,7 @@ const Member = (props) => {
             }
         }
 
-        return !resultFriend || meIsAdmin;
+        return (!resultFriend || meIsAdmin) && (id !== parseInt(userId));
     });
 
     useEffect(() => {
@@ -37,8 +37,9 @@ const Member = (props) => {
                 break;
             }
         }
-
-        setIsFeature(!resultFriend || meIsAdmin);
+        
+        const endResult = (!resultFriend || meIsAdmin) && (id !== parseInt(userId));
+        setIsFeature(endResult);
     }, [listFriend, meIsAdmin]);
 
     const image = {

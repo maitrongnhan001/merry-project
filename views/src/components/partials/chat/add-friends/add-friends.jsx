@@ -44,10 +44,7 @@ function AddFriends(props) {
 
     const handleSubmitFriend = async (e)=> {
         e.preventDefault()
-        sendAddFriend(email)
-        const result = await getAddFriend()
-        console.log("object");
-        console.log(result)
+        //sendAddFriend(email)
     }
 
     /*----lifecycle----*/

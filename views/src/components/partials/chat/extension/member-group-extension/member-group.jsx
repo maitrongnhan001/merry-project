@@ -16,7 +16,6 @@ const MemberGroup = () => {
     const [members, setMembers] = useState([]);
     const [admin, setAdmin] = useState(null);
     const [offset, setOffset] = useState(0);
-
     const [listMembersTag, setListMembersTag] = useState(() => {
         const listElements = members.map((Element, Key) => {
             return <Member

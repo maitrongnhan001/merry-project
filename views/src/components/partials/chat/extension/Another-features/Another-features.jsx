@@ -10,7 +10,7 @@ import AddMember from './add-members/add-member';
 import $ from 'jquery';
 
 const AnotherFeatures = () => {
-    const idChat = useSelector(state => state.extension.idHeader)
+    const idChat = useSelector(state => state.message.currentChat.receiverId);
 
     const [is_active, setIsActive] = useState(false);
     const [isGroup, setIsGroup] = useState(false)

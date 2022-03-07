@@ -7,7 +7,7 @@ import { useSelector } from 'react-redux';
 import $ from 'jquery';
 
 const MemberGroup = () => {
-    const idChat = useSelector(state => state.extension.idHeader);
+    const idChat = useSelector(state => state.message.currentChat.receiverId);
     const userId = parseInt(localStorage.getItem('userId'));
 
     const [is_active, setIsActive] = useState(false);

@@ -53,6 +53,14 @@ function Header({id, image, name}) {
         }
     }
 
+    const handleVocalCall = (e)=> {
+        window.open('http://localhost:3000/call/vocal-call/36934', 'name','width=1000,height=600,left=250,top=100')
+    }
+
+    const handleVideoCall = (e)=> {
+        window.open('http://localhost:3000/call/video-call/36934', 'name','width=1000,height=600,left=250,top=100')
+    }
+
     /*----lifecycle----*/
     useEffect(()=>{
         if(isShowExtension === 1) {
@@ -85,8 +93,8 @@ function Header({id, image, name}) {
                     </div>
                     <div className="main-chat-header-tools">
                         <i className="fas fa-search"  onClick={()=>{$('.search-message-wrapper').slideToggle('.25s'); setIsShowSearchBox(isShowSearchBox ? 0 : 1)}}></i>
-                        <i className="fas fa-phone"></i>
-                        <i className="fas fa-video"></i>
+                        <i className="fas fa-phone" onClick={handleVocalCall}></i>
+                        <i className="fas fa-video" onClick={handleVideoCall}></i>
                         <i className="fas fa-bars" onClick={handleClickShowExtension}></i>
                     </div>
                 </div>

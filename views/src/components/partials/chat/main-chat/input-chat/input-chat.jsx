@@ -40,7 +40,7 @@ function InputChat({id}) {
         if($(e.target).html() === '') {
             $(e.target).find('.placeholder').css('display', 'block')
         }
-        const value = $(e.target).html()
+        const value = $(e.target).text()
         const newMessage = {
             ...message,
             message: {
@@ -52,8 +52,8 @@ function InputChat({id}) {
 
     const handleStopDefault = (e)=> {
         if(e.which === 13) {
-            handleSubmit()
             e.preventDefault()
+            handleSubmit()
         }
     }
 
@@ -70,12 +70,8 @@ function InputChat({id}) {
     }, [id])
 
     useEffect(()=>{
-        console.log(message.receiverId)
-    }, [message])
-
-    useEffect(()=>{
-        $('#input-chat-content').html($('#input-chat-content').html() + emoji)
-        const value = $('#input-chat-content').html()
+        $('#input-chat-content').html($('#input-chat-content').text() + emoji)
+        const value = $('#input-chat-content').text()
         const newMessage = {
             ...message,
             message: {

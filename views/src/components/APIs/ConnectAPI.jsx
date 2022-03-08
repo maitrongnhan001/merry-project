@@ -151,6 +151,10 @@ async function getMemberListFromGroupByGroupId(userId,groupId) {
     return await getAPI('get', `/groups/memberIds-list?userId=${userId}&groupId=${groupId}`)
 }
 
+async function getUserByEmail(senderId, email) {
+    return await getAPI('get', `/users?senderId=${senderId}&search=${email}`)
+}
+
 
 export {
     verifiEmail,
@@ -170,5 +174,6 @@ export {
     getOthersUsers,
     getGroupInfo,
     getMembers,
-    getMemberListFromGroupByGroupId
+    getMemberListFromGroupByGroupId,
+    getUserByEmail
 }

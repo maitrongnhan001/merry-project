@@ -1,0 +1,78 @@
+.vocal-call-wrapper {
+    background-color: #36393f;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    .vocal-call-user-info-group {
+        position: absolute;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        .vocal-call-user-avt {
+            width: 6rem;
+            height: 6rem;
+            object-fit: cover;
+            border-radius: 50%;
+            animation: VocalCallAnimation1 1s linear infinite alternate;
+        }
+        .vocal-call-user-status {
+            margin-top: 3rem;
+            color: #ffffff;
+            font-size: 1.25rem;
+            span {
+                font-size: 1.5rem;
+                animation: VocalCallAnimation3 2s linear infinite;
+                animation-delay: calc(var(--value) * 2s / 3);
+            }
+        }
+
+    }
+
+    .vocal-call-icons-group {
+        position: absolute;
+        bottom: 4rem;
+        left: 50%;
+        transform: translateX(-50%);
+        .vocal-call-phone-icon {
+            width: 3.5rem;
+            height: 3.5rem;
+            border-radius: 50%;
+            line-height: 3.5rem;
+            text-align: center;
+            cursor: pointer;
+            .fa-solid {
+                font-size: 1.25rem;
+                color: #ffffff;
+            }
+        }
+
+        .vocal-call-phone-icon-phone-up {
+            background-color: #32b132;
+            animation: VocalCallAnimation2 1s linear infinite alternate;
+        }
+
+        .vocal-call-phone-icon-phone-down {
+            background-color: #ff144e;
+        }
+    }
+}
+
+@keyframes VocalCallAnimation1{
+    to {
+        transform: scale(1.1);
+        box-shadow: 0 0 3rem .5rem  #5865F2,
+                    0 0 1rem .3rem  #4ef3ff;
+    }
+}
+
+@keyframes VocalCallAnimation2{
+    to {
+        box-shadow: 0 0 10px 5px  #36ac1f;
+    }
+}
+
+@keyframes VocalCallAnimation3{
+    to {
+        opacity: 0;
+    }
+}

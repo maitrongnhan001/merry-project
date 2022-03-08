@@ -21,6 +21,7 @@ import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
 import { getRoom } from '../Sockets/socket-chat'
 import { getAddGroup } from '../Sockets/socket-group'
 import { getAddFriend } from '../Sockets/socket-friend'
+import { saveCurrentChat } from '../../redux/actions/message'
 
 function Chat() {
     const theme = useSelector(state => state.taskbar.theme)
@@ -96,11 +97,13 @@ function Chat() {
             getAddGroup((data)=> {
                 const addGroupAction = addGroup(data)
                 dispatch(addGroupAction)
+                const currentChat = saveCurrentChat({receiverId: data.groupId, name: data.groupName, image: data.image})
+                dispatch(currentChat)
             })
 
             getAddFriend(data => {
-                console.log(data);
-            });
+                console.log(data)
+            })
 
         })()
     // eslint-disable-next-line react-hooks/exhaustive-deps

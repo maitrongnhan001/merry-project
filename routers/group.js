@@ -8,6 +8,7 @@ const router = express.Router()
 
 router.get('/', groupController.getGroupQuery)
 router.get('/member-list', groupController.getMembersLimit)
+router.get('/memberIds-list/', groupController.getGroupsById)
 router.get('/:userId', groupController.getGroups)
 
 //post group(add group)

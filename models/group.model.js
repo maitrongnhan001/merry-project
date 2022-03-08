@@ -146,10 +146,10 @@ module.exports.getMembersLimit = (groupId, limit, offset) => {
     });
 }
 
-module.exports.getGroupsById = (groupId) => {
+module.exports.getDetailByGroupId = (groupId) => {
     return new Promise((resolve, reject) => {
-        const sql = 'SELECT * from detailgroup where groupId = ?'
-        connection.query(sql, [groupId], (error, result) => {
+        const sql = 'SELECT * from detailgroup join groupuser on detailgroup.groupId = groupuser.id where groupId = ?'
+        connection.query(sql, [groupId], (err, result) => {
             if(err){
                 reject(err)
             }else {

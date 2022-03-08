@@ -134,7 +134,7 @@ module.exports.getMessageByReceiverId = (receiverId) =>{
 //get content 
 module.exports.getContents = (senderId,receiverId) =>{
     return new Promise((resolve, reject) =>{
-        const sql = `SELECT message.id, sendId, receiveId, content, image, type, status, time FROM message join user on user.id = message.sendId WHERE message.receiveId = ? order by id desc`
+        const sql = `SELECT message.id, sendId, receiveId, content, image, concat(lastName,' ', firstName) as name, type, status, time FROM message join user on user.id = message.sendId WHERE message.receiveId = ? order by id desc`
         connection.query(sql,[receiverId],(error, result)=>{
             if (error) {
                 reject(error);

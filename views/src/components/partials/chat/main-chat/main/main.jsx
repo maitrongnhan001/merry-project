@@ -3,8 +3,8 @@ import './main.scss'
 import Message from './messages/message'
 import Document from './messages/document/document'
 import DataLoader from '../../tools/data-loader/data-loader'
-import { getContentChat, getUserById } from '../../../../APIs/ConnectAPI'
-import { getTextMessageChat, getTextMessageChatX } from '../../../../Sockets/socket-chat'
+import { getContentChat } from '../../../../APIs/ConnectAPI'
+import { getTextMessageChat } from '../../../../Sockets/socket-chat'
 
 const isType = (value, style) => {
     switch(value.type) {
@@ -29,18 +29,19 @@ function Main({id}) {
 
     /*----states----*/
     //tin nhan da gui, nhan
-    const [message,setMessage] = useState(null
-        // messageId: '',
-        // senderId: 0,
-        // receiverId: '',
-        // message: 
-        // {
-        //     type: 'text',
-        //     content: '',
-        //     time: 0,
-        //     status: 'đã gửi'
-        // }
-    )
+    const [message,setMessage] = useState({
+        messageId: '',
+        senderId: 0,
+        receiverId: '',
+        name: '',
+        message: 
+        {
+            type: 'text',
+            content: '',
+            time: 0,
+            status: 'đã gửi'
+        }
+    })
 
     const [messageStateList, setMessageStateList] = useState([])
     const [dataState, setDataState] = useState(null)
@@ -51,8 +52,13 @@ function Main({id}) {
         (async ()=> {
             const result = await getContentChat(localStorage.getItem('userId'), id)
             if (result && result.status === 200) {
-                console.log(result)
-                setMessageList(result.data.data.message)
+                setDataState(null)
+                console.log(result.data.data)
+                if(result.data.data.message.length > 0)
+                    setMessageList(result.data.data.message)
+                else {
+                    setMessageList([])
+                }
             }
         })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -66,7 +72,7 @@ function Main({id}) {
 
     useEffect(()=> {
         let newList = messageStateList
-        if(message !== null)
+        if(message.messageId !== '')
             newList.unshift(message)
         setMessageStateList(newList)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -82,7 +88,7 @@ function Main({id}) {
             const next = messageList[idx + 1]  && messageList[idx + 1].senderId === value.senderId ? 0 : 1
             return (
                 // eslint-disable-next-line eqeqeq
-                <Message  key ={idx} image={value.image} sender={value.senderId == localStorage.getItem('userId') ? 0 : 1} next={next} date={value.time}>{message}</Message>
+                <Message key ={idx} name={value.name} image={value.image} sender={value.senderId == localStorage.getItem('userId') ? 0 : 1} next={next} date={value.time}>{message}</Message>
             )
         })
         setDataState(result)
@@ -98,7 +104,7 @@ function Main({id}) {
         const next = messageList[idx + 1]  && messageList[idx + 1].senderId === value.senderId ? 0 : 1
         return (
             // eslint-disable-next-line eqeqeq
-            <Message  key ={idx} image={value.image} sender={value.senderId == localStorage.getItem('userId') ? 0 : 1} next={next} date={value.time}>{message}</Message>
+            <Message  key ={idx} id={id} name={value.name} image={value.image} sender={value.senderId == localStorage.getItem('userId') ? 0 : 1} next={next} date={value.time}>{message}</Message>
         )
     })
 

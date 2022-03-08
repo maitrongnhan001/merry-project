@@ -10,8 +10,12 @@ module.exports.search = async (req, res) => {
         const search = `%${email}%`
         const finds = await user.search(search)
         // console.log(finds)
+        if(!finds)
+            return res.sendStatus(404)
         const data = []
         const friends = await user.searchFriend(senderId)
+        if(!friends)
+            return res.sendStatus(404)
         let array = []
         for (let friend of friends) {
             if (friend.sendId == senderId) {
@@ -27,7 +31,7 @@ module.exports.search = async (req, res) => {
                 continue
             const object = {
                 receiverId: value.id,
-                image: value.image,
+                image: {image1: value.image, image2: ''},
                 name: value.lastName + ' ' + value.firstName,
                 isFriend: 0,
             }

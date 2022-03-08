@@ -117,7 +117,9 @@ module.exports.getContent = async (req, res) => {
         if (getMessage.length === 0) {
             return res.status(200).json({
                 message: 'không có tin nhắn',
-                data: []
+                data: {
+                    message: []
+                }
             })
         }
         let data = {
@@ -130,6 +132,7 @@ module.exports.getContent = async (req, res) => {
                 messageId :message.id,
                 senderId : message.sendId,
                 receiverId : message.receiveId,
+                name: message.name,
                 content : message.content,
                 image: message.image,
                 type : message.type,

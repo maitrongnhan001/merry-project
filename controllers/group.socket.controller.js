@@ -298,6 +298,9 @@ module.exports.addMember = async (data, socket, io) => {
         const groupId = data.groupId;
         const members = data.members;
 
+        //mang danh sach thanh vien nhom vua duoc them moi
+        let ResultMemebers = [];
+
         //luu du lieu vao table detail group
         let listDetailGroups = [];
         for (let i = 0; i < members.length; i++) {
@@ -307,6 +310,14 @@ module.exports.addMember = async (data, socket, io) => {
                     members[i]
                 ]
                 listDetailGroups.push(detailGroupObj);
+
+                //cai dat du lieu tra ve cho client
+                const ResultMember = await user.get(members[i]);
+                ResultMemebers.push({
+                    id: ResultMember[0].id,
+                    name: `${ResultMember[0].lastName} ${ResultMember[0].firstName}`,
+                    image: ResultMember[0].image
+                });
             }
         }
         await detailGroup.create(listDetailGroups);
@@ -328,7 +339,7 @@ module.exports.addMember = async (data, socket, io) => {
         //tra du lieu ve cho client
         const returnData = {
             groupId: groupId,
-            member: members
+            members: ResultMemebers
         }
         io.to(`${groupId}`).emit('add-member', returnData);
     } catch (err) {

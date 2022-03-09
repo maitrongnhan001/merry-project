@@ -1,9 +1,27 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { showFormFeatureExtension, showExtension } from '../../../../../../redux/actions/extension';
 
 const AddMember = () => {
+
+    const dispatch = useDispatch();
+
+    const clickAddMember = () => {
+        //show form add members
+        const displayFormAddMember = showFormFeatureExtension(1);
+        dispatch(displayFormAddMember);
+        
+        //hide extension
+        const hideExtension = showExtension(0);
+        dispatch(hideExtension);
+    }
+
     return (
         <div className='item-function'>
-        <p className='function-name'>Thêm thành viên</p>
+        <p 
+            className='function-name'
+            onClick={clickAddMember}
+        >Thêm thành viên</p>
         <hr className='function-distingush' />
     </div>
     );

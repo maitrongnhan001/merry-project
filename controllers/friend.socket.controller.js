@@ -7,7 +7,7 @@ module.exports.addFriend = async (data, socket) => {
     try {
         //kiem tra du lieu
         if ( !(data.senderId && data.receiverId) ) {
-            socket.emit('add-friend', {msg: 'Lỗi, không đính kèm dữ liệu'});
+            socket.emit('add-friend', {msg: 'Lỗi, không đính kèm dữ liệu', status: 404});
             return;
         }
         //lay du lieu
@@ -16,14 +16,14 @@ module.exports.addFriend = async (data, socket) => {
         //kiem tra du lieu co ton tai trong bang friend chua
         const checkFrinend = await friend.getFriend(sendId, receiveId);
         if ( checkFrinend ) {
-            socket.emit('add-friend', {msg: 'Lỗi, thông tin đã tồn tại trong CSDL'});
+            socket.emit('add-friend', {msg: 'Lỗi, thông tin đã tồn tại trong CSDL', status: 404});
             return;
         }
 
         //kiem tra du lieu trong bang waiting
         const checkWaiting = await waiting.getWaiting(sendId, receiveId);
         if ( checkWaiting ) {
-            socket.emit('add-friend', {msg: 'Lỗi, thông tin đã tồn tại trong CSDL'});
+            socket.emit('add-friend', {msg: 'Lỗi, thông tin đã tồn tại trong CSDL', status: 404});
             return;
         }
 
@@ -36,13 +36,14 @@ module.exports.addFriend = async (data, socket) => {
 
         //tra du lieu ve client
         const receiveUserSocket = await userIsOnline.getUserSocket(receiveId);
+        const resultData = await friend.getUserId(sendId);
         if (receiveUserSocket) {
-            receiveUserSocket.emit('add-friend', {senderId: dataWaiting.sendId, receiverId: dataWaiting.receiveId});
+            receiveUserSocket.emit('add-friend', {senderId: dataWaiting.sendId, receiverId: dataWaiting.receiveId, name: resultData[0].name, sex: resultData[0].sex, image: resultData[0].image});
         }
-        socket.emit('add-friend', {senderId: dataWaiting.sendId, receiverId: dataWaiting.receiveId});
+        socket.emit('add-friend', {senderId: dataWaiting.sendId, receiverId: dataWaiting.receiveId,name: resultData[0].name, sex: resultData[0].sex, image: resultData[0].image});
         
     } catch (err) {
-        socket.emit('add-friend-error', {msg: 'Lỗi, xử lý dữ liệu không thành công'});
+        socket.emit('add-friend-error', {msg: 'Lỗi, xử lý dữ liệu không thành công', status: 404});
         console.error(err);
     }
 }
@@ -52,7 +53,7 @@ module.exports.acceptFriend = async (data, socket) => {
     try {
         //kiem tra du lieu
         if ( !(data.senderId  &&  data.receiverId) ) {
-            socket.emit('accept-friend-error', {msg: 'Lỗi, không đính kèm dữ liệu'});
+            socket.emit('accept-friend-error', {msg: 'Lỗi, không đính kèm dữ liệu', status: 404});
             return;
         }
 
@@ -63,7 +64,7 @@ module.exports.acceptFriend = async (data, socket) => {
          //kiem tra du lieu trong bang waiting
          const checkWaiting = await waiting.getWaiting(sendId, receiveId);
          if ( !checkWaiting ) {
-             socket.emit('accept-friend-error', {msg: 'Lỗi, chưa gửi lời mời kết bạn'});
+             socket.emit('accept-friend-error', {msg: 'Lỗi, chưa gửi lời mời kết bạn',status: 404});
              return;
          }
 
@@ -84,7 +85,7 @@ module.exports.acceptFriend = async (data, socket) => {
         }
         socket.emit('accept-friend', {senderId: dataFriend.sendId, receiverId: dataFriend.receiveId});
     } catch (err) {
-        socket.emit('accept-friend-error', {msg: 'Lỗi, xử lý dữ liệu không thành công'});
+        socket.emit('accept-friend-error', {msg: 'Lỗi, xử lý dữ liệu không thành công',status: 404});
         console.error(err);
     }
 }

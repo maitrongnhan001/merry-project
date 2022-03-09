@@ -82,11 +82,15 @@ module.exports.acceptFriend = async (data, socket) => {
         //them du lieu vao bang group
         const groupObj = {
             id : `U${(new Date()).getTime()}`,
+            groupName: ''
         }
         const dataGroup = await group.create(groupObj);//
         //them du lieu vao bang detailGroup
-        const dataSenderIdDetailGroup = await detailGroup.create({ groupId: groupObj.id, userId: friendObj.sendId});
-        const dataReceiveIdDetailGroup = await detailGroup.create({ groupId: groupObj.id, userId: friendObj.receiveId});
+        const users  = [
+            [groupObj.id, friendObj.sendId],
+            [groupObj.id, friendObj.receiveId]
+        ]
+        await detailGroup.create(users);
 
         //tra thong tin ve cho client
         const receiveUserSocket = await userIsOnline.getUserSocket(receiveId);

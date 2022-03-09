@@ -33,7 +33,7 @@ const friendsReducer = (state = initial, action) => {
         case 'ADD_FRIEND_REQUEST': {
             let newFriendRequest = state.friendRequest
             // eslint-disable-next-line eqeqeq
-            if(action.data.senderId != localStorage.getItem('userId'))
+            if(!action.data.status && action.data.senderId != localStorage.getItem('userId'))
                 newFriendRequest.unshift(action.data)
             return {
                 ...state,

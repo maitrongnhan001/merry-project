@@ -1,0 +1,20 @@
+.item-function {
+    height: 3rem;
+
+    .function-name {
+        font-size: 18px;
+        line-height: 3rem;
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .function-distingush {
+        width: 90%;
+        margin: 0 auto;
+    }
+}
+
+.item-function:hover {
+    background-color: #efefef;
+    cursor: pointer;
+}

@@ -2,7 +2,7 @@ import $ from 'jquery'
 
 const initial = {
     isShow: $(window).width() <= 1200 ? 0 : 1,
-    idHeader: null
+    showOrderFeature: null
 }
 
 const extensionReducer = (state = initial, action)=> {
@@ -14,10 +14,10 @@ const extensionReducer = (state = initial, action)=> {
             }
         }
 
-        case 'UPDATE_ID_HEADER': {
+        case 'UPDATE_SHOW_ORDER_FEATURE': {
             return {
                 ...state,
-                idHeader: action.data
+                showOrderFeature: action.data
             }
         }
 

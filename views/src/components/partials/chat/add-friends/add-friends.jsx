@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import {showDialog}  from '../../../../redux/actions/taskbar'
 import $ from 'jquery'
 import { getAddFriend, sendAddFriend } from '../../../Sockets/socket-friend'
-import { getOthersUsers } from '../../../APIs/ConnectAPI'
+import { getOthersUsers, getUserByEmail } from '../../../APIs/ConnectAPI'
 
 function AddFriends(props) {
 
@@ -24,7 +24,7 @@ function AddFriends(props) {
     const items = friendsList.map((value, idx)=>{
 
         return (
-            <FriendItem key={idx} id={value.id} name={value.name} image={value.image} addFriend={1}></FriendItem>
+            <FriendItem key={idx} id={value.userId ? value.userId : value.receiverId} name={value.name} image={value.image} addFriend={1}></FriendItem>
         )
     })
 
@@ -42,10 +42,15 @@ function AddFriends(props) {
 
     const handleSubmitFriend = async (e)=> {
         e.preventDefault()
-        sendAddFriend(email)
-        const result = await getAddFriend()
-        console.log("object");
-        console.log(result)
+        try {
+            const result = await getUserByEmail(localStorage.getItem('userId'), email)
+            if(result && result.status === 200) {
+                console.log(result)
+                setFriendList(result.data.data)
+            }
+        }catch(err) {
+            alert('Co loi xay ra!')
+        }
     }
 
     /*----lifecycle----*/
@@ -53,6 +58,7 @@ function AddFriends(props) {
         $('.add-friend-dialog-form').fadeTo('.5s', 1)
     })
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async ()=>{
         const result = await getOthersUsers(localStorage.getItem('userId'))
         if(result && result.status === 200) {

@@ -1,6 +1,7 @@
 
 const initial = {
     friendProfile: 0,
+    friendProfileData: {},
     chatsList: [], 
     friendRequest: [],
     friendsList: []
@@ -33,6 +34,12 @@ const friendsReducer = (state = initial, action) => {
             return {
                 ...state,
                 friendProfile: action.data
+            }
+        }
+        case 'SAVE_FRIEND_PROFILE': {
+            return {
+                ...state,
+                friendProfileData: action.data
             }
         }
         default: {

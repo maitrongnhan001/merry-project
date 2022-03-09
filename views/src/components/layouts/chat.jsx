@@ -2,6 +2,7 @@ import React from 'react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setTheme, showFeature } from '../../redux/actions/taskbar'
+import { updateShowOrderFeature } from '../../redux/actions/extension'
 import { useNavigate } from 'react-router-dom'
 import TaskBar from '../partials/chat/task-bar/task-bar'
 import Tab from '../partials/chat/tabs/Tab'
@@ -19,6 +20,8 @@ import { getConnection, getLogout, sendConnection } from '../Sockets/home'
 import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
 import { getRoom } from '../Sockets/socket-chat'
 import { getAddGroup } from '../Sockets/socket-group'
+import { getAddFriend } from '../Sockets/socket-friend'
+import { saveCurrentChat } from '../../redux/actions/message'
 
 function Chat() {
     const theme = useSelector(state => state.taskbar.theme)
@@ -34,6 +37,10 @@ function Chat() {
             const display = showFeature({...feature, isShow: 0})
             dispatch(display)
         }
+
+        //hide order feature in extension component
+        const hideOrderFeatureExtension = updateShowOrderFeature(null)
+        dispatch(hideOrderFeatureExtension)
     }
 
     useEffect(()=>{
@@ -90,6 +97,12 @@ function Chat() {
             getAddGroup((data)=> {
                 const addGroupAction = addGroup(data)
                 dispatch(addGroupAction)
+                const currentChat = saveCurrentChat({receiverId: data.groupId, name: data.groupName, image: data.image})
+                dispatch(currentChat)
+            })
+
+            getAddFriend(data => {
+                console.log(data)
             })
 
         })()

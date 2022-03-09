@@ -9,7 +9,7 @@ const connection = ()=> {
 }
 
 const sendSocket = (event, data)=> {
-    socket.emit(event, data)  
+    socket.emit(event, data)
 }
 
 const listenSocketOneTime = (event)=> {

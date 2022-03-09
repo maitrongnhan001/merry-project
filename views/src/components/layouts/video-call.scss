@@ -1,0 +1,18 @@
+.video-call-wrapper {
+    background-color: #36393f;
+    width: 100%;
+    height: 100vh;
+    position: relative;
+    overflow: hidden;
+    .video-call-background-partner {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+    .video-call-background {
+        position: absolute;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+    }
+}

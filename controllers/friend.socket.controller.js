@@ -1,6 +1,8 @@
 const waiting = require('../models/waiting.model');
 const friend = require('../models/friend.model');
 const userIsOnline = require('../stores/UserLoginStore');
+const group = require('../models/group.model');
+const detailGroup = require('../models/detailGroup.model');
 
 module.exports.addFriend = async (data, socket) => {
     //gui loi moi ket ban
@@ -77,13 +79,21 @@ module.exports.acceptFriend = async (data, socket) => {
             receiveId: receiveId
         }
         const dataFriend = await friend.create(friendObj);
+        //them du lieu vao bang group
+        const groupObj = {
+            id : `U${(new Date()).getTime()}`,
+        }
+        const dataGroup = await group.create(groupObj);//
+        //them du lieu vao bang detailGroup
+        const dataSenderIdDetailGroup = await detailGroup.create({ groupId: groupObj.id, userId: friendObj.sendId});
+        const dataReceiveIdDetailGroup = await detailGroup.create({ groupId: groupObj.id, userId: friendObj.receiveId});
 
         //tra thong tin ve cho client
         const receiveUserSocket = await userIsOnline.getUserSocket(receiveId);
         if (receiveUserSocket) {
-            receiveUserSocket.emit('accept-friend', {senderId: dataFriend.sendId, receiverId: dataFriend.receiveId});
+            receiveUserSocket.emit('accept-friend', {senderId: dataFriend.sendId, receiverId: dataFriend.receiveId, groupId: groupObj.id});
         }
-        socket.emit('accept-friend', {senderId: dataFriend.sendId, receiverId: dataFriend.receiveId});
+        socket.emit('accept-friend', {senderId: dataFriend.sendId, receiverId: dataFriend.receiveId, groupId: groupObj.id});
     } catch (err) {
         socket.emit('accept-friend-error', {msg: 'Lỗi, xử lý dữ liệu không thành công',status: 404});
         console.error(err);

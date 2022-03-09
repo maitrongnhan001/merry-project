@@ -34,8 +34,6 @@ function Item({id, image, name, lastMessage}) {
             senderId: localStorage.getItem('userId'),
             receiverId: id
         }
-
-        console.log(dataRoom)
         createRoom(dataRoom)
     }
 

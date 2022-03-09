@@ -45,7 +45,6 @@ function AddFriends(props) {
         try {
             const result = await getUserByEmail(localStorage.getItem('userId'), email)
             if(result && result.status === 200) {
-                console.log(result)
                 setFriendList(result.data.data)
             }
         }catch(err) {
@@ -62,7 +61,6 @@ function AddFriends(props) {
     useEffect(async ()=>{
         const result = await getOthersUsers(localStorage.getItem('userId'))
         if(result && result.status === 200) {
-            console.log(result)
             setFriendList(result.data.data)
         }
     },[])

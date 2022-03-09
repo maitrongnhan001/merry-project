@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { showCenter, showFeature } from '../../../../../redux/actions/taskbar'
 import { saveCurrentChat } from '../../../../../redux/actions/message'
 import { sendAddFriend } from '../../../../Sockets/socket-friend'
+import { createRoom } from '../../../../Sockets/socket-chat'
 
 function Item({ id, name, image, addFriend, createGroup, onAddMember }) {
 
@@ -39,12 +40,18 @@ function Item({ id, name, image, addFriend, createGroup, onAddMember }) {
             $('.main-chat-center').toggleClass('show-main-chat-phone-screen')
             const display = showCenter(1)
             dispatch(display)
+            const dataRoom = {
+                senderId: localStorage.getItem('userId'),
+                receiverId: id
+            }
+            createRoom(dataRoom)
 
         }
     }
 
     const handleToAddFriend = (e)=> {
         e.stopPropagation()
+        e.preventDefault()
         console.log('hello')
         sendAddFriend({senderId: localStorage.getItem('userId'), receiverId: id})
     }

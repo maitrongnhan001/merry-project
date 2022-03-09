@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './main.scss'
 import Message from './messages/message'
+import { useSelector } from 'react-redux'
 import Document from './messages/document/document'
 import DataLoader from '../../tools/data-loader/data-loader'
 import { getContentChat } from '../../../../APIs/ConnectAPI'
@@ -28,20 +29,7 @@ const isType = (value, style) => {
 function Main({id}) {
 
     /*----states----*/
-    //tin nhan da gui, nhan
-    const [message,setMessage] = useState({
-        messageId: '',
-        senderId: 0,
-        receiverId: '',
-        name: '',
-        message: 
-        {
-            type: 'text',
-            content: '',
-            time: 0,
-            status: 'đã gửi'
-        }
-    })
+    const message = useSelector(state => state.message.message)
 
     const [messageStateList, setMessageStateList] = useState([])
     const [dataState, setDataState] = useState(null)
@@ -53,7 +41,6 @@ function Main({id}) {
             const result = await getContentChat(localStorage.getItem('userId'), id)
             if (result && result.status === 200) {
                 setDataState(null)
-                console.log(result.data.data)
                 if(result.data.data.message.length > 0)
                     setMessageList(result.data.data.message)
                 else {
@@ -65,20 +52,10 @@ function Main({id}) {
     }, [id])
 
     useEffect(()=> {
-        getTextMessageChat((data)=> {
-            setMessage(data)
-        })  
-    }, [])
-
-    useEffect(()=> {
         let newList = messageStateList
-        if(message.messageId !== '')
+        if(message.messageId !== '' && message.receiverId === id)
             newList.unshift(message)
         setMessageStateList(newList)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [message])
-
-    useEffect(()=> {
         const result = messageStateList.map((value, idx) => {
             let style = {
                 // eslint-disable-next-line eqeqeq
@@ -88,7 +65,7 @@ function Main({id}) {
             const next = messageList[idx + 1]  && messageList[idx + 1].senderId === value.senderId ? 0 : 1
             return (
                 // eslint-disable-next-line eqeqeq
-                <Message key ={idx} name={value.name} image={value.image} sender={value.senderId == localStorage.getItem('userId') ? 0 : 1} next={next} date={value.time}>{message}</Message>
+                <Message key ={idx} id={id} name={value.name} image={value.image} sender={value.senderId == localStorage.getItem('userId') ? 0 : 1} next={next} date={value.time}>{message}</Message>
             )
         })
         setDataState(result)

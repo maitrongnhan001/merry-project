@@ -73,7 +73,7 @@ module.exports.getUserId = (userId) => {
 //lay id cua request ban be
 module.exports.getRequestFriend = (userId ,limit, offset) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM waitingresquest WHERE sendId = ${userId} OR receiveId = ${userId} LIMIT ${limit} OFFSET ${offset}`;
+        const sql = `SELECT * FROM waitingresquest WHERE receiveId = ${userId} LIMIT ${limit} OFFSET ${offset}`;
         connection.query(sql, function (error, result) {
             if (error) {
                 reject(error);

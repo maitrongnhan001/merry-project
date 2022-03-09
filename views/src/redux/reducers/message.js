@@ -1,7 +1,19 @@
 const initial = {
     emoji: '',
     currentChat: {},
-    message: {}
+    message: {
+        messageId: '',
+        senderId: 0,
+        receiverId: '',
+        name: '',
+        message: 
+        {
+            type: 'text',
+            content: '',
+            time: 0,
+            status: 'đã gửi'
+        }
+    }
 }
 
 const messageReducer = (state = initial, action)=> {

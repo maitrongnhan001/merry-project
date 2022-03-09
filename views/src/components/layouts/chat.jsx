@@ -18,10 +18,10 @@ import { addFriendRequest, saveChatList, saveFriendsList } from '../../redux/act
 import { addGroup, saveGroupsList,  } from '../../redux/actions/groups'
 import { getConnection, getLogout, sendConnection } from '../Sockets/home'
 import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
-import { getRoom } from '../Sockets/socket-chat'
+import { getRoom, getTextMessageChat } from '../Sockets/socket-chat'
 import { getAddGroup } from '../Sockets/socket-group'
 import { getAddFriend } from '../Sockets/socket-friend'
-import { saveCurrentChat } from '../../redux/actions/message'
+import { saveCurrentChat, saveMassage } from '../../redux/actions/message'
 
 function Chat() {
     const theme = useSelector(state => state.taskbar.theme)
@@ -104,7 +104,12 @@ function Chat() {
             getAddFriend(data => {
                 const friendRequest = addFriendRequest(data)
                 dispatch(friendRequest)
-                console.log(data)
+            })
+
+            getTextMessageChat((data)=> {
+                // setMessage(data)
+                const message = saveMassage(data)
+                dispatch(message)
             })
 
 

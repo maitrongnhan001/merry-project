@@ -14,7 +14,7 @@ import Center from '../partials/chat/center/center'
 import Loader from '../partials/chat/tools/loader/loader'
 import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList } from '../APIs/ConnectAPI'
-import { saveChatList, saveFriendsList } from '../../redux/actions/friends'
+import { addFriendRequest, saveChatList, saveFriendsList } from '../../redux/actions/friends'
 import { addGroup, saveGroupsList,  } from '../../redux/actions/groups'
 import { getConnection, getLogout, sendConnection } from '../Sockets/home'
 import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
@@ -102,7 +102,8 @@ function Chat() {
             })
 
             getAddFriend(data => {
-                console.log(data)
+                const friendRequest = addFriendRequest(data)
+                dispatch(friendRequest)
             })
 
         })()

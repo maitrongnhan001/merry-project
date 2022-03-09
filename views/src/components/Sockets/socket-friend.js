@@ -20,8 +20,8 @@ const getAddFriend = (callBack)=> {
     listenSocket('add-friend', callBack)
 }
 
-const getAcceptFriend = async ()=> {
-    return await listenSocket('accept-friend')
+const getAcceptFriend = (cb)=> {
+    listenSocket('accept-friend', cb)
 }
 
 const getDismissFriend = async ()=> {

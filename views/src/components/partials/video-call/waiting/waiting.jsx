@@ -1,26 +1,14 @@
 import React from 'react'
 import './waiting.scss'
-import { useNavigate } from 'react-router-dom'
 import { getUserById, urlUserAvatar } from '../../../APIs/ConnectAPI'
 
 function Waiting() {
 
     const [user, setUser] = React.useState({})
 
-
-
-    const navigate = useNavigate()
-
-
     const handleToMissCall = (e)=> {
         window.close()
     }
-
-    React.useEffect(()=>{
-        if(!localStorage.getItem('accessToken')) {
-            navigate('/')
-        }
-    })
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(async ()=> {

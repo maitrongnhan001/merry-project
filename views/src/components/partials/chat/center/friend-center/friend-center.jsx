@@ -12,10 +12,11 @@ function FriendCenter() {
 
     const dispatch = useDispatch()
 
+    console.log('re-render')
     /*----data----*/
     const items = friendRequestSelector.map((value, idx)=> {
         return (
-            <Item key={idx} name={value.name} image={value.image} sex={value.sex}></Item>
+            <Item key={idx} senderId={value.senderId} receiverId={value.receiverId} name={value.name} image={value.image} sex={value.sex}></Item>
         )
     })
 
@@ -48,4 +49,4 @@ function FriendCenter() {
     );
 }
 
-export default FriendCenter;
+export default FriendCenter

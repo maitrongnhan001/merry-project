@@ -26,10 +26,24 @@ const showFriendProfile = (payload) => {
     }
 }
 
+const addFriendRequest = (payload) => {
+    return {
+        type: 'ADD_FRIEND_REQUEST',
+        data: payload
+    }
+}
+
 
 const saveFriendProfile = (payload) => {
     return {
         type: 'SAVE_FRIEND_PROFILE',
+        data: payload
+    }
+}
+
+const deleteFromFriendRequest = (payload) => {
+    return {
+        type: 'DELETE_FRIEND_REQUEST',
         data: payload
     }
 }
@@ -39,5 +53,7 @@ export {
     saveFriendsList,
     showFriendProfile,
     saveFriendRequest,
-    saveFriendProfile
+    saveFriendProfile,
+    addFriendRequest,
+    deleteFromFriendRequest
 }

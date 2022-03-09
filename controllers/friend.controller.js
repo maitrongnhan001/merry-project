@@ -81,7 +81,14 @@ module.exports.requestFriend = async (req, res) => {
         const result = []
         for (let value of array) {
             let getUserIds = await friend.getUserId(value);
-            result.push(...getUserIds)
+            let data = {
+                senderId: userId,
+                receiverId: getUserIds[0].id,
+                image: getUserIds[0].image,
+                name: getUserIds[0].name,
+                sex: getUserIds[0].sex
+            }
+            result.push(data)
         }
 
         if (result.length > 0) {

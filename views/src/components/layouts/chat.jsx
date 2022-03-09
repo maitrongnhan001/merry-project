@@ -104,7 +104,9 @@ function Chat() {
             getAddFriend(data => {
                 const friendRequest = addFriendRequest(data)
                 dispatch(friendRequest)
+                console.log(data)
             })
+
 
         })()
     // eslint-disable-next-line react-hooks/exhaustive-deps

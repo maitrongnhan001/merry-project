@@ -2,6 +2,7 @@ import React from 'react'
 import './video-call.scss'
 import { useNavigate } from 'react-router-dom'
 import Waiting from '../partials/video-call/waiting/waiting'
+import Receive from '../partials/video-call/receive/receive'
 import Webcam from "react-webcam"
 import $ from 'jquery'
 
@@ -50,6 +51,7 @@ function VideoCall() {
             
             <div className="video-call-background-partner">
                 <Webcam
+                    mirrored
                     audio={false}
                     ref={webcamRef}
                     screenshotFormat="image/jpeg"
@@ -59,13 +61,15 @@ function VideoCall() {
 
             <div className="video-call-background">
                 <Webcam
+                    mirrored
                     audio={false}
                     ref={webcamRef}
                     screenshotFormat="image/jpeg"
                     width={'100%'}
                 />
             </div>
-            <Waiting></Waiting>
+            <Receive></Receive>
+            {/* <Waiting></Waiting> */}
         </div>
     )
 }

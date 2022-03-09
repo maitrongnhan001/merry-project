@@ -3,7 +3,6 @@
     height: 100%;
     position: absolute;
     overflow: hidden;
-
     .waiting-video-call-user-info-group {
         position: absolute;
         top: 40%;
@@ -13,6 +12,8 @@
         .waiting-video-call-user-avt {
             width: 6rem;
             height: 6rem;
+            margin: 0 auto;
+            display: block;
             object-fit: cover;
             border-radius: 50%;
             animation: VocalCallAnimation1 1s linear infinite alternate;

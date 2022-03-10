@@ -33,7 +33,6 @@ module.exports.sendTextMessage = async (data, socket, io) => {
         //tra thong tin ve cho client
         const time = await chat.getTime(dataMessage.id);
         const senderUserInfo = await user.getUserId(senderId)
-        console.log(senderUserInfo)
         const returnData = {
             messageId: dataMessage.id,
             senderId: dataMessage.sendId,

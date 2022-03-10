@@ -11,6 +11,7 @@ const initial = {
         group: 0,
         isShow: 0,
         id: 0,
+        userId: 0,
         offset: {
             top: 0,
             left: 0
@@ -45,6 +46,7 @@ const taskbarReducer = (state = initial, action)=> {
                     group: action.data.group,
                     isShow: action.data.isShow,
                     id: action.data.id,
+                    userId: action.data.userId,
                     offset: {
                         top: action.data.offset.top,
                         left: action.data.offset.left

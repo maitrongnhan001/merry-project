@@ -8,7 +8,7 @@ import { saveCurrentChat } from '../../../../../redux/actions/message'
 import { sendAddFriend } from '../../../../Sockets/socket-friend'
 import { createRoom } from '../../../../Sockets/socket-chat'
 
-function Item({ id, name, image, addFriend, createGroup, onAddMember }) {
+function Item({userId, id, name, image, addFriend, createGroup, onAddMember }) {
 
     /*----redux----*/
     const currentChatSelector = useSelector(state => state.message.currentChat)
@@ -48,11 +48,9 @@ function Item({ id, name, image, addFriend, createGroup, onAddMember }) {
 
         }
     }
-
     const handleToAddFriend = (e)=> {
         e.stopPropagation()
         e.preventDefault()
-        console.log('hello')
         sendAddFriend({senderId: localStorage.getItem('userId'), receiverId: id})
     }
 
@@ -62,9 +60,10 @@ function Item({ id, name, image, addFriend, createGroup, onAddMember }) {
         const top = $(window).height() <= $(e.target).offset().top + 100 ? $(e.target).offset().top - 60 : $(e.target).offset().top
         const left = $(window).width() <= $(e.target).offset().left + 100 ? $(e.target).offset().left - 180 : $(e.target).offset().left
         const feature = {
-            group: typeof id === 'number' ? 0 : 1,
+            group: id.indexOf('G') ? 0 : 1,
             isShow: 1,
-            id: 1,
+            id: id,
+            userId: userId,
             offset: {
                 top: top,
                 left: left

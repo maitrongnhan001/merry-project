@@ -161,7 +161,7 @@ module.exports.deleteFriend = async (data, socket) => {
     try {
         //kiem tra du lieu
         if ( !(data.senderId  &&  data.receiverId && data.groupId)  ) {
-            socket.emit('delete-friend-error', {msg: 'Lỗi, không đính kèm dữ liệu'})
+            socket.emit('delete-friend', {msg: 'Lỗi, không đính kèm dữ liệu'})
             return;
         }
 
@@ -173,7 +173,7 @@ module.exports.deleteFriend = async (data, socket) => {
          //kiem tra du lieu trong bang friend
          const checkWaiting = await friend.getFriend(sendId, receiveId);
          if ( !checkWaiting ) {
-             socket.emit('delete-friend-error', {msg: 'Lỗi, người này chưa phải bạn bè'});
+             socket.emit('delete-friend', {msg: 'Lỗi, người này chưa phải bạn bè'});
              return;
          }
 
@@ -181,6 +181,7 @@ module.exports.deleteFriend = async (data, socket) => {
         await friend.delete(sendId, receiveId);
         await detailGroup.deleteByGroupId(groupId)
         await group.delete(groupId)
+        
 
         //tra thong tin ve cho client
         const receiveUserSocket = await userIsOnline.getUserSocket(receiveId);
@@ -189,7 +190,7 @@ module.exports.deleteFriend = async (data, socket) => {
         }
         socket.emit('delete-friend', {senderId: sendId, receiverId: receiveId});
     } catch (err) {
-        socket.emit('delete-friend-error', {msg: 'Lỗi, xử lý dữ liệu không thành công'});
+        socket.emit('delete-friend', {msg: 'Lỗi, xử lý dữ liệu không thành công'});
         console.error(err);
     }
 }

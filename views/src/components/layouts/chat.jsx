@@ -20,7 +20,7 @@ import { getConnection, getLogout, sendConnection } from '../Sockets/home'
 import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
 import { getRoom, getTextMessageChat } from '../Sockets/socket-chat'
 import { getAddGroup } from '../Sockets/socket-group'
-import { getAcceptFriend, getAddFriend } from '../Sockets/socket-friend'
+import { getAcceptFriend, getAddFriend, getDeleteFriend } from '../Sockets/socket-friend'
 import { saveCurrentChat, saveMassage } from '../../redux/actions/message'
 
 function Chat() {
@@ -117,6 +117,10 @@ function Chat() {
                 dispatch(friend)
             })
 
+            getDeleteFriend(data=> {
+                console.log(data)
+            })
+
 
         })()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -151,7 +155,7 @@ function Chat() {
             <Tab></Tab>
             <Center></Center>
             {
-                feature.isShow ? <Feature offset={feature.offset} group={feature.group}>{feature.group ? 'Rời nhóm' : 'Xóa bạn'}</Feature> : ''
+                feature.isShow ? <Feature offset={feature.offset} group={feature.group}></Feature> : ''
             } 
         </div>
     );

@@ -28,8 +28,8 @@ const getDismissFriend = async ()=> {
     return await listenSocket('dismiss-friend')
 }
 
-const getDeleteFriend = async ()=> {
-    return await listenSocket('delete-friend')
+const getDeleteFriend = (cb)=> {
+    listenSocket('delete-friend', cb)
 }
 
 export {

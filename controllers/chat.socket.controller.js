@@ -2,6 +2,7 @@ const groupDetail = require('../models/detailGroup.model');
 const chat = require('../models/chat.model');
 const userIsOnline = require('../stores/UserLoginStore');
 const emotionMessage = require('../models/emotion.model');
+const user = require('../models/user.model');
 const path = require('path');
 const fs = require('fs');
 
@@ -31,17 +32,18 @@ module.exports.sendTextMessage = async (data, socket, io) => {
 
         //tra thong tin ve cho client
         const time = await chat.getTime(dataMessage.id);
-
+        const senderUserInfo = await user.getUserId(senderId)
+        console.log(senderUserInfo)
         const returnData = {
             messageId: dataMessage.id,
             senderId: dataMessage.sendId,
             receiverId: dataMessage.receiveId,
-            message: {
-                type: dataMessage.type,
-                content: dataMessage.content,
-                time: time,
-                status: dataMessage.status
-            }
+            type: dataMessage.type,
+            content: dataMessage.content,
+            time: time,
+            status: dataMessage.status,
+            name: `${senderUserInfo[0].lastName} ${senderUserInfo[0].firstName}`,
+            image: senderUserInfo[0].image
         }
 
         io.to(`${dataMessage.receiveId}`).emit('send-text-message', returnData);

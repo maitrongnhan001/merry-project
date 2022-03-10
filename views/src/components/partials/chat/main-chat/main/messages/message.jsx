@@ -29,7 +29,7 @@ function Message({sender, next, children, date, image, name, id}) {
                 </div>
             }
             <div className="message-content" style={{background: styleContent.backgroundColor, color: styleContent.color, padding: styleContent.padding}}>
-                {sender !== 0 && id.indexOf('G') === 0 ? <p className="message-content-name" style={{fontSize: '.8rem', color: '#afbace', height: '1.25rem'}}>{name}</p> : ''}
+                {sender !== 0 && id.indexOf('G') === 0 && next !== 0? <p className="message-content-name" style={{fontSize: '.8rem', color: '#afbace', height: '1.25rem'}}>{name}</p> : ''}
                 {children}
                 <p className="message-content-time" style={{position: styleContent.position, left: styleContent.leftTime}}>{date}</p>
             </div>

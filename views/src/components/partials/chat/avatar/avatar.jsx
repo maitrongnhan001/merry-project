@@ -12,7 +12,6 @@ function Avatar({image, id}) {
     const [isActive, setIsActive] = useState(0)
 
     useEffect(()=> {
-        //console.log(userOnline)
         userOnline.forEach((value)=> {
             if(parseInt(value) === parseInt(id)) {
                 setIsActive(1)

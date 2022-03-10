@@ -79,7 +79,6 @@ module.exports.getGroups = async (req, res) => {
                         arr.push(group)
                     } else {
                         //truy xuat 2 doi tuong trong nhom
-                        
                         const group = {
                             members: members.members,
                             groupId: value.groupId,

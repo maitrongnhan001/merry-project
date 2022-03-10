@@ -17,7 +17,7 @@ function Friends() {
     /*----data----*/
     const items = friendsList.map((value, idx)=>{
         return (
-              <Item key={idx} id={value.id} image={value.image} name={value.name}></Item>
+              <Item key={idx} userId={value.id} id={value.groupId} image={value.image} name={value.name}></Item>
         )
     })
 

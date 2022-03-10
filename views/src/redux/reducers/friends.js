@@ -23,6 +23,19 @@ const friendsReducer = (state = initial, action) => {
                 friendsList
             }
         }
+        case 'ADD_FRIEND_AFTER_ACCEPT': {
+            const friendList = [...state.friendsList]
+            // eslint-disable-next-line eqeqeq
+            if(action.data.sender.id != localStorage.getItem('userId')) {
+                friendList.push(action.data.receiver)
+            }else {
+                friendList.push(action.data.sender)
+            }
+            return {
+                ...state,
+                friendList
+            }
+        }
         case 'SAVE_FRIEND_REQUEST': {
             const friendRequest = [...action.data]
             return {

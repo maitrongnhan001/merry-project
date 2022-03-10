@@ -109,7 +109,7 @@ module.exports.isFriend = (userId1, userId2) => {
 //kiem tra ban be
 module.exports.getFriend = (sendId, receiveId) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM friend WHERE sendId = ${sendId} AND receiveId = ${receiveId}`;
+        const sql = `SELECT * FROM friend WHERE (sendId = ${sendId} AND receiveId = ${receiveId}) OR (sendId = ${receiveId} AND receiveId = ${sendId})`;
         connection.query(sql, function (error, result) {
             if (error) {
                 reject(error);

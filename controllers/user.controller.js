@@ -14,18 +14,19 @@ module.exports.search = async (req, res) => {
             return res.sendStatus(404)
         const data = []
         const friends = await user.searchFriend(senderId)
-        if(!friends)
-            return res.sendStatus(404)
         let array = []
-        for (let friend of friends) {
-            if (friend.sendId == senderId) {
-                array.push(friend.receiveId)
-                continue
-            }
-            if (friend.receiveId == senderId) {
-                array.push(friend.sendId)
+        if(friends){
+            for (let friend of friends) {
+                if (friend.sendId == senderId) {
+                    array.push(friend.receiveId)
+                    continue
+                }
+                if (friend.receiveId == senderId) {
+                    array.push(friend.sendId)
+                }
             }
         }
+        
         for (let value of finds) {
             if (value.id == senderId)
                 continue

@@ -32,6 +32,7 @@ module.exports.getFriend = async (req, res) => {
         const result = []
         for (let value of array) {
             let getUserIds = await friend.getUserId(value);
+            let getGroupId = await 
             result.push({...getUserIds[0], image: {image1: getUserIds[0].image}})
         }
 

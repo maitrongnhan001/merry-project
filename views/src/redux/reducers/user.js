@@ -5,7 +5,7 @@ const initial =  {
 const userReducer = (state = initial, action) => {
     switch(action.type) {
         case 'USER_ONLINE': {
-            let newUserOnline = state.userOnline
+            let newUserOnline = [...state.userOnline]
             if(newUserOnline.length === 0) {
                 newUserOnline.push(action.data)
             }else 
@@ -26,7 +26,7 @@ const userReducer = (state = initial, action) => {
             }
         }
         case 'USER_OFFLINE': {
-            let userOnline = state.userOnline
+            let userOnline = [...state.userOnline]
             for (let idx in userOnline) {
                 console.log(action.data)
                 if(userOnline[idx] === action.data) {

@@ -18,12 +18,11 @@ const getMembers = async (groupId, userId) => {
     const idMembersArray = id.map(element => {
         return element.userId
     })
-
     const members = {
         members: idMembersArray,
-        image: id[0].AdminId ?
+        image: id[0].AdminId ? id[0].image ? {image1: id[0].image, image2: null} :
             { image1: user1[0].image, image2: user2[0].image } : { image1: user2[0].image, image2: null },
-        groupName: id[0].AdminId ? `${user1[0].lastName} ${user1[0].firstName}, ${user2[0].lastName} ${user2[0].firstName},...` : `${user2[0].lastName} ${user2[0].firstName}`,
+        groupName: id[0].AdminId ? id[0].groupName ? id[0].groupName : `${user1[0].lastName} ${user1[0].firstName}, ${user2[0].lastName} ${user2[0].firstName},...` : `${user2[0].lastName} ${user2[0].firstName}`,
     }
     return members
 }
@@ -115,9 +114,13 @@ module.exports.getContent = async (req, res) => {
             return res.sendStatus(404)
         }
         const getMessage = await chat.getContents(senderId, receiverId)
-        
-        if (!getMessage) {
-            return res.sendStatus(404)
+        if (getMessage.length === 0) {
+            return res.status(200).json({
+                message: 'không có tin nhắn',
+                data: {
+                    message: []
+                }
+            })
         }
         let data = {
             receiverId: getMessage[0].receiveId,
@@ -129,6 +132,7 @@ module.exports.getContent = async (req, res) => {
                 messageId :message.id,
                 senderId : message.sendId,
                 receiverId : message.receiveId,
+                name: message.name,
                 content : message.content,
                 image: message.image,
                 type : message.type,

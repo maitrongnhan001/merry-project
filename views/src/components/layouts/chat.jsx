@@ -17,13 +17,23 @@ import Notification from '../partials/chat/tools/notification/notification'
 import FormAdddMember from '../partials/chat/extension/Another-features/add-members/form/form-add-member'
 import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList } from '../APIs/ConnectAPI'
+<<<<<<< HEAD
 import { saveChatList, saveFriendsList } from '../../redux/actions/friends'
 import { saveGroupsList, } from '../../redux/actions/groups'
 import { getConnection, getLogout, sendConnection } from '../Sockets/home'
 import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
 import { getRoom } from '../Sockets/socket-chat'
 import { getAddGroup, getAddMember, getDeleteMember } from '../Sockets/socket-group'
+=======
+import { addFriendRequest, saveChatList, saveFriendsList } from '../../redux/actions/friends'
+import { addGroup, saveGroupsList,  } from '../../redux/actions/groups'
+import { getConnection, getLogout, sendConnection } from '../Sockets/home'
+import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
+import { getRoom, getTextMessageChat } from '../Sockets/socket-chat'
+import { getAddGroup } from '../Sockets/socket-group'
+>>>>>>> 33ed9d46f11bc7727c63c6855f4abe175fc7cf63
 import { getAddFriend } from '../Sockets/socket-friend'
+import { saveCurrentChat, saveMassage } from '../../redux/actions/message'
 
 function Chat() {
     const theme = useSelector(state => state.taskbar.theme)
@@ -69,10 +79,15 @@ function Chat() {
             const groupsList = await getGroupsList(localStorage.getItem('userId'))
             if (groupsList && groupsList.status === 200) {
                 let groupsListAction = saveGroupsList(groupsList.data.data)
+                console.log(groupsList)
                 dispatch(groupsListAction)
             }
+<<<<<<< HEAD
 
 
+=======
+            
+>>>>>>> 33ed9d46f11bc7727c63c6855f4abe175fc7cf63
             //socket connection
             //send connection
             sendConnection(localStorage.getItem('userId'))
@@ -98,6 +113,7 @@ function Chat() {
             })
 
             //getAddGroup
+<<<<<<< HEAD
             getAddGroup((data) => {
                 console.log(data)
             })
@@ -119,6 +135,26 @@ function Chat() {
             })
 
             getAddFriend(data => {})
+=======
+            getAddGroup((data)=> {
+                const addGroupAction = addGroup(data)
+                dispatch(addGroupAction)
+                const currentChat = saveCurrentChat({receiverId: data.groupId, name: data.groupName, image: data.image})
+                dispatch(currentChat)
+            })
+
+            getAddFriend(data => {
+                const friendRequest = addFriendRequest(data)
+                dispatch(friendRequest)
+            })
+
+            getTextMessageChat((data)=> {
+                // setMessage(data)
+                const message = saveMassage(data)
+                dispatch(message)
+            })
+
+>>>>>>> 33ed9d46f11bc7727c63c6855f4abe175fc7cf63
 
         })()
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -6,10 +6,11 @@ import {showExtension,updateShowOrderFeature} from '../../../../../redux/actions
 import {useSelector, useDispatch} from 'react-redux'
 import { useEffect, useState } from 'react'
 import $ from 'jquery'
-import { showFriendProfile } from '../../../../../redux/actions/friends'
+import { saveFriendProfile, showFriendProfile } from '../../../../../redux/actions/friends'
 import { showDialog } from '../../../../../redux/actions/taskbar'
+import { getMemberListFromGroupByGroupId } from '../../../../APIs/ConnectAPI'
 
-function Header({image, name}) {
+function Header({id, image, name}) {
     
     /*----redux----*/
     //lay du lieu tu redux
@@ -39,11 +40,25 @@ function Header({image, name}) {
     }
 
     //xu ly an hien form thong tin ca nhan
-    const handleClickToShowProfile = ()=> {
-        const show = showDialog(3)
-        dispatch(show)
-        const display = showFriendProfile(1)
-        dispatch(display)
+    const handleClickToShowProfile = async ()=> {
+        const result = await getMemberListFromGroupByGroupId(localStorage.getItem('userId'), id) 
+        console.log(result)
+        if(result && result.status === 200) {
+            const friendProfileDataAction = saveFriendProfile(result.data.data)
+            dispatch(friendProfileDataAction)
+            const show = showDialog(3)
+            dispatch(show)
+            const display = showFriendProfile(1)
+            dispatch(display)
+        }
+    }
+
+    const handleVocalCall = (e)=> {
+        window.open('http://localhost:3000/call/vocal-call/36934', 'name','width=1000,height=600,left=250,top=100')
+    }
+
+    const handleVideoCall = (e)=> {
+        window.open('http://localhost:3000/call/video-call/36934', 'name','width=1000,height=600,left=250,top=100')
     }
 
     /*----lifecycle----*/
@@ -78,8 +93,8 @@ function Header({image, name}) {
                     </div>
                     <div className="main-chat-header-tools">
                         <i className="fas fa-search"  onClick={()=>{$('.search-message-wrapper').slideToggle('.25s'); setIsShowSearchBox(isShowSearchBox ? 0 : 1)}}></i>
-                        <i className="fas fa-phone"></i>
-                        <i className="fas fa-video"></i>
+                        <i className="fas fa-phone" onClick={handleVocalCall}></i>
+                        <i className="fas fa-video" onClick={handleVideoCall}></i>
                         <i className="fas fa-bars" onClick={handleClickShowExtension}></i>
                     </div>
                 </div>

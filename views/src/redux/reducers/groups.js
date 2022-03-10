@@ -11,6 +11,15 @@ const groupsReducer = (state = initial, action)=> {
                 groupsList: data
             }
         }
+
+        case 'ADD_GROUP': {
+            let data = state.groupsList
+            data.push(action.data)
+            return {
+                ...state,
+                groupsList: data
+            }
+        }
         default: {
             return{
                 ...state

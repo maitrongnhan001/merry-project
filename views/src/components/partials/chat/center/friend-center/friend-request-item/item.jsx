@@ -1,8 +1,26 @@
 import React from 'react'
+import { useDispatch } from 'react-redux';
+import { deleteFromFriendRequest } from '../../../../../../redux/actions/friends';
 import { urlUserAvatar } from '../../../../../APIs/ConnectAPI';
+import { sendAcceptFriend, sendDismissFriend } from '../../../../../Sockets/socket-friend';
 import './item.scss'
 
-function Item({name, sex, image}) {
+function Item({senderId, receiverId, name, sex, image}) {
+
+    const dispatch = useDispatch()
+
+    const handleClickToAccept = (e)=> {
+        sendAcceptFriend({senderId, receiverId})
+        const friendRequest = deleteFromFriendRequest({senderId, receiverId})
+        dispatch(friendRequest)
+    }
+
+    const handleClickToDismiss = (e)=> {
+        sendDismissFriend({senderId, receiverId})
+        const friendRequest = deleteFromFriendRequest({senderId, receiverId})
+        dispatch(friendRequest)
+    }
+
     return (
         <div className="friend-request-item-wrapper">
             <div className="friend-request-item">
@@ -14,8 +32,8 @@ function Item({name, sex, image}) {
                 <p className="friend-request-item-info-sex">{sex ? 'Nữ' : 'Nam'}</p>
             </div>
             <div className="friend-request-item-btn">
-                <button className="btn friend-request-item-btn-1">Từ chối</button>
-                <button className="btn friend-request-item-btn-2">Chấp nhận</button>
+                <button className="btn friend-request-item-btn-1" onClick={handleClickToDismiss}>Từ chối</button>
+                <button className="btn friend-request-item-btn-2" onClick={handleClickToAccept}>Chấp nhận</button>
             </div>
         </div>
         </div>

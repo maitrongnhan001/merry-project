@@ -35,7 +35,7 @@ function Tab() {
                 {state === 0 ? <ChatTab></ChatTab>: 
                  state === 1 ? <FriendsTab></FriendsTab> : 
                                <GroupsTab></GroupsTab>}
-                <DataLoader></DataLoader>
+                {/* <DataLoader></DataLoader> */}
             </div>
         </div>
     );

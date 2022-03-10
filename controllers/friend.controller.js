@@ -65,6 +65,8 @@ module.exports.requestFriend = async (req, res) => {
             return res.sendStatus(404)
         }
         const requestfriends = await friend.getRequestFriend(userId, limit, offset);
+        if(!requestfriends)
+            return res.sendStatus(404)
         for (let value of requestfriends) {
             if (value.sendId == userId) {
                 delete value.sendId;
@@ -79,7 +81,14 @@ module.exports.requestFriend = async (req, res) => {
         const result = []
         for (let value of array) {
             let getUserIds = await friend.getUserId(value);
-            result.push(...getUserIds)
+            let data = {
+                senderId: userId,
+                receiverId: getUserIds[0].id,
+                image: getUserIds[0].image,
+                name: getUserIds[0].name,
+                sex: getUserIds[0].sex
+            }
+            result.push(data)
         }
 
         if (result.length > 0) {

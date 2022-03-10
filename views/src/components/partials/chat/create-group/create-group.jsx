@@ -2,10 +2,11 @@ import React, { useEffect } from 'react'
 import './create-group.scss'
 import FriendItem from '../tabs/friend-group-items/item'
 import { useSelector, useDispatch } from 'react-redux'
-import { showDialog } from '../../../../redux/actions/taskbar'
+import { saveTab, showCenter, showDialog } from '../../../../redux/actions/taskbar'
 import { useState } from 'react'
 import $ from 'jquery'
 import { sendAddGroup } from '../../../Sockets/socket-group'
+import { addGroup } from '../../../../redux/actions/groups'
 
 function CreateGroup() {
 
@@ -55,8 +56,13 @@ function CreateGroup() {
     //xu ly submits form
     const handleSubmit = async (e) => {
         e.preventDefault()
-        console.log(group)
         sendAddGroup(group)
+        const isDisplay = showDialog(0)
+        dispatch(isDisplay)
+        const tab = saveTab(2)
+        dispatch(tab)
+        const center = showCenter(1)
+        dispatch(center)
     }
 
     //xu ly file

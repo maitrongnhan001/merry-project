@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setTheme, showFeature } from '../../redux/actions/taskbar'
 import { updateShowOrderFeature, updateNewMember, updateDeleteMember } from '../../redux/actions/extension'
-import { updateNotification } from '../../redux/actions/notification'
 import { useNavigate } from 'react-router-dom'
 import TaskBar from '../partials/chat/task-bar/task-bar'
 import Tab from '../partials/chat/tabs/Tab'
@@ -15,23 +14,15 @@ import Center from '../partials/chat/center/center'
 import Loader from '../partials/chat/tools/loader/loader'
 import Notification from '../partials/chat/tools/notification/notification'
 import FormAdddMember from '../partials/chat/extension/Another-features/add-members/form/form-add-member'
+import Ask from '../partials/chat/extension/Another-features/leave-group/form-ask/ask'
 import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList } from '../APIs/ConnectAPI'
-<<<<<<< HEAD
-import { saveChatList, saveFriendsList } from '../../redux/actions/friends'
-import { saveGroupsList, } from '../../redux/actions/groups'
-import { getConnection, getLogout, sendConnection } from '../Sockets/home'
-import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
-import { getRoom } from '../Sockets/socket-chat'
 import { getAddGroup, getAddMember, getDeleteMember } from '../Sockets/socket-group'
-=======
 import { addFriendRequest, saveChatList, saveFriendsList } from '../../redux/actions/friends'
 import { addGroup, saveGroupsList,  } from '../../redux/actions/groups'
 import { getConnection, getLogout, sendConnection } from '../Sockets/home'
 import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
 import { getRoom, getTextMessageChat } from '../Sockets/socket-chat'
-import { getAddGroup } from '../Sockets/socket-group'
->>>>>>> 33ed9d46f11bc7727c63c6855f4abe175fc7cf63
 import { getAddFriend } from '../Sockets/socket-friend'
 import { saveCurrentChat, saveMassage } from '../../redux/actions/message'
 
@@ -82,13 +73,7 @@ function Chat() {
                 console.log(groupsList)
                 dispatch(groupsListAction)
             }
-<<<<<<< HEAD
 
-
-=======
-            
->>>>>>> 33ed9d46f11bc7727c63c6855f4abe175fc7cf63
-            //socket connection
             //send connection
             sendConnection(localStorage.getItem('userId'))
             //listen connection
@@ -112,12 +97,6 @@ function Chat() {
                 console.log(data)
             })
 
-            //getAddGroup
-<<<<<<< HEAD
-            getAddGroup((data) => {
-                console.log(data)
-            })
-
             getAddMember((data) => {
                 if (!data.groupId) return
 
@@ -134,8 +113,6 @@ function Chat() {
                 dispatch(dataDeleteMember);
             })
 
-            getAddFriend(data => {})
-=======
             getAddGroup((data)=> {
                 const addGroupAction = addGroup(data)
                 dispatch(addGroupAction)
@@ -153,9 +130,6 @@ function Chat() {
                 const message = saveMassage(data)
                 dispatch(message)
             })
-
->>>>>>> 33ed9d46f11bc7727c63c6855f4abe175fc7cf63
-
         })()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -176,7 +150,11 @@ function Chat() {
             <Notification />
             {
                 displayFormExtension === 1 ?
-                    <FormAdddMember /> : ''
+                    <FormAdddMember /> 
+                    : 
+                    displayFormExtension === 4 ? 
+                        <Ask/> : ''
+
             }
             {/* <FormAdddMember/> */}
             {

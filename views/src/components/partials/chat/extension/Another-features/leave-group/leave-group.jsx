@@ -1,11 +1,21 @@
 import React from 'react';
 import './leave-group.scss';
+import { useDispatch } from 'react-redux';
+import { showFormFeatureExtension, showExtension } from '../../../../../../redux/actions/extension';
 
 const LeaveGroup = () => {
+    const dispatch = useDispatch();
 
     const handleClickLeaveGroup = (e) => {
         e.stopPropagation();
-        console.log('click');
+
+        //show form
+        const displayForm = showFormFeatureExtension(4);
+        dispatch(displayForm);
+
+        //hide extension
+        const hideExtension = showExtension(0);
+        dispatch(hideExtension);
     }
 
     return (

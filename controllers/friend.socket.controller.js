@@ -1,5 +1,6 @@
 const waiting = require('../models/waiting.model');
 const friend = require('../models/friend.model');
+const user = require('../models/user.model');
 const userIsOnline = require('../stores/UserLoginStore');
 const group = require('../models/group.model');
 const detailGroup = require('../models/detailGroup.model');
@@ -91,13 +92,29 @@ module.exports.acceptFriend = async (data, socket) => {
             [groupObj.id, friendObj.receiveId]
         ]
         await detailGroup.create(users);
+        const senderInfo = await user.getUserId(friendObj.sendId)
+        const receiverInfo = await user.getUserId(friendObj.receiveId)
+        const result = {
+            sender: {
+                id: friendObj.sendId,
+                groupId: groupObj.id,
+                image: senderInfo[0].image,
+                name: `${senderInfo[0].lastName} ${senderInfo[0].firstName}`
+            },
 
+            receiver: {
+                id: friendObj.receiveId,
+                groupId: groupObj.id,
+                image: receiverInfo[0].image,
+                name: `${receiverInfo[0].lastName} ${receiverInfo[0].firstName}`
+            },
+        }
         //tra thong tin ve cho client
         const receiveUserSocket = await userIsOnline.getUserSocket(receiveId);
         if (receiveUserSocket) {
-            receiveUserSocket.emit('accept-friend', {senderId: dataFriend.sendId, receiverId: dataFriend.receiveId, groupId: groupObj.id});
+            receiveUserSocket.emit('accept-friend', result);
         }
-        socket.emit('accept-friend', {senderId: dataFriend.sendId, receiverId: dataFriend.receiveId, groupId: groupObj.id});
+        socket.emit('accept-friend', result);
     } catch (err) {
         socket.emit('accept-friend-error', {msg: 'Lỗi, xử lý dữ liệu không thành công',status: 404});
         console.error(err);
@@ -143,7 +160,7 @@ module.exports.deleteFriend = async (data, socket) => {
     //xoa ket ban
     try {
         //kiem tra du lieu
-        if ( !(data.senderId  &&  data.receiverId) ) {
+        if ( !(data.senderId  &&  data.receiverId && data.groupId)  ) {
             socket.emit('delete-friend-error', {msg: 'Lỗi, không đính kèm dữ liệu'})
             return;
         }
@@ -151,6 +168,7 @@ module.exports.deleteFriend = async (data, socket) => {
         //lay du lieu
         const sendId = data.senderId;
         const receiveId = data.receiverId
+        const groupId = data.groupId
 
          //kiem tra du lieu trong bang friend
          const checkWaiting = await friend.getFriend(sendId, receiveId);
@@ -161,6 +179,8 @@ module.exports.deleteFriend = async (data, socket) => {
 
         //xoa du lieu trong ban waiting
         await friend.delete(sendId, receiveId);
+        await detailGroup.deleteByGroupId(groupId)
+        await group.delete(groupId)
 
         //tra thong tin ve cho client
         const receiveUserSocket = await userIsOnline.getUserSocket(receiveId);

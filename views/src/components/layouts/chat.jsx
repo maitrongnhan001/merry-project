@@ -14,13 +14,13 @@ import Center from '../partials/chat/center/center'
 import Loader from '../partials/chat/tools/loader/loader'
 import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList } from '../APIs/ConnectAPI'
-import { addFriendRequest, saveChatList, saveFriendsList } from '../../redux/actions/friends'
+import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList } from '../../redux/actions/friends'
 import { addGroup, saveGroupsList,  } from '../../redux/actions/groups'
 import { getConnection, getLogout, sendConnection } from '../Sockets/home'
 import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
 import { getRoom, getTextMessageChat } from '../Sockets/socket-chat'
 import { getAddGroup } from '../Sockets/socket-group'
-import { getAddFriend } from '../Sockets/socket-friend'
+import { getAcceptFriend, getAddFriend } from '../Sockets/socket-friend'
 import { saveCurrentChat, saveMassage } from '../../redux/actions/message'
 
 function Chat() {
@@ -110,6 +110,11 @@ function Chat() {
                 // setMessage(data)
                 const message = saveMassage(data)
                 dispatch(message)
+            })
+
+            getAcceptFriend(data=> {
+                const friend = addFriendAfterAccept(data)
+                dispatch(friend)
             })
 
 

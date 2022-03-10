@@ -1,5 +1,6 @@
 const friend = require('../models/friend.model')
 const user = require('../models/user.model')
+const detailGroup = require('../models/detailGroup.model')
 
 module.exports.getFriend = async (req, res) => {
     try {
@@ -22,7 +23,7 @@ module.exports.getFriend = async (req, res) => {
             if (value.sendId == userId) {
                 delete value.sendId;
                 array.push(value.receiveId)
-                continue         
+                continue
             }
             if (value.receiveId == userId) {
                 delete value.receiveId
@@ -32,7 +33,12 @@ module.exports.getFriend = async (req, res) => {
         const result = []
         for (let value of array) {
             let getUserIds = await friend.getUserId(value);
-            result.push({...getUserIds[0], image: {image1: getUserIds[0].image}})
+            let getGroupId = await detailGroup.getGroupIdMember(userId,value)
+            // console.log(getGroupId)
+            if(!getUserIds || !getGroupId ){
+                return res.sendStatus(404)
+            }
+            result.push({...getUserIds[0],groupId: getGroupId ,image: {image1: getUserIds[0].image}})
         }
 
         if (result.length > 0) {
@@ -108,7 +114,6 @@ module.exports.requestFriend = async (req, res) => {
 }
 
 // search friend
-
 module.exports.search = async (req, res) => {
     try {
         let senderId = req.query.senderId ?? ''

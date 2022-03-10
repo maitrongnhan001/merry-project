@@ -61,8 +61,8 @@ function Main({id}) {
                 // eslint-disable-next-line eqeqeq
                 color: value.senderId == localStorage.getItem('userId') ? 'white' : ''
             }    
-            const message = isType(value.message, style)
-            const next = messageList[idx + 1]  && messageList[idx + 1].senderId === value.senderId ? 0 : 1
+            const message = isType(value, style)
+            const next = messageStateList[idx + 1]  && messageStateList[idx + 1].senderId === value.senderId ? 0 : 1
             return (
                 // eslint-disable-next-line eqeqeq
                 <Message key ={idx} id={id} name={value.name} image={value.image} sender={value.senderId == localStorage.getItem('userId') ? 0 : 1} next={next} date={value.time}>{message}</Message>

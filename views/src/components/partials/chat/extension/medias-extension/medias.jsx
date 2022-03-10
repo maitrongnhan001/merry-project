@@ -7,7 +7,7 @@ import './medias.scss';
 import $ from 'jquery';
 
 const Medias = () => {
-    const receiverId = useSelector(state => state.extension).idHeader;
+    const receiverId = useSelector(state => state.message.currentChat.receiverId);
 
     const [is_active, setIsActive] = useState(false);
     const [medias, setMedia] = useState([]);
@@ -22,23 +22,23 @@ const Medias = () => {
         return listElements;
     });
 
-    const getListAndSetState = async (receiverId, limit, position = null) => {
+    const getListAndSetState = async (receiverId, limit, position, caseLoad) => {
         if (!receiverId) return;
         setIsLoading(true);
         const endLimit = limit || 10000;
-        const endPosition = (position !== null) ? position : offset;
+        const endPosition = (position !== null) ? position : 0;
         const result = await getMedias(receiverId, endLimit, endPosition);
 
         switch (result.status) {
             case 200: {
                 const listResponeMedias = result.data.data;
-                let list_Medias = medias;
+                let list_Medias = caseLoad ? medias : [];
                 for (let index of listResponeMedias) {
                     list_Medias.push(`http://localhost:8080/Medias/${index.fileName}`);
                 }
                 setMedia(list_Medias);
                 setOffset(list_Medias.length);
-                const listElements = medias.map((Element, Key) => {
+                const listElements = list_Medias.map((Element, Key) => {
                     return <MeidaItem link_media={Element} key={Key} />
                 });
                 setListMediasTag(listElements);
@@ -68,11 +68,20 @@ const Medias = () => {
         setListMediasTag(null);
 
         await getListAndSetState(receiverId, 10, 0);
+
+        return () => {
+            setOffset(0);
+            setMedia([]);
+            setIsLoading(false);
+            setError(null);
+            setNotification(null);
+            setListMediasTag(null);
+        }
     }, [receiverId]);
 
     const handleScroll = async () => {
         if ($('#list_media_elements').scrollTop() + $('#list_media_elements').height() == $('#list-media-full-size').height()) {
-            await getListAndSetState(receiverId, 10);
+            await getListAndSetState(receiverId, 10, offset, true);
         }
     }
 

@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import Member from './member/member';
 import DataLoader from '../../tools/data-loader/data-loader';
 import { getMembers } from '../../../../APIs/ConnectAPI';
 import './member-group.scss';
-import { useSelector } from 'react-redux';
 import $ from 'jquery';
 
 const MemberGroup = () => {
+
     const idChat = useSelector(state => state.message.currentChat.receiverId);
+    const newMemberObj = useSelector(state => state.extension.newMember);
+    const deleteMemberObj = useSelector(state => state.extension.deleteMember);
+
     const userId = parseInt(localStorage.getItem('userId'));
 
     const [is_active, setIsActive] = useState(false);
@@ -16,21 +20,8 @@ const MemberGroup = () => {
     const [members, setMembers] = useState([]);
     const [admin, setAdmin] = useState(null);
     const [offset, setOffset] = useState(0);
-    const [listMembersTag, setListMembersTag] = useState(() => {
-        const listElements = members.map((Element, Key) => {
-            return <Member
-                image={Element.image}
-                name={Element.name}
-                isAdmin={(admin == Element.id) ? true : false}
-                meIsAdmin={userId === admin ? true : false}
-                id={Element.id}
-                key={Key}
-                />;
-        });
-        return listElements;
-    });
 
-    const getListAndSetState = async (idGroup, limit, position = null) => {
+    const getListAndSetState = async (idGroup, limit, position, caseLoad) => {
         if (!idGroup) return;
         setIsLoading(true);
         const endLimit = limit || 10000;
@@ -40,7 +31,7 @@ const MemberGroup = () => {
         switch (result.status) {
             case 200: {
                 const listResponeMembers = result.data.data;
-                let list_members = members;
+                let list_members = caseLoad ? members : [];
                 for (let index of listResponeMembers.member) {
                     //becasue admin must in top array member
                     if (index.id === listResponeMembers.admin.id) {
@@ -52,7 +43,6 @@ const MemberGroup = () => {
                 
                 //swap user is me
                 if (listResponeMembers.admin.id !== parseInt(userId)) {
-                    console.log('hello');
                     for (let index = 0; index < list_members.length; index ++) {
                         if (list_members[index].id === parseInt(userId)) {
                             const element = list_members[index];
@@ -64,22 +54,8 @@ const MemberGroup = () => {
                 } 
 
                 setMembers(list_members);
-                setAdmin(listResponeMembers.admin);
+                setAdmin(listResponeMembers.admin.id);
                 setOffset(list_members.length);
-                const listElements = members.map((Element, Key) => {
-                    const admin = listResponeMembers.admin.id;
-
-                    return <Member
-                        image={Element.image}
-                        name={Element.name}
-                        isAdmin={(admin === Element.id) ? true : false}
-                        meIsAdmin={userId === admin ? true : false}
-                        index={Key}
-                        id={Element.id}
-                        key={Key}
-                        />;
-                });
-                setListMembersTag(listElements);
                 break;
             }
 
@@ -94,17 +70,36 @@ const MemberGroup = () => {
 
     useEffect(async () => {
         setOffset(0);
-        setMembers([]);
         setIsLoading(false);
+        setMembers([]);
         setError(null);
-        setListMembersTag(null);
 
         getListAndSetState(idChat, 10, 0);
+
+        return () => {
+            setOffset(0);
+            setIsLoading(false);
+            setMembers([]);
+            setError(null);
+        }
     }, [idChat]);
+
+    useEffect(() => {
+        if (!newMemberObj || newMemberObj.groupId !== idChat) return;
+
+        setMembers(members.concat(newMemberObj.members));
+    }, [newMemberObj]);
+
+    useEffect(async () => {
+        if (!deleteMemberObj || deleteMemberObj.groupId !== idChat) return;
+
+       let newMembers = members.filter( value => { return value.id !== deleteMemberObj.memberId } );
+       setMembers(newMembers);
+    }, [deleteMemberObj]);
 
     const handleScroll = async () => {
         if ($('#list_member_elements').scrollTop() + $('#list_member_elements').height() == $('#list-members-full-size').height()) {
-            await getListAndSetState(idChat, 10, offset);
+            await getListAndSetState(idChat, 10, offset, true);
         }
     }
 
@@ -116,6 +111,18 @@ const MemberGroup = () => {
             height: 'toggle'
         });
     }
+
+    const listElements = members.map((Element, Key) => {
+        return <Member
+            image={Element.image}
+            name={Element.name}
+            isAdmin={(admin == Element.id) ? true : false}
+            meIsAdmin={userId === admin ? true : false}
+            index={Key}
+            id={Element.id}
+            key={Key}
+            />;
+    });
 
     return (
         <div className='element-extension'>
@@ -141,7 +148,7 @@ const MemberGroup = () => {
                 onScroll={handleScroll}
             >
                 <div id="list-members-full-size">
-                    {listMembersTag}
+                    {listElements}
                     <div className="text-error center">{error}</div>
                     {isLoading ? <DataLoader /> : ''}
                 </div>

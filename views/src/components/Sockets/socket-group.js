@@ -20,24 +20,24 @@ const sendDeleteMember = (data) => {
     sendSocket('delete-member', data)
 }
 
-const getAddGroup = async (cb)=> {
-     listenSocket('add-group', cb)
+const getAddGroup = (callback) => {
+    listenSocket('add-group', callback)
 }
 
-const getUpdateGroup = async ()=> {
-    return await listenSocket('update-group')
+const getUpdateGroup = (callback) => {
+    listenSocket('update-group', callback)
 }
 
-const getDeleteGroup = async ()=> {
-    return await listenSocket('delete-group')
+const getDeleteGroup = (callback) => {
+    listenSocket('delete-group', callback)
 }
 
-const getAddMember = async ()=> {
-    return await listenSocket('add-member')
+const getAddMember = (callback) => {
+    listenSocket('add-member', callback)
 }
 
-const getDeleteMember = async ()=> {
-    return await listenSocket('delete-member')
+const getDeleteMember = (callback) => {
+    listenSocket('delete-member', callback)
 }
 
 export {

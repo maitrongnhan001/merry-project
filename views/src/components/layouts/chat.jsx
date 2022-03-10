@@ -30,7 +30,6 @@ function Chat() {
     const display = useSelector(state => state.taskbar.addedForm)
     const displayFormExtension = useSelector(state => state.extension.showForm)
     const feature = useSelector(state => state.taskbar.feature)
-    console.log(displayFormExtension)
 
     const dispatch = useDispatch()
 

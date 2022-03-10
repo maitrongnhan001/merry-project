@@ -130,3 +130,30 @@ module.exports.checkSingleGroup = (userId1, userId2) => {
 
     })
 }
+
+// lay groupId cua 2 thanh vien
+module.exports.getGroupIdMember = (userId1, userId2) =>{
+    return new Promise((resolve, reject) =>{
+        const sql = `SELECT COUNT(detailgroup.userId) AS amount, detailgroup.groupId
+                        FROM detailgroup
+                        WHERE (detailgroup.userId = ?
+                        OR detailgroup.userId = ?)
+                        AND detailgroup.groupId LIKE 'U%'
+                        GROUP BY detailgroup.groupId`
+        connection.query(sql, [userId1, userId2], (error, result)=>{
+            if (error) {
+                reject(error);
+            } else {
+                result = JSON.parse(JSON.stringify(result));
+                if (result.length != 0) {
+                    for (let i = 0; i < result.length; i++) {
+                        if (result[i].amount == 2) resolve(result[i].groupId)
+                    }
+                    resolve(null);
+                } else {
+                    resolve(null);
+                }
+            }
+        })
+    })
+}

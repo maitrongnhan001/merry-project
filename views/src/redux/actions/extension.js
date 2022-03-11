@@ -39,5 +39,5 @@ export {
     updateShowOrderFeature,
     showFormFeatureExtension,
     updateNewMember,
-    updateDeleteMember
+    updateDeleteMember,
 }

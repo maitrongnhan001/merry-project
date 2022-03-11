@@ -128,11 +128,10 @@ module.exports.addGroup = async (data, socket, io) => {
 }
 
 module.exports.updateGroup = async (data, socket, io) => {
-    //thong bao toi cac nguoi dung trong nhom, vua cap nhat nhom
     try {
         //kiem tra du lieu
         if (!(data.groupId && (data.groupName || (data.image.fileName && data.image.file)))) {
-            socket.emit('update-group-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
+            socket.emit('update-group', { msg: 'Lỗi, không đính kèm dữ liệu' });
             return;
         }
 
@@ -146,9 +145,9 @@ module.exports.updateGroup = async (data, socket, io) => {
             //kiem tra hinh anh da luu truoc do, neu anh ton tai thi xoa
             let getImage = (await group.get(groupId))[0].image;
             if (getImage) {
-                fs.unlink(path.resolve(__dirname, '../public/avatarGroup/', getImage), (error) => {
+                fs.unlink(path.resolve(__dirname, '../public/avatarUser/', getImage), (error) => {
                     if (error) {
-                        socket.emit('update-group-error', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+                        socket.emit('update-group', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
                         console.error(error);
                     }
                 });
@@ -161,9 +160,9 @@ module.exports.updateGroup = async (data, socket, io) => {
             updateGroupObj.image = imageName;
 
             //luu hinh anh vao server
-            fs.writeFile(path.resolve(__dirname, '../public/avatarGroup/', updateGroupObj.image), data.image.file, (error) => {
+            fs.writeFile(path.resolve(__dirname, '../public/avatarUser/', updateGroupObj.image), data.image.file, (error) => {
                 if (error) {
-                    socket.emit('update-group-error', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+                    socket.emit('update-group', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
                     console.error(error);
                 }
             });
@@ -199,9 +198,8 @@ module.exports.updateGroup = async (data, socket, io) => {
         //lay anh dai dien group
         if (!updateGroupObj.image) {
             let getImage = (await group.get(groupId))[0].image;
-            if (image) {
+            if (!image) {
                 const getImageFromMembers = await detailGroup.getUserByGroupId(groupId, 2, 0);
-                console.log(getImageFromMembers);
                 image = {
                     img1: getImageFromMembers[0].image,
                     img2: getImageFromMembers[1].image
@@ -209,13 +207,13 @@ module.exports.updateGroup = async (data, socket, io) => {
             } else {
                 image = {
                     img1: getImage,
-                    img2: null
+                    img2: ''
                 }
             }
         } else {
             image = {
                 img1: updateGroupObj.image,
-                img2: null
+                img2: ''
             }
         }
 
@@ -225,10 +223,11 @@ module.exports.updateGroup = async (data, socket, io) => {
             groupName: updateGroupObj.groupName,
             image: image
         }
+        console.log(returnData);
 
         io.to(`${groupId}`).emit('update-group', returnData);
     } catch (err) {
-        socket.emit('update-group-error', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+        socket.emit('update-group', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
         console.error(err);
     }
 }

@@ -17,14 +17,16 @@ import FormAdddMember from '../partials/chat/extension/Another-features/add-memb
 import Ask from '../partials/chat/extension/Another-features/leave-group/form-ask/ask'
 import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList } from '../APIs/ConnectAPI'
-import { getAddGroup, getAddMember, getDeleteMember } from '../Sockets/socket-group'
-import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList } from '../../redux/actions/friends'
-import { addGroup, saveGroupsList,  } from '../../redux/actions/groups'
+import { getAddGroup, getAddMember, getDeleteMember, getUpdateGroup } from '../Sockets/socket-group'
+import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList, updateInfomationFriend } from '../../redux/actions/friends'
+import { addGroup, saveGroupsList, updateInfomationGroup  } from '../../redux/actions/groups'
 import { getConnection, getLogout, sendConnection } from '../Sockets/home'
 import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
 import { getRoom, getTextMessageChat } from '../Sockets/socket-chat'
 import { getAcceptFriend, getAddFriend, getDeleteFriend } from '../Sockets/socket-friend'
 import { saveCurrentChat, saveMassage } from '../../redux/actions/message'
+import SetNameForm from '../partials/chat/extension/Another-features/set-name-group/set-name-form/set-name-form'
+import SetAvatarForm from '../partials/chat/extension/Another-features/set-avatar-group/set-avatar-form/set-avatar-form'
 
 function Chat() {
     const theme = useSelector(state => state.taskbar.theme)
@@ -120,6 +122,15 @@ function Chat() {
                 dispatch(currentChat)
             })
 
+            getUpdateGroup(data => {
+                if (!data.groupName || !data.groupId || !data.image) return
+                //luu thong tin nhom vua cap nhat vao redux
+                const updateInfoGroup = updateInfomationGroup(data);
+                dispatch(updateInfoGroup);
+                const updateInfoFriend = updateInfomationFriend(data);
+                dispatch(updateInfoFriend);
+            })
+
             getAddFriend(data => {
                 const friendRequest = addFriendRequest(data)
                 dispatch(friendRequest)
@@ -162,9 +173,15 @@ function Chat() {
             {
                 displayFormExtension === 1 ?
                     <FormAdddMember /> 
-                    : 
-                    displayFormExtension === 4 ? 
-                        <Ask/> : ''
+                    :
+                    displayFormExtension === 2 ?
+                        <SetAvatarForm/>
+                        :
+                        displayFormExtension === 3 ?
+                            <SetNameForm/>
+                            : 
+                            displayFormExtension === 4 ? 
+                                <Ask/> : ''
 
             }
             {/* <FormAdddMember/> */}

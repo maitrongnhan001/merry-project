@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import Image from '../../avatar/avatar';
 import './header-extension.scss';
 import { useSelector } from 'react-redux';
 
 const HeaderExtension = () => {
 
+    //--------get data from redux----------//
     const currentChat = useSelector(state => state.message.currentChat);
     const userId = localStorage.getItem('userId');
+
+    useEffect(() => {
+
+    }, [])
 
     return (
         <div className='extension-header'>

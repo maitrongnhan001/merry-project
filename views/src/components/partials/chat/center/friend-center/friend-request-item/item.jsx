@@ -11,7 +11,6 @@ function Item({senderId, receiverId, name, sex, image}) {
 
     const handleClickToAccept = (e)=> {
         sendAcceptFriend({senderId, receiverId})
-        console.log('1')
         const friendRequest = deleteFromFriendRequest({senderId, receiverId})
         dispatch(friendRequest)
     }
@@ -23,7 +22,7 @@ function Item({senderId, receiverId, name, sex, image}) {
     }
 
     return (
-        <div className="friend-request-item-wrapper">
+        <div className="friend-request-item-wrapper" data-sid={senderId} data-rid={receiverId}>
             <div className="friend-request-item">
             <div className="friend-request-item-avatar">
                 <img src={urlUserAvatar + image} alt="" />

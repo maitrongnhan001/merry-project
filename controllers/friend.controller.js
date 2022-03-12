@@ -74,22 +74,14 @@ module.exports.requestFriend = async (req, res) => {
         if(!requestfriends)
             return res.sendStatus(404)
         for (let value of requestfriends) {
-            if (value.sendId == userId) {
-                delete value.sendId;
-                array.push(value.receiveId)
-                continue
-            }
-            if (value.receiveId == userId) {
-                delete value.receiveId
-                array.push(value.sendId)
-            }
+            array.push(value.sendId)
         }
         const result = []
         for (let value of array) {
             let getUserIds = await friend.getUserId(value);
             let data = {
-                senderId: userId,
-                receiverId: getUserIds[0].id,
+                senderId: getUserIds[0].id,
+                receiverId: userId,
                 image: getUserIds[0].image,
                 name: getUserIds[0].name,
                 sex: getUserIds[0].sex

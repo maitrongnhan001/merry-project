@@ -11,8 +11,6 @@ function FriendCenter() {
     const friendRequestSelector = useSelector(state=>state.friends.friendRequest)
 
     const dispatch = useDispatch()
-
-    console.log('re-render')
     /*----data----*/
     const items = friendRequestSelector.map((value, idx)=> {
         return (

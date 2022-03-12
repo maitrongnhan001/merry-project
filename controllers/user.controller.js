@@ -9,7 +9,6 @@ module.exports.search = async (req, res) => {
         let email = req.query.search ?? ''
         const search = `%${email}%`
         const finds = await user.search(search)
-        // console.log(finds)
         if(!finds)
             return res.sendStatus(404)
         const data = []
@@ -170,26 +169,21 @@ module.exports.getOtherUsers = async (req, res) => {
             return res.sendStatus(404)
         }
         const friends = await friend.listFriend(userId, limit, offset);
-        // console.log(friends)
-        if (!friends) {
-            return res.sendStatus(404)
-        }
-        for (let value of friends) {
-            if (value.sendId == userId) {
-                delete value.sendId;
-                array.push(value.receiveId)
-                continue
-            }
-            if (value.receiveId == userId) {
-                delete value.receiveId
-                array.push(value.sendId)
+        if (friends) {
+            for (let value of friends) {
+                if (value.sendId == userId) {
+                    delete value.sendId;
+                    array.push(value.receiveId)
+                    continue
+                }
+                if (value.receiveId == userId) {
+                    delete value.receiveId
+                    array.push(value.sendId)
+                }
             }
         }
-        // console.log(array)
         const arrAllUsers = []
         const allUsers = await user.getAllUser();
-        // console.log(allUsers)
-        // let index = 0
         for (let value of allUsers) {
             for (let isFriend of array) {
                 if (value.id == isFriend) {

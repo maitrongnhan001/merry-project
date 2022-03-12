@@ -21,7 +21,7 @@ const createRoom = (data)=> {
 }
 
 const getTextMessage = async ()=> {
-    return await listenSocketOneTime('send-text-message')
+    listenSocket('send-text-message')
 }
 
 const getTextMessageChat = (cb)=> {
@@ -32,12 +32,12 @@ const getTextMessageChatX = async ()=> {
     return await listenSocketOneTime('send-message-message')
 }
 
-const getMediaMessage = async ()=> {
-    return await listenSocketOneTime('send-media-message')
+const getMediaMessage = (cb)=> {
+    listenSocket('send-media-message', cb)
 }
 
-const getDocumentMessage = async ()=> {
-    return await listenSocketOneTime('send-document-message')
+const getDocumentMessage = async (cb)=> {
+    listenSocket('send-document-message', cb)
 }
 
 const getEmotionMessage = async ()=> {

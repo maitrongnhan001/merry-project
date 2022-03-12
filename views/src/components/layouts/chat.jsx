@@ -18,11 +18,11 @@ import Ask from '../partials/chat/extension/Another-features/leave-group/form-as
 import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList } from '../APIs/ConnectAPI'
 import { getAddGroup, getAddMember, getDeleteMember } from '../Sockets/socket-group'
-import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList } from '../../redux/actions/friends'
+import { addFriendAfterAccept, addFriendRequest, deleteFriend, saveChatList, saveFriendsList } from '../../redux/actions/friends'
 import { addGroup, saveGroupsList,  } from '../../redux/actions/groups'
 import { getConnection, getLogout, sendConnection } from '../Sockets/home'
 import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
-import { getRoom, getTextMessageChat } from '../Sockets/socket-chat'
+import { getDocumentMessage, getMediaMessage, getRoom, getTextMessageChat } from '../Sockets/socket-chat'
 import { getAcceptFriend, getAddFriend, getDeleteFriend } from '../Sockets/socket-friend'
 import { saveCurrentChat, saveMassage } from '../../redux/actions/message'
 
@@ -31,6 +31,7 @@ function Chat() {
     const display = useSelector(state => state.taskbar.addedForm)
     const displayFormExtension = useSelector(state => state.extension.showForm)
     const feature = useSelector(state => state.taskbar.feature)
+    const isFriendProfileForm = useSelector(state => state.friends.friendProfile)
 
     const dispatch = useDispatch()
 
@@ -126,18 +127,30 @@ function Chat() {
             })
 
             getTextMessageChat((data)=> {
-                // setMessage(data)
+                const message = saveMassage(data)
+                dispatch(message)
+            })
+
+            getMediaMessage(data=> {
+                const message = saveMassage(data)
+                dispatch(message)
+            })
+
+            getDocumentMessage(data=> {
                 const message = saveMassage(data)
                 dispatch(message)
             })
 
             getAcceptFriend(data=> {
-                const friend = addFriendAfterAccept(data)
-                dispatch(friend)
+                console.log('2')
+                const friendAccept = addFriendAfterAccept(data)
+                dispatch(friendAccept)
             })
 
             getDeleteFriend(data=> {
                 console.log(data)
+                const friend = deleteFriend(data)
+                dispatch(friend)
             })
 
 
@@ -176,7 +189,7 @@ function Chat() {
                         <CreateGroup></CreateGroup>
                         :
                         display === 3 ?
-                            <Profile></Profile>
+                            <Profile friendProfile={isFriendProfileForm}></Profile>
                             :
                             ''
             }

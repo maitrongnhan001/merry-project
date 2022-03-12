@@ -33,10 +33,6 @@ function Profile() {
         $('.friend-profile-dialog-form').fadeTo('.5s', 1)
     })
 
-    useEffect(()=> {
-        
-    }, [])
-
     return (
         <div className="friend-profile-dialog-wrapper" onClick={handleClickToHideFriendProfile}>
             <form action="" className="friend-profile-dialog-form" onClick={(e)=>e.stopPropagation()}>

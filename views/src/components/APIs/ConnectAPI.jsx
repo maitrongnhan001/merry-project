@@ -3,6 +3,7 @@ import axios from 'axios'
 axios.defaults.baseURL = 'http://localhost:8080/api'
 const urlImage = 'http://localhost:8080/Medias/'
 const urlUserAvatar = 'http://localhost:8080/avatarUser/'
+const urlDocument = 'http://localhost:8080/documents/'
 
 export default function getAPI(method, url, data = null, token = null) {
     return axios({
@@ -171,9 +172,10 @@ export {
     getContentChat,
     urlImage,
     urlUserAvatar,
+    urlDocument,
     getOthersUsers,
     getGroupInfo,
     getMembers,
     getMemberListFromGroupByGroupId,
-    getUserByEmail
+    getUserByEmail,
 }

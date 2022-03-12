@@ -3,13 +3,19 @@
 
     .custom-avatar {
         height: 7rem;
+
+        .text-error-avatar {
+            color: red;
+            text-align: center;
+            width: 100%;
+            display: inline-block;
+        }
     }
 
     .my-group-update-avatar {
         width: 15rem;
         height: 15rem;
-        margin: 2rem auto;
-
+        margin: 2rem auto 0.5rem auto;
         label {
             width: 100%;
             height: 100%;

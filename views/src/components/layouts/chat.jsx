@@ -19,14 +19,15 @@ import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList } from '../APIs/ConnectAPI'
 import { getAddGroup, getAddMember, getDeleteMember, getUpdateGroup } from '../Sockets/socket-group'
 import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList, updateInfomationFriend } from '../../redux/actions/friends'
-import { addGroup, saveGroupsList, updateInfomationGroup  } from '../../redux/actions/groups'
+import { addGroup, saveGroupsList, updateInfomationGroup } from '../../redux/actions/groups'
 import { getConnection, getLogout, sendConnection } from '../Sockets/home'
 import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
 import { getRoom, getTextMessageChat } from '../Sockets/socket-chat'
-import { getAcceptFriend, getAddFriend, getDeleteFriend } from '../Sockets/socket-friend'
+import { getAcceptFriend, getAddFriend, getDeleteFriend, getDismissFriend } from '../Sockets/socket-friend'
 import { saveCurrentChat, saveMassage } from '../../redux/actions/message'
 import SetNameForm from '../partials/chat/extension/Another-features/set-name-group/set-name-form/set-name-form'
 import SetAvatarForm from '../partials/chat/extension/Another-features/set-avatar-group/set-avatar-form/set-avatar-form'
+import { updateManagerFriend } from '../../redux/actions/extension'
 
 function Chat() {
     const theme = useSelector(state => state.taskbar.theme)
@@ -115,10 +116,10 @@ function Chat() {
                 dispatch(dataDeleteMember);
             })
 
-            getAddGroup((data)=> {
+            getAddGroup((data) => {
                 const addGroupAction = addGroup(data)
                 dispatch(addGroupAction)
-                const currentChat = saveCurrentChat({receiverId: data.groupId, name: data.groupName, image: data.image})
+                const currentChat = saveCurrentChat({ receiverId: data.groupId, name: data.groupName, image: data.image })
                 dispatch(currentChat)
             })
 
@@ -134,23 +135,40 @@ function Chat() {
             getAddFriend(data => {
                 const friendRequest = addFriendRequest(data)
                 dispatch(friendRequest)
+
+                console.log(data);
+                //update extension
+                const updateFriendExtension = updateManagerFriend(1);
+                dispatch(updateFriendExtension);
+
             })
 
-            getTextMessageChat((data)=> {
+            getAcceptFriend(data => {
+                const friend = addFriendAfterAccept(data)
+                dispatch(friend)
+
+                //update extension
+                const updateFriendExtension = updateManagerFriend(1);
+                dispatch(updateFriendExtension);
+            })
+
+            getDismissFriend(data => {
+                //update extension
+                const updateFriendExtension = updateManagerFriend(1);
+                dispatch(updateFriendExtension);
+            })
+
+            getDeleteFriend(data => {
+                //update extension
+                const updateFriendExtension = updateManagerFriend(1);
+                dispatch(updateFriendExtension);
+            })
+
+            getTextMessageChat((data) => {
                 // setMessage(data)
                 const message = saveMassage(data)
                 dispatch(message)
             })
-
-            getAcceptFriend(data=> {
-                const friend = addFriendAfterAccept(data)
-                dispatch(friend)
-            })
-
-            getDeleteFriend(data=> {
-                console.log(data)
-            })
-
 
         })()
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -172,16 +190,16 @@ function Chat() {
             <Notification />
             {
                 displayFormExtension === 1 ?
-                    <FormAdddMember /> 
+                    <FormAdddMember />
                     :
                     displayFormExtension === 2 ?
-                        <SetAvatarForm/>
+                        <SetAvatarForm />
                         :
                         displayFormExtension === 3 ?
-                            <SetNameForm/>
-                            : 
-                            displayFormExtension === 4 ? 
-                                <Ask/> : ''
+                            <SetNameForm />
+                            :
+                            displayFormExtension === 4 ?
+                                <Ask /> : ''
 
             }
             {/* <FormAdddMember/> */}
@@ -202,7 +220,7 @@ function Chat() {
             <Center></Center>
             {
                 feature.isShow ? <Feature offset={feature.offset} group={feature.group}></Feature> : ''
-            } 
+            }
         </div>
     );
 }

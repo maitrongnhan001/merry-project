@@ -113,7 +113,7 @@ function SetAvatarForm() {
                                 onChange={handleChane}
                             />
                         </div>
-                        <span className='text-error-rename'>{error}</span>
+                        <span className='text-error-avatar'>{error}</span>
                     </div>
                     <div className="extension-form-submit custom-avatar-group-btn">
                         <input type="button" className="extension-form-submit-btn extension-form-submit-btn-1" value="Hủy bỏ" onClick={handleClickToHideForm} />

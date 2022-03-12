@@ -52,3 +52,21 @@ module.exports.getWaiting = (sendId, receiveId) => {
         });
     });
 }
+
+//kiem tra waiting
+module.exports.isWaiting = (userId1, userId2) => {
+    return new Promise((resolve, reject) => {
+        const sql = 'SELECT * from waitingresquest where (sendId = ? and receiveId = ? ) or (sendId = ? and receiveId = ?)'
+        connection.query(sql, [userId1, userId2, userId2, userId1], (err, result) => {
+            if(err)
+                reject(err);
+            else {
+                if(result.length > 0) {
+                    resolve(result)
+                }else{
+                    resolve(null)
+                }
+            }
+        })
+    })
+}

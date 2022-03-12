@@ -22,7 +22,6 @@ const AddMember = () => {
             className='function-name'
             onClick={clickAddMember}
         >Thêm thành viên</p>
-        <hr className='function-distingush' />
     </div>
     );
 }

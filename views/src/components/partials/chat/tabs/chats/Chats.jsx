@@ -11,7 +11,6 @@ function Chats() {
 
     /*----data----*/
     const items = chatsList.map((value, idx)=>{
-        console.log(value);
         return (
             <Item key={idx} id={value.receiverId} image={value.image} name={value.receiverName} lastMessage={value.lastMessage}></Item>
         )

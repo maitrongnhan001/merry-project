@@ -24,7 +24,7 @@ const LeaveGroup = () => {
             onClick={handleClickLeaveGroup}
         >
             <p className='function-name red'>Rời nhóm</p>
-            <hr className='function-distingush' />
+
         </div>
     );
 }

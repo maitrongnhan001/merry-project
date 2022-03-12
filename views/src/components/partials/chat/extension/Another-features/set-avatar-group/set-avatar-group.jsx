@@ -9,7 +9,7 @@ const SetAvatarGroup = () => {
     //------------handle------------------//
     //show form update avatar
     const handleClickShowAvatarForm = (e) => {
-        e.preventDefault();
+        e.stopPropagation();
         
         const showFormUpdateAvatar = showFormFeatureExtension(2);
         dispatch(showFormUpdateAvatar);
@@ -23,7 +23,6 @@ const SetAvatarGroup = () => {
             onClick={handleClickShowAvatarForm}
         >
             <p className='function-name'>Thay đổi ảnh đại diện nhóm</p>
-            <hr className='function-distingush' />
         </div>
     );
 }

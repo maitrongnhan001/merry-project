@@ -9,7 +9,7 @@ const SetNameGroup = () => {
 
     //-----handle-------//
     const handleClickRename = (e) => {
-        e.preventDefault()
+        e.stopPropagation();
 
         //show form
         const showFormRename = showFormFeatureExtension(3);
@@ -26,7 +26,6 @@ const SetNameGroup = () => {
                 className='function-name'
                 onClick={handleClickRename}
             >Đổi tên nhóm</p>
-            <hr className='function-distingush' />
         </div>
     );
 }

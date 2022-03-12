@@ -120,7 +120,7 @@ module.exports.acceptFriend = async (data, socket) => {
             },
         }
         //tra thong tin ve cho client
-        const receiveUserSocket = await userIsOnline.getUserSocket(receiveId);
+        const receiveUserSocket = await userIsOnline.getUserSocket(sendId);
         if (receiveUserSocket) {
             receiveUserSocket.emit('accept-friend', result);
         }

@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setTheme, showFeature } from '../../redux/actions/taskbar'
+import { setTheme, showCenter, showFeature } from '../../redux/actions/taskbar'
 import { updateShowOrderFeature, updateNewMember, updateDeleteMember } from '../../redux/actions/extension'
 import { useNavigate } from 'react-router-dom'
 import TaskBar from '../partials/chat/task-bar/task-bar'
@@ -57,7 +57,6 @@ function Chat() {
             //call chat list API
             const chatsList = await getListChat(localStorage.getItem('userId'))
             if (chatsList && chatsList.status === 200) {
-                console.log(chatsList)
                 let chatListAction = saveChatList(chatsList.data.data)
                 dispatch(chatListAction)
             }
@@ -71,7 +70,6 @@ function Chat() {
             const groupsList = await getGroupsList(localStorage.getItem('userId'))
             if (groupsList && groupsList.status === 200) {
                 let groupsListAction = saveGroupsList(groupsList.data.data)
-                console.log(groupsList)
                 dispatch(groupsListAction)
             }
 
@@ -117,8 +115,11 @@ function Chat() {
             getAddGroup((data)=> {
                 const addGroupAction = addGroup(data)
                 dispatch(addGroupAction)
+                console.log(data)
                 const currentChat = saveCurrentChat({receiverId: data.groupId, name: data.groupName, image: data.image})
                 dispatch(currentChat)
+                const center = showCenter(1)
+                dispatch(center)
             })
 
             getAddFriend(data => {
@@ -142,13 +143,11 @@ function Chat() {
             })
 
             getAcceptFriend(data=> {
-                console.log('2')
                 const friendAccept = addFriendAfterAccept(data)
                 dispatch(friendAccept)
             })
 
             getDeleteFriend(data=> {
-                console.log(data)
                 const friend = deleteFriend(data)
                 dispatch(friend)
             })

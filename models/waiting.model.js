@@ -21,8 +21,7 @@ module.exports.create = (waitingObj) => {
 //xoa mot yeu cau ket ban
 module.exports.delete = (sendId, receiveId) => {
     return new Promise((resolve, reject) => {
-        const sql = `DELETE FROM waitingresquest WHERE (sendId=${sendId} AND receiveId=${receiveId})
-        OR (sendId=${receiveId} AND receiveId=${sendId})`;
+        const sql = `DELETE FROM waitingresquest WHERE (sendId=${sendId} AND receiveId=${receiveId})`;
         connection.query(sql, (error, result) => {
             if (error) {
                 reject(error);

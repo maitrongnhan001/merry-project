@@ -82,18 +82,16 @@ module.exports.addGroup = async (data, socket, io) => {
 
         //tra du lieu ve cho client
         if (members.length > 2) {
-            if (!groupName) {
-                //lay ten chat nhom
-                //lay hinh anh nhom
-                for (let i = 0; i < members.length; i++) {
-                    if (members[i] != AdminId) {
-                        const dataUser1 = await user.get(AdminId);
-                        const dataUser2 = await user.get(members[i]);
-                        groupName = `${dataUser1[0].firstName}, ${dataUser2[0].firstName}, ...`;
-                        var img1 = dataUser1[0].image;
-                        var img2 = dataUser2[0].image;
-                        i = members.length;
-                    }
+            //lay ten chat nhom
+            //lay hinh anh nhom
+            for (let i = 0; i < members.length; i++) {
+                if (members[i] != AdminId) {
+                    const dataUser1 = await user.get(AdminId);
+                    const dataUser2 = await user.get(members[i]);
+                    groupName = groupName ? groupName : `${dataUser1[0].firstName}, ${dataUser2[0].firstName}, ...`;
+                    var img1 = dataUser1[0].image;
+                    var img2 = dataUser2[0].image;
+                    i = members.length;
                 }
             }
         } else {
@@ -115,8 +113,8 @@ module.exports.addGroup = async (data, socket, io) => {
             groupName: groupName,
             members: members,
             image: {
-                img1: img1,
-                img2: img2
+                image1: img1,
+                image2: img2
             }
         }
 

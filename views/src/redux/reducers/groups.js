@@ -13,7 +13,7 @@ const groupsReducer = (state = initial, action) => {
         }
 
         case 'ADD_GROUP': {
-            let data = state.groupsList
+            let data = [...state.groupsList]
             data.push(action.data)
             return {
                 ...state,

@@ -49,7 +49,6 @@ function Item({userId, id, name, image, addFriend, createGroup, onAddMember }) {
         }
     }
     const handleToAddFriend = (e)=> {
-        e.stopPropagation()
         e.preventDefault()
         sendAddFriend({senderId: localStorage.getItem('userId'), receiverId: id})
     }

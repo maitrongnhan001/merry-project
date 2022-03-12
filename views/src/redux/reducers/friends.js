@@ -16,6 +16,24 @@ const friendsReducer = (state = initial, action) => {
                 chatsList
             }
         }
+        case 'UPDATE_CHAT_LIST': {
+            const chatsList = [...state.chatsList]
+            for(let value of chatsList) {
+                // eslint-disable-next-line eqeqeq
+                if(value.receiverId == action.data.receiverId) {
+                    value.lastMessage.type = action.data.type
+                    // eslint-disable-next-line eqeqeq
+                    if(action.data.type == 'text') {
+                        value.lastMessage.type = 'text'
+                        value.lastMessage.content = action.data.content
+                    }
+                }
+            }
+            return {
+                ...state,
+                chatsList
+            }
+        }
         case 'SAVE_FRIENDS_LIST': {
             const friendsList = [...action.data]
             return {
@@ -29,11 +47,9 @@ const friendsReducer = (state = initial, action) => {
             // eslint-disable-next-line eqeqeq
             if(data.sender.id == localStorage.getItem('userId')) {
                 newFriendList.unshift(data.receiver)
-                console.log('co vao khong 1')
             // eslint-disable-next-line eqeqeq
             }else if(data.receiver.id == localStorage.getItem('userId')){
                 newFriendList.unshift(data.sender)
-                console.log('co vao khong 2')
             }
             return {
                 ...state,
@@ -106,11 +122,13 @@ const friendsReducer = (state = initial, action) => {
             let newFriendList = [...state.friendsList]
             // eslint-disable-next-line eqeqeq
             if(action.data.senderId == localStorage.getItem('userId')) {
-                const idx = newFriendList.findIndex((value)=> value.id === action.data.receiverId)
+                // eslint-disable-next-line eqeqeq
+                const idx = newFriendList.findIndex((value)=> value.id == action.data.receiverId)
                 newFriendList.splice(idx, 1)
             // eslint-disable-next-line eqeqeq
             }else if(action.data.receiverId == localStorage.getItem('userId')){
-                const idx = newFriendList.findIndex((value)=> value.id === action.data.senderId)
+                // eslint-disable-next-line eqeqeq
+                const idx = newFriendList.findIndex((value)=> value.id == action.data.senderId)
                 newFriendList.splice(idx, 1)
             }
             return {

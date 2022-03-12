@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setTheme, showFeature } from '../../redux/actions/taskbar'
+import { setTheme, showCenter, showFeature } from '../../redux/actions/taskbar'
 import { updateShowOrderFeature, updateNewMember, updateDeleteMember } from '../../redux/actions/extension'
 import { useNavigate } from 'react-router-dom'
 import TaskBar from '../partials/chat/task-bar/task-bar'
@@ -60,7 +60,6 @@ function Chat() {
             //call chat list API
             const chatsList = await getListChat(localStorage.getItem('userId'))
             if (chatsList && chatsList.status === 200) {
-                console.log(chatsList)
                 let chatListAction = saveChatList(chatsList.data.data)
                 dispatch(chatListAction)
             }
@@ -74,7 +73,6 @@ function Chat() {
             const groupsList = await getGroupsList(localStorage.getItem('userId'))
             if (groupsList && groupsList.status === 200) {
                 let groupsListAction = saveGroupsList(groupsList.data.data)
-                console.log(groupsList)
                 dispatch(groupsListAction)
             }
 
@@ -120,8 +118,10 @@ function Chat() {
             getAddGroup((data) => {
                 const addGroupAction = addGroup(data)
                 dispatch(addGroupAction)
-                const currentChat = saveCurrentChat({ receiverId: data.groupId, name: data.groupName, image: data.image })
+                const currentChat = saveCurrentChat({receiverId: data.groupId, name: data.groupName, image: data.image})
                 dispatch(currentChat)
+                const center = showCenter(1)
+                dispatch(center)
             })
 
             getUpdateGroup(data => {

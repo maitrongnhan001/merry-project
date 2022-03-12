@@ -58,6 +58,12 @@ const addFriendAfterAccept = (payload) => {
 const updateInfomationFriend = (payload) => {
     return { 
         type: 'UPDATE_CHAT_INFOMATION',
+    }
+}
+
+const deleteFriend = (payload) => {
+    return {
+        type: 'DELETE_FRIEND',
         data: payload
     }
 }
@@ -71,5 +77,6 @@ export {
     addFriendRequest,
     deleteFromFriendRequest,
     addFriendAfterAccept,
-    updateInfomationFriend
+    updateInfomationFriend,
+    deleteFriend
 }

@@ -22,7 +22,7 @@ import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList, 
 import { addGroup, saveGroupsList, updateInfomationGroup } from '../../redux/actions/groups'
 import { getConnection, getLogout, sendConnection } from '../Sockets/home'
 import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
-import { getRoom, getTextMessageChat } from '../Sockets/socket-chat'
+import { getRoom, getTextMessageChat, getMediaMessage, getDocumentMessage } from '../Sockets/socket-chat'
 import { getAcceptFriend, getAddFriend, getDeleteFriend, getDismissFriend } from '../Sockets/socket-friend'
 import { saveCurrentChat, saveMassage } from '../../redux/actions/message'
 import SetNameForm from '../partials/chat/extension/Another-features/set-name-group/set-name-form/set-name-form'
@@ -34,6 +34,7 @@ function Chat() {
     const display = useSelector(state => state.taskbar.addedForm)
     const displayFormExtension = useSelector(state => state.extension.showForm)
     const feature = useSelector(state => state.taskbar.feature)
+    const isFriendProfileForm = useSelector(state => state.friends.friendProfile)
 
     const dispatch = useDispatch()
 
@@ -136,30 +137,44 @@ function Chat() {
                 const friendRequest = addFriendRequest(data)
                 dispatch(friendRequest)
 
-                console.log(data);
-                //update extension
-                const updateFriendExtension = updateManagerFriend(1);
-                dispatch(updateFriendExtension);
-
-            })
-
-            getAcceptFriend(data => {
-                const friend = addFriendAfterAccept(data)
-                dispatch(friend)
-
-                //update extension
                 const updateFriendExtension = updateManagerFriend(1);
                 dispatch(updateFriendExtension);
             })
 
             getDismissFriend(data => {
-                //update extension
                 const updateFriendExtension = updateManagerFriend(1);
                 dispatch(updateFriendExtension);
             })
 
-            getDeleteFriend(data => {
-                //update extension
+            getTextMessageChat((data)=> {
+                const message = saveMassage(data)
+                dispatch(message)
+            })
+
+            getMediaMessage(data=> {
+                const message = saveMassage(data)
+                dispatch(message)
+            })
+
+            getDocumentMessage(data=> {
+                const message = saveMassage(data)
+                dispatch(message)
+            })
+
+            getAcceptFriend(data=> {
+                console.log('2')
+                const friendAccept = addFriendAfterAccept(data)
+                dispatch(friendAccept)
+
+                const updateFriendExtension = updateManagerFriend(1);
+                dispatch(updateFriendExtension);
+            })
+
+            getDeleteFriend(data=> {
+                console.log(data)
+                const friend = deleteFriend(data)
+                dispatch(friend)
+
                 const updateFriendExtension = updateManagerFriend(1);
                 dispatch(updateFriendExtension);
             })
@@ -211,7 +226,7 @@ function Chat() {
                         <CreateGroup></CreateGroup>
                         :
                         display === 3 ?
-                            <Profile></Profile>
+                            <Profile friendProfile={isFriendProfileForm}></Profile>
                             :
                             ''
             }

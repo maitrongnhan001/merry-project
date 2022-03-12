@@ -7,18 +7,19 @@ import $ from 'jquery'
 import { saveCurrentChat } from '../../../../../../redux/actions/message';
 import { createRoom } from '../../../../../Sockets/socket-chat';
 
-function Item({id, image, name, lastMessage}) {
+function Item({id, members, image, name, lastMessage}) {
 
     /*----redux----*/
     //ket noi den redux
     const currentChatSelector = useSelector(state => state.message.currentChat)
-
     const dispatch = useDispatch()
+   
+
 
     /*----handles----*/
     //xu ly hien thi chat item  
     const handleClickToShowChat = async (e)=> {
-        const currentChat = saveCurrentChat({receiverId: id, image, name})
+        const currentChat = saveCurrentChat({receiverId: id, image, name, members: members})
         dispatch(currentChat)
         const display = showCenter(1)
         dispatch(display)
@@ -48,10 +49,12 @@ function Item({id, image, name, lastMessage}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentChatSelector])
 
+
+
     return (
         <div className="tab-chat-item" data-id={id} onClick={handleClickToShowChat}>
             <div className="tab-chat-avatar">
-                <Image image={image}></Image>
+                <Image image={image} id={id} members={members}></Image>
             </div>
             <div className="tab-chat-info">
                 <p className="tab-chat-name">{name}</p>

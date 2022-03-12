@@ -56,7 +56,7 @@ module.exports.acceptFriend = async (data, socket) => {
     try {
         //kiem tra du lieu
         if (!(data.senderId && data.receiverId)) {
-            socket.emit('accept-friend-error', { msg: 'Lỗi, không đính kèm dữ liệu', status: 404 });
+            socket.emit('accept-friend', { msg: 'Lỗi, không đính kèm dữ liệu', status: 404 });
             return;
         }
 
@@ -65,9 +65,10 @@ module.exports.acceptFriend = async (data, socket) => {
         const receiveId = data.receiverId
 
         //kiem tra du lieu trong bang waiting
+        console.log(data);
         const checkWaiting = await waiting.getWaiting(sendId, receiveId);
         if (!checkWaiting) {
-            socket.emit('accept-friend-error', { msg: 'Lỗi, chưa gửi lời mời kết bạn', status: 404 });
+            socket.emit('accept-friend', { msg: 'Lỗi, chưa gửi lời mời kết bạn', status: 404 });
             return;
         }
 
@@ -126,7 +127,7 @@ module.exports.acceptFriend = async (data, socket) => {
         }
         socket.emit('accept-friend', result);
     } catch (err) {
-        socket.emit('accept-friend-error', { msg: 'Lỗi, xử lý dữ liệu không thành công', status: 404 });
+        socket.emit('accept-friend', { msg: 'Lỗi, xử lý dữ liệu không thành công', status: 404 });
         console.error(err);
     }
 }
@@ -170,7 +171,7 @@ module.exports.deleteFriend = async (data, socket) => {
     //xoa ket ban
     try {
         //kiem tra du lieu
-        if (!(data.senderId && data.receiverId && data.groupId)) {
+        if (!(data.senderId && data.receiverId)) {
             socket.emit('delete-friend', { msg: 'Lỗi, không đính kèm dữ liệu' })
             return;
         }
@@ -178,7 +179,6 @@ module.exports.deleteFriend = async (data, socket) => {
         //lay du lieu
         const sendId = data.senderId;
         const receiveId = data.receiverId
-        const groupId = data.groupId
 
         //kiem tra du lieu trong bang friend
         const checkWaiting = await friend.getFriend(sendId, receiveId);

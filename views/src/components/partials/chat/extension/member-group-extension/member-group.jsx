@@ -69,12 +69,13 @@ const MemberGroup = () => {
     }
 
     useEffect(async () => {
+        if (idChat.indexOf('G') !== 0) return;
         setOffset(0);
         setIsLoading(false);
         setMembers([]);
         setError(null);
 
-        getListAndSetState(idChat, 10, 0);
+        await getListAndSetState(idChat, 10, 0);
 
         return () => {
             setOffset(0);
@@ -85,16 +86,20 @@ const MemberGroup = () => {
     }, [idChat]);
 
     useEffect(() => {
-        if (!newMemberObj || newMemberObj.groupId !== idChat) return;
+        if (!newMemberObj || newMemberObj.groupId !== idChat || idChat.indexOf('G') !== 0) return;
 
         setMembers(members.concat(newMemberObj.members));
+
+        return () => {}
     }, [newMemberObj]);
 
-    useEffect(async () => {
-        if (!deleteMemberObj || deleteMemberObj.groupId !== idChat) return;
+    useEffect(() => {
+        if (!deleteMemberObj || deleteMemberObj.groupId !== idChat  || idChat.indexOf('G') !== 0) return;
 
        let newMembers = members.filter( value => { return value.id !== deleteMemberObj.memberId } );
        setMembers(newMembers);
+
+       return () => {}
     }, [deleteMemberObj]);
 
     const handleScroll = async () => {

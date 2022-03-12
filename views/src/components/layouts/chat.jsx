@@ -18,7 +18,7 @@ import Ask from '../partials/chat/extension/Another-features/leave-group/form-as
 import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList } from '../APIs/ConnectAPI'
 import { getAddGroup, getAddMember, getDeleteMember, getUpdateGroup } from '../Sockets/socket-group'
-import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList, updateInfomationFriend } from '../../redux/actions/friends'
+import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList, updateInfomationFriend, deleteFriend } from '../../redux/actions/friends'
 import { addGroup, saveGroupsList, updateInfomationGroup } from '../../redux/actions/groups'
 import { getConnection, getLogout, sendConnection } from '../Sockets/home'
 import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
@@ -162,7 +162,6 @@ function Chat() {
             })
 
             getAcceptFriend(data=> {
-                console.log('2')
                 const friendAccept = addFriendAfterAccept(data)
                 dispatch(friendAccept)
 
@@ -171,7 +170,6 @@ function Chat() {
             })
 
             getDeleteFriend(data=> {
-                console.log(data)
                 const friend = deleteFriend(data)
                 dispatch(friend)
 

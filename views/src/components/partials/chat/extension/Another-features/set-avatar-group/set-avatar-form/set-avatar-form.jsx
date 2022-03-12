@@ -84,6 +84,8 @@ function SetAvatarForm() {
     /*----lifecycle----*/
     useEffect(() => {
         $('.main-chat-my-profile-form').fadeTo('.5s', 1)
+
+        return () => {}
     })
 
     useEffect(() => {
@@ -93,6 +95,9 @@ function SetAvatarForm() {
         if (!initImage.image2)
             setReviewImage(<img src={urlUserAvatar + initImage.image1} alt="" />);
 
+        return () => {
+            setReviewImage(null);
+        }
     }, [currentChat])
     return (
         <div className="extension-form-wrapper" onClick={handleClickToHideForm}>

@@ -40,6 +40,10 @@ const Feature = (props) => {
         }
 
         setIsFriend(resultFriend);
+
+        return () => {
+            setIsFriend(null);
+        }
     }, [listFriend]);
 
     const handleClickAddfriend = async (e) => {

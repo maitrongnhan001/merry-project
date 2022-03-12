@@ -55,7 +55,7 @@ const Links = () => {
                 break;
             }
         }
-        
+
         setIsLoading(false);
     }
 
@@ -69,6 +69,15 @@ const Links = () => {
         setListLinksTag(null);
 
         await getListAndSetState(receiverId, 10, 0);
+
+        return () => {
+            setOffset(0);
+            setLinks([]);
+            setIsLoading(false);
+            setError(null);
+            setNotification(null);
+            setListLinksTag(null);
+        }
     }, [receiverId]);
 
     const handleScroll = async () => {
@@ -112,7 +121,7 @@ const Links = () => {
                     {listLinksTag}
                     <div className="text-notification center">{notification}</div>
                     <div className="text-error center">{error}</div>
-                    {isLoading ? <DataLoader/> : ''}
+                    {isLoading ? <DataLoader /> : ''}
                 </div>
             </div>
         </div>

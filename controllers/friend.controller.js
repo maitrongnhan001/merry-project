@@ -203,7 +203,8 @@ module.exports.checkFriend = async (req, res) => {
         //return data, khong co trong ban waiting 
         const returnData = {
             message: 'Truy vấn thành công',
-            statusFriend: 0
+            statusFriend: 0,
+            data: anotherUserId
         }
         return res.status(200).json(returnData);
     } catch (error) {

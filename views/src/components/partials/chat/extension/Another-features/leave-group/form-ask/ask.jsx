@@ -56,9 +56,9 @@ function Ask() {
 
     useEffect(()=>{
         $('.create-group-form-action').fadeTo('.5s', 1)
-    })
 
-    useEffect(() => {}, [])
+        return () => {}
+    })
 
     return (
         <div className="out-group-form-wrapper" onClick={handleClickToHideCreateGroup}>

@@ -32,13 +32,17 @@ const CreateGroup = () => {
     //-------------life cycle--------------//
     useEffect( async () => {
         //check data
-        if (!userId || !idChat) return;
+        if (!userId || !idChat || idChat.indexOf('G') === 0) return;
 
         //get it anotherUser
         const result = await getAnotherUserByGroupId(userId, idChat);
         
         if (result.status === 200) {
             setAnotherUser(result.data.data);
+        }
+
+        return () => {
+            setAnotherUser(null);
         }
     }, [idChat]);
 

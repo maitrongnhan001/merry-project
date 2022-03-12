@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './manager-friend.scss';
 import { useSelector, useDispatch } from 'react-redux';
-import { checkFriend } from '../../../../../APIs/ConnectAPI';
+import { checkFriend, getAnotherUserByGroupId } from '../../../../../APIs/ConnectAPI';
 import { updateNotification } from '../../../../../../redux/actions/notification';
 import { sendAddFriend, sendAcceptFriend, sendDismissFriend, sendDeleteFriend} from '../../../../../Sockets/socket-friend';
 
@@ -26,6 +26,8 @@ const ManagerFriend = () => {
     const handleClickCancelFriend = async (e) => {
         e.stopPropagation();
 
+        if (!anotherUser || !userId) return
+
         const data = {
             senderId: userId,
             receiverId: anotherUser
@@ -39,6 +41,8 @@ const ManagerFriend = () => {
 
     const handleClickAddFriend = async (e) => {
         e.stopPropagation();
+
+        if (!anotherUser || !userId) return
 
         const data = {
             senderId: userId,
@@ -54,6 +58,8 @@ const ManagerFriend = () => {
     const handleClickDeleteFriend = async (e) => {
         e.stopPropagation();
 
+        if (!anotherUser || !userId) return
+
         const data = {
             senderId: userId,
             receiverId: anotherUser
@@ -67,6 +73,8 @@ const ManagerFriend = () => {
 
     const handleClickAcceptFriend = async (e) => {
         e.stopPropagation();
+
+        if (!anotherUser || !userId) return
 
         const data = {
             senderId: userId,
@@ -92,27 +100,33 @@ const ManagerFriend = () => {
                 } else {
                     setStatus(2);
                 }
-                setAnotherUser(result.data.receiveId);
                 break;
             }
 
             case 2: {
                 setStatus(3);
-                setAnotherUser(result.data);
                 break;
             }
 
             default: {
                 setStatus(0)
-                setAnotherUser(result.data);
             }
+        }
+
+        const ResultAnotherUser = (await getAnotherUserByGroupId(userId, idChat)).data.data;
+
+        setAnotherUser(ResultAnotherUser);
+
+        return () => {
+            setAnotherUser(null);
+            setStatus(null);
         }
     }, [idChat, updateManagerFriend]);
 
     return (
         <div className='item-function'>
             {status === 0 ? <p
-                className='function-name blue'
+                className='function-name'
                 onClick={handleClickAddFriend}
             >Kết bạn</p> : ''}
             {status === 1 ? <p
@@ -121,7 +135,7 @@ const ManagerFriend = () => {
             >Huỷ yêu cầu</p> : ''}
             {status === 2 ?
                 <p
-                    className='function-name blue'
+                    className='function-name'
                     onClick={handleClickAcceptFriend}
                 >Đồng ý yêu cầu kết bạn</p> : ''}
             {status === 3 ? <p

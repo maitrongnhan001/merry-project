@@ -9,10 +9,6 @@ const HeaderExtension = () => {
     const currentChat = useSelector(state => state.message.currentChat);
     const userId = localStorage.getItem('userId');
 
-    useEffect(() => {
-
-    }, [])
-
     return (
         <div className='extension-header'>
             <div className="extension-header-avatar">

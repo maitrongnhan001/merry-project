@@ -115,9 +115,9 @@ function FormAdddMember() {
 
     useEffect(() => {
         $('.create-group-form-action').fadeTo('.5s', 1)
-    })
 
-    useEffect(() => { }, [])
+        return () => {}
+    })
 
     /*----data----*/
     //map du lieu

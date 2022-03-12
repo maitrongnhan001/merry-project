@@ -70,9 +70,9 @@ function SetNameForm() {
 
     useEffect(() => {
         $('.create-group-form-action').fadeTo('.5s', 1)
-    })
 
-    useEffect(() => { }, [])
+        return () => {}
+    })
 
     return (
         <div className="extension-form-wrapper" onClick={handleClickToHideForm}>

@@ -63,6 +63,10 @@ const Member = (props) => {
         if (isShowOrderFeature !== index) {
             setIsActiveItem(false);
         }
+
+        return () => {
+            setIsActiveItem(false);
+        }
     }, [isShowOrderFeature]);
 
     const handleClickOrderFeature = (e) => {

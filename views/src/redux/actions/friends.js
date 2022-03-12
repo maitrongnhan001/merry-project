@@ -55,6 +55,13 @@ const addFriendAfterAccept = (payload) => {
     }
 }
 
+const deleteFriend = (payload) => {
+    return {
+        type: 'DELETE_FRIEND',
+        data: payload
+    }
+}
+
 export { 
     saveChatList,
     saveFriendsList,
@@ -63,5 +70,6 @@ export {
     saveFriendProfile,
     addFriendRequest,
     deleteFromFriendRequest,
-    addFriendAfterAccept
+    addFriendAfterAccept,
+    deleteFriend
 }

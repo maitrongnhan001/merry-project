@@ -11,6 +11,7 @@ function Item({senderId, receiverId, name, sex, image}) {
 
     const handleClickToAccept = (e)=> {
         sendAcceptFriend({senderId, receiverId})
+        console.log('1')
         const friendRequest = deleteFromFriendRequest({senderId, receiverId})
         dispatch(friendRequest)
     }

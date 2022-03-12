@@ -42,7 +42,6 @@ function Header({id, image, name}) {
     //xu ly an hien form thong tin ca nhan
     const handleClickToShowProfile = async ()=> {
         const result = await getMemberListFromGroupByGroupId(localStorage.getItem('userId'), id) 
-        console.log(result)
         if(result && result.status === 200) {
             const friendProfileDataAction = saveFriendProfile(result.data.data)
             dispatch(friendProfileDataAction)

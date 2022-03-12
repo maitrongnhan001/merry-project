@@ -1,14 +1,8 @@
 import React from 'react'
 import MyProfile from './my-profile/profile'
 import FriendProfile from './friend-profile/profile'
-import { useSelector } from 'react-redux'
 
-function Profile() {
-
-    /*----redux----*/
-    //lay du lieu tu redux
-    const friendProfile = useSelector(state=>state.friends.friendProfile)
-    
+function Profile({friendProfile}) {
     return (
         <>
         {

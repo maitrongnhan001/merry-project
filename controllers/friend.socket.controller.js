@@ -81,7 +81,7 @@ module.exports.acceptFriend = async (data, socket) => {
         }
         const dataFriend = await friend.create(friendObj);
         //kiem tra du lieu trong bang detail group
-        const resultCheckGroup = detailGroup.getGroupIdByUserIds(sendId, receiveId);
+        const resultCheckGroup = await detailGroup.getGroupIdByUserIds(sendId, receiveId);
         if (resultCheckGroup.length === 0) {
             //them du lieu vao bang group
             var groupObj = {
@@ -106,16 +106,16 @@ module.exports.acceptFriend = async (data, socket) => {
         const receiverInfo = await user.getUserId(friendObj.receiveId)
         const result = {
             sender: {
-                id: friendObj.sendId,
+                id: parseInt(friendObj.sendId),
                 groupId: groupObj.id,
-                image: senderInfo[0].image,
+                image: {image1: senderInfo[0].image, image2: ''},
                 name: `${senderInfo[0].lastName} ${senderInfo[0].firstName}`
             },
 
             receiver: {
-                id: friendObj.receiveId,
+                id: parseInt(friendObj.receiveId),
                 groupId: groupObj.id,
-                image: receiverInfo[0].image,
+                image: {image1: senderInfo[0].image, image2: ''},
                 name: `${receiverInfo[0].lastName} ${receiverInfo[0].firstName}`
             },
         }
@@ -189,8 +189,6 @@ module.exports.deleteFriend = async (data, socket) => {
 
         //xoa du lieu trong ban waiting
         await friend.delete(sendId, receiveId);
-        await detailGroup.deleteByGroupId(groupId)
-        await group.delete(groupId)
 
 
         //tra thong tin ve cho client

@@ -5,12 +5,12 @@ module.exports.chat = (io, socket) => {
         chatSocket.sendTextMessage(data, socket, io);
     });
 
-    socket.on('send-media-message', (data) => {
-        chatSocket.sendMediaMessage(data, socket, io);
-    });
-
     socket.on('send-document-message', (data) => {
         chatSocket.sendDocumentMessage(data, socket, io);
+    })
+
+    socket.on('send-media-message', (data) => {
+        chatSocket.sendMediaMessage(data, socket, io);
     });
 
     socket.on('send-link-message', (data) => {

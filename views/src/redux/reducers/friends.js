@@ -24,16 +24,20 @@ const friendsReducer = (state = initial, action) => {
             }
         }
         case 'ADD_FRIEND_AFTER_ACCEPT': {
-            const friendList = [...state.friendsList]
+            let newFriendList = [...state.friendsList]
+            let data = action.data
             // eslint-disable-next-line eqeqeq
-            if(action.data.sender.id != localStorage.getItem('userId')) {
-                friendList.push(action.data.receiver)
-            }else {
-                friendList.push(action.data.sender)
+            if(data.sender.id == localStorage.getItem('userId')) {
+                newFriendList.unshift(data.receiver)
+                console.log('co vao khong 1')
+            // eslint-disable-next-line eqeqeq
+            }else if(data.receiver.id == localStorage.getItem('userId')){
+                newFriendList.unshift(data.sender)
+                console.log('co vao khong 2')
             }
             return {
                 ...state,
-                friendList
+                friendsList: newFriendList
             }
         }
         case 'SAVE_FRIEND_REQUEST': {
@@ -73,6 +77,22 @@ const friendsReducer = (state = initial, action) => {
             return {
                 ...state,
                 friendProfileData: action.data
+            }
+        }
+        case 'DELETE_FRIEND': {
+            let newFriendList = [...state.friendsList]
+            // eslint-disable-next-line eqeqeq
+            if(action.data.senderId == localStorage.getItem('userId')) {
+                const idx = newFriendList.findIndex((value)=> value.id === action.data.receiverId)
+                newFriendList.splice(idx, 1)
+            // eslint-disable-next-line eqeqeq
+            }else if(action.data.receiverId == localStorage.getItem('userId')){
+                const idx = newFriendList.findIndex((value)=> value.id === action.data.senderId)
+                newFriendList.splice(idx, 1)
+            }
+            return {
+                ...state,
+                friendsList: newFriendList
             }
         }
         default: {

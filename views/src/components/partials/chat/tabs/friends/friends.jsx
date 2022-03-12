@@ -13,13 +13,15 @@ function Friends() {
     
     // ket noi voi redux
     const dispatch = useDispatch()
-
+    console.log(friendsList)
+    console.log('re-render')
     /*----data----*/
     const items = friendsList.map((value, idx)=>{
         return (
               <Item key={idx} userId={value.id} id={value.groupId} image={value.image} name={value.name}></Item>
         )
     })
+    console.log(items)
 
     /*----handles----*/
     //xu ly hien thi danh sach yeu cau ket ban

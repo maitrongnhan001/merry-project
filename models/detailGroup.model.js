@@ -27,12 +27,8 @@ module.exports.getGroupIdByUserIds = (userId1, userId2) => {
             if (error) {
                 reject(error);
             } else {
-                if (result.length > 0) {
-                    const endResult = JSON.parse(JSON.stringify(result));
-                    resolve(endResult);
-                } else {
-                    resolve(null);
-                }
+                const endResult = JSON.parse(JSON.stringify(result));
+                resolve(endResult);
             }
         });
     });

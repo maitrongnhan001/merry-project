@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import './form-add-member.scss'
+import DataLoader from '../../../../tools/data-loader/data-loader'
 import FriendItem from '../../../../tabs/friend-group-items/item'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateNotification } from '../../../../../../../redux/actions/notification'
@@ -16,6 +17,7 @@ function FormAdddMember() {
     const [members, setMember] = useState([])
     const [listFriendWithoutGroup, setListFriendWithoutGroup] = useState([]);
     const [error, setError] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     /*----redux----*/
     //lay du lieu tu redux
@@ -30,6 +32,7 @@ function FormAdddMember() {
     //lay danh sach ban be khong thuoc nhom
     useEffect(async () => {
         if (!idGroup) return;
+        setIsLoading(true);
 
         const result = await getMembers(idGroup)
 
@@ -62,7 +65,7 @@ function FormAdddMember() {
                 break;
             }
         }
-
+        setIsLoading(false);
         return () => {
             setListFriendWithoutGroup([])
         };
@@ -110,11 +113,12 @@ function FormAdddMember() {
         dispatch(isDisplay)
     }
 
+    //------------------life cycle-----------------------//
     useEffect(() => {
         $('.create-group-form-action').fadeTo('.5s', 1)
-    })
 
-    useEffect(() => { }, [])
+        return () => {}
+    })
 
     /*----data----*/
     //map du lieu
@@ -136,6 +140,7 @@ function FormAdddMember() {
                         {
                             error ? <div className="text-notification center">{error}</div> : items
                         }
+                        {isLoading ? <DataLoader/> : ''}
                     </div>
                     <div className="extension-form-submit">
                         <input type="button" className="extension-form-submit-btn extension-form-submit-btn-1" value="Hủy bỏ" onClick={handleClickToHideCreateGroup} />

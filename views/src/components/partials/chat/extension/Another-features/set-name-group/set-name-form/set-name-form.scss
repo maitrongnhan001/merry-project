@@ -1,0 +1,46 @@
+.extension-form-wrapper {
+    .form-update-name-group {
+        height: 15rem;
+    }
+
+    .custom-rename {
+        width: 90% !important;
+        height: 6rem !important;
+        overflow: hidden !important;
+        margin: 0 auto;
+
+        .form-update-name-input {
+            width: 100%;
+            height: 40px;
+            border: none;
+            background-color: #efefef;
+            border-radius: 5px;
+            padding: 0 10px;
+            margin-top: 1rem; 
+            outline: none;  
+        }
+
+        .error {
+            outline: solid red;  
+        }
+
+        .text-error-rename {
+            color: red;
+            font-size: 15px;
+            display: block;
+            margin-top: 5px;
+        }
+    }
+
+    .custom-rename-group-btn {
+        margin-top: 20px !important;
+    }
+}
+
+.chat-wrapper[data-theme="dark-theme"] .extension-form-wrapper {
+    .custom-rename {
+        .form-update-name-input {
+            background-color: #2e2e2e;
+        }
+    }
+}

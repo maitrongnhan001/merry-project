@@ -2,13 +2,13 @@
 const initial = {
     friendProfile: 0,
     friendProfileData: {},
-    chatsList: [], 
+    chatsList: [],
     friendRequest: [],
     friendsList: []
 }
 
 const friendsReducer = (state = initial, action) => {
-    switch(action.type) {
+    switch (action.type) {
         case 'SAVE_CHAT_LIST': {
             const chatsList = [...action.data]
             return {
@@ -69,7 +69,7 @@ const friendsReducer = (state = initial, action) => {
             let newFriendRequest = [...state.friendRequest]
             let data = action.data
             // eslint-disable-next-line eqeqeq
-            if(!action.data.status && action.data.senderId != localStorage.getItem('userId'))
+            if (!action.data.status && action.data.senderId != localStorage.getItem('userId'))
                 newFriendRequest.unshift(data)
             return {
                 ...state,
@@ -78,14 +78,14 @@ const friendsReducer = (state = initial, action) => {
         }
         case 'DELETE_FRIEND_REQUEST': {
             let newFriendRequest = [...state.friendRequest]
-            const idx = newFriendRequest.findIndex((value)=>{ return value.senderId === action.data.senderId && value.receiverId === action.data.receiverId})
+            const idx = newFriendRequest.findIndex((value) => { return value.senderId === action.data.senderId && value.receiverId === action.data.receiverId })
             newFriendRequest.splice(idx, 1)
             return {
                 ...state,
                 friendRequest: newFriendRequest
             }
         }
-        case 'SHOW_FRIEND_PROFILE' : {
+        case 'SHOW_FRIEND_PROFILE': {
             return {
                 ...state,
                 friendProfile: action.data
@@ -97,6 +97,29 @@ const friendsReducer = (state = initial, action) => {
                 friendProfileData: action.data
             }
         }
+        case 'UPDATE_CHAT_INFOMATION': {
+            //update infomation: Name, image
+            const Id = action.data.groupId
+            const groupName = action.data.groupName
+            const image = action.data.image
+
+            let chatsListTemp = [...state.chatsList]
+            for (let index = 0; index < chatsListTemp.length; index++) {
+                if (chatsListTemp[index].receiverId === Id) {
+                    chatsListTemp[index].receiverName = groupName
+                    chatsListTemp[index].image = {
+                        image1: image.img1,
+                        image2: image.img2
+                    }
+                }
+            }
+
+            return {
+                ...state,
+                chatsList: chatsListTemp
+            }
+        }
+        
         case 'DELETE_FRIEND': {
             let newFriendList = [...state.friendsList]
             // eslint-disable-next-line eqeqeq

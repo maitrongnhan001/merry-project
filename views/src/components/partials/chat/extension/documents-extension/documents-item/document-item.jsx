@@ -2,8 +2,10 @@ import React from 'react';
 import './document-item.scss';
 
 const DocumentItem = (props) => {
-
+    //--------------------props-----------------------//
     const { link_document } = props;
+
+    //--------------------data-----------------------//
     const link_arr = link_document.split('/');
     const name_document = link_arr[link_arr.length-1];
 

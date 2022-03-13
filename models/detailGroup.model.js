@@ -172,3 +172,25 @@ module.exports.getGroupIdMember = (userId1, userId2) =>{
         })
     })
 }
+
+//get user id by another user id and id group
+module.exports.getUserIdByAnotherUserIdAndGroupId = (userId, groupId) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM detailgroup
+                        WHERE groupId = '${groupId}'
+                        AND userId <> ${userId}`;
+        
+        connection.query(sql, (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                result = JSON.parse(JSON.stringify(result));
+                if (result.length != 0) {
+                    resolve(result);
+                } else {
+                    resolve(null);
+                }
+            }
+        });
+    });
+}

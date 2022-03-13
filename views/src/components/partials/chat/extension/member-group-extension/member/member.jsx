@@ -9,13 +9,18 @@ import Feature from './feature/feature';
 import './member.scss';
 
 const Member = (props) => {
-    const userId = localStorage.getItem('userId');
-    const listFriend = useSelector(state => state.friends.friendsList);
-    const isShowOrderFeature = useSelector(state => state.extension.showOrderFeature);
+    //--------------------props-----------------------//
     const { name, isAdmin, meIsAdmin, index, id } = props;
 
+    //--------------------redux-----------------------//
+    const listFriend = useSelector(state => state.friends.friendsList);
+    const isShowOrderFeature = useSelector(state => state.extension.showOrderFeature);
     const dispatch = useDispatch();
 
+    //--------------------localstorage-----------------------//
+    const userId = localStorage.getItem('userId');
+
+    //-----------------------state--------------------------//
     const [isActiveFeature, setIsActiveItem] = useState(false);
     const [isFeature, setIsFeature] = useState(() => {
         let resultFriend = false;
@@ -28,6 +33,40 @@ const Member = (props) => {
 
         return (!resultFriend || meIsAdmin) && (id !== parseInt(userId));
     });
+
+    //----------------------handle-------------------------//
+    //xu ly an hien form thong tin ca nhan
+    const handleClickToShowProfile = () => {
+        const show = showDialog(3)
+        dispatch(show)
+        const display = showFriendProfile(1)
+        dispatch(display)
+
+        //hide extension
+        const isShowExtension = showExtension(0);
+        dispatch(isShowExtension);
+    }
+
+    const handleClickOrderFeature = (e) => {
+        e.stopPropagation();
+        const isActiveFeatureInProcess = isActiveFeature;
+        setIsActiveItem(!isActiveFeatureInProcess);
+
+        //store data to redux
+        const updateShowOrderFeatureInProcess = updateShowOrderFeature(index);
+        dispatch(updateShowOrderFeatureInProcess);
+    }
+
+    //------------------life cycle-----------------------//
+    useEffect(() => {
+        if (isShowOrderFeature !== index) {
+            setIsActiveItem(false);
+        }
+
+        return () => {
+            setIsActiveItem(false);
+        }
+    }, [isShowOrderFeature]);
 
     useEffect(() => {
         let resultFriend = false;
@@ -42,37 +81,10 @@ const Member = (props) => {
         setIsFeature(endResult);
     }, [listFriend, meIsAdmin]);
 
+    //----------------------data-------------------------//
     const image = {
         image1: props.image,
         image2: null
-    }
-
-    //xu ly an hien form thong tin ca nhan
-    const handleClickToShowProfile = () => {
-        const show = showDialog(3)
-        dispatch(show)
-        const display = showFriendProfile(1)
-        dispatch(display)
-
-        //hide extension
-        const isShowExtension = showExtension(0);
-        dispatch(isShowExtension);
-    }
-
-    useEffect(() => {
-        if (isShowOrderFeature !== index) {
-            setIsActiveItem(false);
-        }
-    }, [isShowOrderFeature]);
-
-    const handleClickOrderFeature = (e) => {
-        e.stopPropagation();
-        const isActiveFeatureInProcess = isActiveFeature;
-        setIsActiveItem(!isActiveFeatureInProcess);
-
-        //store data to redux
-        const updateShowOrderFeatureInProcess = updateShowOrderFeature(index);
-        dispatch(updateShowOrderFeatureInProcess);
     }
 
     return (

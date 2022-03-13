@@ -12,7 +12,15 @@ const addGroup = (payload) => {
     }
 }
 
+const updateInfomationGroup = (payload) => {
+    return {
+        type: 'UPDATE_GROUP_INFOMATION',
+        data: payload
+    }
+}
+
 export {
     saveGroupsList,
-    addGroup
+    addGroup,
+    updateInfomationGroup
 }

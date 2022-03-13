@@ -54,11 +54,12 @@ function Ask() {
         dispatch(isDisplay)
     }
 
+    //------------------life cycle-----------------------//
     useEffect(()=>{
         $('.create-group-form-action').fadeTo('.5s', 1)
-    })
 
-    useEffect(() => {}, [])
+        return () => {}
+    })
 
     return (
         <div className="out-group-form-wrapper" onClick={handleClickToHideCreateGroup}>

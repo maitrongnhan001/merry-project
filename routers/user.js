@@ -6,6 +6,7 @@ const router = express.Router()
 
 //get user 
 router.get('/', userController.search);
+router.get('/getUserByGroupIdAndUserId', userController.getUserByGroupIdAndUserId)
 
 //searchid
 router.get('/:id', userController.searchById);

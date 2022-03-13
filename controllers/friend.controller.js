@@ -1,6 +1,7 @@
 const friend = require('../models/friend.model')
 const user = require('../models/user.model')
 const detailGroup = require('../models/detailGroup.model')
+const waiting = require('../models/waiting.model');
 
 module.exports.getFriend = async (req, res) => {
     try {
@@ -11,12 +12,11 @@ module.exports.getFriend = async (req, res) => {
         limit = parseInt(limit);
         offset = parseInt(offset);
         const array = [];
-        if(!userId) {
+        if (!userId) {
             return res.sendStatus(404)
         }
         const friends = await friend.listFriend(userId, limit, offset);
-        
-        if(!friends) {
+        if (!friends) {
             return res.sendStatus(404)
         }
         for (let value of friends) {
@@ -33,12 +33,12 @@ module.exports.getFriend = async (req, res) => {
         const result = []
         for (let value of array) {
             let getUserIds = await friend.getUserId(value);
-            let getGroupId = await detailGroup.getGroupIdMember(userId,value)
+            let getGroupId = await detailGroup.getGroupIdMember(userId, value)
             // console.log(getGroupId)
-            if(!getUserIds || !getGroupId ){
+            if (!getUserIds || !getGroupId) {
                 return res.sendStatus(404)
             }
-            result.push({...getUserIds[0],groupId: getGroupId ,image: {image1: getUserIds[0].image}})
+            result.push({ ...getUserIds[0], groupId: getGroupId, image: { image1: getUserIds[0].image } })
         }
 
         if (result.length > 0) {
@@ -57,7 +57,6 @@ module.exports.getFriend = async (req, res) => {
     }
 }
 
-
 module.exports.requestFriend = async (req, res) => {
     try {
         //http://localhost:8080/api/friends/friends-request/1?limit=2&position=0
@@ -67,11 +66,11 @@ module.exports.requestFriend = async (req, res) => {
         limit = parseInt(limit);
         offset = parseInt(offset);
         const array = [];
-        if(!userId) {
+        if (!userId) {
             return res.sendStatus(404)
         }
         const requestfriends = await friend.getRequestFriend(userId, limit, offset);
-        if(!requestfriends)
+        if (!requestfriends)
             return res.sendStatus(404)
         for (let value of requestfriends) {
             array.push(value.sendId)
@@ -114,7 +113,7 @@ module.exports.search = async (req, res) => {
         const friends = await user.searchFriend(senderId)
         const data = []
         let array = []
-        if(!senderId) {
+        if (!senderId) {
             return res.sendStatus(404)
         }
         for (let friend of friends) {
@@ -139,16 +138,68 @@ module.exports.search = async (req, res) => {
                 data.push(object)
             }
         }
-        if(data.length > 0){
+        if (data.length > 0) {
             return res.status(200).json({
                 message: 'Tìm kiếm thành công!',
                 data
             })
-        }else{
+        } else {
             return res.sendStatus(404)
         }
     } catch (err) {
         console.error(err)
+        return res.sendStatus(500)
+    }
+}
+
+module.exports.checkFriend = async (req, res) => {
+    try {
+        const userId = req.query.userId || null
+        const groupId = req.query.groupId || null
+
+        //check user
+        if (!userId || !groupId) {
+            return res.sendStatus(404)
+        }
+
+        //get user
+        const anotherUserId = (await detailGroup.getUserIdByAnotherUserIdAndGroupId(userId, groupId))[0].userId;
+
+        //check users is friend
+        const resultFriend = await friend.isFriend(userId, anotherUserId);
+
+        if (resultFriend) {
+            //return data
+            const returnData = {
+                message: 'Truy vấn thành công',
+                statusFriend: 2,
+                data: anotherUserId
+            }
+            return res.status(200).json(returnData);
+        }
+
+        //khong la ban be, kiem tra trong ban waiting
+        const resultWaiting = await waiting.isWaiting(userId, anotherUserId);
+
+        if (resultWaiting) {
+            //return data
+            const returnData = {
+                message: 'Truy vấn thành công',
+                statusFriend: 1,
+                data: resultWaiting[0]
+            }
+            return res.status(200).json(returnData);
+        }
+
+        //return data, khong co trong ban waiting 
+        const returnData = {
+            message: 'Truy vấn thành công',
+            statusFriend: 0,
+            data: anotherUserId
+        }
+        return res.status(200).json(returnData);
+    } catch (error) {
+        console.log(error)
         return res.sendStatus(500)
     }
 }

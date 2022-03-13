@@ -7,13 +7,18 @@ import { sendDeleteMember } from '../../../../../../Sockets/socket-group';
 import './feature.scss';
 
 const Feature = (props) => {
+    //--------------------props-----------------------//
     const { isActiveFeature, meIsAdmin, id } = props;
-    const userId = localStorage.getItem('userId');
+
+    //--------------------redux-----------------------//
     const listFriend = useSelector(state => state.friends.friendsList);
     const idGroup = useSelector(state => state.message.currentChat.receiverId);
-
     const dispatch = useDispatch();
 
+    //--------------------localstorage-----------------------//
+    const userId = localStorage.getItem('userId');
+
+    //-----------------------state--------------------------//
     const [isFriend, setIsFriend] = useState(() => {
         if (id === parseInt(userId)) return true;
 
@@ -28,20 +33,7 @@ const Feature = (props) => {
         return resultFriend;
     });
 
-    useEffect(() => {
-        if (id === parseInt(userId)) return setIsFriend(true);;
-
-        let resultFriend = false;
-        for (var index of listFriend) {
-            if (index.id === id) {
-                resultFriend = true;
-                break;
-            }
-        }
-
-        setIsFriend(resultFriend);
-    }, [listFriend]);
-
+    //----------------------handle-------------------------//
     const handleClickAddfriend = async (e) => {
         e.stopPropagation();
 
@@ -81,6 +73,25 @@ const Feature = (props) => {
         const hideOrderFeatureExtension = updateShowOrderFeature(null)
         dispatch(hideOrderFeatureExtension)
     }
+
+    //------------------life cycle-----------------------//
+    useEffect(() => {
+        if (id === parseInt(userId)) return setIsFriend(true);;
+
+        let resultFriend = false;
+        for (var index of listFriend) {
+            if (index.id === id) {
+                resultFriend = true;
+                break;
+            }
+        }
+
+        setIsFriend(resultFriend);
+
+        return () => {
+            setIsFriend(null);
+        }
+    }, [listFriend]);
 
     return (
         <div className={`feature-group ${!isActiveFeature ? 'hide' : ''}`}>

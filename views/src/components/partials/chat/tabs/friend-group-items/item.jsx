@@ -8,14 +8,14 @@ import { saveCurrentChat } from '../../../../../redux/actions/message'
 import { sendAddFriend } from '../../../../Sockets/socket-friend'
 import { createRoom } from '../../../../Sockets/socket-chat'
 
-function Item({userId, id, name, image, addFriend, createGroup, onAddMember, members }) {
+function Item({userId, id, name, image, addFriend, createGroup, onAddMember, members, initCheck }) {
 
     /*----redux----*/
     //ket noi den redux
     const dispatch = useDispatch()
 
     /*----states----*/
-    const [checked, setChecked] = useState(false)
+    const [checked, setChecked] = useState(initCheck)
 
     /*----handles----*/
     //xu ly nhan vao item 

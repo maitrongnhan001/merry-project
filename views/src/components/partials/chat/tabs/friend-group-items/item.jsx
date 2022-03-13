@@ -8,7 +8,7 @@ import { saveCurrentChat } from '../../../../../redux/actions/message'
 import { sendAddFriend } from '../../../../Sockets/socket-friend'
 import { createRoom } from '../../../../Sockets/socket-chat'
 
-function Item({userId, id, name, image, addFriend, createGroup, onAddMember }) {
+function Item({userId, id, name, image, addFriend, createGroup, onAddMember, initCheck }) {
 
     /*----redux----*/
     const currentChatSelector = useSelector(state => state.message.currentChat)
@@ -16,7 +16,7 @@ function Item({userId, id, name, image, addFriend, createGroup, onAddMember }) {
     const dispatch = useDispatch()
 
     /*----states----*/
-    const [checked, setChecked] = useState(false)
+    const [checked, setChecked] = useState(initCheck)
 
     /*----handles----*/
     //xu ly nhan vao item 

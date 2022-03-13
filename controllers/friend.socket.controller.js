@@ -65,7 +65,6 @@ module.exports.acceptFriend = async (data, socket) => {
         const receiveId = data.receiverId
 
         //kiem tra du lieu trong bang waiting
-        console.log(data);
         const checkWaiting = await waiting.getWaiting(sendId, receiveId);
         if (!checkWaiting) {
             socket.emit('accept-friend', { msg: 'Lỗi, chưa gửi lời mời kết bạn', status: 404 });
@@ -121,7 +120,7 @@ module.exports.acceptFriend = async (data, socket) => {
             },
         }
         //tra thong tin ve cho client
-        const receiveUserSocket = await userIsOnline.getUserSocket(sendId);
+        const receiveUserSocket = await userIsOnline.getUserSocket(receiveId);
         if (receiveUserSocket) {
             receiveUserSocket.emit('accept-friend', result);
         }

@@ -16,7 +16,6 @@ module.exports.getFriend = async (req, res) => {
             return res.sendStatus(404)
         }
         const friends = await friend.listFriend(userId, limit, offset);
-
         if (!friends) {
             return res.sendStatus(404)
         }

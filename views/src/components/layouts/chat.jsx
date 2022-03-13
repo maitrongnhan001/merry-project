@@ -53,6 +53,7 @@ function Chat() {
         dispatch(hideOrderFeatureExtension)
     }
 
+
     useEffect(() => {
         (async function () {
             let themeLocal = localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light-theme'
@@ -147,14 +148,17 @@ function Chat() {
                 const updateFriendExtension = updateManagerFriend(1);
                 dispatch(updateFriendExtension);
                 // eslint-disable-next-line eqeqeq
-                if(data.status == 404) {
-                    const notification = updateNotification('Đã gửi lời mời kết bạn.')
+                if(data.status == 404 && data.senderId == localStorage.getItem('userId')) {
+                    const notification = updateNotification(data.msg)
                     dispatch(notification)
                 }else{
                     const friendRequest = addFriendRequest(data)
                     dispatch(friendRequest)
-                    const notification = updateNotification('Gửi lời mời kết bạn thành công.')
-                    dispatch(notification)
+                    // eslint-disable-next-line eqeqeq
+                    if(data.senderId == localStorage.getItem('userId')){
+                        const notification = updateNotification('Gửi lời mời kết bạn thành công.')
+                        dispatch(notification)
+                    }
                 }
             })
 

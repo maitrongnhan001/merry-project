@@ -104,16 +104,16 @@ module.exports.verifyEmail = async (req, res) => {
             to: email,
             subject: 'Confirm your account on Merry-chat',
             html: ` <form style="padding: 0 20px; width: 600px; height: 300px; margin: 0 auto; border: 1px solid lightgrey; border-radius: 10px;">
-                        <h1 style="margin-bottom: 15px; width: 100%; color: #9c2ec4; text-align: center;">MERRY CHAT</h1>
+                        <h1 style="margin-bottom: 15px; width: 100%; color: #5865F2; text-align: center;">MERRY CHAT</h1>
                         <h3 style="color: grey; font-size: 17px;"> Xác nhận email đăng nhập cùng Merry!</h3>
                         <p style="font-size: 17px; width: 100%; color: grey">Xin chào!</p>
-                        <p style="font-size: 17px; width: 100%; color: grey; text-align: justify;">Cảm ơn bạn đã đăng ký tài khoản với chúng tôi. Để bắt đầu, chúng tôi cần bạn xác nhận email này chính là bạn. Hãy nhấp vào nút bên dưới để xác nhận:</p>
+                        <p style="font-size: 17px; width: 100%; color: grey; text-align: justify;">Cảm ơn bạn đã đăng ký tài khoản với chúng tôi. Để bắt đầu, chúng tôi cần bạn xác nhận email này chính là bạn. Hãy nhấp vào nút bên dưới để tiếp tục:</p>
                         <p style="margin-top: 10px;">
                             <a id="click-to-verify"  style="
                                     display: block;
                                     width: 150px; 
                                     height: 35px; 
-                                    background-color: blue; 
+                                    background-color: #5865F2; 
                                     color: white; 
                                     font-size: 17px; 
                                     text-align: center; 

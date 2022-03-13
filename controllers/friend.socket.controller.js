@@ -19,14 +19,14 @@ module.exports.addFriend = async (data, socket) => {
         //kiem tra du lieu co ton tai trong bang friend chua
         const checkFrinend = await friend.getFriend(sendId, receiveId);
         if (checkFrinend) {
-            socket.emit('add-friend', { msg: 'Lỗi, thông tin đã tồn tại trong CSDL', status: 404 });
+            socket.emit('add-friend', { msg: 'Đã gửi lời mời kết bạn.', status: 404, senderId: senderId });
             return;
         }
 
         //kiem tra du lieu trong bang waiting
         const checkWaiting = await waiting.getWaiting(sendId, receiveId);
         if (checkWaiting) {
-            socket.emit('add-friend', { msg: 'Lỗi, thông tin đã tồn tại trong CSDL', status: 404 });
+            socket.emit('add-friend', { msg: 'Đã gửi lời mời kết bạn.', status: 404, senderId: senderId });
             return;
         }
 
@@ -115,12 +115,12 @@ module.exports.acceptFriend = async (data, socket) => {
             receiver: {
                 id: parseInt(friendObj.receiveId),
                 groupId: groupObj.id,
-                image: {image1: senderInfo[0].image, image2: ''},
+                image: {image1: receiverInfo[0].image, image2: ''},
                 name: `${receiverInfo[0].lastName} ${receiverInfo[0].firstName}`
             },
         }
         //tra thong tin ve cho client
-        const receiveUserSocket = await userIsOnline.getUserSocket(receiveId);
+        const receiveUserSocket = await userIsOnline.getUserSocket(sendId);
         if (receiveUserSocket) {
             receiveUserSocket.emit('accept-friend', result);
         }

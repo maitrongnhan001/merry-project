@@ -8,11 +8,7 @@ import { saveCurrentChat } from '../../../../../redux/actions/message'
 import { sendAddFriend } from '../../../../Sockets/socket-friend'
 import { createRoom } from '../../../../Sockets/socket-chat'
 
-<<<<<<< HEAD
-function Item({userId, id, name, image, addFriend, createGroup, onAddMember, initCheck }) {
-=======
-function Item({userId, id, name, image, addFriend, createGroup, onAddMember, members }) {
->>>>>>> a55c539d051300e311c9f1d2eb467db7d704efde
+function Item({userId, id, name, image, addFriend, createGroup, onAddMember, members, initCheck }) {
 
     /*----redux----*/
     //ket noi den redux

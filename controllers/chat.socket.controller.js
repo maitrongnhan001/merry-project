@@ -193,17 +193,17 @@ module.exports.sendLinkMesssage = async (data, socket, io) => {
 
         //tra thong tin ve cho client
         const time = await chat.getTime(dataMessage.id);
-
+        const senderUserInfo = await user.getUserId(senderId)
         const returnData = {
             messageId: dataMessage.id,
             senderId: dataMessage.sendId,
             receiverId: dataMessage.receiveId,
-            message: {
-                type: dataMessage.type,
-                content: dataMessage.content,
-                time: time,
-                status: dataMessage.status
-            }
+            type: dataMessage.type,
+            content: dataMessage.content,
+            time: time,
+            status: dataMessage.status,
+            name: `${senderUserInfo[0].lastName} ${senderUserInfo[0].firstName}`,
+            image: senderUserInfo[0].image
         }
 
         io.to(`${dataMessage.receiveId}`).emit('send-link-message', returnData);

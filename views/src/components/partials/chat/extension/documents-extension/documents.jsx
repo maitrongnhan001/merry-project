@@ -7,9 +7,10 @@ import './documents.scss';
 import $ from 'jquery';
 
 const Documents = () => {
-
+    //--------------------redux-----------------------//
     const receiverId = useSelector(state => state.message.currentChat.receiverId);
 
+    //-----------------------state--------------------------//
     const [is_active, setIsActive] = useState(false);
     const [documents, setDocuments] = useState([]);
     const [offset, setOffset] = useState(0);
@@ -24,6 +25,7 @@ const Documents = () => {
         return listElements;
     });
 
+    //----------------------handle-------------------------//
     const getListAndSetState = async (receiverId, limit, position, caseLoad) => {
         if (!receiverId) return;
         setIsLoading(true);
@@ -48,7 +50,9 @@ const Documents = () => {
             }
 
             case 404: {
-                setNotification("Không có tài liệu nào được gửi");
+                if (documents.length === 0) {
+                    setNotification("Không có tài liệu nào được gửi");
+                }
                 break;
             }
 
@@ -61,6 +65,25 @@ const Documents = () => {
         setIsLoading(false);
     }
 
+    const handleScroll = async () => {
+        const scroolTop = $('#list_document_elements').scrollTop();
+        const heightParent = $('#list_document_elements').height();
+        const fullHeight = $('#list-link-full-size').height();
+        if (scroolTop + heightParent - fullHeight >= -10 && scroolTop + heightParent - fullHeight <= -5) {
+            await getListAndSetState(receiverId, 10, offset, true);
+        }
+    }
+
+    const onActive = () => {
+        setIsActive(!is_active);
+
+        //animation show member group
+        $('.list-documents').animate({
+            height: 'toggle'
+        });
+    }
+
+    //------------------life cycle-----------------------//
     useEffect(async () => {
         setOffset(0);
         setDocuments([]);
@@ -80,21 +103,6 @@ const Documents = () => {
             setListDocumentsTag(null);
         }
     }, [receiverId]);
-
-    const handleScroll = async () => {
-        if ($('#list_document_elements').scrollTop() + $('#list_document_elements').height() == $('#list-link-full-size').height()) {
-            await getListAndSetState(receiverId, 10, offset, true);
-        }
-    }
-
-    const onActive = () => {
-        setIsActive(!is_active);
-
-        //animation show member group
-        $('.list-documents').animate({
-            height: 'toggle'
-        });
-    }
 
     return (
         <div className='element-extension'>

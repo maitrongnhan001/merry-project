@@ -24,8 +24,8 @@ const getAcceptFriend = (cb)=> {
     listenSocket('accept-friend', cb)
 }
 
-const getDismissFriend = async ()=> {
-    return await listenSocket('dismiss-friend')
+const getDismissFriend = (cb)=> {
+    listenSocket('dismiss-friend', cb)
 }
 
 const getDeleteFriend = (cb)=> {

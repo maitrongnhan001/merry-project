@@ -7,13 +7,15 @@ import './member-group.scss';
 import $ from 'jquery';
 
 const MemberGroup = () => {
-
+    //--------------------redux-----------------------//
     const idChat = useSelector(state => state.message.currentChat.receiverId);
     const newMemberObj = useSelector(state => state.extension.newMember);
     const deleteMemberObj = useSelector(state => state.extension.deleteMember);
 
+    //--------------------localstorage-----------------------//
     const userId = parseInt(localStorage.getItem('userId'));
 
+    //-----------------------state--------------------------//
     const [is_active, setIsActive] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -21,6 +23,7 @@ const MemberGroup = () => {
     const [admin, setAdmin] = useState(null);
     const [offset, setOffset] = useState(0);
 
+     //----------------------handle-------------------------//
     const getListAndSetState = async (idGroup, limit, position, caseLoad) => {
         if (!idGroup) return;
         setIsLoading(true);
@@ -68,37 +71,11 @@ const MemberGroup = () => {
         setIsLoading(false);
     }
 
-    useEffect(async () => {
-        setOffset(0);
-        setIsLoading(false);
-        setMembers([]);
-        setError(null);
-
-        getListAndSetState(idChat, 10, 0);
-
-        return () => {
-            setOffset(0);
-            setIsLoading(false);
-            setMembers([]);
-            setError(null);
-        }
-    }, [idChat]);
-
-    useEffect(() => {
-        if (!newMemberObj || newMemberObj.groupId !== idChat) return;
-
-        setMembers(members.concat(newMemberObj.members));
-    }, [newMemberObj]);
-
-    useEffect(async () => {
-        if (!deleteMemberObj || deleteMemberObj.groupId !== idChat) return;
-
-       let newMembers = members.filter( value => { return value.id !== deleteMemberObj.memberId } );
-       setMembers(newMembers);
-    }, [deleteMemberObj]);
-
     const handleScroll = async () => {
-        if ($('#list_member_elements').scrollTop() + $('#list_member_elements').height() == $('#list-members-full-size').height()) {
+        const scroolTop = $('#list_member_elements').scrollTop();
+        const heightParent = $('#list_member_elements').height();
+        const fullHeight = $('#list-members-full-size').height();
+        if (scroolTop + heightParent - fullHeight >= -10 && scroolTop + heightParent - fullHeight <= -5) {
             await getListAndSetState(idChat, 10, offset, true);
         }
     }
@@ -112,6 +89,44 @@ const MemberGroup = () => {
         });
     }
 
+
+    //------------------life cycle-----------------------//
+    useEffect(async () => {
+        if (idChat.indexOf('G') !== 0) return;
+        setOffset(0);
+        setIsLoading(false);
+        setMembers([]);
+        setError(null);
+
+        await getListAndSetState(idChat, 10, 0);
+
+        return () => {
+            setOffset(0);
+            setIsLoading(false);
+            setMembers([]);
+            setError(null);
+        }
+    }, [idChat]);
+
+    useEffect(() => {
+        if (!newMemberObj || newMemberObj.groupId !== idChat || idChat.indexOf('G') !== 0) return;
+
+        setMembers(members.concat(newMemberObj.members));
+
+        return () => {}
+    }, [newMemberObj]);
+
+    useEffect(() => {
+        if (!deleteMemberObj || deleteMemberObj.groupId !== idChat  || idChat.indexOf('G') !== 0) return;
+
+       let newMembers = members.filter( value => { return value.id !== deleteMemberObj.memberId } );
+       setMembers(newMembers);
+
+       return () => {}
+    }, [deleteMemberObj]);
+
+
+    //----------------------data-------------------------//
     const listElements = members.map((Element, Key) => {
         return <Member
             image={Element.image}

@@ -3,9 +3,10 @@ import { useDispatch } from 'react-redux';
 import { showFormFeatureExtension, showExtension } from '../../../../../../redux/actions/extension';
 
 const AddMember = () => {
-
+     //--------------------redux-----------------------//
     const dispatch = useDispatch();
 
+    //----------------------handle-------------------------//
     const clickAddMember = () => {
         //show form add members
         const displayFormAddMember = showFormFeatureExtension(1);
@@ -22,7 +23,6 @@ const AddMember = () => {
             className='function-name'
             onClick={clickAddMember}
         >Thêm thành viên</p>
-        <hr className='function-distingush' />
     </div>
     );
 }

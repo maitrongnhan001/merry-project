@@ -38,6 +38,12 @@ function Item({id, members, image, name, lastMessage}) {
         createRoom(dataRoom)
     }
 
+    //xu ly cap nhat current chat
+    useEffect(() => {
+        const currentChat = saveCurrentChat({receiverId: id, image, name})
+        dispatch(currentChat)
+    }, [image, name])
+
     useEffect(()=> {
         if(currentChatSelector.receiverId === id) {
             for(let val of $('.tab-chat-item')) {

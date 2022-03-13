@@ -5,7 +5,9 @@ const initial = {
     showOrderFeature: null,
     showForm: 0,
     newMember: null,
-    deleteMember: null
+    deleteMember: null,
+    updateManagerFriend: 0,
+    idUserWillCreateGroup: null
 }
 
 const extensionReducer = (state = initial, action)=> {
@@ -42,6 +44,22 @@ const extensionReducer = (state = initial, action)=> {
             return {
                 ...state,
                 deleteMember: action.data
+            }
+        }
+
+        case 'UPDATE_MANAGER_FRIEND': {
+            const updateManagerFriend = state.updateManagerFriend + action.data
+
+            return {
+                ...state,
+                updateManagerFriend: updateManagerFriend
+            }
+        }
+
+        case 'UPDATE_USERID_WILL_CREATE_GROUP': {
+            return {
+                ...state,
+                idUserWillCreateGroup: action.data
             }
         }
 

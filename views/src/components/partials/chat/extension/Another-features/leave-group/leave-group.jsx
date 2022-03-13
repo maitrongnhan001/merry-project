@@ -4,8 +4,10 @@ import { useDispatch } from 'react-redux';
 import { showFormFeatureExtension, showExtension } from '../../../../../../redux/actions/extension';
 
 const LeaveGroup = () => {
+    //--------------------redux-----------------------//
     const dispatch = useDispatch();
 
+    //----------------------handle-------------------------//
     const handleClickLeaveGroup = (e) => {
         e.stopPropagation();
 
@@ -24,7 +26,7 @@ const LeaveGroup = () => {
             onClick={handleClickLeaveGroup}
         >
             <p className='function-name red'>Rời nhóm</p>
-            <hr className='function-distingush' />
+
         </div>
     );
 }

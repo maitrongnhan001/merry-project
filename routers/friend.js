@@ -9,6 +9,9 @@ const friendController = require('../controllers/friend.controller')
 
 const router = express.Router()
 
+//check friend
+router.get('/check-friend', friendController.checkFriend)
+
 //get friend
 router.get('/:userId', friendController.getFriend)
 
@@ -17,6 +20,5 @@ router.get('/friends-request/:userId', friendController.requestFriend)
 
 //search friend
 router.get('/', friendController.search)
-
 
 module.exports = router

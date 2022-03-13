@@ -5,7 +5,10 @@ import { useSelector } from 'react-redux';
 
 const HeaderExtension = () => {
 
+    //--------get data from redux----------//
     const currentChat = useSelector(state => state.message.currentChat);
+    
+    //--------------------localstorage-----------------------//
     const userId = localStorage.getItem('userId');
 
     return (

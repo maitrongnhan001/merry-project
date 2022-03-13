@@ -34,10 +34,26 @@ const updateDeleteMember = (payload) => {
     }
 }
 
+const updateManagerFriend = (payload) => {
+    return {
+        type: 'UPDATE_MANAGER_FRIEND',
+        data: payload
+    }
+}
+
+const updateUserIdWillCreateGroup = (payload) => {
+    return {
+        type: 'UPDATE_USERID_WILL_CREATE_GROUP',
+        data: payload
+    }
+}
+
 export {
     showExtension,
     updateShowOrderFeature,
     showFormFeatureExtension,
     updateNewMember,
-    updateDeleteMember
+    updateDeleteMember,
+    updateManagerFriend,
+    updateUserIdWillCreateGroup
 }

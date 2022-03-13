@@ -7,8 +7,10 @@ import './medias.scss';
 import $ from 'jquery';
 
 const Medias = () => {
+    //--------------------redux-----------------------//
     const receiverId = useSelector(state => state.message.currentChat.receiverId);
 
+    //-----------------------state--------------------------//
     const [is_active, setIsActive] = useState(false);
     const [medias, setMedia] = useState([]);
     const [offset, setOffset] = useState(0);
@@ -22,6 +24,7 @@ const Medias = () => {
         return listElements;
     });
 
+    //----------------------handle-------------------------//
     const getListAndSetState = async (receiverId, limit, position, caseLoad) => {
         if (!receiverId) return;
         setIsLoading(true);
@@ -46,7 +49,9 @@ const Medias = () => {
             }
 
             case 404: {
-                setNotification('Không có hình ảnh nào được gửi');
+                if (medias.length === 0 || !caseLoad) {
+                    setNotification('Không có hình ảnh nào được gửi');
+                }
                 break;
             }
 
@@ -59,6 +64,25 @@ const Medias = () => {
         setIsLoading(false);
     }
 
+    const handleScroll = () => {
+        const scroolTop = $('#list_media_elements').scrollTop();
+        const heightParent = $('#list_media_elements').height();
+        const fullHeight = $('#list-media-full-size').height();
+        if (scroolTop + heightParent - fullHeight >= -10 && scroolTop + heightParent - fullHeight <= -5) {
+            getListAndSetState(receiverId, 10, offset, true);
+        }
+    }
+
+    const onActive = () => {
+        setIsActive(!is_active);
+
+        //animation show member group
+        $('.list-medias').animate({
+            height: 'toggle'
+        });
+    }
+
+    //------------------life cycle-----------------------/
     useEffect(async () => {
         setOffset(0);
         setMedia([]);
@@ -78,21 +102,6 @@ const Medias = () => {
             setListMediasTag(null);
         }
     }, [receiverId]);
-
-    const handleScroll = async () => {
-        if ($('#list_media_elements').scrollTop() + $('#list_media_elements').height() == $('#list-media-full-size').height()) {
-            await getListAndSetState(receiverId, 10, offset, true);
-        }
-    }
-
-    const onActive = () => {
-        setIsActive(!is_active);
-
-        //animation show member group
-        $('.list-medias').animate({
-            height: 'toggle'
-        });
-    }
 
     return (
         <div className='element-extension'>
@@ -118,6 +127,7 @@ const Medias = () => {
             >
                 <div id='list-media-full-size'>
                     {listMediasTag}
+                    <div className="clearfix"></div>
                     <div className="text-notification center">{notification}</div>
                     <div className="text-error center">{error}</div>
                     {isLoading ? <DataLoader /> : ''}

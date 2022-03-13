@@ -10,11 +10,24 @@ import AddMember from './add-members/add-member';
 import $ from 'jquery';
 
 const AnotherFeatures = () => {
+    //--------------------redux-----------------------//
     const idChat = useSelector(state => state.message.currentChat.receiverId);
 
+    //--------------------localstorage-----------------------//
     const [is_active, setIsActive] = useState(false);
-    const [isGroup, setIsGroup] = useState(false)
+    const [isGroup, setIsGroup] = useState(false);
 
+    //----------------------handle-------------------------//
+    const onActive = () => {
+        setIsActive(!is_active);
+
+        //animation show member group
+        $('.list-another-feature').animate({
+            height: 'toggle'
+        });
+    }
+
+    //------------------life cycle-----------------------//
     useEffect(() => {
         if (idChat.indexOf('G') === 0) {
             setIsGroup(true);
@@ -27,16 +40,7 @@ const AnotherFeatures = () => {
             setIsGroup(false);
         }
 
-    }, [idChat])
-
-    const onActive = () => {
-        setIsActive(!is_active);
-
-        //animation show member group
-        $('.list-another-feature').animate({
-            height: 'toggle'
-        });
-    }
+    }, [idChat]);
 
     return (
         <div className='element-extension'>

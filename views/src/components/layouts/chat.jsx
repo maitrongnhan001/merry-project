@@ -25,6 +25,7 @@ import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
 import { getDocumentMessage, getMediaMessage, getRoom, getTextMessageChat } from '../Sockets/socket-chat'
 import { getAcceptFriend, getAddFriend, getDeleteFriend } from '../Sockets/socket-friend'
 import { saveCurrentChat, saveMassage } from '../../redux/actions/message'
+import { updateNotification } from '../../redux/actions/notification'
 
 function Chat() {
     const theme = useSelector(state => state.taskbar.theme)
@@ -77,6 +78,7 @@ function Chat() {
             sendConnection(localStorage.getItem('userId'))
             //listen connection
             getConnection((data) => {
+                console.log(data)
                 if (data.userId !== localStorage.getItem('userId')) {
                     const userOnline = saveUserOnline(data.userId)
                     dispatch(userOnline)
@@ -123,8 +125,16 @@ function Chat() {
             })
 
             getAddFriend(data => {
-                const friendRequest = addFriendRequest(data)
-                dispatch(friendRequest)
+                // eslint-disable-next-line eqeqeq
+                if(data.status == 404) {
+                    const notification = updateNotification('Đã gửi lời mời kết bạn.')
+                    dispatch(notification)
+                }else{
+                    const friendRequest = addFriendRequest(data)
+                    dispatch(friendRequest)
+                    const notification = updateNotification('Gửi lời mời kết bạn thành công.')
+                    dispatch(notification)
+                }
             })
 
             getTextMessageChat((data)=> {

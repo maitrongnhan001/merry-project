@@ -10,8 +10,10 @@ const userReducer = (state = initial, action) => {
                 newUserOnline.push(action.data)
             }else 
                 for (let idx in newUserOnline) {
-                    if (newUserOnline[idx] !== action.data) {
-                        if(idx === newUserOnline.length - 1) 
+                    // eslint-disable-next-line eqeqeq
+                    if (newUserOnline[idx] != action.data) {
+                        // eslint-disable-next-line eqeqeq
+                        if(idx == newUserOnline.length - 1) 
                             newUserOnline.push(action.data)
                         continue
                     }else {

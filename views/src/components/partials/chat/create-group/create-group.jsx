@@ -74,10 +74,13 @@ function CreateGroup() {
 
     //xu ly file
     const handleChangeFile = (e) => {
-        const file = e.target.file[0]
+        const file = e.target.files[0]
         setGroup({
             ...group,
-            image: file
+            image: {
+                fileName: file.name,
+                file: file
+            }
         })
     }
 

@@ -1,7 +1,8 @@
 .document-item {
     width: 90%;
     margin: 0 auto;
-    height: 2rem;
+    min-height: 2rem;
+    max-height: 4rem;
 
     a {
         color: #5865F2;

@@ -54,6 +54,7 @@ function Ask() {
         dispatch(isDisplay)
     }
 
+    //------------------life cycle-----------------------//
     useEffect(()=>{
         $('.create-group-form-action').fadeTo('.5s', 1)
 

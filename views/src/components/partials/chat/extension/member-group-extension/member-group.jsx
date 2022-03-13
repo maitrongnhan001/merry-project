@@ -7,13 +7,15 @@ import './member-group.scss';
 import $ from 'jquery';
 
 const MemberGroup = () => {
-
+    //--------------------redux-----------------------//
     const idChat = useSelector(state => state.message.currentChat.receiverId);
     const newMemberObj = useSelector(state => state.extension.newMember);
     const deleteMemberObj = useSelector(state => state.extension.deleteMember);
 
+    //--------------------localstorage-----------------------//
     const userId = parseInt(localStorage.getItem('userId'));
 
+    //-----------------------state--------------------------//
     const [is_active, setIsActive] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -21,6 +23,7 @@ const MemberGroup = () => {
     const [admin, setAdmin] = useState(null);
     const [offset, setOffset] = useState(0);
 
+     //----------------------handle-------------------------//
     const getListAndSetState = async (idGroup, limit, position, caseLoad) => {
         if (!idGroup) return;
         setIsLoading(true);
@@ -68,6 +71,26 @@ const MemberGroup = () => {
         setIsLoading(false);
     }
 
+    const handleScroll = async () => {
+        const scroolTop = $('#list_member_elements').scrollTop();
+        const heightParent = $('#list_member_elements').height();
+        const fullHeight = $('#list-members-full-size').height();
+        if (scroolTop + heightParent - fullHeight >= -10 && scroolTop + heightParent - fullHeight <= -5) {
+            await getListAndSetState(idChat, 10, offset, true);
+        }
+    }
+
+    const onActive = () => {
+        setIsActive(!is_active);
+
+        //animation show member group
+        $('.list-member-group').animate({
+            height: 'toggle'
+        });
+    }
+
+
+    //------------------life cycle-----------------------//
     useEffect(async () => {
         if (idChat.indexOf('G') !== 0) return;
         setOffset(0);
@@ -102,21 +125,8 @@ const MemberGroup = () => {
        return () => {}
     }, [deleteMemberObj]);
 
-    const handleScroll = async () => {
-        if ($('#list_member_elements').scrollTop() + $('#list_member_elements').height() == $('#list-members-full-size').height()) {
-            await getListAndSetState(idChat, 10, offset, true);
-        }
-    }
 
-    const onActive = () => {
-        setIsActive(!is_active);
-
-        //animation show member group
-        $('.list-member-group').animate({
-            height: 'toggle'
-        });
-    }
-
+    //----------------------data-------------------------//
     const listElements = members.map((Element, Key) => {
         return <Member
             image={Element.image}

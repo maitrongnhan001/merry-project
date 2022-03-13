@@ -162,7 +162,6 @@ function Chat() {
             })
 
             getAcceptFriend(data=> {
-                console.log(data);
                 const friendAccept = addFriendAfterAccept(data)
                 dispatch(friendAccept)
 

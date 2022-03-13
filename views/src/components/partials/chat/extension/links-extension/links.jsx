@@ -7,8 +7,10 @@ import LinkItem from './link-item/link-item';
 import $ from 'jquery';
 
 const Links = () => {
+    //--------------------redux-----------------------//
     const receiverId = useSelector(state => state.message.currentChat.receiverId);
 
+    //-----------------------state--------------------------//
     const [is_active, setIsActive] = useState(false);
     const [links, setLinks] = useState([]);
     const [offset, setOffset] = useState(0);
@@ -22,6 +24,7 @@ const Links = () => {
         return listElements;
     });
 
+    //----------------------handle-------------------------//
     const getListAndSetState = async (receiverId, limit, position, caseLoad) => {
         if (!receiverId) return;
         setIsLoading(true);
@@ -46,7 +49,9 @@ const Links = () => {
             }
 
             case 404: {
-                setNotification("Không có tin nhắn liên kết nào");
+                if (links.length === 0) {
+                    setNotification("Không có tin nhắn liên kết nào");
+                }
                 break;
             }
 
@@ -59,6 +64,25 @@ const Links = () => {
         setIsLoading(false);
     }
 
+    const handleScroll = async () => {
+        const scroolTop = $('#list_link_elements').scrollTop();
+        const heightParent = $('#list_link_elements').height();
+        const fullHeight = $('#list-link-full-size').height();
+        if (scroolTop + heightParent - fullHeight >= -10 && scroolTop + heightParent - fullHeight <= -5) {
+            await getListAndSetState(receiverId, 10, offset, true);
+        }
+    }
+
+    const onActive = () => {
+        setIsActive(!is_active);
+
+        //animation show member group
+        $('.list-links').animate({
+            height: 'toggle'
+        });
+    }
+
+    //------------------life cycle-----------------------//
     //get list link
     useEffect(async () => {
         setOffset(0);
@@ -79,21 +103,6 @@ const Links = () => {
             setListLinksTag(null);
         }
     }, [receiverId]);
-
-    const handleScroll = async () => {
-        if ($('#list_link_elements').scrollTop() + $('#list_link_elements').height() == $('#list-link-full-size').height()) {
-            await getListAndSetState(receiverId, 10, offset, true);
-        }
-    }
-
-    const onActive = () => {
-        setIsActive(!is_active);
-
-        //animation show member group
-        $('.list-links').animate({
-            height: 'toggle'
-        });
-    }
 
     return (
         <div className='element-extension'>

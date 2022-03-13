@@ -20,6 +20,8 @@ module.exports.addGroup = async (data, socket, io) => {
             return parseInt(Element);
         });
 
+        const imageGroup = (data.image) ? data.image : null;
+
         //lay admin id
         const AdminId = await userIsLogin.getUserId(socket);
 
@@ -28,11 +30,28 @@ module.exports.addGroup = async (data, socket, io) => {
             //random id
             var groupId = `G${(new Date()).getTime()}`;
 
+            //xu ly hinh anh
+            if (imageGroup) {
+                const fileName = imageGroup.fileName;
+                const fileNameArr = fileName.split('.');
+                const extension = fileNameArr.pop();
+                var imageName = `group-${(new Date()).getTime()}.${extension}`;
+
+                //luu hinh anh vao server
+                fs.writeFile(path.resolve(__dirname, '../public/avatarUser/', imageName), imageGroup.file, (error) => {
+                    if (error) {
+                        socket.emit('add-group', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+                        console.error(error);
+                    }
+                });
+            }
+
             //them mot chat group
             var groupObj = {
                 id: groupId,
                 groupName: groupName,
-                AdminId: AdminId
+                AdminId: AdminId,
+                image: imageName
             }
         } else {
             //kiem tra group co ton tai chua
@@ -65,7 +84,7 @@ module.exports.addGroup = async (data, socket, io) => {
             }
         }
         await detailGroup.create(listDetailGroups);
-       
+
         //create room
         //lay tat ca user trong room
         const listMembers = await detailGroup.getMembers(groupId, 10000, 0);
@@ -84,14 +103,17 @@ module.exports.addGroup = async (data, socket, io) => {
         if (members.length > 2) {
             //lay ten chat nhom
             //lay hinh anh nhom
-            for (let i = 0; i < members.length; i++) {
-                if (members[i] != AdminId) {
-                    const dataUser1 = await user.get(AdminId);
-                    const dataUser2 = await user.get(members[i]);
-                    groupName = groupName ? groupName : `${dataUser1[0].firstName}, ${dataUser2[0].firstName}, ...`;
-                    var img1 = dataUser1[0].image;
-                    var img2 = dataUser2[0].image;
-                    i = members.length;
+            if (!imageName) {
+                //neu tao nhom ma khong co hinh anh thi lay anh
+                for (let i = 0; i < members.length; i++) {
+                    if (members[i] != AdminId) {
+                        const dataUser1 = await user.get(AdminId);
+                        const dataUser2 = await user.get(members[i]);
+                        groupName = groupName ? groupName : `${dataUser1[0].firstName}, ${dataUser2[0].firstName}, ...`;
+                        var img1 = dataUser1[0].image;
+                        var img2 = dataUser2[0].image;
+                        i = members.length;
+                    }
                 }
             }
         } else {
@@ -112,11 +134,16 @@ module.exports.addGroup = async (data, socket, io) => {
             groupId: groupId,
             groupName: groupName,
             members: members,
-            image: {
-                image1: img1,
-                image2: img2
+            image: imageName ? {
+                img1: imageName,
+                img2: ''
+            } : {
+                img1: img1,
+                img2: img2
             }
         }
+
+        console.log(returnData);
 
         io.to(`${groupId}`).emit('add-group', returnData);
     } catch (err) {
@@ -347,7 +374,7 @@ module.exports.addMember = async (data, socket, io) => {
 
 module.exports.deleteMember = async (data, socket, io) => {
     //thong bao toi cac nguoi dung trong nhom, vua xoa thanh vien
-     try {
+    try {
         //kiem tra du lieu
         if (!(data.groupId && data.memberId)) {
             socket.emit('delete-member-error', { msg: 'Lỗi, không đính kèm dữ liệu' });

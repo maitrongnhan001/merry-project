@@ -25,6 +25,9 @@
         .input-chat-content:empty::before {
             content: attr(data-placeholder);
             color: #525863;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
 
         .input-chat-content::-webkit-scrollbar {

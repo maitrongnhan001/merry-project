@@ -10,10 +10,10 @@ const userReducer = (state = initial, action) => {
                 newUserOnline.push(action.data)
             }else 
                 for (let idx in newUserOnline) {
-                    if (newUserOnline[idx] !== action.data) {
-                        console.log(action.data)
-                        console.log(idx)
-                        if(idx === newUserOnline.length - 1) 
+                    // eslint-disable-next-line eqeqeq
+                    if (newUserOnline[idx] != action.data) {
+                        // eslint-disable-next-line eqeqeq
+                        if(idx == newUserOnline.length - 1) 
                             newUserOnline.push(action.data)
                         continue
                     }else {
@@ -26,17 +26,18 @@ const userReducer = (state = initial, action) => {
             }
         }
         case 'USER_OFFLINE': {
-            let userOnline = [...state.userOnline]
-            for (let idx in userOnline) {
+            let newUserOnline = [...state.userOnline]
+            for (let idx in newUserOnline) {
                 console.log(action.data)
-                if(userOnline[idx] === action.data) {
-                    userOnline.splice(idx, 1)
+                if(newUserOnline[idx] === action.data) {
+                    console.log(idx)
+                    newUserOnline.splice(idx, 1)
                     break;
                 }
             }
             return {
                 ...state,
-                userOnline
+                userOnline: newUserOnline
             }
         }
         default: {

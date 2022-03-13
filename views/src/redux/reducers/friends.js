@@ -18,6 +18,7 @@ const friendsReducer = (state = initial, action) => {
         }
         case 'UPDATE_CHAT_LIST': {
             const chatsList = [...state.chatsList]
+            console.log(action)
             for(let value of chatsList) {
                 // eslint-disable-next-line eqeqeq
                 if(value.receiverId == action.data.receiverId) {
@@ -26,6 +27,7 @@ const friendsReducer = (state = initial, action) => {
                     if(action.data.type == 'text') {
                         value.lastMessage.type = 'text'
                         value.lastMessage.content = action.data.content
+                        value.lastMessage.isSender = action.data.senderId === localStorage.getItem('userId') ? 1 : 0
                     }
                 }
             }

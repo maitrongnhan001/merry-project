@@ -2,16 +2,19 @@ import React, { useState, useEffect } from 'react'
 import Image from '../../avatar/avatar'
 import './item.scss'
 import $ from 'jquery'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch} from 'react-redux'
 import { showCenter, showFeature } from '../../../../../redux/actions/taskbar'
 import { saveCurrentChat } from '../../../../../redux/actions/message'
 import { sendAddFriend } from '../../../../Sockets/socket-friend'
 import { createRoom } from '../../../../Sockets/socket-chat'
 
+<<<<<<< HEAD
 function Item({userId, id, name, image, addFriend, createGroup, onAddMember, initCheck }) {
+=======
+function Item({userId, id, name, image, addFriend, createGroup, onAddMember, members }) {
+>>>>>>> a55c539d051300e311c9f1d2eb467db7d704efde
 
     /*----redux----*/
-    const currentChatSelector = useSelector(state => state.message.currentChat)
     //ket noi den redux
     const dispatch = useDispatch()
 
@@ -28,7 +31,7 @@ function Item({userId, id, name, image, addFriend, createGroup, onAddMember, ini
 
         }
         else {
-            const currentChat = saveCurrentChat({ receiverId: id, image, name })
+            const currentChat = saveCurrentChat({ receiverId: id, image, name, members: members })
             dispatch(currentChat)
             $(e.currentTarget).addClass('active-friend-group-item')
             for (let val of $('.friend-group-item')) {
@@ -89,7 +92,7 @@ function Item({userId, id, name, image, addFriend, createGroup, onAddMember, ini
     return (
         <div className="friend-group-item" data-id={id} onClick={handleClickToCheckFriend}>
             <div className="friend-group-avatar">
-                <Image image={image ? image : undefined} id={id}></Image>
+                <Image image={image ? image : undefined} id={userId} members={members}></Image>
             </div>
             <div className="friend-group-info">
                 <p className="friend-group-name">{name}</p>

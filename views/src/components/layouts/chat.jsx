@@ -1,5 +1,5 @@
 import React from 'react'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { setTheme, showCenter, showFeature } from '../../redux/actions/taskbar'
 import { updateShowOrderFeature, updateNewMember, updateDeleteMember } from '../../redux/actions/extension'
@@ -11,7 +11,7 @@ import Feature from '../partials/chat/tools/feature/feature'
 import CreateGroup from '../partials/chat/create-group/create-group'
 import Profile from '../partials/chat/profile/profile'
 import Center from '../partials/chat/center/center'
-import Loader from '../partials/chat/tools/loader/loader'
+// import Loader from '../partials/chat/tools/loader/loader'
 import Notification from '../partials/chat/tools/notification/notification'
 import FormAdddMember from '../partials/chat/extension/Another-features/add-members/form/form-add-member'
 import Ask from '../partials/chat/extension/Another-features/leave-group/form-ask/ask'
@@ -28,6 +28,7 @@ import { saveCurrentChat, saveMassage } from '../../redux/actions/message'
 import SetNameForm from '../partials/chat/extension/Another-features/set-name-group/set-name-form/set-name-form'
 import SetAvatarForm from '../partials/chat/extension/Another-features/set-avatar-group/set-avatar-form/set-avatar-form'
 import { updateManagerFriend } from '../../redux/actions/extension'
+import { updateNotification } from '../../redux/actions/notification'
 
 function Chat() {
     const theme = useSelector(state => state.taskbar.theme)
@@ -80,6 +81,7 @@ function Chat() {
             sendConnection(localStorage.getItem('userId'))
             //listen connection
             getConnection((data) => {
+                console.log(data)
                 if (data.userId !== localStorage.getItem('userId')) {
                     const userOnline = saveUserOnline(data.userId)
                     dispatch(userOnline)
@@ -144,21 +146,37 @@ function Chat() {
             getDismissFriend(data => {
                 const updateFriendExtension = updateManagerFriend(1);
                 dispatch(updateFriendExtension);
+                // eslint-disable-next-line eqeqeq
+                if(data.status == 404) {
+                    const notification = updateNotification('Đã gửi lời mời kết bạn.')
+                    dispatch(notification)
+                }else{
+                    const friendRequest = addFriendRequest(data)
+                    dispatch(friendRequest)
+                    const notification = updateNotification('Gửi lời mời kết bạn thành công.')
+                    dispatch(notification)
+                }
             })
 
             getTextMessageChat((data)=> {
                 const message = saveMassage(data)
                 dispatch(message)
+                const chatList = updateChatsList(data)
+                dispatch(chatList)
             })
 
             getMediaMessage(data=> {
                 const message = saveMassage(data)
                 dispatch(message)
+                const chatList = updateChatsList(data)
+                dispatch(chatList)
             })
 
             getDocumentMessage(data=> {
                 const message = saveMassage(data)
                 dispatch(message)
+                const chatList = updateChatsList(data)
+                dispatch(chatList)
             })
 
             getAcceptFriend(data=> {

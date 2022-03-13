@@ -10,13 +10,15 @@ function Friends() {
     /*----redux----*/
     //lay du lieu tu redux
     const friendsList = useSelector(state => state.friends.friendsList)
+    const friendRequest = useSelector(state => state.friends.friendRequest)
     
     // ket noi voi redux
     const dispatch = useDispatch()
     /*----data----*/
     const items = friendsList.map((value, idx)=>{
+        console.log(value.members)
         return (
-              <Item key={idx} userId={value.id} id={value.groupId} image={value.image} name={value.name}></Item>
+              <Item key={idx} userId={value.id} members={[value.id]} id={value.groupId} image={value.image} name={value.name}></Item>
         )
     })
 
@@ -35,7 +37,7 @@ function Friends() {
             <div className="tab-friend-request" onClick={handleClickToShowFriendRequest}>
                 <div className="col col-left">
                     <p className="friend-request-title"> <i className="fas fa-user-check"></i> Lời mời kết bạn</p>
-                    <p className="friend-request-quantity">(10)</p>
+                    <p className="friend-request-quantity">{friendRequest.length > 0 ? `(${friendRequest.length})` : ''}</p>
                 </div>
                 <div className="col col-right">
                     <i className="fas fa-chevron-right"></i>

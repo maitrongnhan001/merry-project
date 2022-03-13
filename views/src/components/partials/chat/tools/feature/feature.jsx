@@ -6,6 +6,7 @@ import { saveFriendProfile, showFriendProfile } from '../../../../../redux/actio
 import { showDialog, showFeature } from '../../../../../redux/actions/taskbar'
 import { sendDeleteFriend } from '../../../../Sockets/socket-friend'
 import { getMemberListFromGroupByGroupId } from '../../../../APIs/ConnectAPI'
+import { updateNotification } from '../../../../../redux/actions/notification'
 
 function Feature({children, offset, group}) {
 
@@ -48,6 +49,8 @@ function Feature({children, offset, group}) {
         const updateFeature = showFeature({...feature, isShow: 0}) 
         dispatch(updateFeature)
         sendDeleteFriend(data)
+        const notification = updateNotification('Huỷ kết bạn thành công.')
+        dispatch(notification)
     }
 
     /*----lifecycle ----*/
@@ -61,7 +64,7 @@ function Feature({children, offset, group}) {
                !group ? <p className="tab-friend-feature-item-show tab-item-feature-elm tab-item-feature-elm-1" onClick={handleClickToShowProfile}>Xem thông tin</p> : ''
             }
             {group ? <p className="tab-friend-feature-item-show tab-item-feature-elm tab-item-feature-elm-2">Rời nhóm</p> :
-            <p className="tab-friend-feature-item-show tab-item-feature-elm tab-item-feature-elm-2" onClick={handleClickToDeleteFriend}>Xóa bạn</p>}
+            <p className="tab-friend-feature-item-show tab-item-feature-elm tab-item-feature-elm-2" onClick={handleClickToDeleteFriend}>Hủy kết bạn</p>}
         </div>
     )
 }

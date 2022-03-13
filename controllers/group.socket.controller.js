@@ -135,11 +135,11 @@ module.exports.addGroup = async (data, socket, io) => {
             groupName: groupName,
             members: members,
             image: imageName ? {
-                img1: imageName,
-                img2: ''
+                image1: imageName,
+                image2: ''
             } : {
-                img1: img1,
-                img2: img2
+                image1: img1,
+                image2: img2
             }
         }
 

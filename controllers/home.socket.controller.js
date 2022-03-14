@@ -8,6 +8,7 @@ const authHelper = require('../helpers/auth.helper');
 const fs = require('fs');
 const user = require('../models/user.model');
 const group = require('../models/group.model');
+const path = require('path');
 
 module.exports.login = async (data, socket) => {
     try {
@@ -105,7 +106,7 @@ module.exports.updateProfile = async (data, socket, io) => {
     try {
         //get data
         const userId = data.userId || null;
-        const firstName = data.fristName || null;
+        const firstName = data.firstName || null;
         const lastName = data.lastName || null;
         const image = data.image || null;
         const DOB = data.DOB || null;
@@ -120,6 +121,7 @@ module.exports.updateProfile = async (data, socket, io) => {
         if (lastName) UserUpdateObj.lastName = lastName;
         if (DOB) UserUpdateObj.DOB = DOB;
         if (sex) UserUpdateObj.sex = sex;
+        console.log(image);
         if (image) {
             //kiem tra hinh anh da luu truoc do, neu anh ton tai thi xoa
             let getImage = (await user.get(userId))[0].image;

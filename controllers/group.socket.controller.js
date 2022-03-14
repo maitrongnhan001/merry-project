@@ -4,6 +4,9 @@ const detailGroup = require('../models/detailGroup.model');
 const user = require('../models/user.model');
 const fs = require('fs');
 const path = require('path');
+const chat = require('../models/chat.model');
+const media = require('../models/mediaMessage.model');
+const document = require('../models/document.model');
 
 module.exports.addGroup = async (data, socket, io) => {
     //thong bao toi cac nguoi dung trong nhom, co mot nhom vua tao
@@ -377,7 +380,7 @@ module.exports.deleteMember = async (data, socket, io) => {
     try {
         //kiem tra du lieu
         if (!(data.groupId && data.memberId)) {
-            socket.emit('delete-member-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
+            socket.emit('delete-member', { msg: 'Lỗi, không đính kèm dữ liệu' });
             return;
         }
 
@@ -387,6 +390,51 @@ module.exports.deleteMember = async (data, socket, io) => {
 
         //lay tat ca user trong room
         const listMembers = await detailGroup.getMembers(groupId, 10000, 0);
+
+        //kiem tra co phai truong nhom khong
+        const idAdmin = await group.getAdminId(groupId);
+        if (idAdmin[0].AdminId === memberId) {
+            //xoa file va media lien quan
+            const listMedias = await media.get(groupId, 100000, 0);
+            if (listMedias) {
+                listMedias.forEach(Element => {
+                    fs.unlink(path.resolve(__dirname, '../public/Medias/', Element.content), (error) => {
+                        if (error) {
+                            socket.emit('delete-member', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+                            console.error(error);
+                        }
+                    });
+                });
+            }
+            const listDocuments = await document.get(groupId, 100000, 0);
+            if (listDocuments) {
+                listDocuments.forEach(Element => {
+                    fs.unlink(path.resolve(__dirname, '../public/Documents/', Element.content), (error) => {
+                        if (error) {
+                            socket.emit('delete-member', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+                            console.error(error);
+                        }
+                    });
+                });
+            }
+
+            //xoa du lieu bang message
+            await chat.deleteChat(groupId);
+
+            //xoa du lieu bang detail
+            await detailGroup.deleteByGroupId(groupId);
+
+            //xoa group
+            await group.delete(groupId);
+
+            //tra du lieu ve cho client
+            const returnData = {
+                groupId: groupId,
+                memberId: memberId,
+                isAdmin: true
+            }
+            return io.to(`${groupId}`).emit('delete-member', returnData);
+        }
 
         //luu du lieu vao table detail group
         await detailGroup.deleteByUserId(groupId, memberId);

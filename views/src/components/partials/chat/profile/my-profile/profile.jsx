@@ -21,8 +21,8 @@ function Profile() {
         firstName: '',
         lastName: '',
         sex: '',
-        image: ''
-
+        image: '',
+        isSetImage: 0
     })
 
     /*----data----*/
@@ -110,10 +110,19 @@ function Profile() {
         setUser(newUser)
     }
 
+    const handleChangeToUpdateImage = (e)=> {
+        const newUser = {
+            ...user,
+            isSetImage: 1
+        }
+        setUser(newUser)
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault()
         const data = {
             ...user,
+            image: user.isSetImage ? user.image : null,
             userId: localStorage.getItem('userId'),
             DOB: `${DOB.year}-${DOB.month}-${DOB.date}`
         }
@@ -129,7 +138,6 @@ function Profile() {
         (async ()=>{
             try {
                 const result = await getUserById(localStorage.getItem('userId'))
-                console.log(result)
                 if(result && result.status === 200) {
                     const newUser = {
                         firstName: result.data.data.firstName,
@@ -168,7 +176,7 @@ function Profile() {
                             <div className="my-profile-avatar">
                                 <div className="my-profile-update-avatar">
                                     <label htmlFor="my-profile-change-avatar"><img src={urlUserAvatar + user.image} alt="" /></label>
-                                    <input type="file" id="my-profile-change-avatar" accept="image/*" style={{display: 'none'}}/>
+                                    <input type="file" id="my-profile-change-avatar" accept="image/*" style={{display: 'none'}} onChange={handleChangeToUpdateImage}/>
                                 </div>
                                 <div className="my-profile-update-static">
                                     <p className="my-profile-name">{user.name}</p>

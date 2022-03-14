@@ -29,6 +29,7 @@ import SetNameForm from '../partials/chat/extension/Another-features/set-name-gr
 import SetAvatarForm from '../partials/chat/extension/Another-features/set-avatar-group/set-avatar-form/set-avatar-form'
 import { updateManagerFriend } from '../../redux/actions/extension'
 import { updateNotification } from '../../redux/actions/notification'
+import AskDelete from '../partials/chat/extension/Another-features/delete-group/ask-delete-group/ask-delete'
 
 function Chat() {
     const theme = useSelector(state => state.taskbar.theme)
@@ -238,7 +239,9 @@ function Chat() {
                             <SetNameForm />
                             :
                             displayFormExtension === 4 ?
-                                <Ask /> : ''
+                                <Ask />
+                                : displayFormExtension === 5 ?
+                                    <AskDelete /> : ''
 
             }
             {/* <FormAdddMember/> */}

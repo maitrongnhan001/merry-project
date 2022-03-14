@@ -6,6 +6,7 @@ import { showDialog } from '../../../../../redux/actions/taskbar'
 import { useDispatch } from 'react-redux'
 import $ from 'jquery'
 import { getUserById, urlUserAvatar } from '../../../../APIs/ConnectAPI'
+import { sendUpdateProfile } from '../../../../Sockets/home'
 
 function Profile() {
 
@@ -109,14 +110,19 @@ function Profile() {
         setUser(newUser)
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const data = {
+            ...user,
+            DOB: `${DOB.year}-${DOB.month}-${DOB.date}`
+        }
+        sendUpdateProfile(data)
+    }
+
     /*----lifecycle----*/
     useEffect(()=> {
         $('.main-chat-my-profile-form').fadeTo('.5s', 1)
     })
-
-    useEffect(()=>{
-        console.log(DOB);
-    }, [DOB])
 
     useEffect(()=> {
         (async ()=>{
@@ -149,7 +155,7 @@ function Profile() {
 
     return (
         <div className="main-chat-my-profile-wrapper" onClick={handleClickToHideMyProfile}>
-            <form className="main-chat-my-profile-form" onClick={(e)=>e.stopPropagation()}>
+            <form className="main-chat-my-profile-form" onClick={(e)=>e.stopPropagation()} onSubmit={handleSubmit}>
                 <div className="my-profile">
                     <p className="my-profile-title">
                         Cập nhật thông tin

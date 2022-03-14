@@ -10,7 +10,6 @@ export default function SelectTag({onSelected, option_select, default_value, nam
     
     //danh sach item
     const [option, setOption] = useState([])
-    console.log(item)
     /*----data----*/
     const mapOption = ()=> {
         return (

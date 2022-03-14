@@ -20,7 +20,7 @@ import { getFriendsList, getListChat, getGroupsList } from '../APIs/ConnectAPI'
 import { getAddGroup, getAddMember, getDeleteMember, getUpdateGroup } from '../Sockets/socket-group'
 import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList, updateInfomationFriend, deleteFriend, updateChatsList } from '../../redux/actions/friends'
 import { addGroup, saveGroupsList, updateInfomationGroup } from '../../redux/actions/groups'
-import { getConnection, getLogout, sendConnection } from '../Sockets/home'
+import { getConnection, getLogout, getUpdateProfile, sendConnection } from '../Sockets/home'
 import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
 import { getRoom, getTextMessageChat, getMediaMessage, getDocumentMessage } from '../Sockets/socket-chat'
 import { getAcceptFriend, getAddFriend, getDeleteFriend, getDismissFriend } from '../Sockets/socket-friend'
@@ -87,6 +87,10 @@ function Chat() {
                     const userOnline = saveUserOnline(data.userId)
                     dispatch(userOnline)
                 }
+            })
+
+            getUpdateProfile(data=> {
+                console.log(data)
             })
 
             //logout 

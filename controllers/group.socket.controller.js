@@ -274,6 +274,34 @@ module.exports.deleteGroup = async (data, socket, io) => {
         //lay tat ca user trong room
         const listMembers = await detailGroup.getMembers(groupId, 10000, 0);
 
+        //xoa tin nhan va cac file lien quan
+        //xoa file va media lien quan
+        const listMedias = await media.get(groupId, 100000, 0);
+        if (listMedias) {
+            listMedias.forEach(Element => {
+                fs.unlink(path.resolve(__dirname, '../public/Medias/', Element.content), (error) => {
+                    if (error) {
+                        socket.emit('delete-member', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+                        console.error(error);
+                    }
+                });
+            });
+        }
+        const listDocuments = await document.get(groupId, 100000, 0);
+        if (listDocuments) {
+            listDocuments.forEach(Element => {
+                fs.unlink(path.resolve(__dirname, '../public/Documents/', Element.content), (error) => {
+                    if (error) {
+                        socket.emit('delete-member', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+                        console.error(error);
+                    }
+                });
+            });
+        }
+
+        //xoa du lieu bang message
+        await chat.deleteChat(groupId);
+
         //xoa du lieu trong bang detail group
         await detailGroup.deleteByGroupId(groupId);
 

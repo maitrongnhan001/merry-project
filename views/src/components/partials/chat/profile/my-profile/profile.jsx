@@ -114,6 +114,7 @@ function Profile() {
         e.preventDefault()
         const data = {
             ...user,
+            userId: localStorage.getItem('userId'),
             DOB: `${DOB.year}-${DOB.month}-${DOB.date}`
         }
         sendUpdateProfile(data)

@@ -149,3 +149,21 @@ module.exports.getContents = (senderId,receiverId) =>{
         })
     })
 }
+//delete chat
+module.exports.deleteChat = (receiverId) => {
+    return new Promise((resolve, reject) =>{
+        const sql = `DELETE FROM message WHERE receiveId = ?`
+        connection.query(sql,[receiverId],(error, result)=>{
+            if (error) {
+                reject(error);
+            } else {
+                if (result.length > 0) {
+                    const endResult = JSON.parse(JSON.stringify(result));
+                    resolve(endResult);
+                } else {
+                    resolve(false);
+                }
+            }
+        })
+    })
+}

@@ -158,3 +158,21 @@ module.exports.getAllUser = () => {
         })  
     })
 }
+
+//update infomation of the user
+module.exports.updateProfile = (userObj, userId) => {
+    return new Promise((resolve, reject) => {
+        const sql =  `UPDATE user SET ? WHERE id = ${userId}`
+        connection.query(sql, userObj, (error, result) => {
+            if (error) {
+                reject(error)
+            } else {
+                if (result) {
+                    resolve(result)
+                } else {
+                    resolve(null)
+                }
+            }
+        })
+    })
+}

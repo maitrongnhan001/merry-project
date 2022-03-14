@@ -12,4 +12,8 @@ module.exports.home = (io, socket) => {
     socket.on('logout', (data) => {
         homeSocketController.logout(data, socket, io);
     });
+
+    socket.on('update-profile', (data) => {
+        homeSocketController.updateProfile(data, socket, io);
+    });
 } 

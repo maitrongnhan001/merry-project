@@ -54,6 +54,24 @@ module.exports.getMembers = (groupID) => {
     })
 }
 
+module.exports.getAdminId = (groupID) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT AdminId FROM groupuser WHERE id = '${groupID}'`
+        connection.query(sql, function (error, result) {
+            if (error) {
+                reject(error)
+            } else {
+                if (result.length > 0) {
+                    const endResult = JSON.parse(JSON.stringify(result))
+                    resolve(endResult)
+                } else {
+                    resolve(null)
+                }
+            }
+        })
+    })
+}
+
 //them mot group moi
 module.exports.create = (groupObj) => {
     return new Promise((resolve, reject) => {

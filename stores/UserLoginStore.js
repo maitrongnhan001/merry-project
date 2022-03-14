@@ -93,7 +93,7 @@ module.exports.getUserId = (Socket) => {
 module.exports.checkUser = (userId) => {
     return new Promise((resolve, reject) => {
         //kiem tra user co trong mang
-        if (initialData.find(Element => { return Element.userId === userId })) {
+        if (initialData.find(Element => { return Element.userId == userId })) {
             resolve(true);
         }
 

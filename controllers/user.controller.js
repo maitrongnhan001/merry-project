@@ -1,6 +1,7 @@
 const user = require("../models/user.model")
 const friend = require("../models/friend.model")
 const detailGroup = require("../models/detailGroup.model")
+const userIsOnline = require("../stores/UserLoginStore")
 
 module.exports.search = async (req, res) => {
     try {
@@ -8,7 +9,7 @@ module.exports.search = async (req, res) => {
         let email = req.query.search ?? ''
         const search = `%${email}%`
         const finds = await user.search(search)
-        if(!finds)
+        if (!finds)
             return res.sendStatus(404)
         const data = []
         const friends = await user.searchFriend(senderId)
@@ -247,5 +248,34 @@ module.exports.getUserByGroupIdAndUserId = async (req, res) => {
     } catch (error) {
         console.log(error)
         return res.sendStatus(500)
+    }
+}
+
+module.exports.getUserOnline = async (req, res) => {
+    try {
+        //lay & kiem tra du lieu
+        const userId = req.params.userId;
+        if (!userId) return res.status(404);
+
+        //lay ban be
+        const listFriend = await friend.listFriend(userId, 100000, 0);
+        const userOnlineArr = [];
+        if (!listFriend) return res.status(404);
+
+        await listFriend.forEach( async (Element) => {
+            //kiem tra ai online
+            const IdFriend = Element.sendId == userId ? Element.receiveId : Element.sendId;
+            if (await userIsOnline.checkUser(IdFriend)) {
+                userOnlineArr.push(IdFriend);
+            }
+        });
+        //tra ve client
+        res.status(200).json({
+            message: "Truy vấn thành công",
+            data: userOnlineArr
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500);
     }
 }

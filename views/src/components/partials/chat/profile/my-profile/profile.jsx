@@ -111,8 +111,13 @@ function Profile() {
     }
 
     const handleChangeToUpdateImage = (e)=> {
+        const image = e.target.files[0]
         const newUser = {
             ...user,
+            image: {
+                fileName: image.name,
+                file: image
+            },
             isSetImage: 1
         }
         setUser(newUser)

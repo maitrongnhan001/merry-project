@@ -55,6 +55,10 @@ const groupsReducer = (state = initial, action) => {
                     }
                 }
             })
+            return {
+                ...state,
+                groupsList: newList
+            }
         }
 
         default: {

@@ -37,6 +37,7 @@ function Chat() {
     const displayFormExtension = useSelector(state => state.extension.showForm)
     const feature = useSelector(state => state.taskbar.feature)
     const isFriendProfileForm = useSelector(state => state.friends.friendProfile)
+    const idChat = useSelector(state => state.message.currentChat)
 
     const dispatch = useDispatch()
 
@@ -81,14 +82,14 @@ function Chat() {
             }
 
             const currentUser = await getUserById(localStorage.getItem('userId'))
-            if(currentUser && currentUser.status === 200) {
+            if (currentUser && currentUser.status === 200) {
                 console.log(currentUser.data.data)
                 const user = saveCurrentUser(currentUser.data.data)
                 dispatch(user)
             }
 
             const usersOnline = await getUsersOnline(localStorage.getItem('userId'))
-            if(usersOnline && usersOnline.status === 200) {
+            if (usersOnline && usersOnline.status === 200) {
                 const users = saveUserOnline(usersOnline.data.data[0])
                 dispatch(users)
             }
@@ -101,10 +102,6 @@ function Chat() {
                     const userOnline = saveUserOnline(data.userId)
                     dispatch(userOnline)
                 }
-            })
-
-            getUpdateProfile(data=> {
-                
             })
 
             //logout 
@@ -135,8 +132,14 @@ function Chat() {
                 const dataDeleteMember = updateDeleteMember(data);
                 dispatch(dataDeleteMember);
 
+                if (idChat === data.groupId) {
+                    //nhom bi xoa nen set center thanh wellcome
+                    const updateCenter = showCenter(0)
+                    dispatch(updateCenter)
+                }
+
                 //xoa group chat ra khoi chat list
-                const deleteItem = deleteGroupChat(data.groupId)
+                const deleteItem = deleteGroupChat(data)
                 dispatch(deleteItem)
 
                 //xoa group ra khoi list group
@@ -147,7 +150,7 @@ function Chat() {
             getAddGroup((data) => {
                 const addGroupAction = addGroup(data)
                 dispatch(addGroupAction)
-                const currentChat = saveCurrentChat({receiverId: data.groupId, name: data.groupName, image: data.image})
+                const currentChat = saveCurrentChat({ receiverId: data.groupId, name: data.groupName, image: data.image })
                 dispatch(currentChat)
                 const center = showCenter(1)
                 dispatch(center)
@@ -169,9 +172,21 @@ function Chat() {
                 const updateCenter = showCenter(0)
                 dispatch(updateCenter)
 
+                if (idChat === data.groupId) {
+                    //nhom bi xoa nen set center thanh wellcome
+                    const updateCenter = showCenter(0)
+                    dispatch(updateCenter)
+                }
+
+                console.log(data);
+
                 //xoa group chat ra khoi chat list
-                const deleteItem = deleteGroupChat(data.groupId)
+                const deleteItem = deleteGroupChat(data)
                 dispatch(deleteItem)
+
+                //xoa group ra khoi list group
+                const dataDeleteGroup = deleteGroup(data);
+                dispatch(dataDeleteGroup)
             })
 
             getAddFriend(data => {
@@ -186,42 +201,42 @@ function Chat() {
                 const updateFriendExtension = updateManagerFriend(1);
                 dispatch(updateFriendExtension);
                 // eslint-disable-next-line eqeqeq
-                if(data.status == 404 && data.senderId == localStorage.getItem('userId')) {
+                if (data.status == 404 && data.senderId == localStorage.getItem('userId')) {
                     const notification = updateNotification(data.msg)
                     dispatch(notification)
-                }else{
+                } else {
                     const friendRequest = addFriendRequest(data)
                     dispatch(friendRequest)
                     // eslint-disable-next-line eqeqeq
-                    if(data.senderId == localStorage.getItem('userId')){
+                    if (data.senderId == localStorage.getItem('userId')) {
                         const notification = updateNotification('Gửi lời mời kết bạn thành công.')
                         dispatch(notification)
                     }
                 }
             })
 
-            getTextMessageChat((data)=> {
+            getTextMessageChat((data) => {
                 const message = saveMassage(data)
                 dispatch(message)
                 const chatList = updateChatsList(data)
                 dispatch(chatList)
             })
 
-            getMediaMessage(data=> {
+            getMediaMessage(data => {
                 const message = saveMassage(data)
                 dispatch(message)
                 const chatList = updateChatsList(data)
                 dispatch(chatList)
             })
 
-            getDocumentMessage(data=> {
+            getDocumentMessage(data => {
                 const message = saveMassage(data)
                 dispatch(message)
                 const chatList = updateChatsList(data)
                 dispatch(chatList)
             })
 
-            getAcceptFriend(data=> {
+            getAcceptFriend(data => {
                 const friendAccept = addFriendAfterAccept(data)
                 dispatch(friendAccept)
 
@@ -229,7 +244,7 @@ function Chat() {
                 dispatch(updateFriendExtension);
             })
 
-            getDeleteFriend(data=> {
+            getDeleteFriend(data => {
                 const friend = deleteFriend(data)
                 dispatch(friend)
 
@@ -243,12 +258,12 @@ function Chat() {
                 dispatch(message)
             })
 
-            getUpdateProfile(data=> {
-                if(!data.status) {
+            getUpdateProfile(data => {
+                if (!data.status) {
                     const notification = updateNotification('Thông tin đã được cập nhật.')
                     dispatch(notification)
                     // eslint-disable-next-line eqeqeq
-                    if(data.userId == localStorage.getItem('userId')) {
+                    if (data.userId == localStorage.getItem('userId')) {
                         const user = saveCurrentUser(data)
                         dispatch(user)
                     }

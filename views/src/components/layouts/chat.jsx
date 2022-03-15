@@ -137,7 +137,7 @@ function Chat() {
                 dispatch(dataDeleteMember);
 
                 //xoa group chat ra khoi chat list
-                const deleteItem = deleteGroupChat(data.groupId)
+                const deleteItem = deleteGroupChat(data)
                 dispatch(deleteItem)
 
                 //xoa group ra khoi list group

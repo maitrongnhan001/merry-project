@@ -10,7 +10,7 @@ import { saveFriendProfile, showFriendProfile } from '../../../../../redux/actio
 import { showDialog } from '../../../../../redux/actions/taskbar'
 import { getMemberListFromGroupByGroupId } from '../../../../APIs/ConnectAPI'
 
-function Header({id, image, name}) {
+function Header({id, image, name, members}) {
     
     /*----redux----*/
     //lay du lieu tu redux
@@ -42,7 +42,6 @@ function Header({id, image, name}) {
     //xu ly an hien form thong tin ca nhan
     const handleClickToShowProfile = async ()=> {
         const result = await getMemberListFromGroupByGroupId(localStorage.getItem('userId'), id) 
-        console.log(result)
         if(result && result.status === 200) {
             const friendProfileDataAction = saveFriendProfile(result.data.data)
             dispatch(friendProfileDataAction)
@@ -84,7 +83,7 @@ function Header({id, image, name}) {
                 <div className="main-chat-header-box">
                     <div className="main-chat-header-receiver-info">
                         <div className="main-chat-header-receiver-avatar" onClick={handleClickToShowProfile}>
-                            <Image image={image}></Image>
+                            <Image image={image} members={members}></Image>
                         </div>
                         <div className="main-chat-header-receiver-text">
                             <p className="main-chat-header-username">{name}</p>
@@ -92,7 +91,7 @@ function Header({id, image, name}) {
                         </div>
                     </div>
                     <div className="main-chat-header-tools">
-                        <i className="fas fa-search"  onClick={()=>{$('.search-message-wrapper').slideToggle('.25s'); setIsShowSearchBox(isShowSearchBox ? 0 : 1)}}></i>
+                        {/* <i className="fas fa-search"  onClick={()=>{$('.search-message-wrapper').slideToggle('.25s'); setIsShowSearchBox(isShowSearchBox ? 0 : 1)}}></i> */}
                         <i className="fas fa-phone" onClick={handleVocalCall}></i>
                         <i className="fas fa-video" onClick={handleVideoCall}></i>
                         <i className="fas fa-bars" onClick={handleClickShowExtension}></i>

@@ -3,13 +3,16 @@ import './profile.scss'
 import { useState } from 'react'
 import Select from '../../tools/select/SelectTag'
 import { showDialog } from '../../../../../redux/actions/taskbar'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import $ from 'jquery'
 import { getUserById, urlUserAvatar } from '../../../../APIs/ConnectAPI'
+import { sendUpdateProfile } from '../../../../Sockets/home'
+import { updateNotification } from '../../../../../redux/actions/notification'
 
 function Profile() {
 
     /*----redux----*/
+    const currentUser = useSelector(state => state.user.currentUser)
     //ket noi den redux
     const dispatch = useDispatch()
 
@@ -20,9 +23,11 @@ function Profile() {
         firstName: '',
         lastName: '',
         sex: '',
-        image: ''
-
+        image: '',
+        isSetImage: 0
     })
+
+    const [image, setImage] = useState({})
 
     /*----data----*/
     const date = []
@@ -109,20 +114,46 @@ function Profile() {
         setUser(newUser)
     }
 
+    const handleChangeToUpdateImage = (e)=> {
+        const image = e.target.files[0]
+        if(image.size >= 1000000) {
+            const notification = updateNotification('Hình ảnh không được lớn hơn 1MB.')
+            dispatch(notification)
+        }else {
+            const newUser = {
+                ...user,
+                image: {
+                    fileName: image.name,
+                    file: image
+                },
+                isSetImage: 1
+            }
+            setUser(newUser)
+            setImage(URL.createObjectURL(image))
+        }
+    }
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const data = {
+            ...user,
+            image: user.isSetImage ? user.image : null,
+            userId: localStorage.getItem('userId'),
+            isSetImage: 0,
+            DOB: `${DOB.year}-${DOB.month}-${DOB.date}`
+        }
+        sendUpdateProfile(data)
+    }
+
     /*----lifecycle----*/
     useEffect(()=> {
         $('.main-chat-my-profile-form').fadeTo('.5s', 1)
     })
 
-    useEffect(()=>{
-        console.log(DOB);
-    }, [DOB])
-
     useEffect(()=> {
         (async ()=>{
             try {
                 const result = await getUserById(localStorage.getItem('userId'))
-                console.log(result)
                 if(result && result.status === 200) {
                     const newUser = {
                         firstName: result.data.data.firstName,
@@ -147,9 +178,18 @@ function Profile() {
     
     }, [])
 
+    useEffect(()=> {
+        const newUser = {
+            ...user,
+            name: currentUser.name
+        }
+        setUser(newUser)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentUser])
+
     return (
         <div className="main-chat-my-profile-wrapper" onClick={handleClickToHideMyProfile}>
-            <form className="main-chat-my-profile-form" onClick={(e)=>e.stopPropagation()}>
+            <form className="main-chat-my-profile-form" onClick={(e)=>e.stopPropagation()} onSubmit={handleSubmit}>
                 <div className="my-profile">
                     <p className="my-profile-title">
                         Cập nhật thông tin
@@ -160,8 +200,8 @@ function Profile() {
                             <img src="/img/cover-background/cover-background.jpg" alt="" className="my-profile-cover-background"/>
                             <div className="my-profile-avatar">
                                 <div className="my-profile-update-avatar">
-                                    <label htmlFor="my-profile-change-avatar"><img src={urlUserAvatar + user.image} alt="" /></label>
-                                    <input type="file" id="my-profile-change-avatar" accept="image/*" style={{display: 'none'}}/>
+                                    <label htmlFor="my-profile-change-avatar"><img src={user.isSetImage ? image : urlUserAvatar + user.image} alt="" /></label>
+                                    <input type="file" id="my-profile-change-avatar" accept="image/*" style={{display: 'none'}} onChange={handleChangeToUpdateImage}/>
                                 </div>
                                 <div className="my-profile-update-static">
                                     <p className="my-profile-name">{user.name}</p>

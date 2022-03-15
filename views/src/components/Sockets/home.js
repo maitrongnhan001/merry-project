@@ -14,6 +14,14 @@ const getConnection = (callback) => {
     listenSocket('connection', callback);
 }
 
+const sendUpdateProfile = (data) => {
+    sendSocket('update-profile', data);
+}
+
+const getUpdateProfile = (callback) => {
+    listenSocket('update-profile', callback);
+}
+
 const sendLogout = (userId) => {
     sendSocket('logout', {userId: userId})
 }
@@ -27,5 +35,7 @@ export {
     sendConnection,
     getConnection,
     sendLogout,
-    getLogout
+    getLogout,
+    getUpdateProfile,
+    sendUpdateProfile
 }

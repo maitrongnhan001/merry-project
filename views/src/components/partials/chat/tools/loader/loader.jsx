@@ -1,7 +1,7 @@
 import React from 'react'
 import './loader.scss'
 
-function loader(props) {
+function loader() {
     return (
         <div className="app-loader">
             <div style={{"--value": 1}}></div>

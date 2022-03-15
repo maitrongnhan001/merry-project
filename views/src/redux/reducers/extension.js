@@ -2,7 +2,12 @@ import $ from 'jquery'
 
 const initial = {
     isShow: $(window).width() <= 1200 ? 0 : 1,
-    showOrderFeature: null
+    showOrderFeature: null,
+    showForm: 0,
+    newMember: null,
+    deleteMember: null,
+    updateManagerFriend: 0,
+    idUserWillCreateGroup: null
 }
 
 const extensionReducer = (state = initial, action)=> {
@@ -21,9 +26,46 @@ const extensionReducer = (state = initial, action)=> {
             }
         }
 
+        case 'UPDATE_SHOW_FORM_FEATURE_EXTENSION': {
+            return {
+                ...state,
+                showForm: action.data
+            }
+        }
+
+        case 'UPDATE_NEW_MEMBER': {
+            return {
+                ...state,
+                newMember: action.data
+            }
+        }
+
+        case 'UPDATE_DELETE_MEMBER': {
+            return {
+                ...state,
+                deleteMember: action.data
+            }
+        }
+
+        case 'UPDATE_MANAGER_FRIEND': {
+            const updateManagerFriend = state.updateManagerFriend + action.data
+
+            return {
+                ...state,
+                updateManagerFriend: updateManagerFriend
+            }
+        }
+
+        case 'UPDATE_USERID_WILL_CREATE_GROUP': {
+            return {
+                ...state,
+                idUserWillCreateGroup: action.data
+            }
+        }
+
         default: {
             return {
-                ...state
+                ...state,
             }
         }
     }

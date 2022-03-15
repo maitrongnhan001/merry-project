@@ -57,7 +57,12 @@
                 margin-left: 1.5rem;
                 border-radius: 50%;
                 border: 1px solid #cecece;
-                i {
+                position: relative;
+                overflow: hidden;
+                .create-group-change-group-avatar-item {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
                     display: inline-block;
                     width: 100%;
                     height: 100%;
@@ -66,6 +71,8 @@
                     font-size: 1.25rem;
                     color: #5865F2;
                     cursor: pointer;
+                    object-fit: cover;
+                    overflow: hidden;
                 }
             }
         }

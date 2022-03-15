@@ -1,7 +1,7 @@
-const { connection } = require("../config/database")
 const user = require("../models/user.model")
 const friend = require("../models/friend.model")
-const { get } = require("express/lib/response")
+const detailGroup = require("../models/detailGroup.model")
+const userIsOnline = require("../stores/UserLoginStore")
 
 module.exports.search = async (req, res) => {
     try {
@@ -9,13 +9,12 @@ module.exports.search = async (req, res) => {
         let email = req.query.search ?? ''
         const search = `%${email}%`
         const finds = await user.search(search)
-        // console.log(finds)
-        if(!finds)
+        if (!finds)
             return res.sendStatus(404)
         const data = []
         const friends = await user.searchFriend(senderId)
         let array = []
-        if(friends){
+        if (friends) {
             for (let friend of friends) {
                 if (friend.sendId == senderId) {
                     array.push(friend.receiveId)
@@ -26,13 +25,13 @@ module.exports.search = async (req, res) => {
                 }
             }
         }
-        
+
         for (let value of finds) {
             if (value.id == senderId)
                 continue
             const object = {
                 receiverId: value.id,
-                image: {image1: value.image, image2: ''},
+                image: { image1: value.image, image2: '' },
                 name: value.lastName + ' ' + value.firstName,
                 isFriend: 0,
             }
@@ -116,7 +115,6 @@ module.exports.setTemplate = async (req, res) => {
 }
 
 //search by id 
-
 module.exports.searchById = async (req, res) => {
     try {
         const id = req.params.id
@@ -170,26 +168,21 @@ module.exports.getOtherUsers = async (req, res) => {
             return res.sendStatus(404)
         }
         const friends = await friend.listFriend(userId, limit, offset);
-        // console.log(friends)
-        if (!friends) {
-            return res.sendStatus(404)
-        }
-        for (let value of friends) {
-            if (value.sendId == userId) {
-                delete value.sendId;
-                array.push(value.receiveId)
-                continue
-            }
-            if (value.receiveId == userId) {
-                delete value.receiveId
-                array.push(value.sendId)
+        if (friends) {
+            for (let value of friends) {
+                if (value.sendId == userId) {
+                    delete value.sendId;
+                    array.push(value.receiveId)
+                    continue
+                }
+                if (value.receiveId == userId) {
+                    delete value.receiveId
+                    array.push(value.sendId)
+                }
             }
         }
-        // console.log(array)
         const arrAllUsers = []
         const allUsers = await user.getAllUser();
-        // console.log(allUsers)
-        // let index = 0
         for (let value of allUsers) {
             for (let isFriend of array) {
                 if (value.id == isFriend) {
@@ -206,30 +199,83 @@ module.exports.getOtherUsers = async (req, res) => {
             }
         }
         const data = []
-    for (let value of idOther) {
-        let getUser = await user.get(value)
-        if(value == userId)
-            continue
-        data.push({
-            userId: getUser[0].id,
-            image: {
-                image1: getUser[0].image,
-            },
-            name: getUser[0].lastName + ' ' + getUser[0].firstName,
-        })
-    }
-    if(data) {
-        return res.status(200).json({
-            message: "Các bạn khác nè!",
-            data: data
-        })
-    }else{
-        return res.sendStatus(404)
-    }
+        for (let value of idOther) {
+            let getUser = await user.get(value)
+            if (value == userId)
+                continue
+            data.push({
+                userId: getUser[0].id,
+                image: {
+                    image1: getUser[0].image,
+                },
+                name: getUser[0].lastName + ' ' + getUser[0].firstName,
+            })
+        }
+        if (data) {
+            return res.status(200).json({
+                message: "Các bạn khác nè!",
+                data: data
+            })
+        } else {
+            return res.sendStatus(404)
+        }
 
-}catch (err) {
-    console.error(err)
-    res.sendStatus(500)
-}
+    } catch (err) {
+        console.error(err)
+        res.sendStatus(500)
+    }
 }
 
+//get another user by user id and group id
+module.exports.getUserByGroupIdAndUserId = async (req, res) => {
+    try {
+        //get data
+        const userId = req.query.userId || null
+        const groupId = req.query.groupId || null
+
+        //check data
+        if (!userId || !groupId) return res.sendStatus(404)
+
+        //get data
+        const anotherUser = (await detailGroup.getUserIdByAnotherUserIdAndGroupId(userId, groupId))[0].userId
+
+        //return data for client
+        if (anotherUser) {
+            return res.status(200).json({ message: "Truy vấn thành công", data: anotherUser })
+        } else {
+            return res.status(200).json({ message: "Truy vấn thành công, không có dữ liệu", data: null })
+        }
+    } catch (error) {
+        console.log(error)
+        return res.sendStatus(500)
+    }
+}
+
+module.exports.getUserOnline = async (req, res) => {
+    try {
+        //lay & kiem tra du lieu
+        const userId = req.params.userId;
+        if (!userId) return res.status(404);
+
+        //lay ban be
+        const listFriend = await friend.listFriend(userId, 100000, 0);
+        const userOnlineArr = [];
+        if (!listFriend) return res.status(404);
+
+        await listFriend.forEach( async (Element) => {
+            //kiem tra ai online
+            const IdFriend = Element.sendId == userId ? Element.receiveId : Element.sendId;
+            if (await userIsOnline.checkUser(IdFriend)) {
+                userOnlineArr.push(IdFriend);
+            }
+        });
+        //tra ve client
+        res.status(200).json({
+            message: "Truy vấn thành công",
+            data: userOnlineArr
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500);
+    }
+}

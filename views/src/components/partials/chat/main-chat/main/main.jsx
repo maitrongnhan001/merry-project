@@ -4,7 +4,7 @@ import Message from './messages/message'
 import { useSelector } from 'react-redux'
 import Document from './messages/document/document'
 import DataLoader from '../../tools/data-loader/data-loader'
-import { getContentChat } from '../../../../APIs/ConnectAPI'
+import { getContentChat, urlImage } from '../../../../APIs/ConnectAPI'
 import { getTextMessageChat } from '../../../../Sockets/socket-chat'
 
 const isType = (value, style) => {
@@ -17,7 +17,7 @@ const isType = (value, style) => {
             return (<a style={{color: style.color}} href={value.content} rel="noreferrer" target='_blank'>{value.content}</a>)
         }
         case "media" : {
-            return (<img src={value.content} alt="Chua co anh"/>)
+            return (<img src={ urlImage + value.content} alt="Chua co anh"/>)
         }
         default: {
             return (<p>{value.content}</p>)

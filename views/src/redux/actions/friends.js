@@ -48,6 +48,33 @@ const deleteFromFriendRequest = (payload) => {
     }
 }
 
+const addFriendAfterAccept = (payload) => {
+    return { 
+        type: 'ADD_FRIEND_AFTER_ACCEPT',
+        data: payload
+    }
+}
+
+const updateInfomationFriend = (payload) => {
+    return { 
+        type: 'UPDATE_CHAT_INFOMATION',
+    }
+}
+
+const deleteFriend = (payload) => {
+    return {
+        type: 'DELETE_FRIEND',
+        data: payload
+    }
+}
+
+const updateChatsList = (payload) => {
+    return {
+        type: 'UPDATE_CHAT_LIST',
+        data: payload
+    }
+}
+
 export { 
     saveChatList,
     saveFriendsList,
@@ -55,5 +82,9 @@ export {
     saveFriendRequest,
     saveFriendProfile,
     addFriendRequest,
-    deleteFromFriendRequest
+    deleteFromFriendRequest,
+    addFriendAfterAccept,
+    updateInfomationFriend,
+    deleteFriend,
+    updateChatsList
 }

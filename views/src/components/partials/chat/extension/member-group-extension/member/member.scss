@@ -1,6 +1,7 @@
 .member-group {
     width: 100%;
     height: 4rem;
+    transition: 0.1s all ease;
 
     .member-image {
         width: 3rem;
@@ -42,6 +43,7 @@
         float: right;
         margin-right: 2rem;
         margin-top: 1rem;
+        transition: 0,1s all ease;
 
         svg {
             margin-top: 5px;
@@ -62,5 +64,19 @@
     .other-feature:hover {
         display: block;
         background-color: #e1e1e1;
+    }
+}
+
+.chat-wrapper[data-theme='dark-theme'] {
+    .member-group:hover {
+        background-color: #4e535c;
+
+        .other-feature {
+            background-color: #45484e;
+        }
+    
+        .other-feature:hover {
+            background-color: #32363b;
+        }
     }
 }

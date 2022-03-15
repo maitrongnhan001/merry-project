@@ -19,6 +19,21 @@ module.exports.getMembers = (groupId ,limit, offset) => {
     });
 }
 
+//lay group id theo id user trong group
+module.exports.getGroupIdByUserIds = (userId1, userId2) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT a.groupId FROM detailgroup as a, detailgroup as b WHERE a.groupId=b.groupId AND a.userId=${userId1} AND b.userId=${userId2} AND a.groupId LIKE 'U%'`;
+        connection.query(sql, function (error, result) {
+            if (error) {
+                reject(error);
+            } else {
+                const endResult = JSON.parse(JSON.stringify(result));
+                resolve(endResult);
+            }
+        });
+    });
+}
+
 //lay danh sach group chat theo user id
 module.exports.getGroups = (userId, limit, offset) => {
     return new Promise((resolve, reject) => {
@@ -156,4 +171,26 @@ module.exports.getGroupIdMember = (userId1, userId2) =>{
             }
         })
     })
+}
+
+//get user id by another user id and id group
+module.exports.getUserIdByAnotherUserIdAndGroupId = (userId, groupId) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM detailgroup
+                        WHERE groupId = '${groupId}'
+                        AND userId <> ${userId}`;
+        
+        connection.query(sql, (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                result = JSON.parse(JSON.stringify(result));
+                if (result.length != 0) {
+                    resolve(result);
+                } else {
+                    resolve(null);
+                }
+            }
+        });
+    });
 }

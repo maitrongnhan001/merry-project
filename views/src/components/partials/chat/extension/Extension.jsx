@@ -13,13 +13,15 @@ import { showExtension } from '../../../../redux/actions/extension'
 
 function Extension(props) {
 
-    //redux
+    //--------------------redux-----------------------//
     const isShowExtension = useSelector(state => state.extension.isShow)
     const idChat = useSelector(state => state.message.currentChat.receiverId)
     const dispatch = useDispatch()
 
+    //------------------state-----------------------//
     const [isGroup, setIsGroup] = useState(false)
 
+    //------------------handle-----------------------//
     const handleClick = (e) => {
         e.stopPropagation()
 
@@ -30,6 +32,8 @@ function Extension(props) {
         }
     }
 
+
+    //------------------life cycle-----------------------//
     useEffect(() => {
         if (isShowExtension === 1) {
             if ($(window).width() <= 1200) {
@@ -61,6 +65,11 @@ function Extension(props) {
         } else {
             setIsGroup(false);
         }
+
+        return () => {
+            setIsGroup(false);
+        }
+
     }, [idChat])
 
     useEffect(() => {

@@ -7,22 +7,18 @@ import ManagerFriend from './manager-friend/manager-friend';
 import SetAvatarGroup from './set-avatar-group/set-avatar-group';
 import SetNameGroup from './set-name-group/set-name-group';
 import AddMember from './add-members/add-member';
+import DeleteGroup from './delete-group/delete-group';
 import $ from 'jquery';
 
 const AnotherFeatures = () => {
+    //--------------------redux-----------------------//
     const idChat = useSelector(state => state.message.currentChat.receiverId);
 
+    //--------------------localstorage-----------------------//
     const [is_active, setIsActive] = useState(false);
-    const [isGroup, setIsGroup] = useState(false)
+    const [isGroup, setIsGroup] = useState(false);
 
-    useEffect(() => {
-        if (idChat.indexOf('G') === 0) {
-            setIsGroup(true);
-        } else {
-            setIsGroup(false);
-        }
-    }, [idChat])
-
+    //----------------------handle-------------------------//
     const onActive = () => {
         setIsActive(!is_active);
 
@@ -31,6 +27,21 @@ const AnotherFeatures = () => {
             height: 'toggle'
         });
     }
+
+    //------------------life cycle-----------------------//
+    useEffect(() => {
+        if (idChat.indexOf('G') === 0) {
+            setIsGroup(true);
+        } else {
+            setIsGroup(false);
+        }
+
+        return () => {
+            setIsActive(false);
+            setIsGroup(false);
+        }
+
+    }, [idChat]);
 
     return (
         <div className='element-extension'>
@@ -58,6 +69,7 @@ const AnotherFeatures = () => {
                         <SetAvatarGroup />
                         <SetNameGroup />
                         <LeaveGroup />
+                        <DeleteGroup />
                     </> :
                     <>
                         <CreateGroup />

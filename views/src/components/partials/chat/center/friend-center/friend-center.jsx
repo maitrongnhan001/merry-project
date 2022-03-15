@@ -9,10 +9,7 @@ function FriendCenter() {
 
     /*----redux----*/
     const friendRequestSelector = useSelector(state=>state.friends.friendRequest)
-
     const dispatch = useDispatch()
-
-    console.log('re-render')
     /*----data----*/
     const items = friendRequestSelector.map((value, idx)=> {
         return (
@@ -25,6 +22,7 @@ function FriendCenter() {
             try {
                 const result = await getFriendRequest(localStorage.getItem('userId'))
                 if(result && result.status === 200) {
+                    console.log(result.data.data)
                     const friendRequestAction = saveFriendRequest(result.data.data)
                     dispatch(friendRequestAction)
                 }

@@ -2,7 +2,7 @@ import React from 'react';
 import './link-item.scss';
 
 const LinkItem = (props) => {
-
+    //--------------------props-----------------------//
     const { link } = props
 
     return (

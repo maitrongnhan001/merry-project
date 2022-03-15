@@ -11,7 +11,7 @@ function Groups() {
     /*----data----*/
     const items = groupsList.map((value, idx)=>{
         return (
-             <Item key={idx} id={value.groupId} image={value.image} name={value.groupName}></Item>
+             <Item key={idx} id={value.groupId} members={value.members} image={value.image} name={value.groupName}></Item>
         )
     })
 

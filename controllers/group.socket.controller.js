@@ -4,6 +4,9 @@ const detailGroup = require('../models/detailGroup.model');
 const user = require('../models/user.model');
 const fs = require('fs');
 const path = require('path');
+const chat = require('../models/chat.model');
+const media = require('../models/mediaMessage.model');
+const document = require('../models/document.model');
 
 module.exports.addGroup = async (data, socket, io) => {
     //thong bao toi cac nguoi dung trong nhom, co mot nhom vua tao
@@ -19,6 +22,8 @@ module.exports.addGroup = async (data, socket, io) => {
             return parseInt(Element);
         });
 
+        const imageGroup = (data.image) ? data.image : null;
+
         //lay admin id
         const AdminId = await userIsLogin.getUserId(socket);
 
@@ -27,11 +32,28 @@ module.exports.addGroup = async (data, socket, io) => {
             //random id
             var groupId = `G${(new Date()).getTime()}`;
 
+            //xu ly hinh anh
+            if (imageGroup) {
+                const fileName = imageGroup.fileName;
+                const fileNameArr = fileName.split('.');
+                const extension = fileNameArr.pop();
+                var imageName = `group-${(new Date()).getTime()}.${extension}`;
+
+                //luu hinh anh vao server
+                fs.writeFile(path.resolve(__dirname, '../public/avatarUser/', imageName), imageGroup.file, (error) => {
+                    if (error) {
+                        socket.emit('add-group', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+                        console.error(error);
+                    }
+                });
+            }
+
             //them mot chat group
             var groupObj = {
                 id: groupId,
                 groupName: groupName,
-                AdminId: AdminId
+                AdminId: AdminId,
+                image: imageName
             }
         } else {
             //kiem tra group co ton tai chua
@@ -64,7 +86,7 @@ module.exports.addGroup = async (data, socket, io) => {
             }
         }
         await detailGroup.create(listDetailGroups);
-       
+
         //create room
         //lay tat ca user trong room
         const listMembers = await detailGroup.getMembers(groupId, 10000, 0);
@@ -81,14 +103,15 @@ module.exports.addGroup = async (data, socket, io) => {
 
         //tra du lieu ve cho client
         if (members.length > 2) {
-            if (!groupName) {
-                //lay ten chat nhom
-                //lay hinh anh nhom
+            //lay ten chat nhom
+            //lay hinh anh nhom
+            if (!imageName) {
+                //neu tao nhom ma khong co hinh anh thi lay anh
                 for (let i = 0; i < members.length; i++) {
                     if (members[i] != AdminId) {
                         const dataUser1 = await user.get(AdminId);
                         const dataUser2 = await user.get(members[i]);
-                        groupName = `${dataUser1[0].firstName}, ${dataUser2[0].firstName}, ...`;
+                        groupName = groupName ? groupName : `${dataUser1[0].firstName}, ${dataUser2[0].firstName}, ...`;
                         var img1 = dataUser1[0].image;
                         var img2 = dataUser2[0].image;
                         i = members.length;
@@ -113,11 +136,16 @@ module.exports.addGroup = async (data, socket, io) => {
             groupId: groupId,
             groupName: groupName,
             members: members,
-            image: {
-                img1: img1,
-                img2: img2
+            image: imageName ? {
+                image1: imageName,
+                image2: ''
+            } : {
+                image1: img1,
+                image2: img2
             }
         }
+
+        console.log(returnData);
 
         io.to(`${groupId}`).emit('add-group', returnData);
     } catch (err) {
@@ -127,11 +155,10 @@ module.exports.addGroup = async (data, socket, io) => {
 }
 
 module.exports.updateGroup = async (data, socket, io) => {
-    //thong bao toi cac nguoi dung trong nhom, vua cap nhat nhom
     try {
         //kiem tra du lieu
         if (!(data.groupId && (data.groupName || (data.image.fileName && data.image.file)))) {
-            socket.emit('update-group-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
+            socket.emit('update-group', { msg: 'Lỗi, không đính kèm dữ liệu' });
             return;
         }
 
@@ -145,9 +172,9 @@ module.exports.updateGroup = async (data, socket, io) => {
             //kiem tra hinh anh da luu truoc do, neu anh ton tai thi xoa
             let getImage = (await group.get(groupId))[0].image;
             if (getImage) {
-                fs.unlink(path.resolve(__dirname, '../public/avatarGroup/', getImage), (error) => {
+                fs.unlink(path.resolve(__dirname, '../public/avatarUser/', getImage), (error) => {
                     if (error) {
-                        socket.emit('update-group-error', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+                        socket.emit('update-group', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
                         console.error(error);
                     }
                 });
@@ -160,9 +187,9 @@ module.exports.updateGroup = async (data, socket, io) => {
             updateGroupObj.image = imageName;
 
             //luu hinh anh vao server
-            fs.writeFile(path.resolve(__dirname, '../public/avatarGroup/', updateGroupObj.image), data.image.file, (error) => {
+            fs.writeFile(path.resolve(__dirname, '../public/avatarUser/', updateGroupObj.image), data.image.file, (error) => {
                 if (error) {
-                    socket.emit('update-group-error', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+                    socket.emit('update-group', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
                     console.error(error);
                 }
             });
@@ -198,9 +225,8 @@ module.exports.updateGroup = async (data, socket, io) => {
         //lay anh dai dien group
         if (!updateGroupObj.image) {
             let getImage = (await group.get(groupId))[0].image;
-            if (image) {
+            if (!image) {
                 const getImageFromMembers = await detailGroup.getUserByGroupId(groupId, 2, 0);
-                console.log(getImageFromMembers);
                 image = {
                     img1: getImageFromMembers[0].image,
                     img2: getImageFromMembers[1].image
@@ -208,13 +234,13 @@ module.exports.updateGroup = async (data, socket, io) => {
             } else {
                 image = {
                     img1: getImage,
-                    img2: null
+                    img2: ''
                 }
             }
         } else {
             image = {
                 img1: updateGroupObj.image,
-                img2: null
+                img2: ''
             }
         }
 
@@ -224,10 +250,11 @@ module.exports.updateGroup = async (data, socket, io) => {
             groupName: updateGroupObj.groupName,
             image: image
         }
+        console.log(returnData);
 
         io.to(`${groupId}`).emit('update-group', returnData);
     } catch (err) {
-        socket.emit('update-group-error', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+        socket.emit('update-group', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
         console.error(err);
     }
 }
@@ -245,6 +272,34 @@ module.exports.deleteGroup = async (data, socket, io) => {
 
         //lay tat ca user trong room
         const listMembers = await detailGroup.getMembers(groupId, 10000, 0);
+
+        //xoa tin nhan va cac file lien quan
+        //xoa file va media lien quan
+        const listMedias = await media.get(groupId, 100000, 0);
+        if (listMedias) {
+            listMedias.forEach(Element => {
+                fs.unlink(path.resolve(__dirname, '../public/Medias/', Element.content), (error) => {
+                    if (error) {
+                        socket.emit('delete-member', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+                        console.error(error);
+                    }
+                });
+            });
+        }
+        const listDocuments = await document.get(groupId, 100000, 0);
+        if (listDocuments) {
+            listDocuments.forEach(Element => {
+                fs.unlink(path.resolve(__dirname, '../public/Documents/', Element.content), (error) => {
+                    if (error) {
+                        socket.emit('delete-member', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+                        console.error(error);
+                    }
+                });
+            });
+        }
+
+        //xoa du lieu bang message
+        await chat.deleteChat(groupId);
 
         //xoa du lieu trong bang detail group
         await detailGroup.deleteByGroupId(groupId);
@@ -297,6 +352,9 @@ module.exports.addMember = async (data, socket, io) => {
         const groupId = data.groupId;
         const members = data.members;
 
+        //mang danh sach thanh vien nhom vua duoc them moi
+        let ResultMemebers = [];
+
         //luu du lieu vao table detail group
         let listDetailGroups = [];
         for (let i = 0; i < members.length; i++) {
@@ -306,6 +364,14 @@ module.exports.addMember = async (data, socket, io) => {
                     members[i]
                 ]
                 listDetailGroups.push(detailGroupObj);
+
+                //cai dat du lieu tra ve cho client
+                const ResultMember = await user.get(members[i]);
+                ResultMemebers.push({
+                    id: ResultMember[0].id,
+                    name: `${ResultMember[0].lastName} ${ResultMember[0].firstName}`,
+                    image: ResultMember[0].image
+                });
             }
         }
         await detailGroup.create(listDetailGroups);
@@ -327,7 +393,7 @@ module.exports.addMember = async (data, socket, io) => {
         //tra du lieu ve cho client
         const returnData = {
             groupId: groupId,
-            member: members
+            members: ResultMemebers
         }
         io.to(`${groupId}`).emit('add-member', returnData);
     } catch (err) {
@@ -338,10 +404,10 @@ module.exports.addMember = async (data, socket, io) => {
 
 module.exports.deleteMember = async (data, socket, io) => {
     //thong bao toi cac nguoi dung trong nhom, vua xoa thanh vien
-     try {
+    try {
         //kiem tra du lieu
         if (!(data.groupId && data.memberId)) {
-            socket.emit('delete-member-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
+            socket.emit('delete-member', { msg: 'Lỗi, không đính kèm dữ liệu' });
             return;
         }
 
@@ -351,6 +417,51 @@ module.exports.deleteMember = async (data, socket, io) => {
 
         //lay tat ca user trong room
         const listMembers = await detailGroup.getMembers(groupId, 10000, 0);
+
+        //kiem tra co phai truong nhom khong
+        const idAdmin = await group.getAdminId(groupId);
+        if (idAdmin[0].AdminId === memberId) {
+            //xoa file va media lien quan
+            const listMedias = await media.get(groupId, 100000, 0);
+            if (listMedias) {
+                listMedias.forEach(Element => {
+                    fs.unlink(path.resolve(__dirname, '../public/Medias/', Element.content), (error) => {
+                        if (error) {
+                            socket.emit('delete-member', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+                            console.error(error);
+                        }
+                    });
+                });
+            }
+            const listDocuments = await document.get(groupId, 100000, 0);
+            if (listDocuments) {
+                listDocuments.forEach(Element => {
+                    fs.unlink(path.resolve(__dirname, '../public/Documents/', Element.content), (error) => {
+                        if (error) {
+                            socket.emit('delete-member', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });
+                            console.error(error);
+                        }
+                    });
+                });
+            }
+
+            //xoa du lieu bang message
+            await chat.deleteChat(groupId);
+
+            //xoa du lieu bang detail
+            await detailGroup.deleteByGroupId(groupId);
+
+            //xoa group
+            await group.delete(groupId);
+
+            //tra du lieu ve cho client
+            const returnData = {
+                groupId: groupId,
+                memberId: memberId,
+                isAdmin: true
+            }
+            return io.to(`${groupId}`).emit('delete-member', returnData);
+        }
 
         //luu du lieu vao table detail group
         await detailGroup.deleteByUserId(groupId, memberId);

@@ -7,8 +7,10 @@ import './medias.scss';
 import $ from 'jquery';
 
 const Medias = () => {
-    const receiverId = useSelector(state => state.extension).idHeader;
+    //--------------------redux-----------------------//
+    const receiverId = useSelector(state => state.message.currentChat.receiverId);
 
+    //-----------------------state--------------------------//
     const [is_active, setIsActive] = useState(false);
     const [medias, setMedia] = useState([]);
     const [offset, setOffset] = useState(0);
@@ -22,23 +24,24 @@ const Medias = () => {
         return listElements;
     });
 
-    const getListAndSetState = async (receiverId, limit, position = null) => {
+    //----------------------handle-------------------------//
+    const getListAndSetState = async (receiverId, limit, position, caseLoad) => {
         if (!receiverId) return;
         setIsLoading(true);
         const endLimit = limit || 10000;
-        const endPosition = (position !== null) ? position : offset;
+        const endPosition = (position !== null) ? position : 0;
         const result = await getMedias(receiverId, endLimit, endPosition);
 
         switch (result.status) {
             case 200: {
                 const listResponeMedias = result.data.data;
-                let list_Medias = medias;
+                let list_Medias = caseLoad ? medias : [];
                 for (let index of listResponeMedias) {
                     list_Medias.push(`http://localhost:8080/Medias/${index.fileName}`);
                 }
                 setMedia(list_Medias);
                 setOffset(list_Medias.length);
-                const listElements = medias.map((Element, Key) => {
+                const listElements = list_Medias.map((Element, Key) => {
                     return <MeidaItem link_media={Element} key={Key} />
                 });
                 setListMediasTag(listElements);
@@ -46,7 +49,9 @@ const Medias = () => {
             }
 
             case 404: {
-                setNotification('Không có hình ảnh nào được gửi');
+                if (medias.length === 0 || !caseLoad) {
+                    setNotification('Không có hình ảnh nào được gửi');
+                }
                 break;
             }
 
@@ -59,20 +64,12 @@ const Medias = () => {
         setIsLoading(false);
     }
 
-    useEffect(async () => {
-        setOffset(0);
-        setMedia([]);
-        setIsLoading(false);
-        setError(null);
-        setNotification(null);
-        setListMediasTag(null);
-
-        await getListAndSetState(receiverId, 10, 0);
-    }, [receiverId]);
-
-    const handleScroll = async () => {
-        if ($('#list_media_elements').scrollTop() + $('#list_media_elements').height() == $('#list-media-full-size').height()) {
-            await getListAndSetState(receiverId, 10);
+    const handleScroll = () => {
+        const scroolTop = $('#list_media_elements').scrollTop();
+        const heightParent = $('#list_media_elements').height();
+        const fullHeight = $('#list-media-full-size').height();
+        if (scroolTop + heightParent - fullHeight >= -10 && scroolTop + heightParent - fullHeight <= -5) {
+            getListAndSetState(receiverId, 10, offset, true);
         }
     }
 
@@ -84,6 +81,27 @@ const Medias = () => {
             height: 'toggle'
         });
     }
+
+    //------------------life cycle-----------------------/
+    useEffect(async () => {
+        setOffset(0);
+        setMedia([]);
+        setIsLoading(false);
+        setError(null);
+        setNotification(null);
+        setListMediasTag(null);
+
+        await getListAndSetState(receiverId, 10, 0);
+
+        return () => {
+            setOffset(0);
+            setMedia([]);
+            setIsLoading(false);
+            setError(null);
+            setNotification(null);
+            setListMediasTag(null);
+        }
+    }, [receiverId]);
 
     return (
         <div className='element-extension'>
@@ -109,6 +127,7 @@ const Medias = () => {
             >
                 <div id='list-media-full-size'>
                     {listMediasTag}
+                    <div className="clearfix"></div>
                     <div className="text-notification center">{notification}</div>
                     <div className="text-error center">{error}</div>
                     {isLoading ? <DataLoader /> : ''}

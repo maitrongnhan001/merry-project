@@ -33,7 +33,6 @@ module.exports.sendTextMessage = async (data, socket, io) => {
         //tra thong tin ve cho client
         const time = await chat.getTime(dataMessage.id);
         const senderUserInfo = await user.getUserId(senderId)
-        console.log(senderUserInfo)
         const returnData = {
             messageId: dataMessage.id,
             senderId: dataMessage.sendId,
@@ -57,6 +56,7 @@ module.exports.sendMediaMessage = async (data, socket, io) => {
     //gui tin nhan meida toi client
     try {
         //kiem tra du lieu co ton tai
+        console.log(data)
         if (!(data.senderId && data.receiverId && data.message.fileName && data.message.content)) {
             socket.emit('send-media-message-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
             return;
@@ -82,23 +82,23 @@ module.exports.sendMediaMessage = async (data, socket, io) => {
                     type: 'media',
                     receiveId: receiverId,
                     status: 'Đã gửi',
-                    content: fileName
+                    content: fileNameStore
                 }
                 const dataMessage = await chat.create(message);
 
                 //tra thong tin ve cho client
                 const time = await chat.getTime(dataMessage.id);
-
+                const senderUserInfo = await user.getUserId(senderId)
                 const returnData = {
                     messageId: dataMessage.id,
                     senderId: dataMessage.sendId,
                     receiverId: dataMessage.receiveId,
-                    message: {
-                        type: dataMessage.type,
-                        fileName: dataMessage.content,
-                        time: time,
-                        status: dataMessage.status
-                    }
+                    type: dataMessage.type,
+                    content: dataMessage.content,
+                    time: time,
+                    status: dataMessage.status,
+                    name: `${senderUserInfo[0].lastName} ${senderUserInfo[0].firstName}`,
+                    image: senderUserInfo[0].image
                 }
 
                 io.to(`${dataMessage.receiveId}`).emit('send-media-message', returnData);
@@ -114,6 +114,7 @@ module.exports.sendDocumentMessage = async (data, socket, io) => {
     //gui tin nhan document toi client 
     try {
         //kiem tra du lieu co ton tai
+        console.log(data)
         if (!(data.senderId && data.receiverId && data.message.fileName && data.message.content)) {
             socket.emit('send-document-message-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
             return;
@@ -144,17 +145,17 @@ module.exports.sendDocumentMessage = async (data, socket, io) => {
             
                 //tra thong tin ve cho client
                 const time = await chat.getTime(dataMessage.id);
-
+                const senderUserInfo = await user.getUserId(senderId)
                 const returnData = {
                     messageId: dataMessage.id,
                     senderId: dataMessage.sendId,
                     receiverId: dataMessage.receiveId,
-                    message: {
-                        type: dataMessage.type,
-                        fileName: dataMessage.content,
-                        time: time,
-                        status: dataMessage.status
-                    }
+                    type: dataMessage.type,
+                    content: dataMessage.content,
+                    time: time,
+                    status: dataMessage.status,
+                    name: `${senderUserInfo[0].lastName} ${senderUserInfo[0].firstName}`,
+                    image: senderUserInfo[0].image
                 }
 
                 io.to(`${dataMessage.receiveId}`).emit('send-document-message', returnData);
@@ -192,17 +193,17 @@ module.exports.sendLinkMesssage = async (data, socket, io) => {
 
         //tra thong tin ve cho client
         const time = await chat.getTime(dataMessage.id);
-
+        const senderUserInfo = await user.getUserId(senderId)
         const returnData = {
             messageId: dataMessage.id,
             senderId: dataMessage.sendId,
             receiverId: dataMessage.receiveId,
-            message: {
-                type: dataMessage.type,
-                content: dataMessage.content,
-                time: time,
-                status: dataMessage.status
-            }
+            type: dataMessage.type,
+            content: dataMessage.content,
+            time: time,
+            status: dataMessage.status,
+            name: `${senderUserInfo[0].lastName} ${senderUserInfo[0].firstName}`,
+            image: senderUserInfo[0].image
         }
 
         io.to(`${dataMessage.receiveId}`).emit('send-link-message', returnData);

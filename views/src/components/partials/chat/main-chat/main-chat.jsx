@@ -24,10 +24,10 @@ function MainChat() {
 
     return (
         <div className="main-chat-wrapper">
-            <Header name={currentChat.name} image={currentChat.image} id={currentChat.receiverId}></Header>
+            <Header name={currentChat.name} image={currentChat.image} id={currentChat.receiverId} members={currentChat.members}></Header>
             <div className="main-chat-chat-group-wrapper-box">
                 <ChatArea id={currentChat.receiverId}></ChatArea>
-                <ToolbarChat></ToolbarChat>
+                <ToolbarChat id={currentChat.receiverId}></ToolbarChat>
                 <InputChat id={currentChat.receiverId}></InputChat>
             </div>
         </div>

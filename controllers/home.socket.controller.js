@@ -159,6 +159,8 @@ module.exports.updateProfile = async (data, socket, io) => {
             return Element.groupId;
         });
         UserUpdateObj.groupId = groupIdArr;
+        UserUpdateObj.name = `${UserUpdateObj.lastName} ${UserUpdateObj.firstName}`;
+        UserUpdateObj.userId = userId;
         io.emit('update-profile', UserUpdateObj);
     } catch (error) {
         console.log(error);

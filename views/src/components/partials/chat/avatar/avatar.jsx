@@ -7,7 +7,6 @@ function Avatar({image, id, members}) {
 
     /*----redux----*/
     const userOnline = useSelector((state)=> state.user.userOnline)
-    
     /*----states----*/
     const [userOnlineId, setUserOnlineId] = React.useState(null)
 

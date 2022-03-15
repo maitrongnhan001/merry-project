@@ -16,12 +16,12 @@ import Notification from '../partials/chat/tools/notification/notification'
 import FormAdddMember from '../partials/chat/extension/Another-features/add-members/form/form-add-member'
 import Ask from '../partials/chat/extension/Another-features/leave-group/form-ask/ask'
 import './chat.scss'
-import { getFriendsList, getListChat, getGroupsList } from '../APIs/ConnectAPI'
+import { getFriendsList, getListChat, getGroupsList, getUserById, getUsersOnline } from '../APIs/ConnectAPI'
 import { getAddGroup, getAddMember, getDeleteMember, getUpdateGroup } from '../Sockets/socket-group'
 import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList, updateInfomationFriend, deleteFriend, updateChatsList } from '../../redux/actions/friends'
 import { addGroup, saveGroupsList, updateInfomationGroup } from '../../redux/actions/groups'
 import { getConnection, getLogout, getUpdateProfile, sendConnection } from '../Sockets/home'
-import { saveUserOffline, saveUserOnline } from '../../redux/actions/user'
+import { saveCurrentUser, saveUserOffline, saveUserOnline } from '../../redux/actions/user'
 import { getRoom, getTextMessageChat, getMediaMessage, getDocumentMessage } from '../Sockets/socket-chat'
 import { getAcceptFriend, getAddFriend, getDeleteFriend, getDismissFriend } from '../Sockets/socket-friend'
 import { saveCurrentChat, saveMassage } from '../../redux/actions/message'
@@ -79,11 +79,23 @@ function Chat() {
                 dispatch(groupsListAction)
             }
 
+            const currentUser = await getUserById(localStorage.getItem('userId'))
+            if(currentUser && currentUser.status === 200) {
+                console.log(currentUser.data.data)
+                const user = saveCurrentUser(currentUser.data.data)
+                dispatch(user)
+            }
+
+            const usersOnline = await getUsersOnline(localStorage.getItem('userId'))
+            if(usersOnline && usersOnline.status === 200) {
+                const users = saveUserOnline(usersOnline.data.data[0])
+                dispatch(users)
+            }
+
             //send connection
             sendConnection(localStorage.getItem('userId'))
             //listen connection
             getConnection((data) => {
-                console.log(data)
                 if (data.userId !== localStorage.getItem('userId')) {
                     const userOnline = saveUserOnline(data.userId)
                     dispatch(userOnline)
@@ -91,7 +103,8 @@ function Chat() {
             })
 
             getUpdateProfile(data=> {
-                console.log(data)
+                const user = saveCurrentUser(data)
+                dispatch(user)
             })
 
             //logout 
@@ -208,6 +221,14 @@ function Chat() {
                 // setMessage(data)
                 const message = saveMassage(data)
                 dispatch(message)
+            })
+
+            getUpdateProfile(data=> {
+                if(!data.status) {
+                    const notification = updateNotification('Thông tin đã được cập nhật.')
+                    dispatch(notification)
+                    console.log(data)
+                }
             })
 
         })()

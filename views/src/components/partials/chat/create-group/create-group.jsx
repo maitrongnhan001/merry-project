@@ -7,6 +7,7 @@ import { updateUserIdWillCreateGroup } from '../../../../redux/actions/extension
 import { useState } from 'react'
 import $ from 'jquery'
 import { sendAddGroup } from '../../../Sockets/socket-group'
+import { updateNotification } from '../../../../redux/actions/notification'
 
 function CreateGroup() {
 
@@ -16,6 +17,8 @@ function CreateGroup() {
         groupName: '',
         members: [],
     })
+
+    const [image, setImage] = useState({})
 
     /*----redux----*/
     //lay du lieu tu redux
@@ -75,13 +78,19 @@ function CreateGroup() {
     //xu ly file
     const handleChangeFile = (e) => {
         const file = e.target.files[0]
-        setGroup({
-            ...group,
-            image: {
-                fileName: file.name,
-                file: file
-            }
-        })
+        if(file.size >= 1000000) {
+            const notification = updateNotification('File không được lớn hơn 1MB.')
+            dispatch(notification)
+        }else {
+            setGroup({
+                ...group,
+                image: {
+                    fileName: file.name,
+                    file: file
+                }
+            })
+            setImage(URL.createObjectURL(file))
+        }
     }
 
     const handleChange = (e) => {
@@ -135,15 +144,15 @@ function CreateGroup() {
     const items = friendsList.map((value, idx) => {
         if (idUserWillCreateGroup) {
             return (
-                <FriendItem 
-                    key={idx} name={value.name} id={value.id} image={value.image} createGroup 
-                    onAddMember={handleAddMember} 
+                <FriendItem
+                    key={idx} name={value.name} id={value.id} image={value.image} createGroup
+                    onAddMember={handleAddMember}
                     initCheck={idUserWillCreateGroup === value.id ? true : false}></FriendItem>
             )
         } else {
             return (
-                <FriendItem 
-                    key={idx} name={value.name} id={value.id} image={value.image} createGroup 
+                <FriendItem
+                    key={idx} name={value.name} id={value.id} image={value.image} createGroup
                     onAddMember={handleAddMember}
                     initCheck={false}></FriendItem>
             )
@@ -159,7 +168,13 @@ function CreateGroup() {
                         <i className="fas fa-times" onClick={handleClickToHideCreateGroup}></i>
                     </p>
                     <div className="create-group-form-group-info">
-                        <label htmlFor="choose-group-avatar" className="create-group-change-group-avatar"><i className="fas fa-camera"></i></label>
+                        <label htmlFor="choose-group-avatar" className="create-group-change-group-avatar">
+                            {!group.image ? 
+                                <i className="fas fa-camera create-group-change-group-avatar-item"></i> 
+                                : 
+                                <img className="create-group-change-group-avatar-item" src={image} alt="" />
+                            }
+                        </label>
                         <input type="file" name="" id="choose-group-avatar" accept='image/*' style={{ display: 'none' }} onChange={handleChangeFile} />
                         <div className="create-group-form-name-group">
                             <input type="text" name="groupName" placeholder="Nhập tên nhóm..." onChange={handleChange} />

@@ -168,6 +168,10 @@ async function getUserByEmail(senderId, email) {
     return await getAPI('get', `/users?senderId=${senderId}&search=${email}`)
 }
 
+async function getUsersOnline(senderId) {
+    return await getAPI('get', `/users/users-online/${senderId}`)
+}
+
 
 export {
     verifiEmail,
@@ -192,4 +196,5 @@ export {
     getUserByEmail,
     checkFriend,
     getAnotherUserByGroupId,
+    getUsersOnline
 }

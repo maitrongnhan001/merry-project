@@ -12,7 +12,15 @@ const saveUserOffline = (payload)=> {
     }
 }
 
+const saveCurrentUser = (payload)=> {
+    return {
+        type: "USER_CURRENT",
+        data: payload
+    }
+}
+
 export {
     saveUserOnline,
-    saveUserOffline
+    saveUserOffline,
+    saveCurrentUser,
 }

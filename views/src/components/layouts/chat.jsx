@@ -19,7 +19,7 @@ import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList, getUserById, getUsersOnline } from '../APIs/ConnectAPI'
 import { getAddGroup, getAddMember, getDeleteMember, getUpdateGroup, getDeleteGroup } from '../Sockets/socket-group'
 import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList, updateInfomationFriend, deleteFriend, updateChatsList, deleteGroupChat } from '../../redux/actions/friends'
-import { addGroup, saveGroupsList, updateInfomationGroup } from '../../redux/actions/groups'
+import { addGroup, deleteGroup, saveGroupsList, updateInfomationGroup } from '../../redux/actions/groups'
 import { getConnection, getLogout, getUpdateProfile, sendConnection } from '../Sockets/home'
 import { saveCurrentUser, saveUserOffline, saveUserOnline } from '../../redux/actions/user'
 import { getRoom, getTextMessageChat, getMediaMessage, getDocumentMessage } from '../Sockets/socket-chat'
@@ -134,6 +134,14 @@ function Chat() {
                 //luu du lieu vao redux extension
                 const dataDeleteMember = updateDeleteMember(data);
                 dispatch(dataDeleteMember);
+
+                //xoa group chat ra khoi chat list
+                const deleteItem = deleteGroupChat(data.groupId)
+                dispatch(deleteItem)
+
+                //xoa group ra khoi list group
+                const dataDeleteGroup = deleteGroup(data);
+                dispatch(dataDeleteGroup)
             })
 
             getAddGroup((data) => {

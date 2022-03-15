@@ -141,11 +141,16 @@ const friendsReducer = (state = initial, action) => {
 
         case 'DELETE_GROUP_CHAT': {
             let newListChat = [...state.chatsList]
-
+            console.log(action.data)
             newListChat.forEach((Element, Index) => {
-                if (Element.receiverId == action.data) {
-                    newListChat.splice(Index, 1)
-                }
+                // eslint-disable-next-line eqeqeq
+                if (Element.receiverId == action.data.groupId)
+                    if(action.data.isAdmin) {
+                        newListChat.splice(Index, 1)
+                    // eslint-disable-next-line eqeqeq
+                    }else if(action.data.memberId == localStorage.getItem('userId')) {
+                        newListChat.splice(Index, 1)
+                    }
             })
 
             return {

@@ -47,9 +47,11 @@ const groupsReducer = (state = initial, action) => {
         case 'DELETE_GROUP': {
             let newList = [...state.groupsList]
             newList.forEach((Element, Index) => {
+                // eslint-disable-next-line eqeqeq
                 if (Element.groupId == action.groupId && action.isAdmin) {
                     newList.splice(Index, 1)
                 } else {
+                    // eslint-disable-next-line eqeqeq
                     if (action.memberId == localStorage.getItem('userId')) {
                         newList.splice(Index, 1)
                     }
@@ -57,7 +59,7 @@ const groupsReducer = (state = initial, action) => {
             })
             return {
                 ...state,
-                groupsList: newList
+                groupsList: newList,
             }
         }
 

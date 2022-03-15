@@ -126,6 +126,7 @@ function Chat() {
             })
 
             getDeleteMember(data => {
+                console.log(data)
                 if (!data.groupId) return
 
                 //luu du lieu vao redux extension

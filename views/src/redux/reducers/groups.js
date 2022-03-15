@@ -48,11 +48,11 @@ const groupsReducer = (state = initial, action) => {
             let newList = [...state.groupsList]
             newList.forEach((Element, Index) => {
                 // eslint-disable-next-line eqeqeq
-                if (Element.groupId == action.groupId && action.isAdmin) {
-                    newList.splice(Index, 1)
-                } else {
+                if (Element.groupId == action.data.groupId) {
+                    if(action.data.isAdmin) {
+                        newList.splice(Index, 1)
                     // eslint-disable-next-line eqeqeq
-                    if (action.memberId == localStorage.getItem('userId')) {
+                    }else if(action.data.memberId == localStorage.getItem('userId')) {
                         newList.splice(Index, 1)
                     }
                 }

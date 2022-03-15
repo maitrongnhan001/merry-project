@@ -9,6 +9,8 @@ function Chats() {
     //lay du lieu tu redux
     const chatsList = useSelector(state => state.friends.chatsList)
 
+    console.log(chatsList)
+
     /*----data----*/
     const items = chatsList.map((value, idx)=>{
         return (

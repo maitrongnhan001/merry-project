@@ -37,6 +37,7 @@ function Chat() {
     const displayFormExtension = useSelector(state => state.extension.showForm)
     const feature = useSelector(state => state.taskbar.feature)
     const isFriendProfileForm = useSelector(state => state.friends.friendProfile)
+    const currentChat = useSelector(state => state.message.currentChat)
     const idChat = useSelector(state => state.message.currentChat)
 
     const dispatch = useDispatch()
@@ -216,6 +217,7 @@ function Chat() {
                 }
             })
 
+           
             getTextMessageChat((data) => {
                 const message = saveMassage(data)
                 dispatch(message)
@@ -254,7 +256,6 @@ function Chat() {
             })
 
             getTextMessageChat((data) => {
-                // setMessage(data)
                 const message = saveMassage(data)
                 dispatch(message)
             })
@@ -274,6 +275,28 @@ function Chat() {
         })()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    useEffect(() => {
+        getTextMessageChat((data)=> {
+            const message = saveMassage(data)
+            dispatch(message)
+            const chat = {
+                ...data,
+                receiver: {
+                    receiverId: data.receiverId,
+                    image: currentChat.image,
+                    receiverName: currentChat.name,
+                    lastMessage: {
+                        content: data.content,
+                        type: data.type,
+                        isSender: data.senderId == localStorage.getItem('userId') ? 1 : 0
+                    }
+                }
+            }
+            const chatList = updateChatsList(chat)
+            dispatch(chatList)
+        })
+    }, [currentChat])
 
     useEffect(() => {
         document.getElementsByClassName('chat-wrapper')[0].setAttribute('data-theme', theme)

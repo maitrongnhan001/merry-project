@@ -1,5 +1,6 @@
 const initial =  {
-    userOnline: []
+    userOnline: [],
+    currentUser: {}
 } 
 
 const userReducer = (state = initial, action) => {
@@ -38,6 +39,12 @@ const userReducer = (state = initial, action) => {
             return {
                 ...state,
                 userOnline: newUserOnline
+            }
+        }
+        case 'USER_CURRENT': {
+            return {
+                ...state,
+                currentUser: {...action.data}
             }
         }
         default: {

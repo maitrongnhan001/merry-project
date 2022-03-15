@@ -19,8 +19,16 @@ const updateInfomationGroup = (payload) => {
     }
 }
 
+const deleteGroup = (payload) => {
+    return {
+        type: 'DELETE_GROUP',
+        data: payload
+    }
+}
+
 export {
     saveGroupsList,
     addGroup,
-    updateInfomationGroup
+    updateInfomationGroup,
+    deleteGroup
 }

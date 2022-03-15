@@ -17,8 +17,8 @@ import FormAdddMember from '../partials/chat/extension/Another-features/add-memb
 import Ask from '../partials/chat/extension/Another-features/leave-group/form-ask/ask'
 import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList, getUserById, getUsersOnline } from '../APIs/ConnectAPI'
-import { getAddGroup, getAddMember, getDeleteMember, getUpdateGroup } from '../Sockets/socket-group'
-import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList, updateInfomationFriend, deleteFriend, updateChatsList } from '../../redux/actions/friends'
+import { getAddGroup, getAddMember, getDeleteMember, getUpdateGroup, getDeleteGroup } from '../Sockets/socket-group'
+import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList, updateInfomationFriend, deleteFriend, updateChatsList, deleteGroupChat } from '../../redux/actions/friends'
 import { addGroup, saveGroupsList, updateInfomationGroup } from '../../redux/actions/groups'
 import { getConnection, getLogout, getUpdateProfile, sendConnection } from '../Sockets/home'
 import { saveCurrentUser, saveUserOffline, saveUserOnline } from '../../redux/actions/user'
@@ -152,6 +152,18 @@ function Chat() {
                 dispatch(updateInfoGroup);
                 const updateInfoFriend = updateInfomationFriend(data);
                 dispatch(updateInfoFriend);
+            })
+
+            getDeleteGroup(data => {
+                if (!data.groupId) return
+
+                //nhom bi xoa nen set center thanh wellcome
+                const updateCenter = showCenter(0)
+                dispatch(updateCenter)
+
+                //xoa group chat ra khoi chat list
+                const deleteItem = deleteGroupChat(data.groupId)
+                dispatch(deleteItem)
             })
 
             getAddFriend(data => {

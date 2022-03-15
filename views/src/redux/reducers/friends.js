@@ -138,6 +138,22 @@ const friendsReducer = (state = initial, action) => {
                 friendsList: newFriendList
             }
         }
+
+        case 'DELETE_GROUP_CHAT': {
+            let newListChat = [...state.chatsList]
+
+            newListChat.forEach((Element, Index) => {
+                if (Element.receiverId == action.data) {
+                    newListChat.splice(Index, 1)
+                }
+            })
+
+            return {
+                ...state,
+                chatsList: newListChat
+            }
+        }
+
         default: {
             return {
                 ...state

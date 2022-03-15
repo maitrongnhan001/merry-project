@@ -121,10 +121,12 @@ module.exports.updateProfile = async (data, socket, io) => {
         if (lastName) UserUpdateObj.lastName = lastName;
         if (DOB) UserUpdateObj.DOB = DOB;
         if (sex) UserUpdateObj.sex = sex;
-        console.log(image);
+
+        let getImage = (await user.get(userId))[0].image;
+        //neu khong co hinh tra ve hinh cu
+        UserUpdateObj.image = getImage;
         if (image) {
             //kiem tra hinh anh da luu truoc do, neu anh ton tai thi xoa
-            let getImage = (await user.get(userId))[0].image;
             if (getImage) {
                 fs.unlink(path.resolve(__dirname, '../public/avatarUser/', getImage), (error) => {
                     if (error) {

@@ -65,6 +65,7 @@ function Chat() {
             if (chatsList && chatsList.status === 200) {
                 let chatListAction = saveChatList(chatsList.data.data)
                 dispatch(chatListAction)
+                console.log(chatsList.data.data)
             }
             //call friends list API
             const friendsList = await getFriendsList(localStorage.getItem('userId'))
@@ -103,8 +104,7 @@ function Chat() {
             })
 
             getUpdateProfile(data=> {
-                const user = saveCurrentUser(data)
-                dispatch(user)
+                
             })
 
             //logout 
@@ -239,7 +239,11 @@ function Chat() {
                 if(!data.status) {
                     const notification = updateNotification('Thông tin đã được cập nhật.')
                     dispatch(notification)
-                    console.log(data)
+                    // eslint-disable-next-line eqeqeq
+                    if(data.userId == localStorage.getItem('userId')) {
+                        const user = saveCurrentUser(data)
+                        dispatch(user)
+                    }
                 }
             })
 

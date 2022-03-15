@@ -95,5 +95,4 @@ export {
     deleteFriend,
     updateChatsList,
     deleteGroupChat,
-    deleteGroup
 }

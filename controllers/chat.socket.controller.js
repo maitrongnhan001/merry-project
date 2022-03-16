@@ -2,9 +2,34 @@ const groupDetail = require('../models/detailGroup.model');
 const chat = require('../models/chat.model');
 const userIsOnline = require('../stores/UserLoginStore');
 const emotionMessage = require('../models/emotion.model');
+const group = require('../models/group.model');
 const user = require('../models/user.model');
 const path = require('path');
 const fs = require('fs');
+
+const getMembers = async (groupId, userId) => {
+
+    let id = await group.getMembers(groupId)
+    var user1, user2;
+    if (userId == id[0].userId) {
+        user1 = await user.getUserId(id[0].userId)
+        user2 = await user.getUserId(id[1].userId)
+    } else {
+        user1 = await user.getUserId(id[1].userId)
+        user2 = await user.getUserId(id[0].userId)
+    }
+
+    const idMembersArray = id.map(element => {
+        return element.userId
+    })
+    const members = {
+        members: idMembersArray,
+        image: id[0].AdminId ? id[0].image ? {image1: id[0].image, image2: null} :
+            { image1: user1[0].image, image2: user2[0].image } : { image1: user2[0].image, image2: null },
+        groupName: id[0].AdminId ? id[0].groupName ? id[0].groupName : `${user1[0].lastName} ${user1[0].firstName}, ${user2[0].lastName} ${user2[0].firstName},...` : `${user2[0].lastName} ${user2[0].firstName}`,
+    }
+    return members
+}
 
 module.exports.sendTextMessage = async (data, socket, io) => {
     //gui tin nhan van ban toi client
@@ -33,6 +58,7 @@ module.exports.sendTextMessage = async (data, socket, io) => {
         //tra thong tin ve cho client
         const time = await chat.getTime(dataMessage.id);
         const senderUserInfo = await user.getUserId(senderId)
+        const members = await getMembers(receiverId, senderId)
         const returnData = {
             messageId: dataMessage.id,
             senderId: dataMessage.sendId,
@@ -42,7 +68,8 @@ module.exports.sendTextMessage = async (data, socket, io) => {
             time: time,
             status: dataMessage.status,
             name: `${senderUserInfo[0].lastName} ${senderUserInfo[0].firstName}`,
-            image: senderUserInfo[0].image
+            image: senderUserInfo[0].image,
+            receiver: members
         }
 
         io.to(`${dataMessage.receiveId}`).emit('send-text-message', returnData);
@@ -89,6 +116,8 @@ module.exports.sendMediaMessage = async (data, socket, io) => {
                 //tra thong tin ve cho client
                 const time = await chat.getTime(dataMessage.id);
                 const senderUserInfo = await user.getUserId(senderId)
+                const members = await getMembers(receiverId, senderId)
+
                 const returnData = {
                     messageId: dataMessage.id,
                     senderId: dataMessage.sendId,
@@ -98,7 +127,8 @@ module.exports.sendMediaMessage = async (data, socket, io) => {
                     time: time,
                     status: dataMessage.status,
                     name: `${senderUserInfo[0].lastName} ${senderUserInfo[0].firstName}`,
-                    image: senderUserInfo[0].image
+                    image: senderUserInfo[0].image,
+                    receiver: members
                 }
 
                 io.to(`${dataMessage.receiveId}`).emit('send-media-message', returnData);
@@ -146,6 +176,8 @@ module.exports.sendDocumentMessage = async (data, socket, io) => {
                 //tra thong tin ve cho client
                 const time = await chat.getTime(dataMessage.id);
                 const senderUserInfo = await user.getUserId(senderId)
+                const members = await getMembers(receiverId, senderId)
+
                 const returnData = {
                     messageId: dataMessage.id,
                     senderId: dataMessage.sendId,
@@ -155,7 +187,8 @@ module.exports.sendDocumentMessage = async (data, socket, io) => {
                     time: time,
                     status: dataMessage.status,
                     name: `${senderUserInfo[0].lastName} ${senderUserInfo[0].firstName}`,
-                    image: senderUserInfo[0].image
+                    image: senderUserInfo[0].image,
+                    receiver: members
                 }
 
                 io.to(`${dataMessage.receiveId}`).emit('send-document-message', returnData);
@@ -194,6 +227,8 @@ module.exports.sendLinkMesssage = async (data, socket, io) => {
         //tra thong tin ve cho client
         const time = await chat.getTime(dataMessage.id);
         const senderUserInfo = await user.getUserId(senderId)
+        const members = await getMembers(receiverId, senderId)
+
         const returnData = {
             messageId: dataMessage.id,
             senderId: dataMessage.sendId,
@@ -203,7 +238,8 @@ module.exports.sendLinkMesssage = async (data, socket, io) => {
             time: time,
             status: dataMessage.status,
             name: `${senderUserInfo[0].lastName} ${senderUserInfo[0].firstName}`,
-            image: senderUserInfo[0].image
+            image: senderUserInfo[0].image,
+            receiver: members
         }
 
         io.to(`${dataMessage.receiveId}`).emit('send-link-message', returnData);
@@ -286,7 +322,7 @@ module.exports.createRoom = async (data, socket, io) => {
             }
         });
         //gui thong tin toi tat ca user trong room
-        io.to(`${receiverId}`).emit('create-room', { data });
+        io.to(`${receiverId}`).emit('create-room', { ...data, status });
     } catch (err) {
         socket.emit('create-room-error', { msg: 'tao phong that bai' });
         console.error(err);

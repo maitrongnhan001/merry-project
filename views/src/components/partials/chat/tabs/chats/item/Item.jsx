@@ -7,7 +7,7 @@ import $ from 'jquery'
 import { saveCurrentChat } from '../../../../../../redux/actions/message';
 import { createRoom } from '../../../../../Sockets/socket-chat';
 
-function Item({id, members, image, name, lastMessage}) {
+function Item({id, members, image, name, lastMessage, status}) {
 
     /*----redux----*/
     //ket noi den redux
@@ -55,7 +55,10 @@ function Item({id, members, image, name, lastMessage}) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentChatSelector])
 
-
+    const style = {
+        color: ['Đã nhận', 'Đã gửi'].includes(lastMessage.status) ? "#5865F2" : '',
+        fontWeight: ['Đã nhận', 'Đã gửi'].includes(lastMessage.status) ? "bold" : '',
+    }
 
     return (
         <div className="tab-chat-item" data-id={id} onClick={handleClickToShowChat}>
@@ -64,8 +67,9 @@ function Item({id, members, image, name, lastMessage}) {
             </div>
             <div className="tab-chat-info">
                 <p className="tab-chat-name">{name}</p>
-                <p className="tab-chat-content"> {lastMessage.isSender ? 'Bạn: ' : ''} {lastMessage.type === 'text' ? lastMessage.content : 'Đã gửi 1 tệp.'}</p>
+                <p className="tab-chat-content" style={style}> {lastMessage.isSender ? 'Bạn: ' : ''} {lastMessage.type === 'text' ? lastMessage.content : 'Đã gửi 1 tệp.'}</p>
             </div>
+            <div className="tab-chat-new-status" style={{visibility: ['Đã nhận', 'Đã gửi'].includes(lastMessage.status) ? "" : "hidden"}}>N</div>
         </div>
     );
 }

@@ -19,28 +19,41 @@ const friendsReducer = (state = initial, action) => {
         case 'UPDATE_CHAT_LIST': {
             const chatsList = [...state.chatsList]
             console.log(action.data)
-            let newItem
+            let newItem = action.data.receiver
             for(let value of chatsList) {
                 // eslint-disable-next-line eqeqeq
                 if(value.receiverId == action.data.receiverId) {
                     value.lastMessage.type = action.data.type
+                    // eslint-disable-next-line eqeqeq
+                    if(action.data.senderId != localStorage.getItem('userId'))
+                        value.lastMessage.status = action.data.status
                     // eslint-disable-next-line eqeqeq
                     if(action.data.type == 'text') {
                         value.lastMessage.type = 'text'
                         value.lastMessage.content = action.data.content
                         value.lastMessage.isSender = action.data.senderId === localStorage.getItem('userId') ? 1 : 0
                     }
-                    newItem = value
-                    chatsList.splice(chatsList.indexOf(value), 1)
-                }else{
-                    newItem = action.data.receiver
                 }
             }
-            console.log(newItem)
-            chatsList.unshift(newItem)
+            if(!chatsList.find(value=>value.receiverId == action.data.receiverId))
+                if(action.data.senderId != localStorage.getItem('userId'))
+                        newItem.lastMessage.status = action.data.status
+                chatsList.unshift(newItem)
             return {
                 ...state,
                 chatsList
+            }
+        }
+        case 'UPDATE_STATUS_CHAT_LIST': {
+            const newChatList = [...state.chatsList]
+            newChatList.forEach(value=>{
+                if(value.receiverId == action.data.receiverId && action.data.senderId == localStorage.getItem('userId')) {
+                    value.lastMessage.status = action.data.status
+                }
+            })
+            return {
+                ...state,
+                chatsList: newChatList
             }
         }
         case 'SAVE_FRIENDS_LIST': {

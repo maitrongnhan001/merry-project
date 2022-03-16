@@ -18,7 +18,7 @@ import Ask from '../partials/chat/extension/Another-features/leave-group/form-as
 import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList, getUserById, getUsersOnline } from '../APIs/ConnectAPI'
 import { getAddGroup, getAddMember, getDeleteMember, getUpdateGroup, getDeleteGroup } from '../Sockets/socket-group'
-import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList, updateInfomationFriend, deleteFriend, updateChatsList, deleteGroupChat } from '../../redux/actions/friends'
+import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList, updateInfomationFriend, deleteFriend, updateChatsList, deleteGroupChat, updateStatusChatList } from '../../redux/actions/friends'
 import { addGroup, deleteGroup, saveGroupsList, updateInfomationGroup } from '../../redux/actions/groups'
 import { getConnection, getLogout, getUpdateProfile, sendConnection } from '../Sockets/home'
 import { saveCurrentUser, saveUserOffline, saveUserOnline } from '../../redux/actions/user'
@@ -37,7 +37,6 @@ function Chat() {
     const displayFormExtension = useSelector(state => state.extension.showForm)
     const feature = useSelector(state => state.taskbar.feature)
     const isFriendProfileForm = useSelector(state => state.friends.friendProfile)
-    const currentChat = useSelector(state => state.message.currentChat)
     const idChat = useSelector(state => state.message.currentChat)
 
     const dispatch = useDispatch()
@@ -116,6 +115,8 @@ function Chat() {
             //getRoom
             getRoom((data) => {
                 console.log(data)
+                const status = updateStatusChatList(data)
+                dispatch(status)
             })
 
             getAddMember((data) => {
@@ -217,25 +218,63 @@ function Chat() {
                 }
             })
 
-           
-            getTextMessageChat((data) => {
+            getTextMessageChat((data)=> {
                 const message = saveMassage(data)
                 dispatch(message)
-                const chatList = updateChatsList(data)
+                const chat = {
+                    ...data,
+                    receiver: {
+                        receiverId: data.receiverId,
+                        image: data.receiver.image,
+                        receiverName: data.receiver.groupName,
+                        lastMessage: {
+                            content: data.content,
+                            type: data.type,
+                            isSender: data.senderId == localStorage.getItem('userId') ? 1 : 0
+                        }
+                    }
+                }
+                const chatList = updateChatsList(chat)
                 dispatch(chatList)
             })
 
             getMediaMessage(data => {
                 const message = saveMassage(data)
                 dispatch(message)
-                const chatList = updateChatsList(data)
+                const chat = {
+                    ...data,
+                    receiver: {
+                        receiverId: data.receiverId,
+                        image: data.receiver.image,
+                        receiverName: data.receiver.groupName,
+                        lastMessage: {
+                            content: data.content,
+                            type: data.type,
+                            isSender: data.senderId == localStorage.getItem('userId') ? 1 : 0
+                        }
+                    }
+                }
+                const chatList = updateChatsList(chat)
                 dispatch(chatList)
             })
 
             getDocumentMessage(data => {
                 const message = saveMassage(data)
                 dispatch(message)
-                const chatList = updateChatsList(data)
+                const chat = {
+                    ...data,
+                    receiver: {
+                        receiverId: data.receiverId,
+                        image: data.receiver.image,
+                        receiverName: data.receiver.groupName,
+                        lastMessage: {
+                            content: data.content,
+                            type: data.type,
+                            isSender: data.senderId == localStorage.getItem('userId') ? 1 : 0
+                        }
+                    }
+                }
+                const chatList = updateChatsList(chat)
                 dispatch(chatList)
             })
 
@@ -255,11 +294,6 @@ function Chat() {
                 dispatch(updateFriendExtension);
             })
 
-            getTextMessageChat((data) => {
-                const message = saveMassage(data)
-                dispatch(message)
-            })
-
             getUpdateProfile(data => {
                 if (!data.status) {
                     const notification = updateNotification('Thông tin đã được cập nhật.')
@@ -275,28 +309,6 @@ function Chat() {
         })()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-
-    useEffect(() => {
-        getTextMessageChat((data)=> {
-            const message = saveMassage(data)
-            dispatch(message)
-            const chat = {
-                ...data,
-                receiver: {
-                    receiverId: data.receiverId,
-                    image: currentChat.image,
-                    receiverName: currentChat.name,
-                    lastMessage: {
-                        content: data.content,
-                        type: data.type,
-                        isSender: data.senderId == localStorage.getItem('userId') ? 1 : 0
-                    }
-                }
-            }
-            const chatList = updateChatsList(chat)
-            dispatch(chatList)
-        })
-    }, [currentChat])
 
     useEffect(() => {
         document.getElementsByClassName('chat-wrapper')[0].setAttribute('data-theme', theme)

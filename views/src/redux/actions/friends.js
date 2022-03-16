@@ -82,6 +82,13 @@ const deleteGroupChat = (payload) => {
     }
 }
 
+const updateStatusChatList = (payload) => {
+    return { 
+        type: 'UPDATE_STATUS_CHAT_LIST',
+        data: payload
+    }
+}
+
 export { 
     saveChatList,
     saveFriendsList,
@@ -95,4 +102,5 @@ export {
     deleteFriend,
     updateChatsList,
     deleteGroupChat,
+    updateStatusChatList
 }

@@ -13,13 +13,13 @@ import Profile from '../partials/chat/profile/profile'
 import Center from '../partials/chat/center/center'
 // import Loader from '../partials/chat/tools/loader/loader'
 import Notification from '../partials/chat/tools/notification/notification'
-import FormAdddMember from '../partials/chat/extension/Another-features/add-members/form/form-add-member'
+import FormAddMember from '../partials/chat/extension/Another-features/add-members/form/form-add-member'
 import Ask from '../partials/chat/extension/Another-features/leave-group/form-ask/ask'
 import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList, getUserById, getUsersOnline } from '../APIs/ConnectAPI'
-import { getAddGroup, getAddMember, getDeleteMember, getUpdateGroup } from '../Sockets/socket-group'
-import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList, updateInfomationFriend, deleteFriend, updateChatsList } from '../../redux/actions/friends'
-import { addGroup, saveGroupsList, updateInfomationGroup } from '../../redux/actions/groups'
+import { getAddGroup, getAddMember, getDeleteMember, getUpdateGroup, getDeleteGroup } from '../Sockets/socket-group'
+import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList, updateInfomationFriend, deleteFriend, updateChatsList, deleteGroupChat, updateStatusChatList } from '../../redux/actions/friends'
+import { addGroup, deleteGroup, saveGroupsList, updateInfomationGroup } from '../../redux/actions/groups'
 import { getConnection, getLogout, getUpdateProfile, sendConnection } from '../Sockets/home'
 import { saveCurrentUser, saveUserOffline, saveUserOnline } from '../../redux/actions/user'
 import { getRoom, getTextMessageChat, getMediaMessage, getDocumentMessage } from '../Sockets/socket-chat'
@@ -37,6 +37,7 @@ function Chat() {
     const displayFormExtension = useSelector(state => state.extension.showForm)
     const feature = useSelector(state => state.taskbar.feature)
     const isFriendProfileForm = useSelector(state => state.friends.friendProfile)
+    const idChat = useSelector(state => state.message.currentChat)
 
     const dispatch = useDispatch()
 
@@ -65,6 +66,7 @@ function Chat() {
             if (chatsList && chatsList.status === 200) {
                 let chatListAction = saveChatList(chatsList.data.data)
                 dispatch(chatListAction)
+                console.log(chatsList.data.data)
             }
             //call friends list API
             const friendsList = await getFriendsList(localStorage.getItem('userId'))
@@ -80,14 +82,14 @@ function Chat() {
             }
 
             const currentUser = await getUserById(localStorage.getItem('userId'))
-            if(currentUser && currentUser.status === 200) {
+            if (currentUser && currentUser.status === 200) {
                 console.log(currentUser.data.data)
                 const user = saveCurrentUser(currentUser.data.data)
                 dispatch(user)
             }
 
             const usersOnline = await getUsersOnline(localStorage.getItem('userId'))
-            if(usersOnline && usersOnline.status === 200) {
+            if (usersOnline && usersOnline.status === 200) {
                 const users = saveUserOnline(usersOnline.data.data[0])
                 dispatch(users)
             }
@@ -102,11 +104,6 @@ function Chat() {
                 }
             })
 
-            getUpdateProfile(data=> {
-                const user = saveCurrentUser(data)
-                dispatch(user)
-            })
-
             //logout 
             getLogout((data) => {
                 if (data.userId !== localStorage.getItem('userId')) {
@@ -118,6 +115,8 @@ function Chat() {
             //getRoom
             getRoom((data) => {
                 console.log(data)
+                const status = updateStatusChatList(data)
+                dispatch(status)
             })
 
             getAddMember((data) => {
@@ -129,17 +128,32 @@ function Chat() {
             })
 
             getDeleteMember(data => {
+                console.log(data)
                 if (!data.groupId) return
 
                 //luu du lieu vao redux extension
                 const dataDeleteMember = updateDeleteMember(data);
                 dispatch(dataDeleteMember);
+
+                if (idChat === data.groupId) {
+                    //nhom bi xoa nen set center thanh wellcome
+                    const updateCenter = showCenter(0)
+                    dispatch(updateCenter)
+                }
+
+                //xoa group chat ra khoi chat list
+                const deleteItem = deleteGroupChat(data)
+                dispatch(deleteItem)
+
+                //xoa group ra khoi list group
+                const dataDeleteGroup = deleteGroup(data);
+                dispatch(dataDeleteGroup)
             })
 
             getAddGroup((data) => {
                 const addGroupAction = addGroup(data)
                 dispatch(addGroupAction)
-                const currentChat = saveCurrentChat({receiverId: data.groupId, name: data.groupName, image: data.image})
+                const currentChat = saveCurrentChat({ receiverId: data.groupId, name: data.groupName, image: data.image })
                 dispatch(currentChat)
                 const center = showCenter(1)
                 dispatch(center)
@@ -154,6 +168,30 @@ function Chat() {
                 dispatch(updateInfoFriend);
             })
 
+            getDeleteGroup(data => {
+                if (!data.groupId) return
+
+                //nhom bi xoa nen set center thanh wellcome
+                const updateCenter = showCenter(0)
+                dispatch(updateCenter)
+
+                if (idChat === data.groupId) {
+                    //nhom bi xoa nen set center thanh wellcome
+                    const updateCenter = showCenter(0)
+                    dispatch(updateCenter)
+                }
+
+                console.log(data);
+
+                //xoa group chat ra khoi chat list
+                const deleteItem = deleteGroupChat(data)
+                dispatch(deleteItem)
+
+                //xoa group ra khoi list group
+                const dataDeleteGroup = deleteGroup(data);
+                dispatch(dataDeleteGroup)
+            })
+
             getAddFriend(data => {
                 const friendRequest = addFriendRequest(data)
                 dispatch(friendRequest)
@@ -166,14 +204,14 @@ function Chat() {
                 const updateFriendExtension = updateManagerFriend(1);
                 dispatch(updateFriendExtension);
                 // eslint-disable-next-line eqeqeq
-                if(data.status == 404 && data.senderId == localStorage.getItem('userId')) {
+                if (data.status == 404 && data.senderId == localStorage.getItem('userId')) {
                     const notification = updateNotification(data.msg)
                     dispatch(notification)
-                }else{
+                } else {
                     const friendRequest = addFriendRequest(data)
                     dispatch(friendRequest)
                     // eslint-disable-next-line eqeqeq
-                    if(data.senderId == localStorage.getItem('userId')){
+                    if (data.senderId == localStorage.getItem('userId')) {
                         const notification = updateNotification('Gửi lời mời kết bạn thành công.')
                         dispatch(notification)
                     }
@@ -183,25 +221,64 @@ function Chat() {
             getTextMessageChat((data)=> {
                 const message = saveMassage(data)
                 dispatch(message)
-                const chatList = updateChatsList(data)
+                const chat = {
+                    ...data,
+                    receiver: {
+                        receiverId: data.receiverId,
+                        image: data.receiver.image,
+                        receiverName: data.receiver.groupName,
+                        lastMessage: {
+                            content: data.content,
+                            type: data.type,
+                            isSender: data.senderId == localStorage.getItem('userId') ? 1 : 0
+                        }
+                    }
+                }
+                const chatList = updateChatsList(chat)
                 dispatch(chatList)
             })
 
-            getMediaMessage(data=> {
+            getMediaMessage(data => {
                 const message = saveMassage(data)
                 dispatch(message)
-                const chatList = updateChatsList(data)
+                const chat = {
+                    ...data,
+                    receiver: {
+                        receiverId: data.receiverId,
+                        image: data.receiver.image,
+                        receiverName: data.receiver.groupName,
+                        lastMessage: {
+                            content: data.content,
+                            type: data.type,
+                            isSender: data.senderId == localStorage.getItem('userId') ? 1 : 0
+                        }
+                    }
+                }
+                const chatList = updateChatsList(chat)
                 dispatch(chatList)
             })
 
-            getDocumentMessage(data=> {
+            getDocumentMessage(data => {
                 const message = saveMassage(data)
                 dispatch(message)
-                const chatList = updateChatsList(data)
+                const chat = {
+                    ...data,
+                    receiver: {
+                        receiverId: data.receiverId,
+                        image: data.receiver.image,
+                        receiverName: data.receiver.groupName,
+                        lastMessage: {
+                            content: data.content,
+                            type: data.type,
+                            isSender: data.senderId == localStorage.getItem('userId') ? 1 : 0
+                        }
+                    }
+                }
+                const chatList = updateChatsList(chat)
                 dispatch(chatList)
             })
 
-            getAcceptFriend(data=> {
+            getAcceptFriend(data => {
                 const friendAccept = addFriendAfterAccept(data)
                 dispatch(friendAccept)
 
@@ -209,7 +286,7 @@ function Chat() {
                 dispatch(updateFriendExtension);
             })
 
-            getDeleteFriend(data=> {
+            getDeleteFriend(data => {
                 const friend = deleteFriend(data)
                 dispatch(friend)
 
@@ -217,17 +294,15 @@ function Chat() {
                 dispatch(updateFriendExtension);
             })
 
-            getTextMessageChat((data) => {
-                // setMessage(data)
-                const message = saveMassage(data)
-                dispatch(message)
-            })
-
-            getUpdateProfile(data=> {
-                if(!data.status) {
+            getUpdateProfile(data => {
+                if (!data.status) {
                     const notification = updateNotification('Thông tin đã được cập nhật.')
                     dispatch(notification)
-                    console.log(data)
+                    // eslint-disable-next-line eqeqeq
+                    if (data.userId == localStorage.getItem('userId')) {
+                        const user = saveCurrentUser(data)
+                        dispatch(user)
+                    }
                 }
             })
 
@@ -251,7 +326,7 @@ function Chat() {
             <Notification />
             {
                 displayFormExtension === 1 ?
-                    <FormAdddMember />
+                    <FormAddMember />
                     :
                     displayFormExtension === 2 ?
                         <SetAvatarForm />

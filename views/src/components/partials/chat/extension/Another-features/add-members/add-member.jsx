@@ -11,10 +11,6 @@ const AddMember = () => {
         //show form add members
         const displayFormAddMember = showFormFeatureExtension(1);
         dispatch(displayFormAddMember);
-        
-        //hide extension
-        const hideExtension = showExtension(0);
-        dispatch(hideExtension);
     }
 
     return (

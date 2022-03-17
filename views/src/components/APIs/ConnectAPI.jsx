@@ -151,6 +151,12 @@ async function getAnotherUserByGroupId (userId, groupId) {
     return await getAPI('get', `/users/getUserByGroupIdAndUserId?userId=${userId}&groupId=${groupId}`)
 }
 
+async function getUserInformationForProfile (userId1, userId2) {
+    if (!userId1 || !userId2) return
+
+    return await getAPI('get', `/users/get-information-profile-user?userId1=${userId1}&userId2=${userId2}`)
+}
+
 //APIs get content chat
 async function getContentChat(userId, receiveId) {
     return await getAPI('get', `/chat/content?senderId=${userId}&receiverId=${receiveId}`)
@@ -196,5 +202,6 @@ export {
     getUserByEmail,
     checkFriend,
     getAnotherUserByGroupId,
-    getUsersOnline
+    getUsersOnline,
+    getUserInformationForProfile,
 }

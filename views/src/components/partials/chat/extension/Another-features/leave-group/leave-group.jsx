@@ -14,10 +14,6 @@ const LeaveGroup = () => {
         //show form
         const displayForm = showFormFeatureExtension(4);
         dispatch(displayForm);
-
-        //hide extension
-        const hideExtension = showExtension(0);
-        dispatch(hideExtension);
     }
 
     return (

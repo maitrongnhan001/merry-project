@@ -18,11 +18,15 @@ const friendsReducer = (state = initial, action) => {
         }
         case 'UPDATE_CHAT_LIST': {
             const chatsList = [...state.chatsList]
-            console.log(action)
+            console.log(action.data)
+            let newItem = action.data.receiver
             for(let value of chatsList) {
                 // eslint-disable-next-line eqeqeq
                 if(value.receiverId == action.data.receiverId) {
                     value.lastMessage.type = action.data.type
+                    // eslint-disable-next-line eqeqeq
+                    if(action.data.senderId != localStorage.getItem('userId'))
+                        value.lastMessage.status = action.data.status
                     // eslint-disable-next-line eqeqeq
                     if(action.data.type == 'text') {
                         value.lastMessage.type = 'text'
@@ -31,9 +35,25 @@ const friendsReducer = (state = initial, action) => {
                     }
                 }
             }
+            if(!chatsList.find(value=>value.receiverId == action.data.receiverId))
+                if(action.data.senderId != localStorage.getItem('userId'))
+                        newItem.lastMessage.status = action.data.status
+                chatsList.unshift(newItem)
             return {
                 ...state,
                 chatsList
+            }
+        }
+        case 'UPDATE_STATUS_CHAT_LIST': {
+            const newChatList = [...state.chatsList]
+            newChatList.forEach(value=>{
+                if(value.receiverId == action.data.receiverId && action.data.senderId == localStorage.getItem('userId')) {
+                    value.lastMessage.status = action.data.status
+                }
+            })
+            return {
+                ...state,
+                chatsList: newChatList
             }
         }
         case 'SAVE_FRIENDS_LIST': {
@@ -138,6 +158,27 @@ const friendsReducer = (state = initial, action) => {
                 friendsList: newFriendList
             }
         }
+
+        case 'DELETE_GROUP_CHAT': {
+            let newListChat = [...state.chatsList]
+            console.log(action.data)
+            newListChat.forEach((Element, Index) => {
+                // eslint-disable-next-line eqeqeq
+                if (Element.receiverId == action.data.groupId)
+                    if(action.data.isAdmin) {
+                        newListChat.splice(Index, 1)
+                    // eslint-disable-next-line eqeqeq
+                    }else if(action.data.memberId == localStorage.getItem('userId')) {
+                        newListChat.splice(Index, 1)
+                    }
+            })
+
+            return {
+                ...state,
+                chatsList: newListChat
+            }
+        }
+
         default: {
             return {
                 ...state

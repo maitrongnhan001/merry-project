@@ -44,6 +44,25 @@ const groupsReducer = (state = initial, action) => {
             }
         }
 
+        case 'DELETE_GROUP': {
+            let newList = [...state.groupsList]
+            newList.forEach((Element, Index) => {
+                // eslint-disable-next-line eqeqeq
+                if (Element.groupId == action.data.groupId) {
+                    if(action.data.isAdmin) {
+                        newList.splice(Index, 1)
+                    // eslint-disable-next-line eqeqeq
+                    }else if(action.data.memberId == localStorage.getItem('userId')) {
+                        newList.splice(Index, 1)
+                    }
+                }
+            })
+            return {
+                ...state,
+                groupsList: newList,
+            }
+        }
+
         default: {
             return {
                 ...state

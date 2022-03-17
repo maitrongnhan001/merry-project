@@ -35,3 +35,21 @@ module.exports.get = async (userId, messageId) =>{
         })
     })
 }
+
+module.exports.getStatus = async (userId, messageId) =>{
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM message WHERE receiveId = ? AND id = ?`
+        connection.query(sql,[userId, messageId], (err, result) =>{
+            if (err) {
+                reject(err);
+            } else {
+                if (result.length > 0) {
+                    const endResult = JSON.parse(JSON.stringify(result));
+                    resolve(endResult[0].status);
+                } else {
+                    resolve(null);
+                }
+            }
+        })
+    })
+}

@@ -14,10 +14,6 @@ const SetNameGroup = () => {
         //show form
         const showFormRename = showFormFeatureExtension(3);
         dispatch(showFormRename);
-
-        //hide extension
-        const hideExtension = showExtension(0);
-        dispatch(hideExtension);
     }
 
     return (

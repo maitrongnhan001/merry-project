@@ -26,10 +26,9 @@ const messageReducer = (state = initial, action)=> {
         }
 
         case 'SAVE_CURRENT_CHAT': {
-            const currentChat = action.data
             return {
                 ...state,
-                currentChat
+                currentChat:  action.data
             }
         }
 

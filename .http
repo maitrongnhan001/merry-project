@@ -2,3 +2,6 @@ GET http://localhost:8080/api/content/link?receiveId=U0001 HTTP/1.1
 ###
 
 GET http://localhost:8080/api/users/users-online/1 HTTP/1.1
+###
+
+GET http://localhost:8080/api/users/get-information-profile-user/?userId1=1&userId2=2 HTTP/1.1

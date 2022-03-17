@@ -330,7 +330,8 @@ module.exports.deleteGroup = async (data, socket, io) => {
 
         //tra du lieu ve cho client
         const returnData = {
-            groupId: groupId
+            groupId: groupId,
+            isAdmin: true
         }
         io.to(`${groupId}`).emit('delete-group', returnData);
     } catch (err) {

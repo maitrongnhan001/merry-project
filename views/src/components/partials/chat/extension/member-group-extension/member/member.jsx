@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { showDialog } from '../../../../../../redux/actions/taskbar';
-import { showFriendProfile } from '../../../../../../redux/actions/friends';
+import { saveFriendProfile, showFriendProfile } from '../../../../../../redux/actions/friends';
 import { updateShowOrderFeature } from '../../../../../../redux/actions/extension';
 import { showExtension } from '../../../../../../redux/actions/extension';
+import { getUserInformationForProfile } from '../../../../../APIs/ConnectAPI';
 import Image from '../../../avatar/avatar';
 import Feature from './feature/feature';
 import './member.scss';
@@ -36,11 +37,22 @@ const Member = (props) => {
 
     //----------------------handle-------------------------//
     //xu ly an hien form thong tin ca nhan
-    const handleClickToShowProfile = () => {
-        const show = showDialog(3)
-        dispatch(show)
-        const display = showFriendProfile(1)
-        dispatch(display)
+    const handleClickToShowProfile = async () => {
+        //get user's information
+        const meUserId = parseInt(localStorage.getItem('userId'));
+        const result = await getUserInformationForProfile(meUserId, id);
+        if (result && result.status === 200) {
+            const profileData = {
+                isGroup: 0,
+                profile: result.data.data
+            }
+            const friendProfileDataAction = saveFriendProfile(profileData);
+            dispatch(friendProfileDataAction);
+            const show = showDialog(3);
+            dispatch(show);
+            const display = showFriendProfile(1);
+            dispatch(display);
+        }
 
         //hide extension
         const isShowExtension = showExtension(0);
@@ -61,6 +73,8 @@ const Member = (props) => {
     useEffect(() => {
         if (isShowOrderFeature !== index) {
             setIsActiveItem(false);
+        } else {
+            setIsActiveItem(true);
         }
 
         return () => {
@@ -76,7 +90,7 @@ const Member = (props) => {
                 break;
             }
         }
-        
+
         const endResult = (!resultFriend || meIsAdmin) && (id !== parseInt(userId));
         setIsFeature(endResult);
     }, [listFriend, meIsAdmin]);

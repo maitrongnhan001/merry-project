@@ -18,7 +18,7 @@ import Ask from '../partials/chat/extension/Another-features/leave-group/form-as
 import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList, getUserById, getUsersOnline } from '../APIs/ConnectAPI'
 import { getAddGroup, getAddMember, getDeleteMember, getUpdateGroup, getDeleteGroup } from '../Sockets/socket-group'
-import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList, updateInfomationFriend, deleteFriend, updateChatsList, deleteGroupChat } from '../../redux/actions/friends'
+import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList, updateInfomationFriend, deleteFriend, updateChatsList, deleteGroupChat, updateStatusChatList } from '../../redux/actions/friends'
 import { addGroup, deleteGroup, saveGroupsList, updateInfomationGroup } from '../../redux/actions/groups'
 import { getConnection, getLogout, getUpdateProfile, sendConnection } from '../Sockets/home'
 import { saveCurrentUser, saveUserOffline, saveUserOnline } from '../../redux/actions/user'
@@ -115,6 +115,8 @@ function Chat() {
             //getRoom
             getRoom((data) => {
                 console.log(data)
+                const status = updateStatusChatList(data)
+                dispatch(status)
             })
 
             getAddMember((data) => {
@@ -216,24 +218,63 @@ function Chat() {
                 }
             })
 
-            getTextMessageChat((data) => {
+            getTextMessageChat((data)=> {
                 const message = saveMassage(data)
                 dispatch(message)
-                const chatList = updateChatsList(data)
+                const chat = {
+                    ...data,
+                    receiver: {
+                        receiverId: data.receiverId,
+                        image: data.receiver.image,
+                        receiverName: data.receiver.groupName,
+                        lastMessage: {
+                            content: data.content,
+                            type: data.type,
+                            isSender: data.senderId == localStorage.getItem('userId') ? 1 : 0
+                        }
+                    }
+                }
+                const chatList = updateChatsList(chat)
                 dispatch(chatList)
             })
 
             getMediaMessage(data => {
                 const message = saveMassage(data)
                 dispatch(message)
-                const chatList = updateChatsList(data)
+                const chat = {
+                    ...data,
+                    receiver: {
+                        receiverId: data.receiverId,
+                        image: data.receiver.image,
+                        receiverName: data.receiver.groupName,
+                        lastMessage: {
+                            content: data.content,
+                            type: data.type,
+                            isSender: data.senderId == localStorage.getItem('userId') ? 1 : 0
+                        }
+                    }
+                }
+                const chatList = updateChatsList(chat)
                 dispatch(chatList)
             })
 
             getDocumentMessage(data => {
                 const message = saveMassage(data)
                 dispatch(message)
-                const chatList = updateChatsList(data)
+                const chat = {
+                    ...data,
+                    receiver: {
+                        receiverId: data.receiverId,
+                        image: data.receiver.image,
+                        receiverName: data.receiver.groupName,
+                        lastMessage: {
+                            content: data.content,
+                            type: data.type,
+                            isSender: data.senderId == localStorage.getItem('userId') ? 1 : 0
+                        }
+                    }
+                }
+                const chatList = updateChatsList(chat)
                 dispatch(chatList)
             })
 
@@ -251,12 +292,6 @@ function Chat() {
 
                 const updateFriendExtension = updateManagerFriend(1);
                 dispatch(updateFriendExtension);
-            })
-
-            getTextMessageChat((data) => {
-                // setMessage(data)
-                const message = saveMassage(data)
-                dispatch(message)
             })
 
             getUpdateProfile(data => {

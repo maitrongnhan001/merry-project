@@ -50,6 +50,7 @@ module.exports.getStatus = async (userId, messageId) =>{
                     resolve(null);
                 }
             }
+            
         })
     })
 }

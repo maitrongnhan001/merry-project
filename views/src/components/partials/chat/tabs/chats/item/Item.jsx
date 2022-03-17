@@ -40,7 +40,7 @@ function Item({id, members, image, name, lastMessage, status}) {
 
     //xu ly cap nhat current chat
     useEffect(() => {
-        const currentChat = saveCurrentChat({receiverId: id, image, name})
+        const currentChat = saveCurrentChat({receiverId: id, image, name, members: members})
         dispatch(currentChat)
     }, [image, name])
 
@@ -49,6 +49,8 @@ function Item({id, members, image, name, lastMessage, status}) {
             for(let val of $('.tab-chat-item')) {
                 if(val.getAttribute('data-id') === id.toString()) {
                     val.classList.add('active-friend-group-item')
+                }else{
+                    val.classList.remove('active-friend-group-item')
                 }
             }
         }
@@ -56,8 +58,8 @@ function Item({id, members, image, name, lastMessage, status}) {
     }, [currentChatSelector])
 
     const style = {
-        color: ['Đã nhận', 'Đã gửi'].includes(lastMessage.status) ? "#5865F2" : '',
-        fontWeight: ['Đã nhận', 'Đã gửi'].includes(lastMessage.status) ? "bold" : '',
+        color: ['Đã nhận', 'Đã gửi'].includes(lastMessage.status) && !lastMessage.isSender ? "#5865F2" : '',
+        fontWeight: ['Đã nhận', 'Đã gửi'].includes(lastMessage.status) && !lastMessage.isSender ? "bold" : '',
     }
 
     return (
@@ -69,7 +71,7 @@ function Item({id, members, image, name, lastMessage, status}) {
                 <p className="tab-chat-name">{name}</p>
                 <p className="tab-chat-content" style={style}> {lastMessage.isSender ? 'Bạn: ' : ''} {lastMessage.type === 'text' ? lastMessage.content : 'Đã gửi 1 tệp.'}</p>
             </div>
-            <div className="tab-chat-new-status" style={{visibility: ['Đã nhận', 'Đã gửi'].includes(lastMessage.status) ? "" : "hidden"}}>N</div>
+            <div className="tab-chat-new-status" style={{visibility: ['Đã nhận', 'Đã gửi'].includes(lastMessage.status) && !lastMessage.isSender ? "" : "hidden"}}>N</div>
         </div>
     );
 }

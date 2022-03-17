@@ -35,10 +35,11 @@ const friendsReducer = (state = initial, action) => {
                     }
                 }
             }
-            if(!chatsList.find(value=>value.receiverId == action.data.receiverId))
+            if(!chatsList.find(value=>value.receiverId == action.data.receiverId)){
                 if(action.data.senderId != localStorage.getItem('userId'))
                         newItem.lastMessage.status = action.data.status
-                chatsList.unshift(newItem)
+                chatsList.push(newItem)
+            }
             return {
                 ...state,
                 chatsList

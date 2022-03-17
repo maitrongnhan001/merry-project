@@ -226,7 +226,7 @@ module.exports.updateGroup = async (data, socket, io) => {
         //lay anh dai dien group
         if (!updateGroupObj.image) {
             let getImage = (await group.get(groupId))[0].image;
-            if (!image) {
+            if (!getImage) {
                 const getImageFromMembers = await detailGroup.getUserByGroupId(groupId, 2, 0);
                 image = {
                     img1: getImageFromMembers[0].image,
@@ -245,13 +245,20 @@ module.exports.updateGroup = async (data, socket, io) => {
             }
         }
 
+        //lay danh sach id cua thanh vien nhom
+        const MemberIdsArr = listMembers.map(Element => {
+            return Element.userId;
+        });
+
         //tra du lieu ve cho client
         const returnData = {
             groupId: groupId,
             groupName: updateGroupObj.groupName,
-            image: image
+            image: image,
+            members: MemberIdsArr
         }
-        console.log(returnData);
+
+
 
         io.to(`${groupId}`).emit('update-group', returnData);
     } catch (err) {

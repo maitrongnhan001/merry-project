@@ -58,6 +58,7 @@ const addFriendAfterAccept = (payload) => {
 const updateInfomationFriend = (payload) => {
     return { 
         type: 'UPDATE_CHAT_INFOMATION',
+        data: payload
     }
 }
 

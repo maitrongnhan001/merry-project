@@ -38,11 +38,14 @@ function Item({id, members, image, name, lastMessage, status}) {
         createRoom(dataRoom)
     }
 
-    //xu ly cap nhat current chat
-    useEffect(() => {
-        const currentChat = saveCurrentChat({receiverId: id, image, name, members: members})
-        dispatch(currentChat)
-    }, [image, name])
+    // //xu ly cap nhat current chat
+    // useEffect(() => {
+    //     console.log('run')
+    //     if (id == currentChatSelector.receiverId) {
+    //         const currentChat = saveCurrentChat({receiverId: id, image, name, members: members})
+    //         dispatch(currentChat)
+    //     }
+    // }, [image, name])
 
     useEffect(()=> {
         if(currentChatSelector.receiverId === id) {

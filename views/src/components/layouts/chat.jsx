@@ -135,7 +135,7 @@ function Chat() {
                 const dataDeleteMember = updateDeleteMember(data);
                 dispatch(dataDeleteMember);
 
-                if (idChat === data.groupId) {
+                if (idChat.receiverId === data.groupId) {
                     //nhom bi xoa nen set center thanh wellcome
                     const updateCenter = showCenter(0)
                     dispatch(updateCenter)
@@ -160,12 +160,24 @@ function Chat() {
             })
 
             getUpdateGroup(data => {
+                console.log(data)
                 if (!data.groupName || !data.groupId || !data.image) return
                 //luu thong tin nhom vua cap nhat vao redux
                 const updateInfoGroup = updateInfomationGroup(data);
                 dispatch(updateInfoGroup);
                 const updateInfoFriend = updateInfomationFriend(data);
                 dispatch(updateInfoFriend);
+                //update current chat
+                const updateCurrentChat = saveCurrentChat({ 
+                    receiverId: data.groupId, 
+                    name: data.groupName, 
+                    image: {
+                        image1: data.image.img1,
+                        image2: data.image.img2
+                    },
+                    members: data.members
+                })
+                dispatch(updateCurrentChat)
             })
 
             getDeleteGroup(data => {
@@ -175,7 +187,7 @@ function Chat() {
                 const updateCenter = showCenter(0)
                 dispatch(updateCenter)
 
-                if (idChat === data.groupId) {
+                if (idChat.receiverId === data.groupId) {
                     //nhom bi xoa nen set center thanh wellcome
                     const updateCenter = showCenter(0)
                     dispatch(updateCenter)

@@ -20,25 +20,44 @@ const friendsReducer = (state = initial, action) => {
             const chatsList = [...state.chatsList]
             console.log(action.data)
             let newItem = action.data.receiver
-            for(let value of chatsList) {
+            // for(let value of chatsList) {
+            //     // eslint-disable-next-line eqeqeq
+            //     if(value.receiverId == action.data.receiverId) {
+            //         value.lastMessage.type = action.data.type
+            //         // eslint-disable-next-line eqeqeq
+            //         if(action.data.senderId != localStorage.getItem('userId'))
+            //             value.lastMessage.status = action.data.status
+            //         // eslint-disable-next-line eqeqeq
+            //         if(action.data.type == 'text') {
+            //             value.lastMessage.type = 'text'
+            //             value.lastMessage.content = action.data.content
+            //             value.lastMessage.isSender = action.data.senderId === localStorage.getItem('userId') ? 1 : 0
+            //         }
+            //     }
+            // }
+            for(let index in chatsList) {
                 // eslint-disable-next-line eqeqeq
-                if(value.receiverId == action.data.receiverId) {
-                    value.lastMessage.type = action.data.type
+                let newChatItem = chatsList[index]
+                if(newChatItem.receiverId == action.data.receiverId) {
+                    newChatItem.lastMessage.type = action.data.type
                     // eslint-disable-next-line eqeqeq
                     if(action.data.senderId != localStorage.getItem('userId'))
-                        value.lastMessage.status = action.data.status
+                        newChatItem.lastMessage.status = action.data.status
                     // eslint-disable-next-line eqeqeq
                     if(action.data.type == 'text') {
-                        value.lastMessage.type = 'text'
-                        value.lastMessage.content = action.data.content
-                        value.lastMessage.isSender = action.data.senderId === localStorage.getItem('userId') ? 1 : 0
+                        newChatItem.lastMessage.type = 'text'
+                        newChatItem.lastMessage.content = action.data.content
+                        newChatItem.lastMessage.isSender = action.data.senderId === localStorage.getItem('userId') ? 1 : 0
                     }
                 }
+                chatsList.splice(index, 1)
+                chatsList.unshift(newChatItem)
+
             }
-            if(!chatsList.find(value=>value.receiverId == action.data.receiverId)){
+            if(!chatsList.find(value=>value.receiverId == action.data.receiverId)) {
                 if(action.data.senderId != localStorage.getItem('userId'))
                         newItem.lastMessage.status = action.data.status
-                chatsList.push(newItem)
+                chatsList.unshift(newItem)
             }
             return {
                 ...state,

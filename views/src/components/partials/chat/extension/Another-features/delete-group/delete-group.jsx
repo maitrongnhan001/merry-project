@@ -14,9 +14,6 @@ const DeleteGroup = () => {
 
         const showFormCreateGroup = showFormFeatureExtension(5);
         dispatch(showFormCreateGroup);
-
-        const hideExtension = showExtension(0);
-        dispatch(hideExtension);
     }
 
     return (

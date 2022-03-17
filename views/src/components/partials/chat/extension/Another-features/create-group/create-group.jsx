@@ -25,9 +25,6 @@ const CreateGroup = () => {
 
         const showFormCreateGroup = showDialog(2);
         dispatch(showFormCreateGroup);
-
-        const hideExtension = showExtension(0);
-        dispatch(hideExtension);
     }
     //-------------life cycle--------------//
     useEffect( async () => {

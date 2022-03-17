@@ -262,7 +262,7 @@ module.exports.getUserOnline = async (req, res) => {
         const userOnlineArr = [];
         if (!listFriend) return res.status(404);
 
-        await listFriend.forEach( async (Element) => {
+        await listFriend.forEach(async (Element) => {
             //kiem tra ai online
             const IdFriend = Element.sendId == userId ? Element.receiveId : Element.sendId;
             if (await userIsOnline.checkUser(IdFriend)) {
@@ -277,5 +277,46 @@ module.exports.getUserOnline = async (req, res) => {
     } catch (error) {
         console.log(error);
         return res.status(500);
+    }
+}
+
+module.exports.getUserInformation = async (req, res) => {
+    //get user's information
+    try {
+        //get data
+        const userId1 = parseInt(req.query.userId1) || null
+        const userId2 = parseInt(req.query.userId2) || null
+
+        //check data
+        if (!userId1 || !userId2) return res.sendStatus(404)
+
+        //get information of user 2
+        const returnData = {} //this is data, it will return for client
+        const informationOfUser2 = await user.get(userId2)
+        returnData.email = informationOfUser2[0].email
+        returnData.image = informationOfUser2[0].image
+        returnData.name = `${informationOfUser2[0].lastName} ${informationOfUser2[0].firstName}`
+        returnData.userId = userId2
+
+        //check user1 and user2 are friend
+        const isFriend = await friend.isFriend(userId1, userId2)
+        returnData.isFriend = isFriend
+
+        //get id group chat of user1 and user2
+        const idGroupChat = await detailGroup.getGroupIdByUserIds(userId1, userId2)
+        if (idGroupChat.length > 0) {
+            returnData.receiverId = idGroupChat[0].groupId
+        } else {
+            returnData.receiverId = null
+        }
+
+        //return data for user
+        res.status(200).json({
+            message: 'Truy vấn thành công',
+            data: returnData
+        });
+    } catch (error) {
+        console.log(error)
+        return res.sendStatus(500)
     }
 }

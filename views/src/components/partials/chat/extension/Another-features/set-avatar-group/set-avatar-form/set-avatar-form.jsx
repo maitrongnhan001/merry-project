@@ -91,9 +91,17 @@ function SetAvatarForm() {
     useEffect(() => {
         if (!currentChat || !currentChat.receiverId || currentChat.receiverId.indexOf('G') !== 0) return
         const initImage = currentChat.image
+        console.log(initImage)
 
         if (!initImage.image2)
+        {
+            //group has a avatar
             setReviewImage(<img src={urlUserAvatar + initImage.image1} alt="" />);
+        }
+        else {
+            //group hasn't avatar
+            setReviewImage(<img src={`/img/img-description/choose-avatar.jpeg`} alt="" />)
+        }
 
         return () => {
             setReviewImage(null);
@@ -104,7 +112,7 @@ function SetAvatarForm() {
             <form className="extension-form-action" onSubmit={handleSubmit}>
                 <div className="extension-form custom-update-avatar" onClick={(e) => e.stopPropagation()}>
                     <p className="extension-form-title">
-                        Đổi tên nhóm
+                        Đổi ảnh đại diện nhóm
                         <i className="fas fa-times" onClick={handleClickToHideForm}></i>
                     </p>
                     <div className="extension-form-friends-list custom-avatar">

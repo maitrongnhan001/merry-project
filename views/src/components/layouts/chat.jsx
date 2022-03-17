@@ -13,7 +13,7 @@ import Profile from '../partials/chat/profile/profile'
 import Center from '../partials/chat/center/center'
 // import Loader from '../partials/chat/tools/loader/loader'
 import Notification from '../partials/chat/tools/notification/notification'
-import FormAdddMember from '../partials/chat/extension/Another-features/add-members/form/form-add-member'
+import FormAddMember from '../partials/chat/extension/Another-features/add-members/form/form-add-member'
 import Ask from '../partials/chat/extension/Another-features/leave-group/form-ask/ask'
 import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList, getUserById, getUsersOnline } from '../APIs/ConnectAPI'
@@ -291,7 +291,7 @@ function Chat() {
             <Notification />
             {
                 displayFormExtension === 1 ?
-                    <FormAdddMember />
+                    <FormAddMember />
                     :
                     displayFormExtension === 2 ?
                         <SetAvatarForm />

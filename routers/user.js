@@ -9,6 +9,8 @@ router.get('/', userController.search);
 
 router.get('/getUserByGroupIdAndUserId', userController.getUserByGroupIdAndUserId)
 
+router.get('/get-information-profile-user/', userController.getUserInformation)
+
 //searchid
 router.get('/:id', userController.searchById);
 

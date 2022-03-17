@@ -13,8 +13,6 @@ const SetAvatarGroup = () => {
         
         const showFormUpdateAvatar = showFormFeatureExtension(2);
         dispatch(showFormUpdateAvatar);
-        const hideExtension = showExtension(0);
-        dispatch(hideExtension);
     }
 
     return (

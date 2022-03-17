@@ -41,6 +41,7 @@ module.exports.getListChat = async (req, res) => {
             return res.sendStatus(404)
         }
         const arr = []
+        console.log(listChat)
         for (let value of listChat) {
             const lastMessage = {
                 type: value.type,
@@ -51,11 +52,13 @@ module.exports.getListChat = async (req, res) => {
             if (value.type == 'text') {
                 const getTexts = await getText.get(value.receiveId, value.id)
                 lastMessage.content = getTexts
+                console.log(getTexts)
             }
             const status = await getText.getStatus(value.receiveId, value.id)
             lastMessage.status = status
             const receiver = await getMembers(value.receiveId, userId)
             const chatItem = {
+                messageId: value.id,
                 receiverId: value.receiveId,
                 image: receiver.image,
                 receiverName: receiver.groupName,
@@ -64,8 +67,9 @@ module.exports.getListChat = async (req, res) => {
             }
             arr.push(chatItem);
         }
+        const sortArr = arr.sort((a, b) => b.messageId - a.messageId) // a - b la tang dan ,b -a la giam dan
         if (listChat.length > 0) {
-            res.status(200).json({ data: arr });
+            res.status(200).json({ data: sortArr });
         } else {
             res.json({ data: [] })
         }

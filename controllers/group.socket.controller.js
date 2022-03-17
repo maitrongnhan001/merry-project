@@ -16,7 +16,6 @@ module.exports.addGroup = async (data, socket, io) => {
             socket.emit('add-group', { msg: 'Lỗi, không đính kèm dữ liệu' });
             return;
         }
-
         //lay du lieu
         var groupName = (data.groupName) ? data.groupName : '';
         const members = data.members.map(Element => {

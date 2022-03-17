@@ -38,15 +38,6 @@ function Item({id, members, image, name, lastMessage, status}) {
         createRoom(dataRoom)
     }
 
-    // //xu ly cap nhat current chat
-    // useEffect(() => {
-    //     console.log('run')
-    //     if (id == currentChatSelector.receiverId) {
-    //         const currentChat = saveCurrentChat({receiverId: id, image, name, members: members})
-    //         dispatch(currentChat)
-    //     }
-    // }, [image, name])
-
     useEffect(()=> {
         if(currentChatSelector.receiverId === id) {
             for(let val of $('.tab-chat-item')) {
@@ -58,7 +49,7 @@ function Item({id, members, image, name, lastMessage, status}) {
             }
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [currentChatSelector])
+    }, [currentChatSelector, id])
 
     const style = {
         color: ['Đã nhận', 'Đã gửi'].includes(lastMessage.status) && !lastMessage.isSender ? "#5865F2" : '',

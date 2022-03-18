@@ -18,6 +18,9 @@ const groupSocket = require('./sockets/group.socket');
 const friendSocket = require('./sockets/friend.socket');
 const chatSocket = require('./sockets/chat.socket');
 
+//----------------require middlewares-----------------//
+const { isAuthSocket } = require('./middlewares/authSocket.middleware');
+
 const onConnection = (socket) => {
     homeSocket.home(io, socket);
     groupSocket.group(io, socket);
@@ -35,10 +38,7 @@ const io = require("socket.io")(server, {
     }
 });
 
-io.use((socket, next) => {
-    console.log('authorization')
-    next();
-})
+io.use(isAuthSocket)
 
 io.on("connection", onConnection);
 //----------------end config socket------------------//

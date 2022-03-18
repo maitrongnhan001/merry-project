@@ -11,7 +11,7 @@ router.post('/register', isAuth, homeController.register)
 router.get('/check-token', isAuth, homeController.checkToken)
 
 //api login
-router.get('/login', homeController.login)
+router.post('/login', homeController.login)
 
 //check gmail
 router.post('/check-email', homeController.verifyEmail)

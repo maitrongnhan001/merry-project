@@ -5,6 +5,7 @@ const JWTHelper = require('../helpers/auth.helper')
 const user = require('../models/user.model')
 const upload = require('../helpers/storeImage.helper')
 const bcrypt = require('bcrypt');
+const token_key = process.env.ACCESS_TOKEN_SECRET;
 
 module.exports.register = async (req, res) => {
     try {
@@ -140,10 +141,9 @@ module.exports.verifyEmail = async (req, res) => {
 module.exports.login = async(req, res) => {
     try {
 
-        const {email} = req.body;
-        let {password} = req.body;
+        const {email, password} = req.body;
 
-        if (!email && !password) {
+        if (!email || !password) {
             return res.sendStatus(404)
         }
         const resultLogin = await home.login(email);
@@ -151,18 +151,23 @@ module.exports.login = async(req, res) => {
             return res.sendStatus(404)
         }
         
+        if (resultLogin.length !== 1 || !(await bcrypt.compare(password, resultLogin[0].password))) {
+            return res.sendStatus(404);
+        }
+
         const InfoUserLogin = {
             email: email,
             firstName: resultLogin[0].firstName,
             lastName: resultLogin[0].lastName,
         }
-        const token = await authHelper.createToken(InfoUserLogin, token_key, "48h");
+
+        const token = await JWTHelper.createToken(InfoUserLogin, token_key, "48h");
         if(!token) {
             return res.sendStatus(404)
         }else{
             //luu thong tin vua dang nhap vao arr
             const userId = resultLogin[0].id;
-            return res.send(200).json({
+            return res.status(200).json({
                 userId: userId,
                 token: token,
                 userAvatar: resultLogin[0].image

@@ -10,6 +10,4 @@ GET http://localhost:8080/api/users/get-information-profile-user/?userId1=1&user
 GET http://localhost:8080/api/check-token HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJuYW1lIjoibmFtdnQwMDIiLCJmaXJzdF9uYW1lIjoiVHJhbiBWaWV0IiwibGFzdF9uYW1lIjoiVHJ1bmcifSwiaWF0IjoxNjMzMzUzNjc4LCJleHAiOjE2MzMzNjA4Nzh9.rxg9KzbT3AtvVJsND47shISuFejsUiuTlhnPAa_hy7w
 
-{
-    null
-}
+null

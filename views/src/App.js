@@ -2,11 +2,8 @@ import './App.scss'
 import  { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import Chat from './components/layouts/chat';
 import Start from './components/layouts/start';
-import connection from './components/Sockets/socket-config';
 import VideoCall from './components/layouts/video-call';
 import VocalCall from './components/layouts/vocal-call.jsx'
-
-connection()
 //set main routes
 
 function App() {

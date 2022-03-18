@@ -30,6 +30,10 @@ import SetAvatarForm from '../partials/chat/extension/Another-features/set-avata
 import { updateManagerFriend } from '../../redux/actions/extension'
 import { updateNotification } from '../../redux/actions/notification'
 import AskDelete from '../partials/chat/extension/Another-features/delete-group/ask-delete-group/ask-delete'
+import connection from '../Sockets/socket-config'
+
+//connection socket
+connection()
 
 function Chat() {
     const theme = useSelector(state => state.taskbar.theme)

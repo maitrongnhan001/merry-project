@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
 import FormData from 'form-data';
 import Password from './password/password';
 import Name from './name/name';
 import Avatar from './avatar/avatar';
 import './register.scss';
-import { register } from '../../../APIs/ConnectAPI';
+import { checkToken, register } from '../../../APIs/ConnectAPI';
 
 const Register = () => {
     const params = useParams();
@@ -76,7 +76,8 @@ const Register = () => {
         formData.append('sex', UserInfo.sex)
         formData.append('file', avatar.file)
 
-        const result = await register(formData);
+        //get token
+        const result = await register(formData, token);
 
         if (!result.error) {
             localStorage.setItem('accessToken', result.token);
@@ -89,6 +90,13 @@ const Register = () => {
             setError(stringError);
         }
     }
+
+    useEffect(async () => {
+        const resultCheckToken = await checkToken(token);
+        if (resultCheckToken.status !== 200) {
+            return naviagate('/');
+        }
+    }, [token])
 
     return (
         <Routes>

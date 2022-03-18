@@ -9,11 +9,11 @@ export default function getAPI(method, url, data = null, token = null) {
     return axios({
         method: method,
         url: url,
-        headers: token && `Authorization: Bearer ${token}`,
-        //headers: { 'Content-Type': 'multipart/form-data' },
+        headers: token && {Authorization: `Bearer ${token}`},
         data: data
     })
         .then(res => {
+            console.log(res)
             return {
                 timeout: 1,
                 status: res.status,
@@ -21,6 +21,7 @@ export default function getAPI(method, url, data = null, token = null) {
             }
         })
         .catch(err => {
+            console.log(err)
             return {
                 status: err.response.status,
                 message: 'Errors happened!',
@@ -35,7 +36,6 @@ async function verifiEmail(email) {
         email: email
     }
     const result = await getAPI('POST', '/check-email', data)
-    console.log(result);
     // eslint-disable-next-line default-case
     switch (result.status) {
         case 200:
@@ -47,6 +47,11 @@ async function verifiEmail(email) {
         case 500:
             return { error: "Có lỗi xảy ra, xin vui lòng thử lại" }
     }
+}
+
+async function checkToken(token = null) {
+    const result = await getAPI('get', `/check-token/`, null, token)
+    return result
 }
 
 
@@ -68,9 +73,9 @@ async function getGroupsList(userId) {
     return result
 }
 
-async function register(userInfo) {
+async function register(userInfo, token = null) {
     if (!userInfo) return
-    const result = await getAPI('POST', '/register', userInfo)
+    const result = await getAPI('POST', '/register', userInfo, token)
 
     // eslint-disable-next-line default-case
     switch (result.status) {
@@ -204,4 +209,5 @@ export {
     getAnotherUserByGroupId,
     getUsersOnline,
     getUserInformationForProfile,
+    checkToken
 }

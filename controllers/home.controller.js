@@ -4,6 +4,7 @@ const home = require('../models/home.model')
 const JWTHelper = require('../helpers/auth.helper')
 const user = require('../models/user.model')
 const upload = require('../helpers/storeImage.helper')
+const bcrypt = require('bcrypt');
 
 module.exports.register = async (req, res) => {
     try {
@@ -74,7 +75,6 @@ module.exports.verifyEmail = async (req, res) => {
                 message: 'Email đã được đăng ký!'
             })
         }
-
         const token = await JWTHelper.createToken({ email }, process.env.ACCESS_TOKEN_SECRET, '10m')
         const oAuth2Option = {
             clientId: process.env.EMAIL_CLIENT_ID,
@@ -132,6 +132,43 @@ module.exports.verifyEmail = async (req, res) => {
             message: 'Vui lòng kiểm tra gmail!'
         })
     } catch (err) {
+        console.error(err)
+        return res.sendStatus(500)
+    }
+}
+
+module.exports.login = async(req, res) => {
+    try {
+
+        const {email} = req.body;
+        let {password} = req.body;
+
+        if (!email && !password) {
+            return res.sendStatus(404)
+        }
+        const resultLogin = await home.login(email);
+        if(!resultLogin){
+            return res.sendStatus(404)
+        }
+        const InfoUserLogin = {
+            email: email,
+            firstName: resultLogin[0].firstName,
+            lastName: resultLogin[0].lastName,
+        }
+        const token = await authHelper.createToken(InfoUserLogin, token_key, "48h");
+        if(!token) {
+            return res.sendStatus(404)
+        }else{
+            //luu thong tin vua dang nhap vao arr
+            const userId = resultLogin[0].id;
+            return res.send(200).json({
+                userId: userId,
+                token: token,
+                userAvatar: resultLogin[0].image
+            })
+        }
+
+    }catch (err) {
         console.error(err)
         return res.sendStatus(500)
     }

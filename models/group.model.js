@@ -176,3 +176,16 @@ module.exports.getDetailByGroupId = (groupId) => {
         })
     })
 }
+
+module.exports.searchGroupByName = (groupName)=>{
+    return new Promise((resolve, reject)=>{
+        const sql = `SELECT * FROM groupuser WHERE groupuser.groupName LIKE ?`
+        connection.query(sql, [groupName], (err, result) => {
+            if(err){
+                reject(err)
+            }else {
+                resolve(result)
+            }
+        })
+    })
+}

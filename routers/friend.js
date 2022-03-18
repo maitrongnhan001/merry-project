@@ -9,6 +9,9 @@ const friendController = require('../controllers/friend.controller')
 
 const router = express.Router()
 
+//search friend and group by name
+router.get('/search', friendController.searchFriendAndGroupByName)
+
 //check friend
 router.get('/check-friend', friendController.checkFriend)
 

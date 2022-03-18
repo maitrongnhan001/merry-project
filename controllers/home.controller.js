@@ -172,6 +172,8 @@ module.exports.login = async(req, res) => {
         console.error(err)
         return res.sendStatus(500)
     }
+}
+
 module.exports.checkToken = (req, res) => {
     res.status(200).json({
         message: 'Token hợp lệ'

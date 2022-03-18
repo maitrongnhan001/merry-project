@@ -150,6 +150,7 @@ module.exports.login = async(req, res) => {
         if(!resultLogin){
             return res.sendStatus(404)
         }
+        
         const InfoUserLogin = {
             email: email,
             firstName: resultLogin[0].firstName,

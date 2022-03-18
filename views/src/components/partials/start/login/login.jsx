@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { login } from '../../../Sockets/home';
 import { useSelector } from 'react-redux';
 import StartLoading from '../tools/start-loading/start-loading';
 import './login.scss';
+import { login } from '../../../APIs/ConnectAPI';
 
 const Login = () => {
     const initEmail = useSelector(state => state.email);
@@ -73,16 +73,18 @@ const Login = () => {
         setErrorPassword(null);
 
         //api login
-        const data = await login(user);
-
+        const data = await login(user.email, user.password);
         
-        if (data.token) {
-            localStorage.setItem('accessToken', data.token);
-            localStorage.setItem('userId', data.userId);
-            localStorage.setItem('userAvatar', data.userAvatar);
-            navigate(`/me/${data.userId}`);
-        } else {
-            setAnotherError('Email hoặc mật khẩu không chính xác');
+        if (data.status === 200) {
+            const dataLogin = data.data;
+            if (dataLogin.token) {
+                localStorage.setItem('accessToken', dataLogin.token);
+                localStorage.setItem('userId', dataLogin.userId);
+                localStorage.setItem('userAvatar', dataLogin.userAvatar);
+                navigate(`/me/`);
+            } else {
+                setAnotherError('Email hoặc mật khẩu không chính xác');
+            }
         }
         setIsLoading(false);
     }

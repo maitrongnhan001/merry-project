@@ -13,7 +13,6 @@ export default function getAPI(method, url, data = null, token = null) {
         data: data
     })
         .then(res => {
-            console.log(res)
             return {
                 timeout: 1,
                 status: res.status,
@@ -21,7 +20,6 @@ export default function getAPI(method, url, data = null, token = null) {
             }
         })
         .catch(err => {
-            console.log(err)
             return {
                 status: err.response.status,
                 message: 'Errors happened!',
@@ -54,6 +52,15 @@ async function checkToken(token = null) {
     return result
 }
 
+async function login(email, password) {
+    if (!email || !password) return
+
+    const result = await getAPI('post', '/login', {
+        email: email,
+        password: password
+    })
+    return result
+}
 
 //APIs get chats list
 async function getListChat(userId) {
@@ -209,5 +216,6 @@ export {
     getAnotherUserByGroupId,
     getUsersOnline,
     getUserInformationForProfile,
-    checkToken
+    checkToken,
+    login
 }

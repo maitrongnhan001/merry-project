@@ -35,6 +35,11 @@ const io = require("socket.io")(server, {
     }
 });
 
+io.use((socket, next) => {
+    console.log('authorization')
+    next();
+})
+
 io.on("connection", onConnection);
 //----------------end config socket------------------//
 

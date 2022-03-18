@@ -67,7 +67,6 @@ module.exports.register = async (req, res) => {
 module.exports.verifyEmail = async (req, res) => {
     try {
         const { email } = req.body
-        console.log(email)
         if (!email)
             return res.sendStatus(404)
         const checkEmail = await user.findByEmail(email)
@@ -127,8 +126,8 @@ module.exports.verifyEmail = async (req, res) => {
                     </form>
                     `
         })
-        console.log("Message sent: %s", info.accepted)
-        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info))
+        // console.log("Message sent: %s", info.accepted)
+        // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info))
         return res.status(200).json({
             message: 'Vui lòng kiểm tra gmail!'
         })
@@ -173,4 +172,8 @@ module.exports.login = async(req, res) => {
         console.error(err)
         return res.sendStatus(500)
     }
+module.exports.checkToken = (req, res) => {
+    res.status(200).json({
+        message: 'Token hợp lệ'
+    })
 }

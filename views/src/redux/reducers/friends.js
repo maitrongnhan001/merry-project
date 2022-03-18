@@ -49,9 +49,9 @@ const friendsReducer = (state = initial, action) => {
                         newChatItem.lastMessage.content = action.data.content
                         newChatItem.lastMessage.isSender = action.data.senderId === localStorage.getItem('userId') ? 1 : 0
                     }
+                    chatsList.splice(index, 1)
+                    chatsList.unshift(newChatItem)
                 }
-                chatsList.splice(index, 1)
-                chatsList.unshift(newChatItem)
 
             }
             if(!chatsList.find(value=>value.receiverId == action.data.receiverId)) {

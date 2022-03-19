@@ -41,6 +41,7 @@ function Main({id}) {
             const result = await getContentChat(localStorage.getItem('userId'), id)
             if (result && result.status === 200) {
                 setDataState(null)
+                setMessageStateList([])
                 if(result.data.data.message.length > 0)
                     setMessageList(result.data.data.message)
                 else {
@@ -53,8 +54,10 @@ function Main({id}) {
 
     useEffect(()=> {
         let newList = messageStateList
-        if(message.messageId !== '' && message.receiverId === id)
+        if(message.messageId !== '' && message.receiverId === id){
+            console.log(id)
             newList.unshift(message)
+        }
         setMessageStateList(newList)
         const result = messageStateList.map((value, idx) => {
             let style = {

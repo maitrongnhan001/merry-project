@@ -1,23 +1,23 @@
-.receive-video-call-wrapper {
+.waiting-vocal-call-wrapper {
+    background-color: #36393f;
     width: 100%;
-    height: 100%;
-    position: absolute;
-    overflow: hidden;
-    .receive-video-call-user-info-group {
+    height: 100vh;
+    position: relative;
+    .waiting-vocal-call-user-info-group {
         position: absolute;
         top: 40%;
         left: 50%;
         transform: translate(-50%, -50%);
-        .receive-video-call-user-avt {
+        .waiting-vocal-call-user-avt {
             width: 6rem;
             height: 6rem;
-            object-fit: cover;
             margin: 0 auto;
             display: block;
+            object-fit: cover;
             border-radius: 50%;
             animation: VocalCallAnimation1 1s linear infinite alternate;
         }
-        .receive-video-call-user-status {
+        .waiting-vocal-call-user-status {
             margin-top: 3rem;
             color: #ffffff;
             font-size: 1.25rem;
@@ -30,14 +30,12 @@
 
     }
 
-    .receive-video-call-icons-group {
+    .waiting-vocal-call-icons-group {
         position: absolute;
         bottom: 4rem;
         left: 50%;
         transform: translateX(-50%);
-        .receive-video-call-phone-icon {
-            float: left;
-            margin: 0 2rem;
+        .waiting-vocal-call-phone-icon {
             width: 3.5rem;
             height: 3.5rem;
             border-radius: 50%;
@@ -50,12 +48,12 @@
             }
         }
 
-        .receive-video-call-phone-icon-phone-up {
+        .waiting-vocal-call-phone-icon-phone-up {
             background-color: #32b132;
             animation: VocalCallAnimation2 1s linear infinite alternate;
         }
 
-        .receive-video-call-phone-icon-phone-down {
+        .waiting-vocal-call-phone-icon-phone-down {
             background-color: #ff144e;
         }
     }

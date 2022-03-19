@@ -2,7 +2,7 @@ import React from 'react'
 import './video-call.scss'
 import { useNavigate } from 'react-router-dom'
 import Waiting from '../partials/video-call/waiting/waiting'
-import Receive from '../partials/video-call/receive/receive'
+import InCall from '../partials/video-call/in-call/in-call'
 import Webcam from "react-webcam"
 import $ from 'jquery'
 
@@ -68,8 +68,8 @@ function VideoCall() {
                     width={'100%'}
                 />
             </div>
-            <Receive></Receive>
-            {/* <Waiting></Waiting> */}
+            {/* <InCall></InCall> */}
+            <Waiting></Waiting>
         </div>
     )
 }

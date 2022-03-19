@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js",
     "server": "nodemon index",
+    "callServer": "nodemon call-server.js",
     "client": "npm start --prefix views",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },

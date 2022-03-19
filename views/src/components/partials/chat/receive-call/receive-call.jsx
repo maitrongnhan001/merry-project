@@ -4,6 +4,7 @@ import { getUserById, urlUserAvatar } from '../../../APIs/ConnectAPI'
 import { showDialog } from '../../../../redux/actions/taskbar'
 import { useDispatch, useSelector } from 'react-redux'
 import { sendCallDown, sendCallUp } from '../../../Sockets/socket-call'
+import { updateCallStatus } from '../../../../redux/actions/call'
 
 function Receive() {
 
@@ -24,6 +25,10 @@ function Receive() {
     const handleClickToCallUp = (e)=> {
         sendCallUp({ senderId: localStorage.getItem('userId'), receiverId: localStorage.getItem('callId')})
         localStorage.setItem('callStatus', 1)
+        const callStatus = updateCallStatus(1)
+        dispatch(callStatus)
+        const display = showDialog(0)
+        dispatch(display)
         window.open(`http://localhost:3000/call/video-call/${localStorage.getItem('receiverId')}`, 'name','width=1000,height=600,left=250,top=100')
     }
 

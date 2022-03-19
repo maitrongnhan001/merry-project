@@ -5,17 +5,20 @@ import Waiting from '../partials/video-call/waiting/waiting'
 import InCall from '../partials/video-call/in-call/in-call'
 import Webcam from "react-webcam"
 import $ from 'jquery'
-import { useSelector } from 'react-redux'
 
 
 function VideoCall() {
 
     const callStatusLocal = localStorage.getItem('callStatus')
-    const callStatus = useSelector(state=>state.call.callStatus)
-
+    //callStatus la null
     const [inCall, setInCall] = React.useState(callStatusLocal)
-
     const webcamRef = React.useRef(null)
+
+    if (inCall == -1) {
+        localStorage.removeItem('callId')
+        localStorage.removeItem('callStatus')
+        window.close();
+    }
 
     const navigate = useNavigate()
 
@@ -26,14 +29,14 @@ function VideoCall() {
     })
 
     React.useEffect(() => {
-        // eslint-disable-next-line eqeqeq
-        if(callStatus) {
+        if(callStatusLocal) {
             setInCall(1)
-        }else if(callStatus == -1) {
-            window.close()
+        }else if(callStatusLocal == -1) {
+            setInCall(-1)
         }else
             setInCall(0)
-    }, [callStatus])
+
+    }, [callStatusLocal])
 
     React.useEffect(()=> {
         if(inCall) {
@@ -57,20 +60,20 @@ function VideoCall() {
     }, [inCall])
 
     const handleClick = (e)=> {
-        setInCall(inCall? 0 : 1)
+        //setInCall(inCall? 0 : 1)
     }
 
     return (
         <div className="video-call-wrapper" onClick={handleClick}>
             
             <div className="video-call-background-partner">
-                <Webcam
+                {/* <Webcam
                     mirrored
                     audio={false}
                     ref={webcamRef}
                     screenshotFormat="image/jpeg"
                     width={'100%'}
-                />
+                /> */}
             </div>
 
             <div className="video-call-background">

@@ -1,12 +1,17 @@
 import React from 'react'
 import './waiting.scss'
 import { getUserById, urlUserAvatar } from '../../../APIs/ConnectAPI'
+import { sendCallDown } from '../../../Sockets/socket-call'
 
 function Waiting() {
 
     const [user, setUser] = React.useState({})
 
     const handleToMissCall = (e)=> {
+        if(localStorage.getItem('callId')){
+            sendCallDown({senderId: localStorage.getItem('userId'), receiverId: localStorage.getItem('callId')})
+            localStorage.removeItem('callId')
+        }
         window.close()
     }
 

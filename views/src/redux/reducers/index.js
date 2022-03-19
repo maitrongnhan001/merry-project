@@ -7,6 +7,7 @@ import extension from './extension'
 import message from './message'
 import email from '../actions/email'
 import notification from './notification'
+import call from './call'
 
 
 const root = combineReducers({
@@ -17,7 +18,8 @@ const root = combineReducers({
     extension: extension,
     message: message,
     email: email,
-    notification: notification
+    notification: notification,
+    call: call
 })
 
 export default root

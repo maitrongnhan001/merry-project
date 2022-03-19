@@ -198,7 +198,7 @@ module.exports.getOtherUsers = async (req, res) => {
                 idOther.push(value)
             }
         }
-        const data = [nodejs]
+        const data = []
         for (let value of idOther) {
             let getUser = await user.get(value)
             if (value == userId)

@@ -9,7 +9,7 @@
     "server": "nodemon index",
     "callServer": "nodemon call-server.js",
     "client": "npm start --prefix views",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\" \"npm run callServer\""
   },
   "author": "",
   "license": "ISC",

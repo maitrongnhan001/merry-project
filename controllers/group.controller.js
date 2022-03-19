@@ -235,7 +235,7 @@ module.exports.getGroupsById = async (req, res) => {
         }
 
         const userListInGroup = await group.getDetailByGroupId(groupId)
-        console.log(userListInGroup)
+        
         if(userListInGroup.length == 0) {
             return res.sendStatus(404)
         }

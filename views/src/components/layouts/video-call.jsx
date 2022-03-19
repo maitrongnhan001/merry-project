@@ -5,12 +5,15 @@ import Waiting from '../partials/video-call/waiting/waiting'
 import InCall from '../partials/video-call/in-call/in-call'
 import Webcam from "react-webcam"
 import $ from 'jquery'
+import { useSelector } from 'react-redux'
 
 
 function VideoCall() {
 
+    const callStatusLocal = localStorage.getItem('callStatus')
+    const callStatus = useSelector(state=>state.call.callStatus)
 
-    const [inCall, setInCall] = React.useState(0)
+    const [inCall, setInCall] = React.useState(callStatusLocal)
 
     const webcamRef = React.useRef(null)
 
@@ -22,8 +25,19 @@ function VideoCall() {
         }
     })
 
+    React.useEffect(() => {
+        // eslint-disable-next-line eqeqeq
+        if(callStatus) {
+            setInCall(1)
+        }else if(callStatus == -1) {
+            window.close()
+        }else
+            setInCall(0)
+    }, [callStatus])
+
     React.useEffect(()=> {
         if(inCall) {
+
             $('.video-call-background').animate({
                 width: '15rem',
                 height: '10rem',
@@ -68,8 +82,8 @@ function VideoCall() {
                     width={'100%'}
                 />
             </div>
-            {/* <InCall></InCall> */}
-            <Waiting></Waiting>
+            {inCall ? <InCall></InCall> : <Waiting></Waiting>}
+            
         </div>
     )
 }

@@ -153,12 +153,25 @@ module.exports.delete = (id) => {
 //lay thanh vien trong nhom
 module.exports.getMembersLimit = (groupId, limit, offset) => {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT user.id, user.image, concat(user.lastName, user.firstName) as name FROM detailgroup JOIN user on detailgroup.userId = user.id WHERE detailgroup.groupId = ? LIMIT ? OFFSET ?`;
+        const sql = `SELECT user.id, user.image, concat(user.lastName,' ', user.firstName) as name FROM detailgroup JOIN user on detailgroup.userId = user.id WHERE detailgroup.groupId = ? LIMIT ? OFFSET ?`;
         connection.query(sql, [groupId, limit, offset], (error, result) => {
             if (error) {
                 reject(error);
             } else {
                 resolve(result);
+            }
+        });
+    });
+}
+
+module.exports.getUserIdByGroupId = (groupId) =>{
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM groupuser, detailgroup, user WHERE groupuser.id = detailgroup.groupId AND detailgroup.userId = user.id AND detailgroup.groupId = ?`;
+        connection.query(sql, [groupId], (error, result) => {
+            if (error) {
+                reject(error);
+            } else {
+                resolve(result[0]);
             }
         });
     });
@@ -181,6 +194,19 @@ module.exports.searchGroupByName = (groupName)=>{
     return new Promise((resolve, reject)=>{
         const sql = `SELECT * FROM groupuser WHERE groupuser.groupName LIKE ?`
         connection.query(sql, [groupName], (err, result) => {
+            if(err){
+                reject(err)
+            }else {
+                resolve(result)
+            }
+        })
+    })
+}
+
+module.exports.searchGroupALL = (userId) => {
+    return new Promise((resolve, reject)=>{
+        const sql = `SELECT * FROM detailgroup , groupuser WHERE detailgroup.groupId = groupuser.id AND detailgroup.userId = ? AND detailgroup.groupId LIKE 'G%'`
+        connection.query(sql, [userId], (err, result) => {
             if(err){
                 reject(err)
             }else {

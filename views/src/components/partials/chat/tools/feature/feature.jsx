@@ -56,6 +56,8 @@ function Feature({children, offset, group}) {
     }
 
     const handleClickToLeaveGroup = (e)=> {
+        const updateFeature = showFeature({...feature, isShow: 0}) 
+        dispatch(updateFeature)
         const groupId = leaveGroup(feature.id)
         dispatch(groupId)
         const displayForm = showFormFeatureExtension(4)

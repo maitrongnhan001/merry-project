@@ -7,7 +7,7 @@ import ChatTab from './chats/Chats'
 import FriendsTab from '../tabs/friends/friends'
 import GroupsTab from '../tabs/groups/groups'
 import Search  from './search/search'
-import DataLoader from '../tools/data-loader/data-loader'
+import SearchLayout from './search-layout/search-layout'
 
 function Tab() {
     /*----redux----*/
@@ -34,11 +34,11 @@ function Tab() {
             <div className="tab-main">
                 {state === 0 ? <ChatTab></ChatTab>: 
                  state === 1 ? <FriendsTab></FriendsTab> : 
-                               <GroupsTab></GroupsTab>}
-                {/* <DataLoader></DataLoader> */}
+                 state === 2 ? <GroupsTab></GroupsTab> : <SearchLayout></SearchLayout>}
             </div>
         </div>
     );
 }
 
 export default React.memo(Tab)
+

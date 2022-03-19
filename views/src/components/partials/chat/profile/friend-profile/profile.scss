@@ -172,7 +172,7 @@
             display: flex;
             justify-content: center;
             cursor: pointer;
-            button {
+            input[type='button'] {
                 display: block;
                 outline: none;
                 border: none;

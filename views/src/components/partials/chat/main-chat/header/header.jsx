@@ -40,15 +40,20 @@ function Header({id, image, name, members}) {
     }
 
     //xu ly an hien form thong tin ca nhan
-    const handleClickToShowProfile = async ()=> {
-        const result = await getMemberListFromGroupByGroupId(localStorage.getItem('userId'), id) 
-        if(result && result.status === 200) {
-            const friendProfileDataAction = saveFriendProfile(result.data.data)
-            dispatch(friendProfileDataAction)
-            const show = showDialog(3)
-            dispatch(show)
-            const display = showFriendProfile(1)
-            dispatch(display)
+    const handleClickToShowProfile = async (e)=> {
+        // eslint-disable-next-line eqeqeq
+        if(id.indexOf('G') == 0)
+            e.preventDefault()
+        else {
+            const result = await getMemberListFromGroupByGroupId(localStorage.getItem('userId'), id) 
+            if(result && result.status === 200) {
+                const friendProfileDataAction = saveFriendProfile(result.data.data)
+                dispatch(friendProfileDataAction)
+                const show = showDialog(3)
+                dispatch(show)
+                const display = showFriendProfile(1)
+                dispatch(display)
+            }
         }
     }
 

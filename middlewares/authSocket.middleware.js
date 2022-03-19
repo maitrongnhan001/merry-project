@@ -3,6 +3,7 @@ const accessTokenSecret = process.env.ACCESS_TOKEN_SECRET;
 
 module.exports.isAuthSocket = async (socket, next) => {
     const tokenObjString = socket.handshake.query.joinServerParameters || null;
+    console.log(tokenObjString)
    
     let token = tokenObjString ? (JSON.parse(tokenObjString)).token : null;
 

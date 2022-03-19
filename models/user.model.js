@@ -176,3 +176,22 @@ module.exports.updateProfile = (userObj, userId) => {
         })
     })
 }
+
+module.exports.searchUserByName = (searchByName, userId) =>{
+    return new Promise((resolve, reject)=>{
+        const sql = `SELECT * FROM user WHERE concat(lastName,' ',firstName) LIKE ? AND id = ?`
+        connection.query(sql,[searchByName, userId], function (error, result) {
+            if(error){
+                reject(error)
+            }else{
+                if(result){
+                    resolve(result)
+                }else{
+                    resolve(null)
+                }
+            }
+        })
+    })
+}
+
+

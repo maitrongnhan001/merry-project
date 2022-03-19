@@ -4,7 +4,6 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const server = require("http").createServer();
-
 const { connect } = require('./config/database.js');
 connect();
 
@@ -12,11 +11,15 @@ connect();
 
 const app = express();
 
+
 //------------------ config socket------------------//
 const homeSocket = require('./sockets/home.socket');
 const groupSocket = require('./sockets/group.socket');
 const friendSocket = require('./sockets/friend.socket');
 const chatSocket = require('./sockets/chat.socket');
+
+//----------------require middlewares-----------------//
+const { isAuthSocket } = require('./middlewares/authSocket.middleware');
 
 const onConnection = (socket) => {
     homeSocket.home(io, socket);
@@ -34,6 +37,8 @@ const io = require("socket.io")(server, {
         //origin: "http://localhost:3000"
     }
 });
+
+io.use(isAuthSocket)
 
 io.on("connection", onConnection);
 //----------------end config socket------------------//
@@ -64,7 +69,6 @@ app.use('/api',homeRouter)
 
 
 //----------------end use router--------------------//
-
 
 //--------------------build server------------------//
 const SOCKET_PORT = process.env.SOCKET_PORT || 8000;

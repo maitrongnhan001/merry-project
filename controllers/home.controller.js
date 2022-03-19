@@ -4,6 +4,8 @@ const home = require('../models/home.model')
 const JWTHelper = require('../helpers/auth.helper')
 const user = require('../models/user.model')
 const upload = require('../helpers/storeImage.helper')
+const bcrypt = require('bcrypt');
+const token_key = process.env.ACCESS_TOKEN_SECRET;
 
 module.exports.register = async (req, res) => {
     try {
@@ -66,7 +68,6 @@ module.exports.register = async (req, res) => {
 module.exports.verifyEmail = async (req, res) => {
     try {
         const { email } = req.body
-        console.log(email)
         if (!email)
             return res.sendStatus(404)
         const checkEmail = await user.findByEmail(email)
@@ -75,7 +76,6 @@ module.exports.verifyEmail = async (req, res) => {
                 message: 'Email đã được đăng ký!'
             })
         }
-
         const token = await JWTHelper.createToken({ email }, process.env.ACCESS_TOKEN_SECRET, '10m')
         const oAuth2Option = {
             clientId: process.env.EMAIL_CLIENT_ID,
@@ -127,8 +127,8 @@ module.exports.verifyEmail = async (req, res) => {
                     </form>
                     `
         })
-        console.log("Message sent: %s", info.accepted)
-        console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info))
+        // console.log("Message sent: %s", info.accepted)
+        // console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info))
         return res.status(200).json({
             message: 'Vui lòng kiểm tra gmail!'
         })
@@ -136,4 +136,52 @@ module.exports.verifyEmail = async (req, res) => {
         console.error(err)
         return res.sendStatus(500)
     }
+}
+
+module.exports.login = async(req, res) => {
+    try {
+
+        const {email, password} = req.body;
+
+        if (!email || !password) {
+            return res.sendStatus(404)
+        }
+        const resultLogin = await home.login(email);
+        if(!resultLogin){
+            return res.sendStatus(404)
+        }
+        
+        if (resultLogin.length !== 1 || !(await bcrypt.compare(password, resultLogin[0].password))) {
+            return res.sendStatus(404);
+        }
+
+        const InfoUserLogin = {
+            email: email,
+            firstName: resultLogin[0].firstName,
+            lastName: resultLogin[0].lastName,
+        }
+
+        const token = await JWTHelper.createToken(InfoUserLogin, token_key, "48h");
+        if(!token) {
+            return res.sendStatus(404)
+        }else{
+            //luu thong tin vua dang nhap vao arr
+            const userId = resultLogin[0].id;
+            return res.status(200).json({
+                userId: userId,
+                token: token,
+                userAvatar: resultLogin[0].image
+            })
+        }
+
+    }catch (err) {
+        console.error(err)
+        return res.sendStatus(500)
+    }
+}
+
+module.exports.checkToken = (req, res) => {
+    res.status(200).json({
+        message: 'Token hợp lệ'
+    })
 }

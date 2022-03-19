@@ -41,7 +41,6 @@ module.exports.getListChat = async (req, res) => {
             return res.sendStatus(404)
         }
         const arr = []
-        console.log(listChat)
         for (let value of listChat) {
             const lastMessage = {
                 type: value.type,
@@ -52,7 +51,6 @@ module.exports.getListChat = async (req, res) => {
             if (value.type == 'text') {
                 const getTexts = await getText.get(value.receiveId, value.id)
                 lastMessage.content = getTexts
-                console.log(getTexts)
             }
             const status = await getText.getStatus(value.receiveId, value.id)
             lastMessage.status = status

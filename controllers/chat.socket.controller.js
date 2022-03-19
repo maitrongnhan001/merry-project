@@ -24,7 +24,7 @@ const getMembers = async (groupId, userId) => {
     })
     const members = {
         members: idMembersArray,
-        image: id[0].AdminId ? id[0].image ? {image1: id[0].image, image2: null} :
+        image: id[0].AdminId ? id[0].image ? { image1: id[0].image, image2: null } :
             { image1: user1[0].image, image2: user2[0].image } : { image1: user2[0].image, image2: null },
         groupName: id[0].AdminId ? id[0].groupName ? id[0].groupName : `${user1[0].lastName} ${user1[0].firstName}, ${user2[0].lastName} ${user2[0].firstName},...` : `${user2[0].lastName} ${user2[0].firstName}`,
     }
@@ -53,6 +53,18 @@ module.exports.sendTextMessage = async (data, socket, io) => {
             status: 'Đã gửi',
             content: content
         }
+
+        //status
+        //gui tin nhan toi mot nhom, kiem tra user con lai trong nhom co online khong
+        //neu co online thi status la da nhan
+        //neu khong co user nao online thi status la da gui
+        const listOtherUsers = await groupDetail.getMembers(receiverId, 10000, 0);
+        listOtherUsers.forEach(Element => {
+            if (Element.userId != senderId && userIsOnline.checkUser(Element.userId)) {
+                message.status = 'Đã nhận'
+            }
+        });
+
         const dataMessage = await chat.create(message);
 
         //tra thong tin ve cho client
@@ -111,6 +123,18 @@ module.exports.sendMediaMessage = async (data, socket, io) => {
                     status: 'Đã gửi',
                     content: fileNameStore
                 }
+
+                //status
+                //gui tin nhan toi mot nhom, kiem tra user con lai trong nhom co online khong
+                //neu co online thi status la da nhan
+                //neu khong co user nao online thi status la da gui
+                const listOtherUsers = await groupDetail.getMembers(receiverId, 10000, 0);
+                listOtherUsers.forEach(Element => {
+                    if (Element.userId != senderId && userIsOnline.checkUser(Element.userId)) {
+                        message.status = 'Đã nhận'
+                    }
+                });
+
                 const dataMessage = await chat.create(message);
 
                 //tra thong tin ve cho client
@@ -171,8 +195,20 @@ module.exports.sendDocumentMessage = async (data, socket, io) => {
                     status: 'Đã gửi',
                     content: fileNameStore
                 }
+
+                //status
+                //gui tin nhan toi mot nhom, kiem tra user con lai trong nhom co online khong
+                //neu co online thi status la da nhan
+                //neu khong co user nao online thi status la da gui
+                const listOtherUsers = await groupDetail.getMembers(receiverId, 10000, 0);
+                listOtherUsers.forEach(Element => {
+                    if (Element.userId != senderId && userIsOnline.checkUser(Element.userId)) {
+                        message.status = 'Đã nhận'
+                    }
+                });
+
                 const dataMessage = await chat.create(message);
-            
+
                 //tra thong tin ve cho client
                 const time = await chat.getTime(dataMessage.id);
                 const senderUserInfo = await user.getUserId(senderId)

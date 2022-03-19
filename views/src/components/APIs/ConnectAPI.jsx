@@ -9,8 +9,7 @@ export default function getAPI(method, url, data = null, token = null) {
     return axios({
         method: method,
         url: url,
-        headers: token && `Authorization: Bearer ${token}`,
-        //headers: { 'Content-Type': 'multipart/form-data' },
+        headers: token && {Authorization: `Bearer ${token}`},
         data: data
     })
         .then(res => {
@@ -35,7 +34,6 @@ async function verifiEmail(email) {
         email: email
     }
     const result = await getAPI('POST', '/check-email', data)
-    console.log(result);
     // eslint-disable-next-line default-case
     switch (result.status) {
         case 200:
@@ -49,6 +47,20 @@ async function verifiEmail(email) {
     }
 }
 
+async function checkToken(token = null) {
+    const result = await getAPI('get', `/check-token/`, null, token)
+    return result
+}
+
+async function login(email, password) {
+    if (!email || !password) return
+
+    const result = await getAPI('post', '/login', {
+        email: email,
+        password: password
+    })
+    return result
+}
 
 //APIs get chats list
 async function getListChat(userId) {
@@ -68,9 +80,9 @@ async function getGroupsList(userId) {
     return result
 }
 
-async function register(userInfo) {
+async function register(userInfo, token = null) {
     if (!userInfo) return
-    const result = await getAPI('POST', '/register', userInfo)
+    const result = await getAPI('POST', '/register', userInfo, token)
 
     // eslint-disable-next-line default-case
     switch (result.status) {
@@ -204,4 +216,6 @@ export {
     getAnotherUserByGroupId,
     getUsersOnline,
     getUserInformationForProfile,
+    checkToken,
+    login
 }

@@ -14,9 +14,7 @@ module.exports.getlink = async (req, res) =>{
         offset = parseInt(offset);
        
         const linkContent = await link.get(receiveId, limit, offset);
-        if(!linkContent) {
-            return res.sendStatus(404)
-        }
+        
         if(linkContent ){
             const links = linkContent.map((value)=>{
                 return {
@@ -30,9 +28,9 @@ module.exports.getlink = async (req, res) =>{
                 message: "Thành công!"
             })
         }else{
-            res.status(404).json({
+            res.status(200).json({
                 data: [], 
-                message: "Thất bại!"
+                message: "Thành công!"
             })
         }
         

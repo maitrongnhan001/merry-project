@@ -1,8 +1,9 @@
 import {connect} from 'socket.io-client'
 
 const server = 'http://localhost:8000/'
-
-const socket = connect(server);
+const token = localStorage.getItem('accessToken')
+const joinServerParameters = { token: token }
+const socket = connect(server, {query: 'joinServerParameters=' + JSON.stringify(joinServerParameters)  });
 
 const connection = ()=> {
     connect(server)

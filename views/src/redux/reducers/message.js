@@ -33,9 +33,10 @@ const messageReducer = (state = initial, action)=> {
         }
 
         case 'SEND_MESSAGE': {
+            
             return {
                 ...state,
-                message:  action.data
+                message: action.data
 
             }
         }

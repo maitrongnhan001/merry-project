@@ -14,7 +14,7 @@ function Ask() {
 
     /*----redux----*/
     //lay du lieu tu redux
-    const idChat = useSelector(state => state.message.currentChat.receiverId);
+    const idChat = useSelector(state => state.groups.leaveGroup);
 
     //ket noi voi redux
     const dispatch = useDispatch()
@@ -43,6 +43,7 @@ function Ask() {
             groupId: idChat,
             memberId: userId
         }
+        console.log(dataOutGroup);
         await sendDeleteMember(dataOutGroup)
 
         //set notification

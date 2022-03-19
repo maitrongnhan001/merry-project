@@ -1,13 +1,22 @@
-.in-call-video-call-wrapper {
+.in-call-vocal-call-wrapper {
+    background-color: #36393f;
     width: 100%;
     height: 100vh;
-    position: absolute;
-    .in-call-video-call-user-info-group {
+    position: relative;
+    .in-call-vocal-call-user-avt-background {
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+        display: block;
         position: absolute;
-        bottom: 15%;
+        object-fit: cover;
+    }
+    .in-call-vocal-call-user-info-group {
+        position: absolute;
+        top: 40%;
         left: 50%;
         transform: translate(-50%, -50%);
-        .in-call-video-call-user-avt {
+        .in-call-vocal-call-user-avt {
             width: 6rem;
             height: 6rem;
             margin: 0 auto;
@@ -16,7 +25,7 @@
             border-radius: 50%;
             // animation: VocalCallAnimation1 1s linear infinite alternate;
         }
-        .in-call-video-call-user-status {
+        .in-call-vocal-call-user-status {
             width: 100%;
             text-align: center;
             margin-top: 3rem;
@@ -26,14 +35,14 @@
 
     }
 
-    .in-call-video-call-icons-group {
+    .in-call-vocal-call-icons-group {
         position: absolute;
         bottom: 4rem;
         left: 50%;
         transform: translateX(-50%);
         display: flex;
         justify-content: center;
-        .in-call-video-call-phone-icon {
+        .in-call-vocal-call-phone-icon {
             width: 3.5rem;
             height: 3.5rem;
             border-radius: 50%;
@@ -47,20 +56,20 @@
             }
         }
 
-        .in-call-video-call-phone-icon-phone-up {
+        .in-call-vocal-call-phone-icon-phone-up {
             background-color: #32b132;
             animation: VocalCallAnimation2 1s linear infinite alternate;
         }
 
-        .in-call-video-call-phone-icon-volume {
+        .in-call-vocal-call-phone-icon-volume {
             background-color: #525863;
         }
 
-        .in-call-video-call-phone-icon-microphone {
+        .in-call-vocal-call-phone-icon-microphone {
             background-color: #525863;
         }
 
-        .in-call-video-call-phone-icon-phone-down {
+        .in-call-vocal-call-phone-icon-phone-down {
             background-color: #ff144e;
         }
     }

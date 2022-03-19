@@ -4,6 +4,23 @@ const detailGroup = require('../models/detailGroup.model')
 const waiting = require('../models/waiting.model');
 const group = require('../models/group.model')
 
+const getMembers = async (groupId) => {
+    let id = await group.getMembers(groupId)
+    let user1 = await user.getUserId(id[0].userId)
+    let user2 = await user.getUserId(id[1].userId)
+    const idMembersArray = id.map(element => {
+        return element.userId
+    })
+    const members = {
+        members: idMembersArray,
+        image:
+            { image1: user1[0].image, image2: user2[0].image },
+        groupName: `${user1[0].lastName} ${user1[0].firstName}, ${user2[0].lastName} ${user2[0].firstName},...`,
+    }
+    // console.log(members)
+    return members
+}
+
 module.exports.getFriend = async (req, res) => {
     try {
         //http://localhost:8080/api/friends/1?limit=1&position=1
@@ -207,12 +224,21 @@ module.exports.checkFriend = async (req, res) => {
 
 module.exports.searchFriendAndGroupByName = async (req, res) => {
     try {
-        let senderId = req.query.senderId ?? ''
-        let {name} = req.body ?? ''
+        let senderId = req.query.senderId
+        let {name}= req.query
+        let limit = req.query.limit ?? '100000000';
+        let offset = req.query.position ?? '0';
         const search = `%${name}%`
         const friends = await user.searchFriend(senderId)
         const data = []
         let array = []
+
+        if(!friends){
+            return res.status(200).json({
+                message: "Không phải là bạn"
+            })
+        }
+
         if (!senderId) {
             return res.sendStatus(404)
         }
@@ -226,91 +252,133 @@ module.exports.searchFriendAndGroupByName = async (req, res) => {
             }
         }
         for (let value of array) {
-            const finds = await user.searchUserByName(search,value)
+            let finds = await user.searchUserByName(search,value)
+            if(!name){
+                finds = await user.searchUserAll(value)
+            }
+            if(finds.length <= 0) {
+                return res.status(200).json({
+                    message: "Không có dữ liệu"
+                })
+            }
             for (let info in finds) {
                 if (value == senderId)
                     continue
+                const membersId = []
+                membersId.push(value)
                 const object = {
-                    userId: value,
-                    image: finds[0].image,
+                    members: membersId,
+                    image:{
+                        image1:finds[0].image,
+                        image2: "",
+                    },
                     name: finds[0].lastName + ' ' + finds[0].firstName,
                 }
                 data.push(object)
             }
         }
-        const searchGroupByNames = await group.searchGroupByName(name)
-        if(!searchGroupByNames){
-            
+        let groupId = await group.searchGroupByName(search)
+        if(!name){
+            groupId = await group.searchGroupALL(senderId)
         }
-        const getGroup = await group.getGroup(userId, limit, offset);
-        if (!getGroup) { //refalsy
+        //truong hop k co viet ham lay all
+        // console.log(groupId);
+        if(!groupId){
+            return res.status(200).json({
+                message: "Không có trong nhóm",
+            })
+        }
+        if(!friends || !groupId){
             return res.sendStatus(404)
         }
-        const getGroupMembers = []
-
-        const getMemberID = []
-        const arr = []
-
-        for (let value of getGroup) {
-            let arrImage = {
-                image1: "",
-                image2: ""
-            }
-            const members = await getMembers(value.groupId)
-            if (value.AdminId != null) {
-                //console.log(value);
-                if (value.image) {
-                    arrImage.image1 = value.image
-                    if (value.groupName) {
-                        const group = {
-                            members: members.members,
-                            groupId: value.groupId,
-                            image: arrImage,
-                            groupName: value.groupName
-                        }
-                        arr.push(group)
-                    } else {
-                        //truy xuat 2 doi tuong trong nhom
-                        const group = {
-                            members: members.members,
-                            groupId: value.groupId,
-                            image: arrImage,
-                            groupName: members.groupName
-                        }
-                        arr.push(group)
-                    }
-                } else {
-                    arrImage = members.image
-                    if (value.groupName) {
-                        const group = {
-                            members: members.members,
-                            groupId: value.groupId,
-                            image: arrImage,
-                            groupName: value.groupName
-                        }
-                        arr.push(group)
-                    } else {
-                        //truy xuat 2 doi tuong trong nhom
-                        const group = {
-                            members: members.members,
-                            groupId: value.groupId,
-                            image: arrImage,
-                            groupName: members.groupName
-                        }
-                        arr.push(group)
-                    }
-                }
-            }
+        const arrGroup = []
+        for(let value of groupId){
+            arrGroup.push(value.id)
         }
-
-        if (data.length > 0) {
+        const arrUserIdOfGroup = []
+        for(let value of arrGroup){
+            const userIdOfGroup = await group.getUserIdByGroupId(value)
+            arrUserIdOfGroup.push(userIdOfGroup)
+        }
+        if(arrUserIdOfGroup.length <= 0){
             return res.status(200).json({
                 message: 'Tìm kiếm thành công!',
                 data
             })
-        } else {
-            return res.sendStatus(404)
+        }else{
+
+            for (let value of arrUserIdOfGroup) {
+                let arrImage = {
+                    image1: "",
+                    image2: ""
+                }
+                if(!value.groupId){
+                    return res.status(200).json({
+                        message: 'Tìm kiếm thành công!',
+                        data
+                    })
+                }
+                const members = await getMembers(value.groupId)
+                // console.log(members)
+                if (value.AdminId != null) {
+                    //console.log(value);
+                    if (value.image) {
+                        arrImage.image1 = value.image
+                        if (value.groupName) {
+                            const group = {
+                                members: members.members,
+                                groupId: value.groupId,
+                                image: arrImage,
+                                groupName: value.groupName
+                            }
+                            // arr.push(group)
+                            data.push(group)
+                        } else {
+                            //truy xuat 2 doi tuong trong nhom
+                            const group = {
+                                members: members.members,
+                                groupId: value.groupId,
+                                image: arrImage,
+                                groupName: members.groupName
+                            }
+                            // arr.push(group)
+                            data.push(group)
+                        }
+                    } else {
+                        arrImage = members.image
+                        if (value.groupName) {
+                            const group = {
+                                members: members.members,
+                                groupId: value.groupId,
+                                image: arrImage,
+                                groupName: value.groupName
+                            }
+                            // arr.push(group)
+                            data.push(group)
+                        } else {
+                            //truy xuat 2 doi tuong trong nhom
+                            const group = {
+                                members: members.members,
+                                groupId: value.groupId,
+                                image: arrImage,
+                                groupName: members.groupName
+                            }
+                            // arr.push(group)
+                            data.push(group)
+                        }
+                    }
+                }
+            }
+            if (data.length > 0) {
+                return res.status(200).json({
+                    message: 'Tìm kiếm thành công!',
+                    data
+                })
+            } else {
+                return res.sendStatus(404)
+            }
         }
+
     } catch (err) {
         console.error(err)
         return res.sendStatus(500)

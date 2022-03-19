@@ -27,9 +27,9 @@ module.exports.getdocument = async (req, res) =>{
                 message: "Thành công!"
             })
         }else{
-            res.status(404).json({
+            res.status(200).json({
                 data: [], 
-                message: "Thất bại!"
+                message: "Thành công!"
             })
         }
         

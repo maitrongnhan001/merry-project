@@ -25,6 +25,7 @@
     "mysql": "^2.18.1",
     "nodemailer": "^6.7.2",
     "npm": "^8.3.2",
+    "peer": "^0.6.1",
     "react-contenteditable": "^3.3.6",
     "socket.io": "^4.4.1",
     "typeface-roboto": "^1.1.13"

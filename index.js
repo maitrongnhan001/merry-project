@@ -3,8 +3,8 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const { ExpressPeerServer } = require('peer');
 const server = require("http").createServer();
-
 const { connect } = require('./config/database.js');
 connect();
 
@@ -12,11 +12,15 @@ connect();
 
 const app = express();
 
+
 //------------------ config socket------------------//
 const homeSocket = require('./sockets/home.socket');
 const groupSocket = require('./sockets/group.socket');
 const friendSocket = require('./sockets/friend.socket');
 const chatSocket = require('./sockets/chat.socket');
+
+//----------------require middlewares-----------------//
+const { isAuthSocket } = require('./middlewares/authSocket.middleware');
 
 const onConnection = (socket) => {
     homeSocket.home(io, socket);
@@ -35,10 +39,7 @@ const io = require("socket.io")(server, {
     }
 });
 
-io.use((socket, next) => {
-    console.log('authorization')
-    next();
-})
+io.use(isAuthSocket)
 
 io.on("connection", onConnection);
 //----------------end config socket------------------//
@@ -70,6 +71,13 @@ app.use('/api',homeRouter)
 
 //----------------end use router--------------------//
 
+//------------------setup peer----------------------//
+const serverPeerExpress = require('http').createServer(app);
+const peerServer = ExpressPeerServer(serverPeerExpress, {
+    debug: true,
+});
+app.use('/peerjs', peerServer);
+//-----------------end setup peer-------------------//
 
 //--------------------build server------------------//
 const SOCKET_PORT = process.env.SOCKET_PORT || 8000;

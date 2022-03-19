@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setTheme, showCenter, showFeature } from '../../redux/actions/taskbar'
+import { setTheme, showCenter, showDialog, showFeature } from '../../redux/actions/taskbar'
 import { updateShowOrderFeature, updateNewMember, updateDeleteMember } from '../../redux/actions/extension'
 import { useNavigate } from 'react-router-dom'
 import TaskBar from '../partials/chat/task-bar/task-bar'
@@ -32,6 +32,8 @@ import { updateManagerFriend } from '../../redux/actions/extension'
 import { updateNotification } from '../../redux/actions/notification'
 import AskDelete from '../partials/chat/extension/Another-features/delete-group/ask-delete-group/ask-delete'
 import connection from '../Sockets/socket-config'
+import { getCall, getCallDown, getCallUp } from '../Sockets/socket-call'
+import { updateCallStatus } from '../../redux/actions/call'
 
 //connection socket
 connection()
@@ -342,6 +344,27 @@ function Chat() {
                         dispatch(groupsListAction)
                     }
                 }
+            })
+
+            getCall(data=>{
+                const display = showDialog(4)
+                dispatch(display)
+                localStorage.setItem('callId', data.receiverId)
+            })
+
+            getCallUp(data=> {
+                console.log('hlo')
+                localStorage.setItem('callStatus', 1)
+                const callStatus = updateCallStatus(1)
+                dispatch(callStatus)
+                window.open(`http://localhost:3000/call/video-call/${data.receiverId}`, 'name','width=1000,height=600,left=250,top=100')
+            })
+
+            getCallDown(data=> {
+
+                localStorage.setItem('callStatus', -1)
+                const callStatus = updateCallStatus(-1)
+                dispatch(callStatus)
             })
 
         })()

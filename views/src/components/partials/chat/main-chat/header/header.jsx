@@ -9,6 +9,8 @@ import $ from 'jquery'
 import { saveFriendProfile, showFriendProfile } from '../../../../../redux/actions/friends'
 import { showDialog } from '../../../../../redux/actions/taskbar'
 import { getMemberListFromGroupByGroupId } from '../../../../APIs/ConnectAPI'
+import { sendCall } from '../../../../Sockets/socket-call'
+import { updateNotification } from '../../../../../redux/actions/notification'
 
 function Header({id, image, name, members}) {
     
@@ -62,7 +64,14 @@ function Header({id, image, name, members}) {
     }
 
     const handleVideoCall = (e)=> {
-        window.open('http://localhost:3000/call/video-call/36934', 'name','width=1000,height=600,left=250,top=100')
+        if(!localStorage.getItem('callId')){
+            localStorage.setItem('callId', id)
+            sendCall({senderId: localStorage.getItem('userId'), receiverId: id})
+            window.open('http://localhost:3000/call/video-call/36934', 'name','width=1000,height=600,left=250,top=100')
+        }else {
+            const notification = updateNotification('Bạn đang trong cuộc gọi!')
+            dispatch(notification)
+        }
     }
 
     /*----lifecycle----*/

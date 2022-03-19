@@ -17,6 +17,7 @@ const homeSocket = require('./sockets/home.socket');
 const groupSocket = require('./sockets/group.socket');
 const friendSocket = require('./sockets/friend.socket');
 const chatSocket = require('./sockets/chat.socket');
+const callSocket = require('./sockets/call-video.socket');
 
 //----------------require middlewares-----------------//
 const { isAuthSocket } = require('./middlewares/authSocket.middleware');
@@ -26,6 +27,7 @@ const onConnection = (socket) => {
     groupSocket.group(io, socket);
     friendSocket.friend(io,socket);
     chatSocket.chat(io, socket);
+    callSocket.videoCall(io, socket);
 }
 
 const io = require("socket.io")(server, {
@@ -38,7 +40,7 @@ const io = require("socket.io")(server, {
     }
 });
 
-// io.use(isAuthSocket)
+io.use(isAuthSocket)
 
 io.on("connection", onConnection);
 //----------------end config socket------------------//

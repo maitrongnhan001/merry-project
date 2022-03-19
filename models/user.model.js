@@ -193,5 +193,20 @@ module.exports.searchUserByName = (searchByName, userId) =>{
         })
     })
 }
-
+module.exports.searchUserAll = (userId) =>{
+    return new Promise((resolve, reject)=>{
+        const sql = `SELECT * FROM user WHERE id = ?`
+        connection.query(sql,[userId], function (error, result) {
+            if(error){
+                reject(error)
+            }else{
+                if(result){
+                    resolve(result)
+                }else{
+                    resolve(null)
+                }
+            }
+        })
+    })
+}
 

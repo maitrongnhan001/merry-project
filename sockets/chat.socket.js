@@ -24,4 +24,8 @@ module.exports.chat = (io, socket) => {
     socket.on('create-room', (data) => {
         chatSocket.createRoom(data, socket, io);
     });
+
+    socket.on('seen-message', (data) => {
+        chatSocket.updateSeenMessage(data, socket, io);
+    })
 }

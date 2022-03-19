@@ -363,3 +363,22 @@ module.exports.createRoom = async (data, socket, io) => {
         console.error(err);
     }
 }
+
+module.exports.updateSeenMessage = async (data, socket, io) => {
+    try {
+        //get data
+        const receiverId = data.receiveId || null;
+        //check data
+        if (!receiverId) socket.emit('seen-message', { message: 'Không có dữ liệu' });
+        //store to database
+        await chat.updateStatus('Đã xem', [receiverId]);
+        //return for user
+        io.to(`${receiverId}`).emit('seen-message', {
+            receiverId: receiverId,
+            status: 'Đã xem'
+        });
+    } catch (error) {
+        console.log(error);
+        socket.emit('seen-message', { message: 'Có lỗi xảy ra, vui lòng thử lại' });
+    }
+}

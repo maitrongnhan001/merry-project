@@ -28,6 +28,10 @@ function Profile() {
         dispatch(display)
     }
 
+    const handleClickToCancelFriend = (e)=> {
+        
+    }
+
     /*----lifecycle----*/
     useEffect(()=> {
         $('.friend-profile-dialog-form').fadeTo('.5s', 1)
@@ -35,7 +39,7 @@ function Profile() {
 
     return (
         <div className="friend-profile-dialog-wrapper" onClick={handleClickToHideFriendProfile}>
-            <form action="" className="friend-profile-dialog-form" onClick={(e)=>e.stopPropagation()}>
+            <form  className="friend-profile-dialog-form" onClick={(e)=>e.stopPropagation()}>
                 <div className="friend-profile-dialog">
                     <p className="friend-profile-dialog-title">
                         Thông tin
@@ -46,7 +50,7 @@ function Profile() {
                             <img src="/img/cover-background/cover-background.jpg" alt="" className="friend-profile-cover-background" />
                             <div className="friend-profile-avatar">
                                 <div className="friend-profile-update-avatar">
-                                    <label htmlFor="friend-profile-change-avatar"><img src={urlUserAvatar + profileSelector.profile.image} alt="" /></label>
+                                    <label htmlFor=""><img src={urlUserAvatar + profileSelector.profile.image} alt="" /></label>
                                     <input type="file" id="friend-profile-change-avatar" accept="image/*" style={{ display: 'none' }} />
                                 </div>
                                 <div className="friend-profile-update-static">
@@ -68,7 +72,7 @@ function Profile() {
                         </div>
                     </div>
                     <div className="friend-profile-bottom-btn">
-                        <button>Hủy kết bạn</button>
+                        <input type="button" value="Hủy kết bạn" onClick={handleClickToCancelFriend}/>
                     </div>
                 </div>
             </form>

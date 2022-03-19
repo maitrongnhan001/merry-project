@@ -24,7 +24,7 @@ const getMembers = async (groupId, userId) => {
     })
     const members = {
         members: idMembersArray,
-        image: id[0].AdminId ? id[0].image ? {image1: id[0].image, image2: null} :
+        image: id[0].AdminId ? id[0].image ? { image1: id[0].image, image2: null } :
             { image1: user1[0].image, image2: user2[0].image } : { image1: user2[0].image, image2: null },
         groupName: id[0].AdminId ? id[0].groupName ? id[0].groupName : `${user1[0].lastName} ${user1[0].firstName}, ${user2[0].lastName} ${user2[0].firstName},...` : `${user2[0].lastName} ${user2[0].firstName}`,
     }
@@ -53,6 +53,18 @@ module.exports.sendTextMessage = async (data, socket, io) => {
             status: 'Đã gửi',
             content: content
         }
+
+        //status
+        //gui tin nhan toi mot nhom, kiem tra user con lai trong nhom co online khong
+        //neu co online thi status la da nhan
+        //neu khong co user nao online thi status la da gui
+        const listOtherUsers = await groupDetail.getMembers(receiverId, 10000, 0);
+        listOtherUsers.forEach(Element => {
+            if (Element.userId != senderId && userIsOnline.checkUser(Element.userId)) {
+                message.status = 'Đã nhận'
+            }
+        });
+
         const dataMessage = await chat.create(message);
 
         //tra thong tin ve cho client
@@ -83,7 +95,6 @@ module.exports.sendMediaMessage = async (data, socket, io) => {
     //gui tin nhan meida toi client
     try {
         //kiem tra du lieu co ton tai
-        console.log(data)
         if (!(data.senderId && data.receiverId && data.message.fileName && data.message.content)) {
             socket.emit('send-media-message-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
             return;
@@ -111,6 +122,18 @@ module.exports.sendMediaMessage = async (data, socket, io) => {
                     status: 'Đã gửi',
                     content: fileNameStore
                 }
+
+                //status
+                //gui tin nhan toi mot nhom, kiem tra user con lai trong nhom co online khong
+                //neu co online thi status la da nhan
+                //neu khong co user nao online thi status la da gui
+                const listOtherUsers = await groupDetail.getMembers(receiverId, 10000, 0);
+                listOtherUsers.forEach(Element => {
+                    if (Element.userId != senderId && userIsOnline.checkUser(Element.userId)) {
+                        message.status = 'Đã nhận'
+                    }
+                });
+
                 const dataMessage = await chat.create(message);
 
                 //tra thong tin ve cho client
@@ -171,8 +194,20 @@ module.exports.sendDocumentMessage = async (data, socket, io) => {
                     status: 'Đã gửi',
                     content: fileNameStore
                 }
+
+                //status
+                //gui tin nhan toi mot nhom, kiem tra user con lai trong nhom co online khong
+                //neu co online thi status la da nhan
+                //neu khong co user nao online thi status la da gui
+                const listOtherUsers = await groupDetail.getMembers(receiverId, 10000, 0);
+                listOtherUsers.forEach(Element => {
+                    if (Element.userId != senderId && userIsOnline.checkUser(Element.userId)) {
+                        message.status = 'Đã nhận'
+                    }
+                });
+
                 const dataMessage = await chat.create(message);
-            
+
                 //tra thong tin ve cho client
                 const time = await chat.getTime(dataMessage.id);
                 const senderUserInfo = await user.getUserId(senderId)
@@ -326,5 +361,24 @@ module.exports.createRoom = async (data, socket, io) => {
     } catch (err) {
         socket.emit('create-room-error', { msg: 'tao phong that bai' });
         console.error(err);
+    }
+}
+
+module.exports.updateSeenMessage = async (data, socket, io) => {
+    try {
+        //get data
+        const receiverId = data.receiveId || null;
+        //check data
+        if (!receiverId) socket.emit('seen-message', { message: 'Không có dữ liệu' });
+        //store to database
+        await chat.updateStatus('Đã xem', [receiverId]);
+        //return for user
+        io.to(`${receiverId}`).emit('seen-message', {
+            receiverId: receiverId,
+            status: 'Đã xem'
+        });
+    } catch (error) {
+        console.log(error);
+        socket.emit('seen-message', { message: 'Có lỗi xảy ra, vui lòng thử lại' });
     }
 }

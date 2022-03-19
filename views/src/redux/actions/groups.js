@@ -26,9 +26,17 @@ const deleteGroup = (payload) => {
     }
 }
 
+const leaveGroup = (payload) => {
+    return {
+        type: 'LEAVE_GROUP',
+        data: payload
+    }
+}
+
 export {
     saveGroupsList,
     addGroup,
     updateInfomationGroup,
-    deleteGroup
+    deleteGroup,
+    leaveGroup,
 }

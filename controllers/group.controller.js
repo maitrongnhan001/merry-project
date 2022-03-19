@@ -4,7 +4,9 @@ const friend = require('../models/friend.model')
 
 const getMembers = async (groupId) => {
     let id = await group.getMembers(groupId)
-    let user1 = await user.getUserId(id[0].userId)
+    let admin = await group.getAdminId(groupId)
+    console.log(admin[0].AdminId)
+    let user1 = await user.getUserId(admin[0].AdminId ? admin[0].AdminId : id[0].userId)
     let user2 = await user.getUserId(id[1].userId)
     const idMembersArray = id.map(element => {
         return element.userId

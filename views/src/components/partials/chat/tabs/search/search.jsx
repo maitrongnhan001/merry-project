@@ -1,7 +1,7 @@
 import React from 'react'
 import './search.scss'
 import { useDispatch } from 'react-redux'
-import { showDialog } from '../../../../../redux/actions/taskbar'
+import { saveTab, showDialog } from '../../../../../redux/actions/taskbar'
 
 function Search() {
 
@@ -22,10 +22,20 @@ function Search() {
         dispatch(isDisplay) 
     }
 
+    const handleFocusToShowSearchTab = (e)=> {
+        const tab = saveTab(4)
+        dispatch(tab)
+    }
+
+    const handleBlurToShowSearchTab = (e)=> {
+        const tab = saveTab(0)
+        dispatch(tab)
+    }
+
     return (
         <div className="tab-tools">
             <div className="tab-search-box">
-                <input type="text" placeholder="Tìm kiếm"/>
+                <input type="text" placeholder="Tìm kiếm" onFocus={handleFocusToShowSearchTab} onBlur={handleBlurToShowSearchTab}/>
                 <i className="fas fa-search"></i>
             </div>
             <div className="tab-add-items">

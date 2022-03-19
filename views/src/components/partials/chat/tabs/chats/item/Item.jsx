@@ -52,8 +52,8 @@ function Item({id, members, image, name, lastMessage, status}) {
     }, [currentChatSelector, id])
 
     const style = {
-        color: ['Đã nhận', 'Đã gửi'].includes(lastMessage.status) && !lastMessage.isSender ? "#5865F2" : '',
-        fontWeight: ['Đã nhận', 'Đã gửi'].includes(lastMessage.status) && !lastMessage.isSender ? "bold" : '',
+        color: ['Đã nhận', 'Đã gửi'].includes(lastMessage.status) && !lastMessage.isSender && currentChatSelector.receiverId != id ? "#5865F2" : '',
+        fontWeight: ['Đã nhận', 'Đã gửi'].includes(lastMessage.status) && !lastMessage.isSender && currentChatSelector.receiverId != id ? "bold" : '',
     }
 
     return (
@@ -65,7 +65,7 @@ function Item({id, members, image, name, lastMessage, status}) {
                 <p className="tab-chat-name">{name}</p>
                 <p className="tab-chat-content" style={style}> {lastMessage.isSender ? 'Bạn: ' : ''} {lastMessage.type === 'text' ? lastMessage.content : 'Đã gửi 1 tệp.'}</p>
             </div>
-            <div className="tab-chat-new-status" style={{visibility: ['Đã nhận', 'Đã gửi'].includes(lastMessage.status) && !lastMessage.isSender ? "" : "hidden"}}>N</div>
+            <div className="tab-chat-new-status" style={{visibility: ['Đã nhận', 'Đã gửi'].includes(lastMessage.status) && !lastMessage.isSender && currentChatSelector.receiverId != id ? "" : "hidden"}}>N</div>
         </div>
     );
 }

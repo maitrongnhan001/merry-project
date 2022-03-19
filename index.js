@@ -3,7 +3,6 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const { ExpressPeerServer } = require('peer');
 const server = require("http").createServer();
 const { connect } = require('./config/database.js');
 connect();
@@ -39,7 +38,7 @@ const io = require("socket.io")(server, {
     }
 });
 
-io.use(isAuthSocket)
+// io.use(isAuthSocket)
 
 io.on("connection", onConnection);
 //----------------end config socket------------------//
@@ -70,14 +69,6 @@ app.use('/api',homeRouter)
 
 
 //----------------end use router--------------------//
-
-//------------------setup peer----------------------//
-const serverPeerExpress = require('http').createServer(app);
-const peerServer = ExpressPeerServer(serverPeerExpress, {
-    debug: true,
-});
-app.use('/peerjs', peerServer);
-//-----------------end setup peer-------------------//
 
 //--------------------build server------------------//
 const SOCKET_PORT = process.env.SOCKET_PORT || 8000;

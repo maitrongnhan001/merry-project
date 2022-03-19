@@ -1,5 +1,6 @@
 const initial = {
-    groupsList: []
+    groupsList: [],
+    leaveGroup: ''
 }
 
 const groupsReducer = (state = initial, action) => {
@@ -60,6 +61,13 @@ const groupsReducer = (state = initial, action) => {
             return {
                 ...state,
                 groupsList: newList,
+            }
+        }
+
+        case 'LEAVE_GROUP': {
+            return {
+                ...state,
+                leaveGroup: action.data
             }
         }
 

@@ -11,6 +11,7 @@ import Feature from '../partials/chat/tools/feature/feature'
 import CreateGroup from '../partials/chat/create-group/create-group'
 import Profile from '../partials/chat/profile/profile'
 import Center from '../partials/chat/center/center'
+import ReceiveCall from '../partials/chat/receive-call/receive-call'
 // import Loader from '../partials/chat/tools/loader/loader'
 import Notification from '../partials/chat/tools/notification/notification'
 import FormAddMember from '../partials/chat/extension/Another-features/add-members/form/form-add-member'
@@ -172,9 +173,9 @@ function Chat() {
                 const updateInfoFriend = updateInfomationFriend(data);
                 dispatch(updateInfoFriend);
                 //update current chat
-                const updateCurrentChat = saveCurrentChat({ 
-                    receiverId: data.groupId, 
-                    name: data.groupName, 
+                const updateCurrentChat = saveCurrentChat({
+                    receiverId: data.groupId,
+                    name: data.groupName,
                     image: {
                         image1: data.image.img1,
                         image2: data.image.img2
@@ -234,9 +235,11 @@ function Chat() {
                 }
             })
 
-            getTextMessageChat((data)=> {
+            getTextMessageChat((data) => {
                 const message = saveMassage(data)
                 dispatch(message)
+
+                console.log('run')
                 const chat = {
                     ...data,
                     receiver: {
@@ -257,6 +260,7 @@ function Chat() {
             getMediaMessage(data => {
                 const message = saveMassage(data)
                 dispatch(message)
+                console.log('run')
                 const chat = {
                     ...data,
                     receiver: {
@@ -310,7 +314,7 @@ function Chat() {
                 dispatch(updateFriendExtension);
             })
 
-            getUpdateProfile(data => {
+            getUpdateProfile(async data => {
                 if (!data.status) {
                     const notification = updateNotification('Thông tin đã được cập nhật.')
                     dispatch(notification)
@@ -318,6 +322,24 @@ function Chat() {
                     if (data.userId == localStorage.getItem('userId')) {
                         const user = saveCurrentUser(data)
                         dispatch(user)
+                    }
+
+                    const chatsList = await getListChat(localStorage.getItem('userId'))
+                    if (chatsList && chatsList.status === 200) {
+                        let chatListAction = saveChatList(chatsList.data.data)
+                        dispatch(chatListAction)
+                    }
+                    //call friends list API
+                    const friendsList = await getFriendsList(localStorage.getItem('userId'))
+                    if (friendsList && friendsList.status === 200) {
+                        let friendsListAction = saveFriendsList(friendsList.data.data)
+                        dispatch(friendsListAction)
+                    }
+
+                    const groupsList = await getGroupsList(localStorage.getItem('userId'))
+                    if (groupsList && groupsList.status === 200) {
+                        let groupsListAction = saveGroupsList(groupsList.data.data)
+                        dispatch(groupsListAction)
                     }
                 }
             })
@@ -367,7 +389,9 @@ function Chat() {
                         display === 3 ?
                             <Profile friendProfile={isFriendProfileForm}></Profile>
                             :
-                            ''
+                            display === 4 ?
+                            <ReceiveCall></ReceiveCall> : ''
+                            
             }
             <TaskBar></TaskBar>
             <Tab></Tab>

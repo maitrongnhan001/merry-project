@@ -93,7 +93,7 @@ function TaskBar() {
             $('.taskbar-wrapper .task-item-focus span').animate({top: '.5rem'}, 250)
         }else if(focusTab === 1) {
             $('.taskbar-wrapper .task-item-focus span').animate({top: "5.5rem"}, 250)
-        }else {
+        }else if(focusTab === 2) {
             $('.taskbar-wrapper .task-item-focus span').animate({top: "10.5rem"}, 250)
         }
     }, [focusTab])

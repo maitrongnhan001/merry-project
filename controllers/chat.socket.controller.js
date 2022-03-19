@@ -95,7 +95,6 @@ module.exports.sendMediaMessage = async (data, socket, io) => {
     //gui tin nhan meida toi client
     try {
         //kiem tra du lieu co ton tai
-        console.log(data)
         if (!(data.senderId && data.receiverId && data.message.fileName && data.message.content)) {
             socket.emit('send-media-message-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
             return;

@@ -135,7 +135,6 @@ function Chat() {
             })
 
             getDeleteMember(data => {
-                console.log(data)
                 if (!data.groupId) return
 
                 //luu du lieu vao redux extension
@@ -353,7 +352,6 @@ function Chat() {
             })
 
             getCallUp(data=> {
-                console.log('hlo')
                 localStorage.setItem('callStatus', 1)
                 const callStatus = updateCallStatus(1)
                 dispatch(callStatus)
@@ -361,10 +359,10 @@ function Chat() {
             })
 
             getCallDown(data=> {
-
-                localStorage.setItem('callStatus', -1)
-                const callStatus = updateCallStatus(-1)
-                dispatch(callStatus)
+                if (localStorage.getItem('userId') != data.senderId) {
+                    localStorage.setItem('callStatus', -1)
+                    window.open(`http://localhost:3000/call/video-call/${data.receiverId}`, 'name','width=1000,height=600,left=250,top=100')
+                }
             })
 
         })()

@@ -26,7 +26,6 @@ module.exports.callUp = (data, socket, io) => {
 
 module.exports.callDown = (data, socket, io) => {
     try{
-        console.log('data' + data)
         const { senderId, receiverId } = data
         if(!senderId || !receiverId) 
             return socket.emit('call-down', {msg: 'Không nhận được dữ liệu', status: 404})

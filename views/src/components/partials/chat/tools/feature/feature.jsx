@@ -6,7 +6,9 @@ import { saveFriendProfile, showFriendProfile } from '../../../../../redux/actio
 import { showDialog, showFeature } from '../../../../../redux/actions/taskbar'
 import { sendDeleteFriend } from '../../../../Sockets/socket-friend'
 import { getMemberListFromGroupByGroupId } from '../../../../APIs/ConnectAPI'
+import {leaveGroup } from '../../../../../redux/actions/groups'
 import { updateNotification } from '../../../../../redux/actions/notification'
+import { showFormFeatureExtension } from '../../../../../redux/actions/extension'
 
 function Feature({children, offset, group}) {
 
@@ -53,6 +55,13 @@ function Feature({children, offset, group}) {
         dispatch(notification)
     }
 
+    const handleClickToLeaveGroup = (e)=> {
+        const groupId = leaveGroup(feature.id)
+        dispatch(groupId)
+        const displayForm = showFormFeatureExtension(4)
+        dispatch(displayForm);
+    }
+
     /*----lifecycle ----*/
     useEffect(()=>{
         $('.tab-item-feature').slideDown('fast')
@@ -63,7 +72,7 @@ function Feature({children, offset, group}) {
             {
                !group ? <p className="tab-friend-feature-item-show tab-item-feature-elm tab-item-feature-elm-1" onClick={handleClickToShowProfile}>Xem thông tin</p> : ''
             }
-            {group ? <p className="tab-friend-feature-item-show tab-item-feature-elm tab-item-feature-elm-2">Rời nhóm</p> :
+            {group ? <p className="tab-friend-feature-item-show tab-item-feature-elm tab-item-feature-elm-2" onClick={handleClickToLeaveGroup}>Rời nhóm</p> :
             <p className="tab-friend-feature-item-show tab-item-feature-elm tab-item-feature-elm-2" onClick={handleClickToDeleteFriend}>Hủy kết bạn</p>}
         </div>
     )

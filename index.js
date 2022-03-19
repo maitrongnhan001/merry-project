@@ -38,7 +38,7 @@ const io = require("socket.io")(server, {
     }
 });
 
-// io.use(isAuthSocket)
+io.use(isAuthSocket)
 
 io.on("connection", onConnection);
 //----------------end config socket------------------//

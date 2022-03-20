@@ -1,22 +1,30 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import './waiting.scss'
 import { getUserById, urlUserAvatar } from '../../../APIs/ConnectAPI'
 import { sendCallDown } from '../../../Sockets/socket-call'
 
 function Waiting() {
 
-    const [user, setUser] = React.useState({})
+    //-----------------state-------------------//
+    const [user, setUser] = useState({})
 
+    //-----------------handle-------------------//
     const handleToMissCall = (e)=> {
         if(localStorage.getItem('callId')){
-            sendCallDown({senderId: localStorage.getItem('userId'), receiverId: localStorage.getItem('callId')})
+            sendCallDown({
+                senderId: localStorage.getItem('userId'), 
+                receiverId: localStorage.getItem('callId'),
+                type: localStorage.getItem('callType')
+            })
             localStorage.removeItem('callId')
+            localStorage.removeItem('callType')
         }
         window.close()
     }
 
+    //-----------------life cycle-------------------//
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    React.useEffect(async ()=> {
+    useEffect(async ()=> {
         if(localStorage.getItem('userId')) {
             const result = await getUserById(localStorage.getItem('userId'))
             if(result && result.status === 200) {
@@ -24,8 +32,6 @@ function Waiting() {
             }
         }
     }, [])
-
-
 
     return (
         <div className="waiting-video-call">

@@ -339,24 +339,40 @@ function Chat() {
                 }
             })
 
-            getCall(data=>{
+            getCall(data => {
                 const display = showDialog(4)
                 dispatch(display)
                 localStorage.setItem('callId', data.receiverId)
+                localStorage.setItem('callType', data.type)
             })
 
-            getCallUp(data=> {
+            getCallUp(data => {
                 localStorage.setItem('callStatus', 1)
                 const callStatus = updateCallStatus(1)
                 dispatch(callStatus)
-                window.open(`http://localhost:3000/call/video-call/${data.receiverId}`, 'name','width=1000,height=600,left=250,top=100')
+                if (data.type == 'video') {
+                    window.open(`http://localhost:3000/call/video-call/${data.receiverId}`, 'name', 'width=1000,height=600,left=250,top=100')
+                } else {
+                    window.open(`http://localhost:3000/call/vocal-call/${data.receiverId}`, 'name', 'width=1000,height=600,left=250,top=100')
+                }
             })
 
-            getCallDown(data=> {
-                // eslint-disable-next-line eqeqeq
+            getCallDown(data => {
                 if (localStorage.getItem('userId') != data.senderId) {
-                    localStorage.setItem('callStatus', -1)
-                    window.open(`http://localhost:3000/call/video-call/${data.receiverId}`, 'name','width=1000,height=600,left=250,top=100')
+                    localStorage.removeItem('callId')
+                    localStorage.removeItem('callType')
+                    if (!localStorage.getItem('callStatus')) {
+                        //neu chua chap nhan cuoc goi thi dong cuoc goi
+                        const display = showDialog(0)
+                        dispatch(display)
+                    } else {
+                        localStorage.setItem('callStatus', -1)
+                        if (data.type == 'video') {
+                            window.open(`http://localhost:3000/call/video-call/${data.receiverId}`, 'name', 'width=1000,height=600,left=250,top=100')
+                        } else {
+                            window.open(`http://localhost:3000/call/vocal-call/${data.receiverId}`, 'name', 'width=1000,height=600,left=250,top=100')
+                        }
+                    }
                 }
             })
 
@@ -406,8 +422,8 @@ function Chat() {
                             <Profile friendProfile={isFriendProfileForm}></Profile>
                             :
                             display === 4 ?
-                            <ReceiveCall></ReceiveCall> : ''
-                            
+                                <ReceiveCall></ReceiveCall> : ''
+
             }
             <TaskBar></TaskBar>
             <Tab></Tab>

@@ -1,45 +1,75 @@
-import React from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './video-call.scss'
 import { useNavigate } from 'react-router-dom'
 import Waiting from '../partials/video-call/waiting/waiting'
 import InCall from '../partials/video-call/in-call/in-call'
-import Webcam from "react-webcam"
 import $ from 'jquery'
+import styled from "styled-components";
+import Peer from 'simple-peer'
 
+const Video = styled.video`
+  width: 100%;
+`;
 
 function VideoCall() {
 
     const callStatusLocal = localStorage.getItem('callStatus')
     //callStatus la null
-    const [inCall, setInCall] = React.useState(callStatusLocal)
-    const webcamRef = React.useRef(null)
+    //-------------------state--------------------//
+    const [inCall, setInCall] = useState(callStatusLocal)
+    const [stream, setStream] = useState()
 
+    //--------------------ref----------------------//
+    const userVideo = useRef();
+    const partnerVideo = useRef();
+
+    //-------------------videos--------------------//
+    let UserVideo;
+    if (stream) {
+        UserVideo = (
+            <video playsInline muted ref={userVideo} autoPlay ></video>
+        );
+    }
+
+    let PartnerVideo;
+    //khi co nguoi nhan cuoc goi thi partner video moi duoc tao
+    if (inCall == 1) {
+        PartnerVideo = (
+            <Video playsInline ref={partnerVideo} autoPlay />
+        );
+    }
+
+    //-------------check status call-----------------//
     if (inCall == -1) {
         localStorage.removeItem('callId')
         localStorage.removeItem('callStatus')
+        localStorage.removeItem('callType')
         window.close();
     }
 
+    //-------------------others----------------------//
     const navigate = useNavigate()
 
-    React.useEffect(()=>{
-        if(!localStorage.getItem('accessToken')) {
+    //------------------life cycle-------------------//
+    useEffect(() => {
+        if (!localStorage.getItem('accessToken')) {
             navigate('/')
         }
     })
 
-    React.useEffect(() => {
-        if(callStatusLocal) {
+    useEffect(() => {
+        if (callStatusLocal == 1) {
             setInCall(1)
-        }else if(callStatusLocal == -1) {
+        } else if (callStatusLocal == -1) {
             setInCall(-1)
-        }else
+        } else
             setInCall(0)
 
     }, [callStatusLocal])
 
-    React.useEffect(()=> {
-        if(inCall) {
+    useEffect(() => {
+        //animation
+        if (inCall) {
 
             $('.video-call-background').animate({
                 width: '15rem',
@@ -48,7 +78,7 @@ function VideoCall() {
                 bottom: '4rem',
                 borderRadius: '1rem'
             })
-        }else {
+        } else {
             $('.video-call-background').animate({
                 width: '100%',
                 height: '100%',
@@ -57,36 +87,53 @@ function VideoCall() {
                 borderRadius: '0'
             })
         }
+
+        //set peer
+        //get stream from camera and mic
+        navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true
+        }).then(streamData => {
+            setStream(streamData)
+            if (userVideo) {
+                userVideo.current.srcObject = streamData;
+            }
+        })
     }, [inCall])
 
-    const handleClick = (e)=> {
-        //setInCall(inCall? 0 : 1)
-    }
+    useEffect(() => {
+        if (inCall == 1) {
+            var peer1 = new Peer({initiator: true, stream: stream})
+            var peer2 = new Peer()
+
+            peer1.on('signal', data => {
+                peer2.signal(data)
+            })
+
+            peer2.on('signal', data => {
+                peer1.signal(data)
+            })
+
+            peer2.on('stream', userVideoStream => {
+                // got remote video stream, now let's show it in a video tag
+                if (partnerVideo) {
+                    partnerVideo.current.srcObject = userVideoStream;
+                }
+            })
+        }
+    }, [stream])
 
     return (
-        <div className="video-call-wrapper" onClick={handleClick}>
-            
-            <div className="video-call-background-partner">
-                {/* <Webcam
-                    mirrored
-                    audio={false}
-                    ref={webcamRef}
-                    screenshotFormat="image/jpeg"
-                    width={'100%'}
-                /> */}
-            </div>
+        <div className="video-call-wrapper">
 
+            <div className="video-call-background-partner">
+                {PartnerVideo}
+            </div>
             <div className="video-call-background">
-                <Webcam
-                    mirrored
-                    audio={false}
-                    ref={webcamRef}
-                    screenshotFormat="image/jpeg"
-                    width={'100%'}
-                />
+                {UserVideo}
             </div>
             {inCall ? <InCall></InCall> : <Waiting></Waiting>}
-            
+
         </div>
     )
 }

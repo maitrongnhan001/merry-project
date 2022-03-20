@@ -15,21 +15,34 @@ function Receive() {
     const handleToMissCall = (e)=> {
         // window.close()
         if(localStorage.getItem('callId')){
-            sendCallDown({senderId: localStorage.getItem('userId'), receiverId: localStorage.getItem('callId')})
+            sendCallDown({
+                senderId: localStorage.getItem('userId'), 
+                receiverId: localStorage.getItem('callId'),
+                type: localStorage.getItem('callType')
+            })
             localStorage.removeItem('callId')
+            localStorage.removeItem('callType')
         }
         const display = showDialog(0)
         dispatch(display)
     }
     
     const handleClickToCallUp = (e)=> {
-        sendCallUp({ senderId: localStorage.getItem('userId'), receiverId: localStorage.getItem('callId')})
+        sendCallUp({ 
+            senderId: localStorage.getItem('userId'), 
+            receiverId: localStorage.getItem('callId'),
+            type: localStorage.getItem('callType')
+        })
         localStorage.setItem('callStatus', 1)
         const callStatus = updateCallStatus(1)
         dispatch(callStatus)
         const display = showDialog(0)
         dispatch(display)
-        window.open(`http://localhost:3000/call/video-call/${localStorage.getItem('receiverId')}`, 'name','width=1000,height=600,left=250,top=100')
+        if (localStorage.getItem('callType') == 'video') {
+            window.open(`http://localhost:3000/call/video-call/${localStorage.getItem('callId')}`, 'name','width=1000,height=600,left=250,top=100')
+        } else {
+            window.open(`http://localhost:3000/call/vocal-call/${localStorage.getItem('callId')}`, 'name','width=1000,height=600,left=250,top=100')
+        }
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -51,7 +64,8 @@ function Receive() {
                 </div>
                 <div className="receive-video-call-icons-group">
                     <div className="receive-video-call-phone-icon receive-video-call-phone-icon-phone-up" onClick={handleClickToCallUp}>
-                        <i class="fa-solid fa-phone"></i>
+                        {localStorage.getItem('callType') == 'voice' ? <i class="fa-solid fa-phone"></i> :
+                        <i class="fa-solid fa-video"></i>}
                     </div>
                     <div className="receive-video-call-phone-icon receive-video-call-phone-icon-phone-down" onClick={handleToMissCall}>
                         <i class="fa-solid fa-phone-slash"></i>

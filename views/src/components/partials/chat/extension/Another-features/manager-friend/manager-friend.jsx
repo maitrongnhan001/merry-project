@@ -87,40 +87,43 @@ const ManagerFriend = () => {
         dispatch(showNotification)
     }
     //-------------life cycle---------------//
-    useEffect(async () => {
+    useEffect( () => {
         //check user is friend
-        if (idChat.indexOf('G') === 0) return
+        (async ()=> {
+            if (idChat.indexOf('G') === 0) return
 
-        const result = (await checkFriend(userId, idChat)).data;
-
-        switch (result.statusFriend) {
-            case 1: {
-                if (userId === result.data.sendId) {
-                    setStatus(1);
-                } else {
-                    setStatus(2);
+            const result = (await checkFriend(userId, idChat)).data;
+    
+            switch (result.statusFriend) {
+                case 1: {
+                    if (userId === result.data.sendId) {
+                        setStatus(1);
+                    } else {
+                        setStatus(2);
+                    }
+                    break;
                 }
-                break;
+    
+                case 2: {
+                    setStatus(3);
+                    break;
+                }
+    
+                default: {
+                    setStatus(0)
+                }
             }
-
-            case 2: {
-                setStatus(3);
-                break;
+    
+            const ResultAnotherUser = (await getAnotherUserByGroupId(userId, idChat)).data.data;
+    
+            setAnotherUser(ResultAnotherUser);
+    
+            return () => {
+                setAnotherUser(null);
+                setStatus(null);
             }
-
-            default: {
-                setStatus(0)
-            }
-        }
-
-        const ResultAnotherUser = (await getAnotherUserByGroupId(userId, idChat)).data.data;
-
-        setAnotherUser(ResultAnotherUser);
-
-        return () => {
-            setAnotherUser(null);
-            setStatus(null);
-        }
+        })()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [idChat, updateManagerFriend]);
 
     return (

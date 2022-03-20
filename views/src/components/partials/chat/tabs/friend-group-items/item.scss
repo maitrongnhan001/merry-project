@@ -17,7 +17,7 @@
         border-radius: 50%;
     }
     .friend-group-info {
-        width: 70%;
+        width: 50%;
         height: 3.5rem;
         padding-left: .5rem;
         .friend-group-name {
@@ -49,9 +49,9 @@
         }
     }
     .friend-add-friend-btn {
-        width: 5rem;
+        width: 7rem;
         height: 2rem;
-        transform: translateX(-.5rem);
+        transform: translateX(.5rem);
         color: #5865F2;
         border: 1px solid #5865F2;
         font-size: .9rem;
@@ -60,8 +60,13 @@
         cursor: pointer;
         transition: .25s;
     }
+
+    .friend-add-friend-btn-cancel {
+        color: red;
+        border: 1px solid red;
+    }
     
-    .friend-add-friend-btn:hover {
+    .friend-add-friend-btn-add:hover {
         background-color: #5865F2;
         color: #fff;
     }

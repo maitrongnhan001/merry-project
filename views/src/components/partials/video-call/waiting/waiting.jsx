@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import './waiting.scss'
-import { getUserById, urlUserAvatar } from '../../../APIs/ConnectAPI'
+import { getMemberListFromGroupByGroupId, getUserById, urlUserAvatar } from '../../../APIs/ConnectAPI'
 import { sendCallDown } from '../../../Sockets/socket-call'
 
-function Waiting() {
+function Waiting({receiverId}) {
 
     //-----------------state-------------------//
     const [user, setUser] = useState({})
@@ -26,9 +26,9 @@ function Waiting() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(async ()=> {
         if(localStorage.getItem('userId')) {
-            const result = await getUserById(localStorage.getItem('userId'))
+            const result = await getMemberListFromGroupByGroupId(localStorage.getItem('userId'), receiverId)
             if(result && result.status === 200) {
-                setUser(result.data.data)
+                setUser(result.data.data.profile)
             }
         }
     }, [])

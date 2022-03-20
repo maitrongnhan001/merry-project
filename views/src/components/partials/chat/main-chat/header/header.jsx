@@ -60,14 +60,35 @@ function Header({id, image, name, members}) {
     }
 
     const handleVocalCall = (e)=> {
-        window.open('http://localhost:3000/call/vocal-call/36934', 'name','width=1000,height=600,left=250,top=100')
+        if(!localStorage.getItem('callId')){
+            localStorage.setItem('callId', id)
+            localStorage.setItem('callType', 'voice')
+            //dat item nay de fix bug huy cuoc goi phia minh
+            localStorage.setItem('callStatus', 0)
+            sendCall({
+                senderId: localStorage.getItem('userId'),
+                receiverId: id,
+                type: 'voice'
+            })
+            window.open(`http://localhost:3000/call/vocal-call/${id}`, 'name','width=1000,height=600,left=250,top=100')
+        }else {
+            const notification = updateNotification('Bạn đang trong cuộc gọi!')
+            dispatch(notification)
+        }
     }
 
     const handleVideoCall = (e)=> {
         if(!localStorage.getItem('callId')){
             localStorage.setItem('callId', id)
-            sendCall({senderId: localStorage.getItem('userId'), receiverId: id})
-            window.open('http://localhost:3000/call/video-call/36934', 'name','width=1000,height=600,left=250,top=100')
+            localStorage.setItem('callType', 'video')
+            //dat item nay de fix bug huy cuoc goi phia minh
+            localStorage.setItem('callStatus', 0)
+            sendCall({
+                senderId: localStorage.getItem('userId'),
+                receiverId: id,
+                type: 'video'
+            })
+            window.open(`http://localhost:3000/call/video-call/${id}`, 'name','width=1000,height=600,left=250,top=100')
         }else {
             const notification = updateNotification('Bạn đang trong cuộc gọi!')
             dispatch(notification)

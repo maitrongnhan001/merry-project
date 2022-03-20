@@ -2,18 +2,31 @@ import React from 'react'
 import './waiting.scss'
 import { useNavigate } from 'react-router-dom'
 import { getUserById, urlUserAvatar } from '../../../APIs/ConnectAPI'
+import { sendCallDown } from '../../../Sockets/socket-call'
 
 function WaitingCall() {
 
+    //-----------------state-------------------//
     const [user, setUser] = React.useState({})
 
+    //-----------------other-------------------//
     const navigate = useNavigate()
 
-
+    //-----------------handle-------------------//
     const handleToMissCall = (e)=> {
+        if(localStorage.getItem('callId')){
+            sendCallDown({
+                senderId: localStorage.getItem('userId'), 
+                receiverId: localStorage.getItem('callId'),
+                type: localStorage.getItem('callType')
+            })
+            localStorage.removeItem('callId')
+            localStorage.removeItem('callType')
+        }
         window.close()
     }
 
+    //-----------------life cycle-------------------//
     React.useEffect(()=>{
         if(!localStorage.getItem('accessToken')) {
             navigate('/')
@@ -29,8 +42,6 @@ function WaitingCall() {
             }
         }
     }, [])
-
-
 
     return (
         <div className="waiting-vocal-call-wrapper">

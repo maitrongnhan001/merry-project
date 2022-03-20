@@ -68,12 +68,12 @@ function Item({id, members, image, name, lastMessage, status}) {
                 <p className="tab-chat-content" style={style}> {lastMessage.isSender ? 'Bạn: ' : ''} {lastMessage.type === 'text' ? lastMessage.content : 'Đã gửi 1 tệp.'}</p>
             </div>
             
-            <div className="tab-chat-new-status" 
+            {/* <div className="tab-chat-new-status" 
                  style={{visibility: ['Đã nhận', 'Đã gửi'].includes(lastMessage.status) 
                         && !lastMessage.isSender 
                         // eslint-disable-next-line eqeqeq
                         && currentChatSelector.receiverId != id ? "" : "hidden"}}
-                 >N</div>
+                 >N</div> */}
         </div>
     );
 }

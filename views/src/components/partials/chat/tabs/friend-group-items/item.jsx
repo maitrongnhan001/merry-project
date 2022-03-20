@@ -27,6 +27,7 @@ function Item({userId, id, name, image, addFriend, createGroup, onAddMember, mem
 
         }
         else {
+            console.log(id)
             const currentChat = saveCurrentChat({ receiverId: id, image, name, members: members })
             dispatch(currentChat)
             $(e.currentTarget).addClass('active-friend-group-item')

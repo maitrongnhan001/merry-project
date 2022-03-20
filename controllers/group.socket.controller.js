@@ -145,8 +145,6 @@ module.exports.addGroup = async (data, socket, io) => {
             }
         }
 
-        console.log(returnData);
-
         io.to(`${groupId}`).emit('add-group', returnData);
     } catch (err) {
         socket.emit('add-group', { msg: 'Lỗi, xữ lý dữ liệu không thành công' });

@@ -73,7 +73,6 @@ function Chat() {
             if (chatsList && chatsList.status === 200) {
                 let chatListAction = saveChatList(chatsList.data.data)
                 dispatch(chatListAction)
-                console.log(chatsList.data.data)
             }
             //call friends list API
             const friendsList = await getFriendsList(localStorage.getItem('userId'))
@@ -90,7 +89,6 @@ function Chat() {
 
             const currentUser = await getUserById(localStorage.getItem('userId'))
             if (currentUser && currentUser.status === 200) {
-                console.log(currentUser.data.data)
                 const user = saveCurrentUser(currentUser.data.data)
                 dispatch(user)
             }
@@ -121,7 +119,6 @@ function Chat() {
 
             //getRoom
             getRoom((data) => {
-                console.log(data)
                 const status = updateStatusChatList(data)
                 dispatch(status)
             })
@@ -135,7 +132,6 @@ function Chat() {
             })
 
             getDeleteMember(data => {
-                console.log(data)
                 if (!data.groupId) return
 
                 //luu du lieu vao redux extension
@@ -167,7 +163,6 @@ function Chat() {
             })
 
             getUpdateGroup(data => {
-                console.log(data)
                 if (!data.groupName || !data.groupId || !data.image) return
                 //luu thong tin nhom vua cap nhat vao redux
                 const updateInfoGroup = updateInfomationGroup(data);
@@ -199,8 +194,6 @@ function Chat() {
                     const updateCenter = showCenter(0)
                     dispatch(updateCenter)
                 }
-
-                console.log(data);
 
                 //xoa group chat ra khoi chat list
                 const deleteItem = deleteGroupChat(data)
@@ -240,8 +233,6 @@ function Chat() {
             getTextMessageChat((data) => {
                 const message = saveMassage(data)
                 dispatch(message)
-
-                console.log('run')
                 const chat = {
                     ...data,
                     receiver: {
@@ -251,6 +242,7 @@ function Chat() {
                         lastMessage: {
                             content: data.content,
                             type: data.type,
+                            // eslint-disable-next-line eqeqeq
                             isSender: data.senderId == localStorage.getItem('userId') ? 1 : 0
                         }
                     }
@@ -262,7 +254,6 @@ function Chat() {
             getMediaMessage(data => {
                 const message = saveMassage(data)
                 dispatch(message)
-                console.log('run')
                 const chat = {
                     ...data,
                     receiver: {
@@ -272,6 +263,7 @@ function Chat() {
                         lastMessage: {
                             content: data.content,
                             type: data.type,
+                            // eslint-disable-next-line eqeqeq
                             isSender: data.senderId == localStorage.getItem('userId') ? 1 : 0
                         }
                     }
@@ -292,6 +284,7 @@ function Chat() {
                         lastMessage: {
                             content: data.content,
                             type: data.type,
+                            // eslint-disable-next-line eqeqeq
                             isSender: data.senderId == localStorage.getItem('userId') ? 1 : 0
                         }
                     }
@@ -353,7 +346,6 @@ function Chat() {
             })
 
             getCallUp(data=> {
-                console.log('hlo')
                 localStorage.setItem('callStatus', 1)
                 const callStatus = updateCallStatus(1)
                 dispatch(callStatus)
@@ -361,7 +353,6 @@ function Chat() {
             })
 
             getCallDown(data=> {
-
                 localStorage.setItem('callStatus', -1)
                 const callStatus = updateCallStatus(-1)
                 dispatch(callStatus)

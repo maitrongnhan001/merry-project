@@ -7,7 +7,7 @@ import { sendTextMessage } from '../../../../Sockets/socket-chat'
 
 function InputChat({id}) {
 
-
+    const currentChat = useSelector(state => state.message.currentChat)
     const emoji = useSelector(state => state.message.emoji)
 
     /*----states----*/
@@ -56,6 +56,18 @@ function InputChat({id}) {
             handleSubmit()
         }
     }
+
+    useEffect(()=>{
+        const value = $('#input-chat-content').text('')
+        const newMessage = {
+            ...message,
+            message: {
+                content: value
+            }
+        }
+        setMessage(newMessage)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentChat])
 
 
     /*----lifecycle ----*/

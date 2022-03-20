@@ -7,6 +7,7 @@ import { showCenter, showFeature } from '../../../../../redux/actions/taskbar'
 import { saveCurrentChat } from '../../../../../redux/actions/message'
 import { sendAddFriend } from '../../../../Sockets/socket-friend'
 import { createRoom } from '../../../../Sockets/socket-chat'
+import { updateNotification } from '../../../../../redux/actions/notification'
 
 function Item({userId, id, name, image, addFriend, createGroup, onAddMember, members, initCheck }) {
 
@@ -16,6 +17,7 @@ function Item({userId, id, name, image, addFriend, createGroup, onAddMember, mem
 
     /*----states----*/
     const [checked, setChecked] = useState(initCheck)
+    const [status, setStatus] = useState(1)
 
     /*----handles----*/
     //xu ly nhan vao item 
@@ -27,6 +29,7 @@ function Item({userId, id, name, image, addFriend, createGroup, onAddMember, mem
 
         }
         else {
+            console.log(id)
             const currentChat = saveCurrentChat({ receiverId: id, image, name, members: members })
             dispatch(currentChat)
             $(e.currentTarget).addClass('active-friend-group-item')
@@ -49,7 +52,17 @@ function Item({userId, id, name, image, addFriend, createGroup, onAddMember, mem
     }
     const handleToAddFriend = (e)=> {
         e.preventDefault()
+        setStatus(status ? 0 : 1)
         sendAddFriend({senderId: localStorage.getItem('userId'), receiverId: id})
+        const notification = updateNotification('Gửi lời mời kết bạn thành công')
+        dispatch(notification)
+    }
+
+    const handleToCancelFriend = (e)=> {
+        e.preventDefault()
+        setStatus(status ? 0 : 1)
+        const notification = updateNotification('Hủy gửi lời mời thành công')
+        dispatch(notification)
     }
 
     //xu ly show khung mo rong
@@ -95,7 +108,9 @@ function Item({userId, id, name, image, addFriend, createGroup, onAddMember, mem
             </div>
             {
                 addFriend ?
-                    <button className="friend-add-friend-btn" onClick={handleToAddFriend}>Kết bạn</button> :
+                    status ?
+                    <button className="friend-add-friend-btn friend-add-friend-btn-add" onClick={handleToAddFriend}>Kết bạn</button> : 
+                    <button className="friend-add-friend-btn friend-add-friend-btn-cancel" onClick={handleToCancelFriend}>Hủy yêu cầu</button> :
                     createGroup ?
                         <input type="checkbox" className="friend-add-friend-checkbox" checked={checked} onChange={handleChangeChecked} /> :
                         <>

@@ -1,10 +1,10 @@
 import React from 'react'
 import './waiting.scss'
 import { useNavigate } from 'react-router-dom'
-import { getUserById, urlUserAvatar } from '../../../APIs/ConnectAPI'
+import { getMemberListFromGroupByGroupId, getUserById, urlUserAvatar } from '../../../APIs/ConnectAPI'
 import { sendCallDown } from '../../../Sockets/socket-call'
 
-function WaitingCall() {
+function WaitingCall({receiverId}) {
 
     //-----------------state-------------------//
     const [user, setUser] = React.useState({})
@@ -36,9 +36,9 @@ function WaitingCall() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(async ()=> {
         if(localStorage.getItem('userId')) {
-            const result = await getUserById(localStorage.getItem('userId'))
+            const result = await getMemberListFromGroupByGroupId(localStorage.getItem('userId'), receiverId)
             if(result && result.status === 200) {
-                setUser(result.data.data)
+                setUser(result.data.data.profile)
             }
         }
     }, [])

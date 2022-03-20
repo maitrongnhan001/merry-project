@@ -13,8 +13,8 @@ function App() {
       <Routes>
         <Route path='/*' element={<Start/>}/>
         <Route path='/me' element={<Navigate to='/me/:uid'/>}/>
-        <Route path='/call/vocal-call/:token' element={<VocalCall/>}/>
-        <Route path='/call/video-call/:token' element={<VideoCall/>}/>
+        <Route path='/call/vocal-call/:receiverId' element={<VocalCall/>}/>
+        <Route path='/call/video-call/:receiverId' element={<VideoCall/>}/>
         <Route path='/me/:uid' element={<Chat/>}/>
       </Routes>
     </Router>

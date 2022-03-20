@@ -84,7 +84,6 @@ module.exports.searchMessage = async (req, res) => {
         const search = `%${content}%`
         const searchMessage = await chat.getMessageID(search, receiverId)
         const getMessage = await chat.getMessageByReceiverId(receiverId)
-        console.log(getMessage)
         const data = []
         for (let message of searchMessage) {
             const senderInfo = await user.getUserId(message.sendId)

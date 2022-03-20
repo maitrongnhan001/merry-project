@@ -167,7 +167,6 @@ module.exports.sendDocumentMessage = async (data, socket, io) => {
     //gui tin nhan document toi client 
     try {
         //kiem tra du lieu co ton tai
-        console.log(data)
         if (!(data.senderId && data.receiverId && data.message.fileName && data.message.content)) {
             socket.emit('send-document-message-error', { msg: 'Lỗi, không đính kèm dữ liệu' });
             return;

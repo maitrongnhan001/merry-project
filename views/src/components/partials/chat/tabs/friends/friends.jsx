@@ -16,7 +16,6 @@ function Friends() {
     const dispatch = useDispatch()
     /*----data----*/
     const items = friendsList.map((value, idx)=>{
-        console.log(value.members)
         return (
               <Item key={idx} userId={value.id} members={[value.id]} id={value.groupId} image={value.image} name={value.name}></Item>
         )

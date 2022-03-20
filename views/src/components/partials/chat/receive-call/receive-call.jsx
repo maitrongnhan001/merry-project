@@ -1,6 +1,6 @@
 import React from 'react'
 import './receive-call.scss'
-import { getUserById, urlUserAvatar } from '../../../APIs/ConnectAPI'
+import { getMemberListFromGroupByGroupId, getUserById, urlUserAvatar } from '../../../APIs/ConnectAPI'
 import { showDialog } from '../../../../redux/actions/taskbar'
 import { useDispatch, useSelector } from 'react-redux'
 import { sendCallDown, sendCallUp } from '../../../Sockets/socket-call'
@@ -48,9 +48,10 @@ function Receive() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     React.useEffect(async ()=> {
         if(localStorage.getItem('userId')) {
-            const result = await getUserById(localStorage.getItem('userId'))
+            const result = await getMemberListFromGroupByGroupId(localStorage.getItem('userId'), localStorage.getItem('callId'))
+            console.log(result)
             if(result && result.status === 200) {
-                setUser(result.data.data)
+                setUser(result.data.data.profile)
             }
         }
     }, [])

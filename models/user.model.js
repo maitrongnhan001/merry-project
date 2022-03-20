@@ -185,6 +185,7 @@ module.exports.searchUserByName = (searchByName, userId) =>{
                 reject(error)
             }else{
                 if(result){
+                    console.log(result)
                     resolve(result)
                 }else{
                     resolve(null)

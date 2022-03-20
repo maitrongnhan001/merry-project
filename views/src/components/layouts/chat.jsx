@@ -353,9 +353,11 @@ function Chat() {
             })
 
             getCallDown(data=> {
-                localStorage.setItem('callStatus', -1)
-                const callStatus = updateCallStatus(-1)
-                dispatch(callStatus)
+                // eslint-disable-next-line eqeqeq
+                if (localStorage.getItem('userId') != data.senderId) {
+                    localStorage.setItem('callStatus', -1)
+                    window.open(`http://localhost:3000/call/video-call/${data.receiverId}`, 'name','width=1000,height=600,left=250,top=100')
+                }
             })
 
         })()

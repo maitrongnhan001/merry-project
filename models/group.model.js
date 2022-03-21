@@ -190,10 +190,10 @@ module.exports.getDetailByGroupId = (groupId) => {
     })
 }
 
-module.exports.searchGroupByName = (groupName)=>{
+module.exports.searchGroupByName = (groupName, userId)=>{
     return new Promise((resolve, reject)=>{
-        const sql = `SELECT * FROM groupuser WHERE groupuser.groupName LIKE ?`
-        connection.query(sql, [groupName], (err, result) => {
+        const sql = `SELECT * FROM groupuser g join detailgroup as dg on g.id = dg.groupId WHERE dg.userId = ? and g.groupName LIKE ?`
+        connection.query(sql, [userId, groupName], (err, result) => {
             if(err){
                 reject(err)
             }else {

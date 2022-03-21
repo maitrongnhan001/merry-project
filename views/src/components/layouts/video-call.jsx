@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './video-call.scss'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import Waiting from '../partials/video-call/waiting/waiting'
 import InCall from '../partials/video-call/in-call/in-call'
 import $ from 'jquery'
@@ -14,10 +14,12 @@ const Video = styled.video`
 function VideoCall() {
 
     const callStatusLocal = localStorage.getItem('callStatus')
+    const {receiverId} = useParams()
     //callStatus la null
     //-------------------state--------------------//
     const [inCall, setInCall] = useState(callStatusLocal)
     const [stream, setStream] = useState()
+    const [receiver, setReceiver] = useState(receiverId)
 
     //--------------------ref----------------------//
     const userVideo = useRef();
@@ -132,7 +134,7 @@ function VideoCall() {
             <div className="video-call-background">
                 {UserVideo}
             </div>
-            {inCall ? <InCall></InCall> : <Waiting></Waiting>}
+            {inCall ? <InCall></InCall> : <Waiting receiverId={receiverId}></Waiting>}
 
         </div>
     )

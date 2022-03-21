@@ -6,12 +6,13 @@ const user = require('../models/user.model')
 const getMembers = async (groupId, userId) => {
 
     let id = await group.getMembers(groupId)
+    let admin = await group.getAdminId(groupId)
     var user1, user2;
     if (userId == id[0].userId) {
-        user1 = await user.getUserId(id[0].userId)
+        user1 = await user.getUserId(admin[0].AdminId ? admin[0].AdminId : id[0].userId)
         user2 = await user.getUserId(id[1].userId)
     } else {
-        user1 = await user.getUserId(id[1].userId)
+        user1 = await user.getUserId(admin[0].AdminId ? admin[0].AdminId : id[0].userId)
         user2 = await user.getUserId(id[0].userId)
     }
 
@@ -84,7 +85,6 @@ module.exports.searchMessage = async (req, res) => {
         const search = `%${content}%`
         const searchMessage = await chat.getMessageID(search, receiverId)
         const getMessage = await chat.getMessageByReceiverId(receiverId)
-        console.log(getMessage)
         const data = []
         for (let message of searchMessage) {
             const senderInfo = await user.getUserId(message.sendId)

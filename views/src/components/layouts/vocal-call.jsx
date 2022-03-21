@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import $ from 'jquery'
 import './vocal-call.scss'
 import Waiting from '../partials/vocal-call/waiting/waiting'
@@ -13,6 +13,7 @@ const Video = styled.video`
 
 function VocalCall() {
     const callStatusLocal = localStorage.getItem('callStatus')
+    const { receiverId } = useParams()
     //callStatus la null
     //-------------------state--------------------//
     const [inCall, setInCall] = useState(callStatusLocal)
@@ -124,7 +125,7 @@ function VocalCall() {
 
     return (
         <div className="vocal-call-wrapper">
-            {inCall ? <InCall></InCall> : <Waiting></Waiting>}
+            {inCall ? <InCall></InCall> : <Waiting receiverId={receiverId}></Waiting>}
         </div>
     )
 }

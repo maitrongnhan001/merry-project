@@ -2,8 +2,9 @@ import React from 'react'
 import './search.scss'
 import { useDispatch } from 'react-redux'
 import { saveTab, showDialog } from '../../../../../redux/actions/taskbar'
+import { getSearchFriendAndGroup } from '../../../../APIs/ConnectAPI'
 
-function Search() {
+function Search({onSearch}) {
 
     /*----redux----*/
     // ket noi den redux
@@ -28,14 +29,22 @@ function Search() {
     }
 
     const handleBlurToShowSearchTab = (e)=> {
-        const tab = saveTab(0)
-        dispatch(tab)
+        // const tab = saveTab(0)
+        // dispatch(tab)
+    }
+
+    const handleChangeToSearch = async (e)=> {
+        const result = await getSearchFriendAndGroup(localStorage.getItem('userId'), e.target.value)
+        if(result && result.status === 200){
+            console.log(result.data.data)
+            onSearch(result.data.data)
+        }
     }
 
     return (
         <div className="tab-tools">
             <div className="tab-search-box">
-                <input type="text" placeholder="Tìm kiếm" onFocus={handleFocusToShowSearchTab} onBlur={handleBlurToShowSearchTab}/>
+                <input type="text" placeholder="Tìm kiếm" onChange={handleChangeToSearch} onFocus={handleFocusToShowSearchTab} onBlur={handleBlurToShowSearchTab}/>
                 <i className="fas fa-search"></i>
             </div>
             <div className="tab-add-items">

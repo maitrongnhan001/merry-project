@@ -18,26 +18,11 @@ const friendsReducer = (state = initial, action) => {
         }
         case 'UPDATE_CHAT_LIST': {
             const chatsList = [...state.chatsList]
-            console.log(action.data)
             let newItem = action.data.receiver
-            // for(let value of chatsList) {
-            //     // eslint-disable-next-line eqeqeq
-            //     if(value.receiverId == action.data.receiverId) {
-            //         value.lastMessage.type = action.data.type
-            //         // eslint-disable-next-line eqeqeq
-            //         if(action.data.senderId != localStorage.getItem('userId'))
-            //             value.lastMessage.status = action.data.status
-            //         // eslint-disable-next-line eqeqeq
-            //         if(action.data.type == 'text') {
-            //             value.lastMessage.type = 'text'
-            //             value.lastMessage.content = action.data.content
-            //             value.lastMessage.isSender = action.data.senderId === localStorage.getItem('userId') ? 1 : 0
-            //         }
-            //     }
-            // }
             for(let index in chatsList) {
                 // eslint-disable-next-line eqeqeq
                 let newChatItem = chatsList[index]
+                // eslint-disable-next-line eqeqeq
                 if(newChatItem.receiverId == action.data.receiverId) {
                     newChatItem.lastMessage.type = action.data.type
                     // eslint-disable-next-line eqeqeq
@@ -54,7 +39,9 @@ const friendsReducer = (state = initial, action) => {
                 }
 
             }
+            // eslint-disable-next-line eqeqeq
             if(!chatsList.find(value=>value.receiverId == action.data.receiverId)) {
+                // eslint-disable-next-line eqeqeq
                 if(action.data.senderId != localStorage.getItem('userId'))
                         newItem.lastMessage.status = action.data.status
                 chatsList.unshift(newItem)
@@ -67,6 +54,7 @@ const friendsReducer = (state = initial, action) => {
         case 'UPDATE_STATUS_CHAT_LIST': {
             const newChatList = [...state.chatsList]
             newChatList.forEach(value=>{
+                // eslint-disable-next-line eqeqeq
                 if(value.receiverId == action.data.receiverId && action.data.senderId == localStorage.getItem('userId')) {
                     value.lastMessage.status = action.data.status
                 }

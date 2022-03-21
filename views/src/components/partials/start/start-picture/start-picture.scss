@@ -18,17 +18,29 @@
             height: 380px;
             border-radius: 10px;
             background-color: #fb7777;
+            
+            img{
+                width: 100%;
+                height: 100%;
+                border-radius: 10px;
+                border: 1px solid #e1e1e1;
+            }
         }
 
         .picture-tablet {
             position: relative;
-            width: 230px;
-            height: 300px;
+            width: 250px;
+            height: 320px;
             left: 18rem;
             bottom: 15rem;
-
             background: #ffdd63;
             border-radius: 10px;
+            img{
+                width: 100%;
+                height: 100%;
+                border-radius: 10px;
+                border: 1px solid #e1e1e1;
+            }
         }
 
         .picture-phone {
@@ -37,9 +49,14 @@
             height: 190px;
             bottom: 27.68rem;
             left: 13rem;
-            
             background: #6AF378;
             border-radius: 10px;
+            img{
+                width: 100%;
+                height: 100%;
+                border-radius: 10px;
+                border: 1px solid #e1e1e1;
+            }
         }
     }
 }

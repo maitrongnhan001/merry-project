@@ -6,6 +6,7 @@ const initial = {
     addedForm: 0,
     center: 0,
     showTab: $(window).width() <= 800 ? 1 : 0,
+    previousTab: 0,
     displayCenter: $(window).width() <= 800 ? 0 : 1,
     feature : {
         group: 0,
@@ -24,6 +25,7 @@ const taskbarReducer = (state = initial, action)=> {
         case 'SET_TAB': {
             return {
                 ...state,
+                previousTab: state.data,
                 data: action.data
             }
         }
@@ -63,7 +65,7 @@ const taskbarReducer = (state = initial, action)=> {
         case 'SHOW_TAB' : {
             return {
                 ...state,
-                showTab: action.data
+                showTab: action.data,
             }
         }
         case 'SET_DISPLAY_CENTER' : {

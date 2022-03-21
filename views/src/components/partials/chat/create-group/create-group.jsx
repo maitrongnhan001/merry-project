@@ -64,15 +64,28 @@ function CreateGroup() {
     //xu ly submits form
     const handleSubmit = async (e) => {
         e.preventDefault()
-        sendAddGroup(group)
-        const isDisplay = showDialog(0)
-        dispatch(isDisplay)
-        const tab = saveTab(2)
-        dispatch(tab)
-
-        //clear id user will create group
-        const clearUser = updateUserIdWillCreateGroup(null)
-        dispatch(clearUser)
+        try {
+            if(group.members.length > 2) {
+                sendAddGroup(group)
+                const isDisplay = showDialog(0)
+                dispatch(isDisplay)
+                const tab = saveTab(2)
+                dispatch(tab)
+        
+                //clear id user will create group
+                const clearUser = updateUserIdWillCreateGroup(null)
+                dispatch(clearUser)
+                const notification = updateNotification('Tạo nhóm thành công.')
+                dispatch(notification)
+            }else {
+                const notification = updateNotification('Vui lòng chọn 2 thành viên trở lên.')
+                dispatch(notification)
+            }
+        }catch(err) {
+            console.log(err)
+            const notification = updateNotification('Đã xảy ra lỗi.')
+            dispatch(notification)
+        }
     }
 
     //xu ly file

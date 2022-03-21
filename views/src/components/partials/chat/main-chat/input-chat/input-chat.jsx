@@ -97,7 +97,7 @@ function InputChat({id}) {
     return (
         <div className="main-chat-input-chat-wrapper">
             <div className="main-chat-input-chat-form">
-                <div contentEditable id="input-chat-content" className="input-chat-content" data-placeholder="Gửi tin nhắn đến Đinh Phúc Khang." onKeyPress={handleStopDefault} onKeyUp={handleChange}></div>
+                <div contentEditable id="input-chat-content" className="input-chat-content" data-placeholder={`Gửi tin nhắn đến ${currentChat.name}.`} onKeyPress={handleStopDefault} onKeyUp={handleChange}></div>
                 <button className="input-chat-submit" onClick={handleSubmit}>Gửi</button>
             </div>
         </div>

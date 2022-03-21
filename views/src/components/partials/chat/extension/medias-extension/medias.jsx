@@ -48,13 +48,6 @@ const Medias = () => {
                 break;
             }
 
-            case 404: {
-                if (medias.length === 0 || !caseLoad) {
-                    setNotification('Không có hình ảnh nào được gửi');
-                }
-                break;
-            }
-
             case 500: {
                 setError("Có lỗi xảy ra, xin vui lòng thử lại");
                 break;
@@ -102,6 +95,18 @@ const Medias = () => {
             setListMediasTag(null);
         }
     }, [receiverId]);
+
+    useEffect(() => {
+        if (medias.length === 0)
+            setNotification('Không có hình ảnh nào được gửi');
+        else {
+            setNotification(null);
+        }
+
+        return () => {
+            setNotification(null);
+        }
+    }, [medias])
 
     return (
         <div className='element-extension'>

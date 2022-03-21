@@ -65,11 +65,11 @@ function Receive() {
                 </div>
                 <div className="receive-video-call-icons-group">
                     <div className="receive-video-call-phone-icon receive-video-call-phone-icon-phone-up" onClick={handleClickToCallUp}>
-                        {localStorage.getItem('callType') == 'voice' ? <i class="fa-solid fa-phone"></i> :
-                        <i class="fa-solid fa-video"></i>}
+                        {localStorage.getItem('callType') == 'voice' ? <i className="fa-solid fa-phone"></i> :
+                        <i className="fa-solid fa-video"></i>}
                     </div>
                     <div className="receive-video-call-phone-icon receive-video-call-phone-icon-phone-down" onClick={handleToMissCall}>
-                        <i class="fa-solid fa-phone-slash"></i>
+                        <i className="fa-solid fa-phone-slash"></i>
                     </div>
                 </div>
             </div>

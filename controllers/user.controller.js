@@ -2,6 +2,7 @@ const user = require("../models/user.model")
 const friend = require("../models/friend.model")
 const detailGroup = require("../models/detailGroup.model")
 const userIsOnline = require("../stores/UserLoginStore")
+const group = require("../models/group.model")
 
 module.exports.search = async (req, res) => {
     try {
@@ -26,6 +27,8 @@ module.exports.search = async (req, res) => {
             }
         }
 
+        const friendsRequest = await friend.getRequestFriendBySenderId(senderId, 100000, 0)
+
         for (let value of finds) {
             if (value.id == senderId)
                 continue
@@ -34,15 +37,25 @@ module.exports.search = async (req, res) => {
                 image: { image1: value.image, image2: '' },
                 name: value.lastName + ' ' + value.firstName,
                 isFriend: 0,
+                groupId: null
             }
             for (let arr of array) {
                 if (arr == value.id) {
                     object.isFriend = 1
+                    const groupId = await detailGroup.getGroupIdByUserIds(senderId, value.id)
+                    object.groupId = groupId[0].groupId
                     break
-                } else {
+                } else{
                     object.isFriend = 0
                 }
             }
+
+            if(friendsRequest)
+                for(let friendRequest of friendsRequest) {
+                    if(value.id == friendRequest.receiveId) {
+                        object.isFriend = -1
+                    }
+                }
 
             data.push(object)
         }
@@ -171,16 +184,16 @@ module.exports.getOtherUsers = async (req, res) => {
         if (friends) {
             for (let value of friends) {
                 if (value.sendId == userId) {
-                    delete value.sendId;
                     array.push(value.receiveId)
                     continue
                 }
                 if (value.receiveId == userId) {
-                    delete value.receiveId
                     array.push(value.sendId)
                 }
             }
         }
+
+        const friendsRequest = await friend.getRequestFriendBySenderId(userId, limit, offset)
         const arrAllUsers = []
         const allUsers = await user.getAllUser();
         for (let value of allUsers) {
@@ -190,6 +203,13 @@ module.exports.getOtherUsers = async (req, res) => {
                     continue
                 }
             }
+            if(friendsRequest)
+                for(let friendRequest of friendsRequest) {
+                    if(value.id == friendRequest.receiveId) {
+                        delete value.id
+                        continue
+                    }
+                }
             arrAllUsers.push(value.id)
         }
         const idOther = []

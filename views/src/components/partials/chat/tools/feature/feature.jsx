@@ -61,7 +61,9 @@ function Feature({children, offset, group}) {
         const groupId = leaveGroup(feature.id)
         dispatch(groupId)
         const displayForm = showFormFeatureExtension(4)
-        dispatch(displayForm);
+        dispatch(displayForm)
+        const notification = updateNotification('Rời nhóm thành công.')
+        dispatch(notification)
     }
 
     /*----lifecycle ----*/

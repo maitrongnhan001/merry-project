@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch } from 'react-redux';
 import { deleteFromFriendRequest } from '../../../../../../redux/actions/friends';
+import { updateNotification } from '../../../../../../redux/actions/notification';
 import { urlUserAvatar } from '../../../../../APIs/ConnectAPI';
 import { sendAcceptFriend, sendDismissFriend } from '../../../../../Sockets/socket-friend';
 import './item.scss'
@@ -13,12 +14,16 @@ function Item({ senderId, receiverId, name, sex, image }) {
         sendAcceptFriend({ senderId, receiverId })
         const friendRequest = deleteFromFriendRequest({ senderId, receiverId })
         dispatch(friendRequest)
+        const notification = updateNotification('Chấp nhận lời mời kết bạn thành công.')
+        dispatch(notification)
     }
 
     const handleClickToDismiss = (e) => {
         sendDismissFriend({ senderId, receiverId })
         const friendRequest = deleteFromFriendRequest({ senderId, receiverId })
         dispatch(friendRequest)
+        const notification = updateNotification('Từ chối lời mời kết bạn thành công.')
+        dispatch(notification)
     }
 
     return (

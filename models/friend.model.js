@@ -89,6 +89,24 @@ module.exports.getRequestFriend = (userId ,limit, offset) => {
     });
 }
 
+module.exports.getRequestFriendBySenderId = (userId ,limit, offset) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT * FROM waitingresquest WHERE sendId = ${userId} LIMIT ${limit} OFFSET ${offset}`;
+        connection.query(sql, function (error, result) {
+            if (error) {
+                reject(error);
+            } else {
+                if (result.length > 0) {
+                    const endResult = JSON.parse(JSON.stringify(result));
+                    resolve(endResult);
+                } else {
+                    resolve(null);
+                }
+            }
+        });
+    });
+}
+
 module.exports.isFriend = (userId1, userId2) => {
     return new Promise((resolve, reject) => {
         const sql = 'SELECT * from friend where (sendId = ? and receiveId = ? ) or (sendId = ? and receiveId = ?)'

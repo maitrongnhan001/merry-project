@@ -19,7 +19,7 @@ import Ask from '../partials/chat/extension/Another-features/leave-group/form-as
 import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList, getUserById, getUsersOnline } from '../APIs/ConnectAPI'
 import { getAddGroup, getAddMember, getDeleteMember, getUpdateGroup, getDeleteGroup } from '../Sockets/socket-group'
-import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList, updateInfomationFriend, deleteFriend, updateChatsList, deleteGroupChat, updateStatusChatList } from '../../redux/actions/friends'
+import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList, updateInfomationFriend, deleteFriend, updateChatsList, deleteGroupChat, updateStatusChatList, deleteFromFriendRequest } from '../../redux/actions/friends'
 import { addGroup, deleteGroup, saveGroupsList, updateInfomationGroup } from '../../redux/actions/groups'
 import { getConnection, getLogout, getUpdateProfile, sendConnection } from '../Sockets/home'
 import { saveCurrentUser, saveUserOffline, saveUserOnline } from '../../redux/actions/user'
@@ -220,11 +220,11 @@ function Chat() {
                     const notification = updateNotification(data.msg)
                     dispatch(notification)
                 } else {
-                    const friendRequest = addFriendRequest(data)
+                    const friendRequest = deleteFromFriendRequest(data)
                     dispatch(friendRequest)
                     // eslint-disable-next-line eqeqeq
                     if (data.senderId == localStorage.getItem('userId')) {
-                        const notification = updateNotification('Gửi lời mời kết bạn thành công.')
+                        const notification = updateNotification('Hủy mời kết bạn thành công.')
                         dispatch(notification)
                     }
                 }

@@ -4,7 +4,8 @@ const initial = {
     friendProfileData: {},
     chatsList: [],
     friendRequest: [],
-    friendsList: []
+    friendsList: [],
+    friendIdsList: []
 }
 
 const friendsReducer = (state = initial, action) => {
@@ -66,24 +67,30 @@ const friendsReducer = (state = initial, action) => {
         }
         case 'SAVE_FRIENDS_LIST': {
             const friendsList = [...action.data]
+            const friendIdsList = [...action.data].map(value => value.id)
             return {
                 ...state,
-                friendsList
+                friendsList,
+                friendIdsList,
             }
         }
         case 'ADD_FRIEND_AFTER_ACCEPT': {
             let newFriendList = [...state.friendsList]
+            let friendIdsList = [...state.friendIdsList]
             let data = action.data
             // eslint-disable-next-line eqeqeq
             if(data.sender.id == localStorage.getItem('userId')) {
                 newFriendList.unshift(data.receiver)
+                friendIdsList.push(data.receiver.id)
             // eslint-disable-next-line eqeqeq
             }else if(data.receiver.id == localStorage.getItem('userId')){
                 newFriendList.unshift(data.sender)
+                friendIdsList.push(data.sender.id)
             }
             return {
                 ...state,
-                friendsList: newFriendList
+                friendsList: newFriendList,
+                friendIdsList
             }
         }
         case 'SAVE_FRIEND_REQUEST': {

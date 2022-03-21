@@ -6,6 +6,7 @@ import {showDialog}  from '../../../../redux/actions/taskbar'
 import $ from 'jquery'
 import { getAddFriend, sendAddFriend } from '../../../Sockets/socket-friend'
 import { getOthersUsers, getUserByEmail } from '../../../APIs/ConnectAPI'
+import { updateNotification } from '../../../../redux/actions/notification'
 
 function AddFriends(props) {
 
@@ -24,7 +25,7 @@ function AddFriends(props) {
     const items = friendsList.map((value, idx)=>{
 
         return (
-            <FriendItem key={idx} id={value.userId ? value.userId : value.receiverId} name={value.name} image={value.image} addFriend={1}></FriendItem>
+            <FriendItem key={idx} userId={value.userId ? value.userId : value.receiverId} id={value.groupId} name={value.name} image={value.image} addFriend={1} isFriend={value.isFriend}></FriendItem>
         )
     })
 
@@ -48,7 +49,8 @@ function AddFriends(props) {
                 setFriendList(result.data.data)
             }
         }catch(err) {
-            alert('Co loi xay ra!')
+            const notification = updateNotification('Có lỗi xảy ra.')
+            dispatch(notification)
         }
     }
 

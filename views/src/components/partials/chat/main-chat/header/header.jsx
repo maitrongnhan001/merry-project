@@ -127,8 +127,8 @@ function Header({id, image, name, members}) {
                     </div>
                     <div className="main-chat-header-tools">
                         {/* <i className="fas fa-search"  onClick={()=>{$('.search-message-wrapper').slideToggle('.25s'); setIsShowSearchBox(isShowSearchBox ? 0 : 1)}}></i> */}
-                        <i className="fas fa-phone" onClick={handleVocalCall}></i>
-                        <i className="fas fa-video" onClick={handleVideoCall}></i>
+                        {id.indexOf('G') == -1 ? <i className="fas fa-phone" onClick={handleVocalCall}></i> : ''}
+                        {id.indexOf('G') == -1 ? <i className="fas fa-video" onClick={handleVideoCall}></i> : ''}
                         <i className="fas fa-bars" onClick={handleClickShowExtension}></i>
                     </div>
                 </div>

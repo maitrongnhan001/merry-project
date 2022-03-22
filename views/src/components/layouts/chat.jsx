@@ -233,6 +233,7 @@ function Chat() {
             getTextMessageChat((data) => {
                 const message = saveMassage(data)
                 dispatch(message)
+                console.log(data.receiver)
                 const chat = {
                     ...data,
                     receiver: {
@@ -245,8 +246,20 @@ function Chat() {
                             // eslint-disable-next-line eqeqeq
                             isSender: data.senderId == localStorage.getItem('userId') ? 1 : 0
                         }
+                    },
+                    sender: {
+                        receiverId: data.receiverId,
+                        image: data.receiverId.indexOf('G') == 0 ? data.receiver.image : {image1: data.image, image2: ''},
+                        receiverName: data.receiverId.indexOf('G') == 0 ? data.receiver.groupName : data.name,
+                        lastMessage: {
+                            content: data.content,
+                            type: data.type,
+                            // eslint-disable-next-line eqeqeq
+                            isSender: data.senderId == localStorage.getItem('userId') ? 1 : 0
+                        }
                     }
                 }
+                console.log(chat)
                 const chatList = updateChatsList(chat)
                 dispatch(chatList)
             })

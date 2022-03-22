@@ -19,7 +19,6 @@ const friendsReducer = (state = initial, action) => {
         }
         case 'UPDATE_CHAT_LIST': {
             const chatsList = [...state.chatsList]
-            let newItem = action.data.receiver
             for(let index in chatsList) {
                 // eslint-disable-next-line eqeqeq
                 let newChatItem = chatsList[index]
@@ -43,9 +42,12 @@ const friendsReducer = (state = initial, action) => {
             // eslint-disable-next-line eqeqeq
             if(!chatsList.find(value=>value.receiverId == action.data.receiverId)) {
                 // eslint-disable-next-line eqeqeq
-                if(action.data.senderId != localStorage.getItem('userId'))
-                        newItem.lastMessage.status = action.data.status
-                chatsList.unshift(newItem)
+                if(action.data.senderId != localStorage.getItem('userId')){
+                        action.data.sender.lastMessage.status = action.data.status
+                        chatsList.unshift(action.data.sender)
+                }else{
+                    chatsList.unshift(action.data.receiver)
+                }
             }
             return {
                 ...state,

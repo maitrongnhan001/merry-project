@@ -49,13 +49,6 @@ const Documents = () => {
                 break;
             }
 
-            case 404: {
-                if (documents.length === 0) {
-                    setNotification("Không có tài liệu nào được gửi");
-                }
-                break;
-            }
-
             case 500: {
                 setError("Có lỗi xảy ra, xin vui lòng thử lại");
                 break;
@@ -103,6 +96,18 @@ const Documents = () => {
             setListDocumentsTag(null);
         }
     }, [receiverId]);
+
+    useEffect(() => {
+        if (documents.length === 0)
+            setNotification('Không có tài liệu nào được gửi');
+        else {
+            setNotification(null);
+        }
+
+        return () => {
+            setNotification(null);
+        }
+    }, [documents])
 
     return (
         <div className='element-extension'>

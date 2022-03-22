@@ -32,7 +32,7 @@ import { updateManagerFriend } from '../../redux/actions/extension'
 import { updateNotification } from '../../redux/actions/notification'
 import AskDelete from '../partials/chat/extension/Another-features/delete-group/ask-delete-group/ask-delete'
 import connection from '../Sockets/socket-config'
-import { getCall, getCallDown, getCallUp } from '../Sockets/socket-call'
+import { getCall, getCallDown, getCallUp, getUserCallDisconnected, sendCallDown } from '../Sockets/socket-call'
 import { updateCallStatus } from '../../redux/actions/call'
 
 //connection socket
@@ -340,6 +340,15 @@ function Chat() {
             })
 
             getCall(data => {
+                if (localStorage.getItem('callId')) {
+                    //dang trong trang thai call, khong nhan cuoc goi khac
+                    return sendCallDown({
+                        senderId: localStorage.getItem('userId'),
+                        receiverId: data.receiverId,
+                        type: data.type,
+                        status: 'user is calling'
+                    })
+                }
                 const display = showDialog(4)
                 dispatch(display)
                 localStorage.setItem('callId', data.receiverId)
@@ -348,8 +357,6 @@ function Chat() {
 
             getCallUp(data => {
                 localStorage.setItem('callStatus', 1)
-                const callStatus = updateCallStatus(1)
-                dispatch(callStatus)
                 if (data.type == 'video') {
                     window.open(`http://localhost:3000/call/video-call/${data.receiverId}`, 'name', 'width=1000,height=600,left=250,top=100')
                 } else {
@@ -359,6 +366,12 @@ function Chat() {
 
             getCallDown(data => {
                 if (localStorage.getItem('userId') != data.senderId) {
+                    //neu nhu nguoi nhan cuoc goi dang call
+                    if (data.status && data.status != 404) {
+                        const showNotification = updateNotification('Người nhận đang trong cuộc gọi')
+                        dispatch(showNotification)
+                    }
+
                     localStorage.removeItem('callId')
                     localStorage.removeItem('callType')
                     if (!localStorage.getItem('callStatus')) {
@@ -376,6 +389,35 @@ function Chat() {
                 }
             })
 
+            getUserCallDisconnected(data => {
+
+                if (localStorage.getItem('callStatus') == 0) {
+                    if (data.msg == 1) {
+                        sendCallDown({
+                            senderId: localStorage.getItem('userId'),
+                            receiverId: localStorage.getItem('callId'),
+                            type: localStorage.getItem('callType')
+                        })
+                        localStorage.removeItem('callId')
+                        localStorage.removeItem('callType')
+                        localStorage.removeItem('callStatus')
+                        return
+                    }
+                }
+                if (!localStorage.getItem('callId')) return
+                if (data.receiverId != localStorage.getItem('callId')) return
+
+                if (localStorage.getItem('callStatus') != -1) {
+                    sendCallDown({
+                        senderId: localStorage.getItem('userId'),
+                        receiverId: localStorage.getItem('callId'),
+                        type: localStorage.getItem('callType')
+                    })
+                    localStorage.removeItem('callId')
+                    localStorage.removeItem('callType')
+                    localStorage.removeItem('callStatus')
+                }
+            })
         })()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])

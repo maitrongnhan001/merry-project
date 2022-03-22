@@ -41,7 +41,7 @@ function Waiting({receiverId}) {
             </div>
             <div className="waiting-video-call-icons-group">
                 <div className="waiting-video-call-phone-icon waiting-video-call-phone-icon-phone-down" onClick={handleToMissCall}>
-                    <i class="fa-solid fa-phone-slash"></i>
+                    <i className="fa-solid fa-phone-slash"></i>
                 </div>
             </div>
         </div>

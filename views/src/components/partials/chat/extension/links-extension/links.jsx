@@ -35,6 +35,7 @@ const Links = () => {
         switch (result.status) {
             case 200: {
                 const listResponeLink = result.data.data;
+
                 let list_links = caseLoad ? links : [];
                 for (let index of listResponeLink) {
                     list_links.push(index.link);
@@ -45,13 +46,6 @@ const Links = () => {
                     return <LinkItem link={Element} key={Key} />
                 });
                 setListLinksTag(listElements);
-                break;
-            }
-
-            case 404: {
-                if (links.length === 0) {
-                    setNotification("Không có tin nhắn liên kết nào");
-                }
                 break;
             }
 
@@ -103,6 +97,18 @@ const Links = () => {
             setListLinksTag(null);
         }
     }, [receiverId]);
+
+    useEffect(() => {
+        if (links.length === 0)
+            setNotification('Không có liên kết nào được gửi');
+        else {
+            setNotification(null);
+        }
+
+        return () => {
+            setNotification(null);
+        }
+    }, [links])
 
     return (
         <div className='element-extension'>

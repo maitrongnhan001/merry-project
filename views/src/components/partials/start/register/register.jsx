@@ -28,9 +28,9 @@ const Register = () => {
 
     const [error, setError] = useState(null);
 
-    const naviagate = useNavigate();
+    const navigate = useNavigate();
 
-    const handleUdpatePassword = (password) => {
+    const handleUpdatePassword = (password) => {
         if (!password) return;
 
         setPassword(password);
@@ -84,7 +84,7 @@ const Register = () => {
             localStorage.setItem('userId', result.data.id);
 
             cleanData();
-            naviagate('/me');
+            navigate('/me');
         } else {
             const stringError = result.error;
             setError(stringError);
@@ -94,7 +94,7 @@ const Register = () => {
     useEffect(async () => {
         const resultCheckToken = await checkToken(token);
         if (resultCheckToken.status !== 200) {
-            return naviagate('/');
+            return navigate('/');
         }
     }, [token])
 
@@ -106,7 +106,7 @@ const Register = () => {
                     <Password
                         token={token}
                         passwordProps={password}
-                        handleUpdatePassword={handleUdpatePassword}
+                        handleUpdatePassword={handleUpdatePassword}
                     />
                 }
             ></Route>

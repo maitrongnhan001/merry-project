@@ -6,6 +6,8 @@ import InCall from '../partials/video-call/in-call/in-call'
 import $ from 'jquery'
 import styled from "styled-components";
 import Peer from 'simple-peer'
+import connection from '../Sockets/socket-connection-call'
+import { sendConnection, sendFirstConnection } from '../Sockets/call-connection'
 
 const Video = styled.video`
   width: 100%;
@@ -14,12 +16,11 @@ const Video = styled.video`
 function VideoCall() {
 
     const callStatusLocal = localStorage.getItem('callStatus')
-    const {receiverId} = useParams()
+    const { receiverId } = useParams()
     //callStatus la null
     //-------------------state--------------------//
     const [inCall, setInCall] = useState(callStatusLocal)
     const [stream, setStream] = useState()
-    const [receiver, setReceiver] = useState(receiverId)
 
     //--------------------ref----------------------//
     const userVideo = useRef();
@@ -105,7 +106,12 @@ function VideoCall() {
 
     useEffect(() => {
         if (inCall == 1) {
-            var peer1 = new Peer({initiator: true, stream: stream})
+            connection()
+            const callId = localStorage.getItem('callId')
+            const userId = localStorage.getItem('userId')
+            sendConnection(callId, userId)
+
+            var peer1 = new Peer({ initiator: true, stream: stream })
             var peer2 = new Peer()
 
             peer1.on('signal', data => {
@@ -124,6 +130,16 @@ function VideoCall() {
             })
         }
     }, [stream])
+
+    useEffect(() => {
+        if (callStatusLocal == 0) {
+            connection()
+            const callId = localStorage.getItem('callId')
+            const userId = localStorage.getItem('userId')
+
+            sendFirstConnection(callId, userId)
+        }
+    }, [])
 
     return (
         <div className="video-call-wrapper">

@@ -78,7 +78,7 @@ function InCall() {
             </div>
             <div className="in-call-video-call-icons-group">
                 <div className="in-call-video-call-phone-icon in-call-video-call-phone-icon-phone-down" onClick={handleToMissCall}>
-                    <i class="fa-solid fa-phone-slash"></i>
+                    <i className="fa-solid fa-phone-slash"></i>
                 </div>
             </div>
         </div>

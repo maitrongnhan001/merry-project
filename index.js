@@ -4,7 +4,9 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const server = require("http").createServer();
+const serverCall = require('http').createServer();
 const { connect } = require('./config/database.js');
+const userIsLogin = require('./stores/UserLoginStore');
 connect();
 
 //-------------end require extensions-----------------//
@@ -45,6 +47,50 @@ io.use(isAuthSocket)
 io.on("connection", onConnection);
 //----------------end config socket------------------//
 
+//------------------ config socket------------------//
+const ioCall = require("socket.io")(serverCall, {
+    cors: {
+        origin: "*",
+        //test socket
+        //origin: "http://127.0.0.1:5500"
+        //real socket
+        //origin: "http://localhost:3000"
+    }
+});
+
+ioCall.use(isAuthSocket);
+
+ioCall.on('connection', socket => {
+    socket.on('join-room', (data) => {
+        const receiverId = data.receiverId;
+        const userId = data.userId
+
+        if (!receiverId || !userId) return socket.emit('user-connected', {status: false})
+
+        socket.on('disconnect', async () => {
+            const userSocket = await userIsLogin.getUserSocket(userId);
+            userSocket.emit('user-call-disconnected', {
+                receiverId: receiverId
+            });
+        })
+    })
+
+    socket.on('first-join', (data) => {
+        const receiverId = data.receiverId;
+        const userId = data.userId
+
+        if (!receiverId || !userId) return socket.emit('user-connected', {status: false})
+
+        socket.on('disconnect', async () => {
+            const userSocket = await userIsLogin.getUserSocket(userId);
+            userSocket.emit('user-call-disconnected', {
+                msg: 1
+            });
+        })
+    })
+})
+//----------------end config socket call--------------//
+
 //------------------ use extensions------------------//
 app.use(express.static('public'));
 app.use(cors());
@@ -77,6 +123,12 @@ const SOCKET_PORT = process.env.SOCKET_PORT || 8000;
 
 server.listen(SOCKET_PORT, () => {
     console.log('App socket listening on port: ' + SOCKET_PORT);
+});
+
+const CALL_PORT = process.env.CALL_PORT || 8001;
+
+serverCall.listen(CALL_PORT, () => {
+    console.log('App socket listening on port: ' + CALL_PORT);
 });
 
 const APP_PORT = process.env.APP_PORT || 8080;

@@ -33,7 +33,7 @@ function Receive() {
             receiverId: localStorage.getItem('callId'),
             type: localStorage.getItem('callType')
         })
-        localStorage.setItem('callStatus', 1)
+        localStorage.setItem('callStatus', 1) 
         const callStatus = updateCallStatus(1)
         dispatch(callStatus)
         const display = showDialog(0)
@@ -49,7 +49,6 @@ function Receive() {
     React.useEffect(async ()=> {
         if(localStorage.getItem('userId')) {
             const result = await getMemberListFromGroupByGroupId(localStorage.getItem('userId'), localStorage.getItem('callId'))
-            console.log(result)
             if(result && result.status === 200) {
                 setUser(result.data.data.profile)
             }

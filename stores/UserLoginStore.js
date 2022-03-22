@@ -61,7 +61,7 @@ module.exports.getUserSocket = (userId) => {
 
         //kiem tra vi tri
         if (index === -1) {
-            resolve(null);
+            resolve(initialData);
         }
 
         //tra ve user socket id

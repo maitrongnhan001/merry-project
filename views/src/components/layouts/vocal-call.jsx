@@ -6,6 +6,8 @@ import Waiting from '../partials/vocal-call/waiting/waiting'
 import InCall from '../partials/vocal-call/in-call/in-call'
 import styled from "styled-components";
 import Peer from 'simple-peer'
+import connection from '../Sockets/socket-connection-call'
+import { sendConnection, sendFirstConnection } from '../Sockets/call-connection'
 
 const Video = styled.video`
   width: 100%;
@@ -103,6 +105,11 @@ function VocalCall() {
 
     useEffect(() => {
         if (inCall == 1) {
+            connection()
+            const callId = localStorage.getItem('callId')
+            const userId = localStorage.getItem('userId')
+            sendConnection(callId, userId)
+
             var peer1 = new Peer({ initiator: true, stream: stream })
             var peer2 = new Peer()
 
@@ -122,6 +129,16 @@ function VocalCall() {
             })
         }
     }, [stream])
+
+    useEffect(() => {
+        if (callStatusLocal == 0) {
+            connection()
+            const callId = localStorage.getItem('callId')
+            const userId = localStorage.getItem('userId')
+
+            sendFirstConnection(callId, userId)
+        }
+    }, [])
 
     return (
         <div className="vocal-call-wrapper">

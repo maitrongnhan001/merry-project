@@ -3,9 +3,7 @@ import './main.scss'
 import Message from './messages/message'
 import { useSelector } from 'react-redux'
 import Document from './messages/document/document'
-import DataLoader from '../../tools/data-loader/data-loader'
 import { getContentChat, urlImage } from '../../../../APIs/ConnectAPI'
-import { getTextMessageChat } from '../../../../Sockets/socket-chat'
 
 const isType = (value, style) => {
     switch(value.type) {
@@ -55,7 +53,6 @@ function Main({id}) {
     useEffect(()=> {
         let newList = messageStateList
         if(message.messageId !== '' && message.receiverId === id){
-            console.log(id)
             newList.unshift(message)
         }
         setMessageStateList(newList)
@@ -93,7 +90,6 @@ function Main({id}) {
             <div className="main-chat-chat-area-wrapper">
                 {dataState}
                 {data}
-                {/* <DataLoader></DataLoader> */}
             </div>
         </div>
     );

@@ -12,8 +12,8 @@
         background-color: #525863;
         border-radius: 50%;
         visibility: hidden;
-        animation: dataLoader 1s linear infinite alternate; 
-        animation-delay: calc(1s * var(--value) / 3);
+        animation: dataLoader .5s linear infinite alternate; 
+        animation-delay: calc(.5s * var(--value) / 3);
     }
 }
 

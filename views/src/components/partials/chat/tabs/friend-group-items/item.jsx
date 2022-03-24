@@ -2,20 +2,22 @@ import React, { useState, useEffect } from 'react'
 import Image from '../../avatar/avatar'
 import './item.scss'
 import $ from 'jquery'
-import { useDispatch} from 'react-redux'
+import { useDispatch, useSelector} from 'react-redux'
 import { showCenter, showFeature } from '../../../../../redux/actions/taskbar'
 import { saveCurrentChat } from '../../../../../redux/actions/message'
-import { sendAddFriend } from '../../../../Sockets/socket-friend'
+import { sendAddFriend, sendDeleteFriend, sendDismissFriend } from '../../../../Sockets/socket-friend'
 import { createRoom } from '../../../../Sockets/socket-chat'
+import { updateNotification } from '../../../../../redux/actions/notification'
 
-function Item({userId, id, name, image, addFriend, createGroup, onAddMember, members, initCheck }) {
+function Item({userId, id, name, image, addFriend = null, createGroup = null, onAddMember, members, initCheck, isFriend = 0}) {
 
     /*----redux----*/
+    const friendIdsList = useSelector(state => state.friends.friendIdsList)
     //ket noi den redux
     const dispatch = useDispatch()
-
     /*----states----*/
     const [checked, setChecked] = useState(initCheck)
+    const [status, setStatus] = useState(isFriend)
 
     /*----handles----*/
     //xu ly nhan vao item 
@@ -47,9 +49,36 @@ function Item({userId, id, name, image, addFriend, createGroup, onAddMember, mem
 
         }
     }
-    const handleToAddFriend = (e)=> {
+    const handleClickToAddFriend = (e)=> {
         e.preventDefault()
-        sendAddFriend({senderId: localStorage.getItem('userId'), receiverId: id})
+        setStatus(-1)
+        sendAddFriend({senderId: localStorage.getItem('userId'), receiverId: userId})
+        const notification = updateNotification('Gửi lời mời kết bạn thành công')
+        dispatch(notification)
+    }
+
+    const handleClickToCancelFriend = (e)=> {
+        setStatus(0)
+        const data = {
+            senderId: localStorage.getItem('userId'),
+            receiverId: userId
+        }
+        sendDismissFriend(data)
+        const notification = updateNotification('Hủy yêu cầu kết bạn thành công')
+        dispatch(notification)
+    }
+
+    const handleClickToDeleteFriend = (e)=> {
+        e.preventDefault()
+        setStatus(0)
+        const data = {
+            senderId: localStorage.getItem('userId'),
+            receiverId: userId,
+            groupId: id
+        }
+        sendDeleteFriend(data)
+        const notification = updateNotification('Hủy gửi lời mời thành công')
+        dispatch(notification)
     }
 
     //xu ly show khung mo rong
@@ -84,6 +113,18 @@ function Item({userId, id, name, image, addFriend, createGroup, onAddMember, mem
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [checked])
 
+    useEffect(()=> {
+        setStatus(isFriend)
+    }, [isFriend])
+
+    useEffect(()=> {
+        friendIdsList.forEach(value=> {
+            if(value == userId)
+                setStatus(1)
+        })
+        
+    }, [friendIdsList, userId])
+
 
     return (
         <div className="friend-group-item" data-id={id} onClick={handleClickToCheckFriend}>
@@ -95,7 +136,11 @@ function Item({userId, id, name, image, addFriend, createGroup, onAddMember, mem
             </div>
             {
                 addFriend ?
-                    <button className="friend-add-friend-btn" onClick={handleToAddFriend}>Kết bạn</button> :
+                    status == 0 ?
+                    <p className="friend-add-friend-btn friend-add-friend-btn-add" onClick={handleClickToAddFriend}>Kết bạn</p> : 
+                    status == 1 ?
+                    <p className="friend-add-friend-btn friend-add-friend-btn-cancel" onClick={handleClickToDeleteFriend}>Hủy kết bạn</p> :
+                    <p className="friend-add-friend-btn friend-add-friend-btn-cancel" onClick={handleClickToCancelFriend}>Hủy yêu cầu</p> :
                     createGroup ?
                         <input type="checkbox" className="friend-add-friend-checkbox" checked={checked} onChange={handleChangeChecked} /> :
                         <>

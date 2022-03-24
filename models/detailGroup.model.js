@@ -34,6 +34,21 @@ module.exports.getGroupIdByUserIds = (userId1, userId2) => {
     });
 }
 
+//lay group id theo id user trong group
+module.exports.getAllGroupIdByUserIds = (userId1, userId2) => {
+    return new Promise((resolve, reject) => {
+        const sql = `SELECT a.groupId FROM detailgroup as a, detailgroup as b WHERE a.groupId=b.groupId AND a.userId=${userId1} AND b.userId=${userId2}`;
+        connection.query(sql, function (error, result) {
+            if (error) {
+                reject(error);
+            } else {
+                const endResult = JSON.parse(JSON.stringify(result));
+                resolve(endResult);
+            }
+        });
+    });
+}
+
 //lay danh sach group chat theo user id
 module.exports.getGroups = (userId, limit, offset) => {
     return new Promise((resolve, reject) => {

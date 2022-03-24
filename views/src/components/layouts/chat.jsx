@@ -1,7 +1,7 @@
 import React from 'react'
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setTheme, showCenter, showFeature } from '../../redux/actions/taskbar'
+import { setTheme, showCenter, showDialog, showFeature } from '../../redux/actions/taskbar'
 import { updateShowOrderFeature, updateNewMember, updateDeleteMember } from '../../redux/actions/extension'
 import { useNavigate } from 'react-router-dom'
 import TaskBar from '../partials/chat/task-bar/task-bar'
@@ -19,7 +19,7 @@ import Ask from '../partials/chat/extension/Another-features/leave-group/form-as
 import './chat.scss'
 import { getFriendsList, getListChat, getGroupsList, getUserById, getUsersOnline } from '../APIs/ConnectAPI'
 import { getAddGroup, getAddMember, getDeleteMember, getUpdateGroup, getDeleteGroup } from '../Sockets/socket-group'
-import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList, updateInfomationFriend, deleteFriend, updateChatsList, deleteGroupChat, updateStatusChatList } from '../../redux/actions/friends'
+import { addFriendAfterAccept, addFriendRequest, saveChatList, saveFriendsList, updateInfomationFriend, deleteFriend, updateChatsList, deleteGroupChat, updateStatusChatList, deleteFromFriendRequest } from '../../redux/actions/friends'
 import { addGroup, deleteGroup, saveGroupsList, updateInfomationGroup } from '../../redux/actions/groups'
 import { getConnection, getLogout, getUpdateProfile, sendConnection } from '../Sockets/home'
 import { saveCurrentUser, saveUserOffline, saveUserOnline } from '../../redux/actions/user'
@@ -32,6 +32,8 @@ import { updateManagerFriend } from '../../redux/actions/extension'
 import { updateNotification } from '../../redux/actions/notification'
 import AskDelete from '../partials/chat/extension/Another-features/delete-group/ask-delete-group/ask-delete'
 import connection from '../Sockets/socket-config'
+import { getCall, getCallDown, getCallUp, getUserCallDisconnected, sendCallDown } from '../Sockets/socket-call'
+import { updateCallStatus } from '../../redux/actions/call'
 
 //connection socket
 connection()
@@ -71,7 +73,6 @@ function Chat() {
             if (chatsList && chatsList.status === 200) {
                 let chatListAction = saveChatList(chatsList.data.data)
                 dispatch(chatListAction)
-                console.log(chatsList.data.data)
             }
             //call friends list API
             const friendsList = await getFriendsList(localStorage.getItem('userId'))
@@ -88,7 +89,6 @@ function Chat() {
 
             const currentUser = await getUserById(localStorage.getItem('userId'))
             if (currentUser && currentUser.status === 200) {
-                console.log(currentUser.data.data)
                 const user = saveCurrentUser(currentUser.data.data)
                 dispatch(user)
             }
@@ -119,7 +119,6 @@ function Chat() {
 
             //getRoom
             getRoom((data) => {
-                console.log(data)
                 const status = updateStatusChatList(data)
                 dispatch(status)
             })
@@ -133,7 +132,6 @@ function Chat() {
             })
 
             getDeleteMember(data => {
-                console.log(data)
                 if (!data.groupId) return
 
                 //luu du lieu vao redux extension
@@ -165,7 +163,6 @@ function Chat() {
             })
 
             getUpdateGroup(data => {
-                console.log(data)
                 if (!data.groupName || !data.groupId || !data.image) return
                 //luu thong tin nhom vua cap nhat vao redux
                 const updateInfoGroup = updateInfomationGroup(data);
@@ -198,8 +195,6 @@ function Chat() {
                     dispatch(updateCenter)
                 }
 
-                console.log(data);
-
                 //xoa group chat ra khoi chat list
                 const deleteItem = deleteGroupChat(data)
                 dispatch(deleteItem)
@@ -225,11 +220,11 @@ function Chat() {
                     const notification = updateNotification(data.msg)
                     dispatch(notification)
                 } else {
-                    const friendRequest = addFriendRequest(data)
+                    const friendRequest = deleteFromFriendRequest(data)
                     dispatch(friendRequest)
                     // eslint-disable-next-line eqeqeq
                     if (data.senderId == localStorage.getItem('userId')) {
-                        const notification = updateNotification('Gửi lời mời kết bạn thành công.')
+                        const notification = updateNotification('Hủy mời kết bạn thành công.')
                         dispatch(notification)
                     }
                 }
@@ -238,8 +233,7 @@ function Chat() {
             getTextMessageChat((data) => {
                 const message = saveMassage(data)
                 dispatch(message)
-
-                console.log('run')
+                console.log(data.receiver)
                 const chat = {
                     ...data,
                     receiver: {
@@ -249,10 +243,23 @@ function Chat() {
                         lastMessage: {
                             content: data.content,
                             type: data.type,
+                            // eslint-disable-next-line eqeqeq
+                            isSender: data.senderId == localStorage.getItem('userId') ? 1 : 0
+                        }
+                    },
+                    sender: {
+                        receiverId: data.receiverId,
+                        image: data.receiverId.indexOf('G') == 0 ? data.receiver.image : {image1: data.image, image2: ''},
+                        receiverName: data.receiverId.indexOf('G') == 0 ? data.receiver.groupName : data.name,
+                        lastMessage: {
+                            content: data.content,
+                            type: data.type,
+                            // eslint-disable-next-line eqeqeq
                             isSender: data.senderId == localStorage.getItem('userId') ? 1 : 0
                         }
                     }
                 }
+                console.log(chat)
                 const chatList = updateChatsList(chat)
                 dispatch(chatList)
             })
@@ -260,7 +267,6 @@ function Chat() {
             getMediaMessage(data => {
                 const message = saveMassage(data)
                 dispatch(message)
-                console.log('run')
                 const chat = {
                     ...data,
                     receiver: {
@@ -270,6 +276,7 @@ function Chat() {
                         lastMessage: {
                             content: data.content,
                             type: data.type,
+                            // eslint-disable-next-line eqeqeq
                             isSender: data.senderId == localStorage.getItem('userId') ? 1 : 0
                         }
                     }
@@ -290,6 +297,7 @@ function Chat() {
                         lastMessage: {
                             content: data.content,
                             type: data.type,
+                            // eslint-disable-next-line eqeqeq
                             isSender: data.senderId == localStorage.getItem('userId') ? 1 : 0
                         }
                     }
@@ -344,6 +352,85 @@ function Chat() {
                 }
             })
 
+            getCall(data => {
+                if (localStorage.getItem('callId')) {
+                    //dang trong trang thai call, khong nhan cuoc goi khac
+                    return sendCallDown({
+                        senderId: localStorage.getItem('userId'),
+                        receiverId: data.receiverId,
+                        type: data.type,
+                        status: 'user is calling'
+                    })
+                }
+                const display = showDialog(4)
+                dispatch(display)
+                localStorage.setItem('callId', data.receiverId)
+                localStorage.setItem('callType', data.type)
+            })
+
+            getCallUp(data => {
+                localStorage.setItem('callStatus', 1)
+                if (data.type == 'video') {
+                    window.open(`http://localhost:3000/call/video-call/${data.receiverId}`, 'name', 'width=1000,height=600,left=250,top=100')
+                } else {
+                    window.open(`http://localhost:3000/call/vocal-call/${data.receiverId}`, 'name', 'width=1000,height=600,left=250,top=100')
+                }
+            })
+
+            getCallDown(data => {
+                if (localStorage.getItem('userId') != data.senderId) {
+                    //neu nhu nguoi nhan cuoc goi dang call
+                    if (data.status && data.status != 404) {
+                        const showNotification = updateNotification('Người nhận đang trong cuộc gọi')
+                        dispatch(showNotification)
+                    }
+
+                    localStorage.removeItem('callId')
+                    localStorage.removeItem('callType')
+                    if (!localStorage.getItem('callStatus')) {
+                        //neu chua chap nhan cuoc goi thi dong cuoc goi
+                        const display = showDialog(0)
+                        dispatch(display)
+                    } else {
+                        localStorage.setItem('callStatus', -1)
+                        if (data.type == 'video') {
+                            window.open(`http://localhost:3000/call/video-call/${data.receiverId}`, 'name', 'width=1000,height=600,left=250,top=100')
+                        } else {
+                            window.open(`http://localhost:3000/call/vocal-call/${data.receiverId}`, 'name', 'width=1000,height=600,left=250,top=100')
+                        }
+                    }
+                }
+            })
+
+            getUserCallDisconnected(data => {
+
+                if (localStorage.getItem('callStatus') == 0) {
+                    if (data.msg == 1) {
+                        sendCallDown({
+                            senderId: localStorage.getItem('userId'),
+                            receiverId: localStorage.getItem('callId'),
+                            type: localStorage.getItem('callType')
+                        })
+                        localStorage.removeItem('callId')
+                        localStorage.removeItem('callType')
+                        localStorage.removeItem('callStatus')
+                        return
+                    }
+                }
+                if (!localStorage.getItem('callId')) return
+                if (data.receiverId != localStorage.getItem('callId')) return
+
+                if (localStorage.getItem('callStatus') != -1) {
+                    sendCallDown({
+                        senderId: localStorage.getItem('userId'),
+                        receiverId: localStorage.getItem('callId'),
+                        type: localStorage.getItem('callType')
+                    })
+                    localStorage.removeItem('callId')
+                    localStorage.removeItem('callType')
+                    localStorage.removeItem('callStatus')
+                }
+            })
         })()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -390,8 +477,8 @@ function Chat() {
                             <Profile friendProfile={isFriendProfileForm}></Profile>
                             :
                             display === 4 ?
-                            <ReceiveCall></ReceiveCall> : ''
-                            
+                                <ReceiveCall></ReceiveCall> : ''
+
             }
             <TaskBar></TaskBar>
             <Tab></Tab>

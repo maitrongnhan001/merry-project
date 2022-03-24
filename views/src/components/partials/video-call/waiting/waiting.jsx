@@ -1,26 +1,37 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import './waiting.scss'
-import { getUserById, urlUserAvatar } from '../../../APIs/ConnectAPI'
+import { getMemberListFromGroupByGroupId, getUserById, urlUserAvatar } from '../../../APIs/ConnectAPI'
+import { sendCallDown } from '../../../Sockets/socket-call'
 
-function Waiting() {
+function Waiting({receiverId}) {
 
-    const [user, setUser] = React.useState({})
+    //-----------------state-------------------//
+    const [user, setUser] = useState({})
 
+    //-----------------handle-------------------//
     const handleToMissCall = (e)=> {
+        if(localStorage.getItem('callId')){
+            sendCallDown({
+                senderId: localStorage.getItem('userId'), 
+                receiverId: localStorage.getItem('callId'),
+                type: localStorage.getItem('callType')
+            })
+            localStorage.removeItem('callId')
+            localStorage.removeItem('callType')
+        }
         window.close()
     }
 
+    //-----------------life cycle-------------------//
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    React.useEffect(async ()=> {
+    useEffect(async ()=> {
         if(localStorage.getItem('userId')) {
-            const result = await getUserById(localStorage.getItem('userId'))
+            const result = await getMemberListFromGroupByGroupId(localStorage.getItem('userId'), receiverId)
             if(result && result.status === 200) {
-                setUser(result.data.data)
+                setUser(result.data.data.profile)
             }
         }
     }, [])
-
-
 
     return (
         <div className="waiting-video-call">
@@ -30,7 +41,7 @@ function Waiting() {
             </div>
             <div className="waiting-video-call-icons-group">
                 <div className="waiting-video-call-phone-icon waiting-video-call-phone-icon-phone-down" onClick={handleToMissCall}>
-                    <i class="fa-solid fa-phone-slash"></i>
+                    <i className="fa-solid fa-phone-slash"></i>
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import './tab.scss'
 import { useDispatch, useSelector } from 'react-redux'
 import { showFeature } from '../../../../redux/actions/taskbar'
@@ -14,9 +14,14 @@ function Tab() {
     //lay du lieu tu redux
     const state = useSelector(state => state.taskbar.data)
     const feature = useSelector(state => state.taskbar.feature)
+    const [searchData, setSearchData] = useState([])
 
     //ket noi den redux
     const dispatch = useDispatch()
+
+    const handleSearch = (value)=> {
+        setSearchData(value)
+    }
 
     /*----lifecycle----*/
     useEffect(()=>{
@@ -30,11 +35,11 @@ function Tab() {
 
     return (
         <div className='tab-wrapper' id="tab-wrapper">
-            <Search></Search>
+            <Search onSearch={handleSearch}></Search>
             <div className="tab-main">
                 {state === 0 ? <ChatTab></ChatTab>: 
                  state === 1 ? <FriendsTab></FriendsTab> : 
-                 state === 2 ? <GroupsTab></GroupsTab> : <SearchLayout></SearchLayout>}
+                 state === 2 ? <GroupsTab></GroupsTab> : <SearchLayout data={searchData}></SearchLayout>}
             </div>
         </div>
     );

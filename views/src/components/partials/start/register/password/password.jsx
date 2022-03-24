@@ -61,11 +61,11 @@ const Password = (props) => {
         }
 
         if (value.search(/[A-Z]/) !== -1) {
-            passwordStrength++;
+            passwordStrength += 2;
         }
 
         if (value.search(/[0-9]/) !== -1) {
-            passwordStrength++;
+            passwordStrength += 3;
         }
 
         return passwordStrength;
@@ -81,20 +81,27 @@ const Password = (props) => {
             }
 
             case 1: {
-                setErrorPassword("Mật khẩu yếu. Nên có thêm các kí tự in hoa và số");
+                setErrorPassword("Mật khẩu yếu. Nên thêm các kí tự in hoa và số");
                 setIcon(iconError);
                 setColor('red');
                 break;
             }
 
-            case 2: {
-                setErrorPassword("Mật khẩu trung bình. Nên có thêm các kí tự số");
+            case 3: {
+                setErrorPassword("Mật khẩu trung bình. Nên thêm các kí tự số");
                 setIcon(iconWarning);
                 setColor('orange');
                 break;
             }
 
-            case 3: {
+            case 4: {
+                setErrorPassword("Mật khẩu trung bình. Nên thêm các kí tự in hoa");
+                setIcon(iconWarning);
+                setColor('orange');
+                break;
+            }
+
+            case 6: {
                 setErrorPassword("Mật khẩu mạnh");
                 setIcon(iconSuccess);
                 setColor('green');

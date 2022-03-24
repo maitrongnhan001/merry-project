@@ -7,7 +7,7 @@ import { sendTextMessage } from '../../../../Sockets/socket-chat'
 
 function InputChat({id}) {
 
-
+    const currentChat = useSelector(state => state.message.currentChat)
     const emoji = useSelector(state => state.message.emoji)
 
     /*----states----*/
@@ -57,6 +57,18 @@ function InputChat({id}) {
         }
     }
 
+    useEffect(()=>{
+        const value = $('#input-chat-content').text('')
+        const newMessage = {
+            ...message,
+            message: {
+                content: value
+            }
+        }
+        setMessage(newMessage)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentChat])
+
 
     /*----lifecycle ----*/
     useEffect(()=>{
@@ -85,7 +97,7 @@ function InputChat({id}) {
     return (
         <div className="main-chat-input-chat-wrapper">
             <div className="main-chat-input-chat-form">
-                <div contentEditable id="input-chat-content" className="input-chat-content" data-placeholder="Gửi tin nhắn đến Đinh Phúc Khang." onKeyPress={handleStopDefault} onKeyUp={handleChange}></div>
+                <div contentEditable id="input-chat-content" className="input-chat-content" data-placeholder={`Gửi tin nhắn đến ${currentChat.name}.`} onKeyPress={handleStopDefault} onKeyUp={handleChange}></div>
                 <button className="input-chat-submit" onClick={handleSubmit}>Gửi</button>
             </div>
         </div>

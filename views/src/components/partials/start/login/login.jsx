@@ -41,6 +41,7 @@ const Login = () => {
                 setErroremail("Không đúng định dạng. Ví dụ: mttam@gmail.com");
             } else {
                 setErroremail(null);
+                setAnotherError(null);
             }
         }
 
@@ -53,6 +54,7 @@ const Login = () => {
             setErrorPassword("Xin hãy nhập mật khẩu");
         } else {
             setErrorPassword(null);
+            setAnotherError(null);
         }
         setUser({ ...user, password: value });
     }
@@ -83,8 +85,10 @@ const Login = () => {
                 localStorage.setItem('userAvatar', dataLogin.userAvatar);
                 navigate(`/me/`);
             } else {
-                setAnotherError('Email hoặc mật khẩu không chính xác');
+                setAnotherError('Có lỗi xảy ra, xin vui lòng thử lại');
             }
+        } else {
+            setAnotherError('Email hoặc mật khẩu không chính xác');
         }
         setIsLoading(false);
     }
@@ -117,7 +121,7 @@ const Login = () => {
                     type="mail"
                     name='email'
                     value={user.email}
-                    className={`input-start ${errorEmail ? 'input-start-error' : ''}`}
+                    className={`input-start ${errorEmail ? 'input-start-error' : ''} input-login`}
                     placeholder='Nhập email của bạn'
                     onChange={(e) => handleChangeEmail(e)}
                     onKeyPress={(e) => handlePressEnter(e)}
@@ -133,7 +137,7 @@ const Login = () => {
                 <input
                     type="password"
                     name='password'
-                    className={`input-start ${errorPassword ? 'input-start-error' : ''}`}
+                    className={`input-start ${errorPassword ? 'input-start-error' : ''} input-login`}
                     placeholder='Nhập mật khẩu của bạn'
                     onChange={(e) => handleChangePassword(e)}
                     onKeyPress={(e) => handlePressEnter(e)}
@@ -141,8 +145,9 @@ const Login = () => {
 
                 <span className='text-error'>
                     {errorPassword ? iconError : ""}
-                    {errorPassword}</span>
-                <br/>
+                    {errorPassword}
+                </span>
+                <br />
 
                 <div className='text-order-feature'>
                     <Link
@@ -163,7 +168,8 @@ const Login = () => {
                 <br /><br />
                 <span className='text-error center'>
                     {anotherError ? (iconError) : ""}
-                    {anotherError}</span>
+                    {anotherError}
+                </span>
 
                 <div className="two-button">
                     <button 

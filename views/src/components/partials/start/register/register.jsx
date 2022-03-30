@@ -26,7 +26,7 @@ const Register = () => {
         file: null
     });
 
-    const [error, setError] = useState(null);
+    const [errorAvatar, setErrorAvatar] = useState(null);
 
     const navigate = useNavigate();
 
@@ -50,6 +50,10 @@ const Register = () => {
     const handleUpdateAvatar = (imageName, fileImage) => {
         if (!imageName && !fileImage) return;
 
+        if (avatar.file.size >= 1024000) {
+            setErrorAvatar('Vui lòng chon hình ảnh có kích thước nhỏ hơn 1MB');
+        };
+
         setAvatar({ ...avatar, nameImg: imageName, file: fileImage });
     }
 
@@ -64,10 +68,15 @@ const Register = () => {
             nameImg: null,
             file: null
         });
-        setError(null);
+        setErrorAvatar(null);
     }
 
     const handleSubmitRegister = async () => {
+        if (avatar.file.size >= 1024000) {
+            setErrorAvatar('Vui lòng chon hình ảnh có kích thước nhỏ hơn 1MB');
+            return;
+        };
+
         const formData = new FormData();
         formData.append('email', email)
         formData.append('password', password)
@@ -87,7 +96,7 @@ const Register = () => {
             navigate('/me');
         } else {
             const stringError = result.error;
-            setError(stringError);
+            setErrorAvatar(stringError);
         }
     }
 
@@ -126,7 +135,7 @@ const Register = () => {
                 path='/avatar/'
                 element={
                     <Avatar
-                        error={error}
+                        error={errorAvatar}
                         token={token}
                         passwordProps={password}
                         handleUpdateAvatar={handleUpdateAvatar}

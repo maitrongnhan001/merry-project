@@ -24,7 +24,7 @@ function SetAvatarForm() {
     /*----handles----*/
 
     //handle change
-    const handleChane = (e) => {
+    const handleChange = (e) => {
         if (!e) return
 
         const value = e.target.files[0]
@@ -54,6 +54,11 @@ function SetAvatarForm() {
             return;
         }
 
+        if (image.size >= 1024000) {
+            setError('Xin hãy chọn hình ảnh có kích thước duói 1MB')
+            return;
+        }
+
         if (!currentChat || !currentChat.receiverId || currentChat.receiverId.indexOf('G') !== 0) return
 
         //send update avatar group
@@ -66,7 +71,7 @@ function SetAvatarForm() {
         }
         await sendUpdateGroup(data)
         //set notification
-        const notification = updateNotification('Đổi tên nhóm thành công');
+        const notification = updateNotification('Đổi ảnh đại diện nhóm thành công');
         dispatch(notification);
 
         //hide form
@@ -123,7 +128,7 @@ function SetAvatarForm() {
                                 id="my-group-change-avatar"
                                 accept="image/*"
                                 style={{ display: 'none' }}
-                                onChange={handleChane}
+                                onChange={handleChange}
                             />
                         </div>
                         <span className='text-error-avatar'>{error}</span>

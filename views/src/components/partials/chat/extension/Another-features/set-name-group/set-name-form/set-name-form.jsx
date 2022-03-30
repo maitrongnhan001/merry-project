@@ -26,7 +26,7 @@ function SetNameForm() {
         if (!e) return
 
         const value = e.target.value
-        setGroupName(value)
+        setGroupName(value) 
         setError(value.length === 0 ? 'Xin hãy nhập tên' : null)
     }
 
@@ -42,7 +42,7 @@ function SetNameForm() {
         e.preventDefault()
 
         //if group name don't have value then return error
-        if (!groupName || groupName.length === 0) {
+        if (!groupName || groupName.trim().length === 0) {
             setError('Xin hãy nhập tên')
             return;
         }

@@ -12,7 +12,6 @@ import CreateGroup from '../partials/chat/create-group/create-group'
 import Profile from '../partials/chat/profile/profile'
 import Center from '../partials/chat/center/center'
 import ReceiveCall from '../partials/chat/receive-call/receive-call'
-// import Loader from '../partials/chat/tools/loader/loader'
 import Notification from '../partials/chat/tools/notification/notification'
 import FormAddMember from '../partials/chat/extension/Another-features/add-members/form/form-add-member'
 import Ask from '../partials/chat/extension/Another-features/leave-group/form-ask/ask'
@@ -33,7 +32,6 @@ import { updateNotification } from '../../redux/actions/notification'
 import AskDelete from '../partials/chat/extension/Another-features/delete-group/ask-delete-group/ask-delete'
 import connection from '../Sockets/socket-config'
 import { getCall, getCallDown, getCallUp, getUserCallDisconnected, sendCallDown } from '../Sockets/socket-call'
-import { updateCallStatus } from '../../redux/actions/call'
 
 //connection socket
 connection()
@@ -324,12 +322,13 @@ function Chat() {
 
             getUpdateProfile(async data => {
                 if (!data.status) {
-                    const notification = updateNotification('Thông tin đã được cập nhật.')
-                    dispatch(notification)
                     // eslint-disable-next-line eqeqeq
                     if (data.userId == localStorage.getItem('userId')) {
                         const user = saveCurrentUser(data)
                         dispatch(user)
+
+                        const notification = updateNotification('Thông tin đã được cập nhật.')
+                        dispatch(notification)
                     }
 
                     const chatsList = await getListChat(localStorage.getItem('userId'))

@@ -97,7 +97,13 @@ function FormAdddMember() {
         e.preventDefault()
 
         //check group
-        if (!idGroup || idGroup.indexOf('G') !== 0) return
+        if (!idGroup || idGroup.indexOf('G') !== 0) return;
+        //check members group
+        if (members.length === 0) {
+            const notification = updateNotification('Vui lòng chọn thành viên nhóm');
+            dispatch(notification);
+            return;
+        }
 
         const data = {
             groupId: idGroup,

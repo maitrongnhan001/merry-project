@@ -1,31 +1,15 @@
 const express = require('express')
-
+const { isAuth } = require('../middlewares/auth.middleware')
 const groupController = require('../controllers/group.controller')
-
 const router = express.Router()
 
 //get group(name, image), if have id then get all member
+router.get('/', isAuth, groupController.getGroupQuery)
 
-router.get('/', groupController.getGroupQuery)
-router.get('/member-list', groupController.getMembersLimit)
-router.get('/memberIds-list/', groupController.getGroupsById)
-router.get('/:userId', groupController.getGroups)
+router.get('/member-list', isAuth, groupController.getMembersLimit)
 
-//post group(add group)
+router.get('/memberIds-list/', isAuth, groupController.getGroupsById)
 
-// router.post('/add-group', groupController.createGroup)
-
-//post members group
-
-// router.post('/add-members', groupController.createMember)
-
-// put group ()
-// router.put('/update/:id', groupController.update)
-
-//delete group()
-// router.delete('/delete-group/:id', groupController.deleteGroup)
-
-//delete members
-// router.delete('/delete-member/:id', groupController.deleteMembers)
+router.get('/:userId', isAuth, groupController.getGroups)
 
 module.exports = router

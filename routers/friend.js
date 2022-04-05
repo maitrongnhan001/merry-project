@@ -1,27 +1,21 @@
-// friend, waiting request
-//put accept add friend ( socket ) 
-//api get user ( my user: send socket to all user )
-//get friend
-
 const express = require('express')
-
+const { isAuth } = require('../middlewares/auth.middleware')
 const friendController = require('../controllers/friend.controller')
-
 const router = express.Router()
 
 //search friend and group by name
-router.get('/search', friendController.searchFriendAndGroupByName)
+router.get('/search', isAuth, friendController.searchFriendAndGroupByName)
 
 //check friend
-router.get('/check-friend', friendController.checkFriend)
+router.get('/check-friend', isAuth, friendController.checkFriend)
 
 //get friend
-router.get('/:userId', friendController.getFriend)
+router.get('/:userId', isAuth, friendController.getFriend)
 
 //get request friend
-router.get('/friends-request/:userId', friendController.requestFriend)
+router.get('/friends-request/:userId', isAuth, friendController.requestFriend)
 
 //search friend
-router.get('/', friendController.search)
+router.get('/', isAuth, friendController.search)
 
 module.exports = router

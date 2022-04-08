@@ -9,8 +9,11 @@ const Avatar = (props) => {
     const [img_tag, set_img_tag] = useState(
         <img
             src="/img/img-description/choose-avatar.jpeg"
-            alt="choose avatar"></img>
+            alt="choose avatar">
+        </img>
     );
+
+    const [errorAvatar, setErrorAvatar] = useState(error);
 
     const [isLoading, setIsloading] = useState(false);
 
@@ -45,6 +48,11 @@ const Avatar = (props) => {
                 const img_review = (<img alt={file.name} src={e.target.result} ></img>);
                 set_img_tag(img_review);
             }
+        }
+        if (file.size >= 1024000) {
+            setErrorAvatar('Vui lòng chon hình ảnh có kích thước nhỏ hơn 1MB');
+        } else {
+            setErrorAvatar(null);
         }
 
         //handle change image
@@ -89,8 +97,8 @@ const Avatar = (props) => {
                 onChange={handleChangeFile}
             />
             <span className='text-error center'>
-                {error ? iconError : ''}
-                {error}
+                {errorAvatar ? iconError : ''}
+                {errorAvatar}
             </span>
             <div className="two-button">
                 <button 

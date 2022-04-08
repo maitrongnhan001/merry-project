@@ -22,6 +22,9 @@ function InputChat({id}) {
     /*----handles----*/
     //xu ly submit form
     const handleSubmit = () => {
+        //check message is valid
+        if (message.message.content.trim().length === 0) return
+        
         sendTextMessage(message)
         $('#input-chat-content').html('')
         const newMessage = {

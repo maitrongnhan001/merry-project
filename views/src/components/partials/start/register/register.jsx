@@ -72,7 +72,7 @@ const Register = () => {
     }
 
     const handleSubmitRegister = async () => {
-        if (avatar.file.size >= 1024000) {
+        if (avatar.file && avatar.file.size >= 1024000) {
             setErrorAvatar('Vui lòng chon hình ảnh có kích thước nhỏ hơn 1MB');
             return;
         };

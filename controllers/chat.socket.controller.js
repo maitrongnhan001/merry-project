@@ -11,15 +11,12 @@ const getMembers = async (groupId, userId) => {
 
     let id = await group.getMembers(groupId)
     var user1, user2;
-    console.log(userId, id[0])
     if (userId == id[0].userId) {
         user1 = await user.getUserId(id[0].userId)
         user2 = await user.getUserId(id[1].userId)
-        console.log('q' + user2)
     } else {
         user1 = await user.getUserId(id[1].userId)
         user2 = await user.getUserId(id[0].userId)
-        console.log('w' + user2)
     }
 
     

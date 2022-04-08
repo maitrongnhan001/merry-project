@@ -3,9 +3,7 @@ const jwt = require("jsonwebtoken");
 module.exports.createToken = (user, token_key, expires) => {
     return new Promise((resolve, reject) => {
         const userData = {
-            email: user.email,
-            firstName: user.first_name,
-            lastName: user.last_name,
+            email: user.email
         }
         jwt.sign(
             {data: userData},

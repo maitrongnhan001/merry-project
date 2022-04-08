@@ -410,7 +410,6 @@ module.exports.addMember = async (data, socket, io) => {
 
 module.exports.deleteMember = async (data, socket, io) => {
     //thong bao toi cac nguoi dung trong nhom, vua xoa thanh vien
-    console.log(data)
     try {
         //kiem tra du lieu
         if (!(data.groupId && data.memberId)) {

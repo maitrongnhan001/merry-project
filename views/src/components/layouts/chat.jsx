@@ -211,6 +211,7 @@ function Chat() {
             })
 
             getDismissFriend(data => {
+                console.log(data)
                 const updateFriendExtension = updateManagerFriend(1);
                 dispatch(updateFriendExtension);
                 // eslint-disable-next-line eqeqeq

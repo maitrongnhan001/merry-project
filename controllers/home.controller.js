@@ -16,7 +16,8 @@ module.exports.register = async (req, res) => {
             }
 
             try {
-                const { password, lastName, firstName, sex, email } = req.body
+                const { password, lastName, firstName, sex } = req.body
+                const email = req.user.data.email
                 if (!email || !password || !lastName || !firstName || !sex)
                     return res.sendStatus(404)
 

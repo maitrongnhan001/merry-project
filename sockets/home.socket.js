@@ -5,7 +5,7 @@ module.exports.home = (io, socket) => {
         homeSocketController.login(data, socket, io);
     });
 
-    socket.on('connection', (data) => {
+    socket.on('user-connection', (data) => {
         homeSocketController.connection(data, socket, io);
     });
 

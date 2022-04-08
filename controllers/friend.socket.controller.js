@@ -143,6 +143,7 @@ module.exports.dismissFriend = async (data, socket) => {
         //lay du lieu
         const sendId = data.senderId;
         const receiveId = data.receiverId
+        console.log(data);
 
         //kiem tra du lieu trong bang waiting
         const checkWaiting = await waiting.getWaiting(sendId, receiveId);
@@ -153,13 +154,13 @@ module.exports.dismissFriend = async (data, socket) => {
 
         //xoa du lieu trong ban waiting
         await waiting.delete(sendId, receiveId);
-
+        console.log(checkWaiting);
         //tra thong tin ve cho client
         const receiveUserSocket = await userIsOnline.getUserSocket(receiveId);
         if (receiveUserSocket) {
-            receiveUserSocket.emit('dismiss-friend', { senderId: sendId, receiverId: receiveId });
+            receiveUserSocket.emit('dismiss-friend', { senderId: checkWaiting[0].sendId, receiverId: checkWaiting[0].receiveId });
         }
-        socket.emit('dismiss-friend', { senderId: sendId, receiverId: receiveId });
+        socket.emit('dismiss-friend', { senderId: checkWaiting[0].sendId, receiverId: checkWaiting[0].receiveId });
     } catch (err) {
         socket.emit('dismiss-friend-error', { msg: 'Lỗi, xử lý dữ liệu không thành công' });
         console.error(err);

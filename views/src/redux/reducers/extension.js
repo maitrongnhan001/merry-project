@@ -48,11 +48,9 @@ const extensionReducer = (state = initial, action)=> {
         }
 
         case 'UPDATE_MANAGER_FRIEND': {
-            const updateManagerFriend = state.updateManagerFriend + action.data
-
             return {
                 ...state,
-                updateManagerFriend: updateManagerFriend
+                updateManagerFriend: action.data
             }
         }
 

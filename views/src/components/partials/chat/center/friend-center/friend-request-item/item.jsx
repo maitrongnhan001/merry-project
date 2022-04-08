@@ -19,9 +19,8 @@ function Item({ senderId, receiverId, name, sex, image }) {
     }
 
     const handleClickToDismiss = (e) => {
-        sendDismissFriend({ senderId, receiverId })
-        const friendRequest = deleteFromFriendRequest({ senderId, receiverId })
-        dispatch(friendRequest)
+        sendDismissFriend({ senderId: receiverId
+            , receiverId: senderId })
         const notification = updateNotification('Từ chối lời mời kết bạn thành công.')
         dispatch(notification)
     }

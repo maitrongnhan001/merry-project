@@ -56,10 +56,9 @@ module.exports.connection = async (data, socket, io) => {
     try {
         //lay thong tin
         const userId = data.userId;
-
         //kiem tra thong tin
         if (!userId) {
-            socket.emit('connection', { msg: 'Không có dữ liệu' });
+            socket.emit('user-connection', { msg: 'Không có dữ liệu' });
             return;
         }
 
@@ -77,10 +76,10 @@ module.exports.connection = async (data, socket, io) => {
             await chat.updateStatus(status, groupChatArr);
         }
 
-        io.sockets.emit('connection', { userId: userId });
+        io.sockets.emit('user-connection', { userId: userId });
 
     } catch (err) {
-        socket.emit('connection', { msg: 'Kết nối không thành công' });
+        socket.emit('user-connection', { msg: 'Kết nối không thành công' });
         console.error(err);
     }
 }

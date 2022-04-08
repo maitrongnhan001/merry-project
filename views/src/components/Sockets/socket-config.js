@@ -6,7 +6,7 @@ const joinServerParameters = { token: token }
 const socket = connect(server, {query: 'joinServerParameters=' + JSON.stringify(joinServerParameters)  });
 
 const connection = ()=> {
-    connect(server)
+    connect(server, {query: 'joinServerParameters=' + JSON.stringify(joinServerParameters)  })
 }
 
 const sendSocket = (event, data)=> {

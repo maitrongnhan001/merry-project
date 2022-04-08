@@ -115,6 +115,7 @@ const friendsReducer = (state = initial, action) => {
         }
         case 'DELETE_FRIEND_REQUEST': {
             let newFriendRequest = [...state.friendRequest]
+            console.log(newFriendRequest);
             const idx = newFriendRequest.findIndex((value) => { return value.senderId == action.data.senderId && value.receiverId == action.data.receiverId })
             newFriendRequest.splice(idx, 1)
             return {

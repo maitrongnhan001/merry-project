@@ -21,7 +21,7 @@ export default function getAPI(method, url, data = null, token = null) {
         })
         .catch(err => {
             return {
-                status: err.response.status,
+                // status: err.response.status,
                 message: 'Errors happened!',
                 err
             }

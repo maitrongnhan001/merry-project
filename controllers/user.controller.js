@@ -280,7 +280,10 @@ module.exports.getUserOnline = async (req, res) => {
         //lay ban be
         const listFriend = await friend.listFriend(userId, 100000, 0);
         const userOnlineArr = [];
-        if (!listFriend) return res.status(404);
+        if (!listFriend) return res.status(200).json({
+            message: "Truy vấn thành công",
+            data: userOnlineArr
+        });
 
         await listFriend.forEach(async (Element) => {
             //kiem tra ai online

@@ -77,8 +77,8 @@ const ManagerFriend = () => {
         if (!anotherUser || !userId) return
 
         const data = {
-            senderId: userId,
-            receiverId: anotherUser
+            senderId: anotherUser,
+            receiverId: userId
         }
         
         await sendAcceptFriend(data);

@@ -63,6 +63,9 @@ function Chat() {
 
     useEffect(() => {
         (async function () {
+            //send connection
+            sendConnection(localStorage.getItem('userId'))
+
             let themeLocal = localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light-theme'
             let themeState = setTheme(themeLocal)
             dispatch(themeState)
@@ -97,8 +100,6 @@ function Chat() {
                 dispatch(users)
             }
 
-            //send connection
-            sendConnection(localStorage.getItem('userId'))
             //listen connection
             getConnection((data) => {
                 if (data.userId !== localStorage.getItem('userId')) {
@@ -206,13 +207,17 @@ function Chat() {
                 const friendRequest = addFriendRequest(data)
                 dispatch(friendRequest)
 
-                const updateFriendExtension = updateManagerFriend(1);
-                dispatch(updateFriendExtension);
+                if (data.receiverId == localStorage.getItem('userId')) {
+                    const updateFriendExtension = updateManagerFriend(2);
+                    dispatch(updateFriendExtension);
+                } else {
+                    const updateFriendExtension = updateManagerFriend(1);
+                    dispatch(updateFriendExtension);
+                }
             })
 
             getDismissFriend(data => {
-                console.log(data)
-                const updateFriendExtension = updateManagerFriend(1);
+                const updateFriendExtension = updateManagerFriend(0);
                 dispatch(updateFriendExtension);
                 // eslint-disable-next-line eqeqeq
                 if (data.status == 404 && data.senderId == localStorage.getItem('userId')) {
@@ -232,7 +237,6 @@ function Chat() {
             getTextMessageChat((data) => {
                 const message = saveMassage(data)
                 dispatch(message)
-                console.log(data.receiver)
                 const chat = {
                     ...data,
                     receiver: {
@@ -248,7 +252,7 @@ function Chat() {
                     },
                     sender: {
                         receiverId: data.receiverId,
-                        image: data.receiverId.indexOf('G') == 0 ? data.receiver.image : {image1: data.image, image2: ''},
+                        image: data.receiverId.indexOf('G') == 0 ? data.receiver.image : { image1: data.image, image2: '' },
                         receiverName: data.receiverId.indexOf('G') == 0 ? data.receiver.groupName : data.name,
                         lastMessage: {
                             content: data.content,
@@ -309,7 +313,7 @@ function Chat() {
                 const friendAccept = addFriendAfterAccept(data)
                 dispatch(friendAccept)
 
-                const updateFriendExtension = updateManagerFriend(1);
+                const updateFriendExtension = updateManagerFriend(3);
                 dispatch(updateFriendExtension);
             })
 
@@ -317,7 +321,7 @@ function Chat() {
                 const friend = deleteFriend(data)
                 dispatch(friend)
 
-                const updateFriendExtension = updateManagerFriend(1);
+                const updateFriendExtension = updateManagerFriend(0);
                 dispatch(updateFriendExtension);
             })
 

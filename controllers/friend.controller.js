@@ -42,7 +42,9 @@ module.exports.getFriend = async (req, res) => {
         }
         const friends = await friend.listFriend(userId, limit, offset);
         if (!friends) {
-            return res.sendStatus(404)
+            return res.status(200).json({
+                data: []
+            });
         }
         for (let value of friends) {
             if (value.sendId == userId) {

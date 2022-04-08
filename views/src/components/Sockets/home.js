@@ -7,11 +7,11 @@ const login = async (data) => {
 }
 
 const sendConnection = (userId) => {
-    sendSocket('connection', {userId: userId});
+    sendSocket('user-connection', {userId: userId});
 }
 
 const getConnection = (callback) => {
-    listenSocket('connection', callback);
+    listenSocket('user-connection', callback);
 }
 
 const sendUpdateProfile = (data) => {

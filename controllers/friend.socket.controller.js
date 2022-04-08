@@ -19,14 +19,14 @@ module.exports.addFriend = async (data, socket) => {
         //kiem tra du lieu co ton tai trong bang friend chua
         const checkFrinend = await friend.getFriend(sendId, receiveId);
         if (checkFrinend) {
-            socket.emit('add-friend', { msg: 'Đã gửi lời mời kết bạn.', status: 404, senderId: senderId });
+            socket.emit('add-friend', { msg: 'Đã gửi lời mời kết bạn.', status: 404, senderId: sendId });
             return;
         }
 
         //kiem tra du lieu trong bang waiting
         const checkWaiting = await waiting.getWaiting(sendId, receiveId);
         if (checkWaiting) {
-            socket.emit('add-friend', { msg: 'Đã gửi lời mời kết bạn.', status: 404, senderId: senderId });
+            socket.emit('add-friend', { msg: 'Đã gửi lời mời kết bạn.', status: 404, senderId: sendId });
             return;
         }
 

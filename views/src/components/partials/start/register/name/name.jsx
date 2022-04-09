@@ -184,7 +184,7 @@ const Name = (props) => {
                     <div
                         className={`input-start div-input-start ${forcus} ${(errorSex) ? 'input-start-error' : ''} ${(sex) ? 'on-have-data' : ''}`}
                         onClick={() => forcusSelect()}
-                    >{sex}</div>
+                    >{sex ? sex : (!forcus && !errorSex) ? (<span class='placeholder'>Nhập giới tính của bạn</span>) : ''}</div>
                     <ul name='sex' className={`ul-input ${isShowList}`}>
                         <li
                             className={`li-input ${(errorSex) ? 'li-error' : ''}`}

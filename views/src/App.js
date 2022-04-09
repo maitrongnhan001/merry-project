@@ -12,7 +12,7 @@ function App() {
     <Router>
       <Routes>
         <Route path='/*' element={<Start/>}/>
-        <Route path='/me' element={<Navigate to='/me/:uid'/>}/>
+        <Route path='/me' element={<Navigate to={`/me/${localStorage.getItem('userId')}`}/>}/>
         <Route path='/call/vocal-call/:receiverId' element={<VocalCall/>}/>
         <Route path='/call/video-call/:receiverId' element={<VideoCall/>}/>
         <Route path='/me/:uid' element={<Chat/>}/>

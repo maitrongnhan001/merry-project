@@ -133,7 +133,7 @@ const Documents = () => {
             >
                 <div id='list-link-full-size'>
                     {listDocumentsTag}
-                    <div className="text-notification center">{notification}</div>
+                    <div className="text-notification center">{ listDocumentsTag ? '' : notification}</div>
                     <div className="text-error center">{error}</div>
                     {isLoading ? <DataLoader /> : ''}
                 </div>
